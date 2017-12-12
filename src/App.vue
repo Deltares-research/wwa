@@ -42,6 +42,7 @@
                 </small>
               </footer>
             </blockquote>
+            <router-view></router-view>
           </v-layout>
         </v-slide-y-transition>
       </v-container>

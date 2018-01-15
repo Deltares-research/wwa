@@ -21,6 +21,9 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    router: {
+      base: '/wwa/'
+    },
     /*
     ** Run ESLint on save
     */

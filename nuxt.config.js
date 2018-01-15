@@ -42,6 +42,12 @@ module.exports = {
           exclude: /(node_modules)/
         });
       }
-    }
+    },
+    // add postcss plugins
+    postcss: [
+      require('postcss-nested')(),
+      require('postcss-responsive-type')(),
+      require('postcss-hexrgba')(),
+    ]
   }
 }

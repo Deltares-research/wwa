@@ -1,3 +1,10 @@
+// only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
+const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
+  router: {
+    base: '/wwa/'
+  }
+} : {};
+
 module.exports = {
   /*
   ** Headers of the page
@@ -17,13 +24,12 @@ module.exports = {
   ** Customize the progress bar color
   */
   loading: { color: '#3B8070' },
+  // include routerbase
+  ...routerBase,
   /*
   ** Build configuration
   */
   build: {
-    router: {
-      base: '/wwa/'
-    },
     /*
     ** Run ESLint on save
     */
@@ -34,7 +40,7 @@ module.exports = {
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/
-        })
+        });
       }
     }
   }

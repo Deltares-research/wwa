@@ -48,7 +48,7 @@ module.exports = {
     */
     generate: {
       routes: [
-        '/stories/slug'
+        '/narratives/slug'
       ]
     },
     // add postcss plugins

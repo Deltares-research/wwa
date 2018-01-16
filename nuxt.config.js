@@ -3,7 +3,7 @@ const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
   router: {
     base: '/wwa/'
   }
-} : {};
+} : {}
 
 module.exports = {
   /*
@@ -40,14 +40,22 @@ module.exports = {
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/
-        });
+        })
       }
+    },
+    /*
+    ** Define dynamic routes to generate for dist
+    */
+    generate: {
+      routes: [
+        '/stories/slug'
+      ]
     },
     // add postcss plugins
     postcss: [
       require('postcss-nested')(),
       require('postcss-responsive-type')(),
-      require('postcss-hexrgba')(),
+      require('postcss-hexrgba')()
     ]
   }
 }

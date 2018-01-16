@@ -5,9 +5,9 @@
   "author": "Fedor Baart <fedor.baart@deltares.nl>",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "nuxt --port 9920",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "start": "nuxt --port 9920 start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",

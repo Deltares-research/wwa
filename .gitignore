@@ -7,5 +7,9 @@ npm-debug.log
 # Nuxt build
 .nuxt
 
-# Nuxt generate
+# Nuxt/DatoCMS generate
 dist
+data
+
+# Environment variables
+.env

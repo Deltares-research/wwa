@@ -1,26 +1,36 @@
-const stringify = require('json-stringify-safe')
 const includeUnpublished = !!process.env.UNPUBLISHED
 
 module.exports = (dato, root, i18n) => {
-  downloadChapterMarkers(dato, root, i18n)
+  downloadGlobeMarkers(dato, root, i18n)
 }
 
-function downloadChapterMarkers (dato, root, i18n) {
-  const markers = dato.pages
+function downloadGlobeMarkers (dato, root, i18n) {
+  const markers = dato.chapters
     .filter(filterPublished)
     .map(({ entity }) => {
-      const { title, theme, location, images } = entity
-      return {
-        title,
-        theme,
-        images,
-        location: {
-          lat: location.latitude,
-          lon: location.longitude
+      const { title, pages, characterPortrait, characterName, chapterType } = entity
+      const chapterTitle = title
+
+      return pages.map((id) => {
+        const { entity } = dato.find(id)
+        const { title, location, keywords, theme } = entity
+        return {
+          title,
+          location: {
+            lat: location.latitude,
+            lon: location.longitude
+          },
+          metadata: {
+            chapter: `${chapterType}: ${chapterTitle}`,
+            keywords,
+            theme,
+            characterPortrait,
+            characterName
+          }
         }
-      }
-    })
-  root.createDataFile('data/chapterMarkers.json', 'json', markers)
+      })
+    }).reduce((a, b) => a.concat(b), []) // Flatten array by reducing to concatenated array
+  root.createDataFile('data/globeMarkers.json', 'json', markers)
 }
 
 function filterPublished (item) {

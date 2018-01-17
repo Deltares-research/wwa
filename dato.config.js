@@ -16,10 +16,20 @@
  */
 
 const includeUnpublished = !!process.env.UNPUBLISHED
+const exportScope = process.env.DATO_EXPORT
 
 module.exports = (dato, root, i18n) => {
-  generateGlobeMarkers(dato, root, i18n)
-  generateChapters(dato, root, i18n)
+  switch (exportScope) {
+    case 'globe':
+      generateGlobeMarkers(dato, root, i18n)
+      break
+    case 'chapters':
+      generateChapters(dato, root, i18n)
+      break
+    default:
+      generateGlobeMarkers(dato, root, i18n)
+      generateChapters(dato, root, i18n)
+  }
 }
 
 /**

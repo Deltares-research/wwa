@@ -44,9 +44,11 @@ function generateGlobeMarkers (dato, root, i18n) {
   const markers = dato.chapters
     .filter(filterPublished)
     .map(({ entity }) => {
-      const { title, pages, characterPortrait, characterName, chapterType } = entity
+      const { title, slug, pages, characterPortrait, characterName, chapterType } = entity
+      const path = `/chapters/${slug}`
       const chapterTitle = title
       return getPagesByIds(dato, pages).map(entity => {
+        entity.path = `${path}/pages/${entity.slug}`
         entity.chapter = `${chapterType}: ${chapterTitle}`
         entity.characterPortrait = characterPortrait
         entity.characterName = characterName
@@ -70,8 +72,10 @@ function generateChapters (dato, root, i18n) {
     .filter(filterPublished)
     .map(({ entity }) => {
       const { title, slug, pages, characterPortrait, characterName, chapterType, influence } = entity
+      const path = `/chapters/${slug}`
       const chapterTitle = title
       const pageEntities = getPagesByIds(dato, pages).map(entity => {
+        entity.path = `${path}/pages/${entity.slug}`
         entity.chapter = `${chapterType}: ${chapterTitle}`
         entity.characterPortrait = characterPortrait
         entity.characterName = characterName
@@ -80,6 +84,7 @@ function generateChapters (dato, root, i18n) {
       return {
         title,
         slug,
+        path,
         pageEntities,
         influence
       }

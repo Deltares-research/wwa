@@ -19,6 +19,7 @@ const includeUnpublished = !!process.env.UNPUBLISHED
 
 module.exports = (dato, root, i18n) => {
   generateGlobeMarkers(dato, root, i18n)
+  generateChapters(dato, root, i18n)
 }
 
 /**
@@ -35,27 +36,75 @@ function generateGlobeMarkers (dato, root, i18n) {
     .map(({ entity }) => {
       const { title, pages, characterPortrait, characterName, chapterType } = entity
       const chapterTitle = title
-
-      return pages.map((id) => {
-        const { entity } = dato.find(id)
-        const { title, location, keywords, theme } = entity
-        return {
-          title,
-          location: {
-            lat: location.latitude,
-            lon: location.longitude
-          },
-          metadata: {
-            chapter: `${chapterType}: ${chapterTitle}`,
-            keywords,
-            theme,
-            characterPortrait,
-            characterName
-          }
-        }
+      return getPagesByIds(dato, pages).map(entity => {
+        entity.chapter = `${chapterType}: ${chapterTitle}`
+        entity.characterPortrait = characterPortrait
+        entity.characterName = characterName
+        delete entity.body
+        return entity
       })
     }).reduce((a, b) => a.concat(b), []) // Flatten array by reducing to concatenating array
   root.createDataFile('data/globeMarkers.json', 'json', markers)
+}
+
+/**
+ * Write out JSON file with an array of objects based on pages from DatoCMS
+ * Used for the globe visualisation
+ *
+ * @param {Dato} dato - DatoCMS API
+ * @param {Root} root - Project root
+ * @param {i18n} i18n
+ */
+function generateChapters (dato, root, i18n) {
+  const chapters = dato.chapters
+    .filter(filterPublished)
+    .map(({ entity }) => {
+      const { title, slug, pages, characterPortrait, characterName, chapterType, influence } = entity
+      const chapterTitle = title
+      const pageEntities = getPagesByIds(dato, pages).map(entity => {
+        entity.chapter = `${chapterType}: ${chapterTitle}`
+        entity.characterPortrait = characterPortrait
+        entity.characterName = characterName
+        return entity
+      })
+      return {
+        title,
+        slug,
+        pageEntities,
+        influence
+      }
+    })
+
+  chapters.forEach(chapter => {
+    root.createDataFile(`data/chapters/${chapter.slug}.json`, 'json', chapter)
+  })
+}
+
+/**
+ * Get Dato Page entities by array of Ids
+ *
+ * @param {Dato} dato
+ * @param {number[]} pageIds
+ * @returns {object[]}
+ */
+function getPagesByIds (dato, pageIds) {
+  return pageIds.map((id) => {
+    const { entity } = dato.find(id)
+    const { title, slug, location, keywords, theme, mainText } = entity
+    return {
+      title,
+      slug,
+      body: mainText,
+      location: {
+        lat: location.latitude,
+        lon: location.longitude
+      },
+      metadata: {
+        keywords,
+        theme
+      }
+    }
+  })
 }
 
 /**

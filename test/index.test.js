@@ -16,7 +16,7 @@ server.port++
 // the server at the end of the test
 let nuxt = null
 
-// Init Nuxt.js and start listeningß†
+// Init Nuxt.js and start listening
 test.before('Init Nuxt.js', async t => {
   const rootDir = resolve(__dirname, '..')
   let config = {}

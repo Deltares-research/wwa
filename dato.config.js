@@ -44,12 +44,12 @@ function generateGlobeMarkers (dato, root, i18n) {
   const books = getBooks(dato)
   const markers = books.map(book => getChaptersFromBook(dato, book))
     .reduce((a, b) => a.concat(b), []) // Flat array of chapters
-    .map(({ pages }) => {
-      return pages.map(PageEntity => {
-        delete PageEntity.body
-        return PageEntity
-      })
-    }).reduce((a, b) => a.concat(b), []) // Flat array of pages
+    .map(chapter => {
+      // Use location of first page as chapter location
+      chapter.location = chapter.pages[0].location
+      delete chapter.pages
+      return chapter
+    })
   root.createDataFile('static/data/globeMarkers.json', 'json', markers)
 }
 

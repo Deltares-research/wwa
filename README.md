@@ -10,7 +10,7 @@
 
 Ask a colleague for the API key for read-access or log in to [DatoCMS](https://worldwateratlas.admin.datocms.com/admin/access_tokens), and place this in a `.env` file at the root of this project:
 ```
-DATO_API_TOKEN=12300000000bb592578e78628dae95
+DATO_API_TOKEN=<TOKEN>
 ```
 
 ## Build Setup

@@ -3,14 +3,14 @@
 </template>
 
 <script>
-  import Globe from '~/components/Globe'
+  import VGlobe from '~/components/VGlobe'
 
   export default {
     asyncData ({ params }) {
       return { slug: params.slug }
     },
     components: {
-      Globe
+      VGlobe
     }
   }
 </script>

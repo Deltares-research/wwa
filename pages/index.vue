@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div>
-      <logo/>
+      <v-globe></v-globe>
       <h1 class="title">
         wwa
       </h1>
@@ -16,11 +16,11 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import VGlobe from '~/components/VGlobe.vue'
 
 export default {
   components: {
-    Logo
+    VGlobe
   }
 }
 </script>

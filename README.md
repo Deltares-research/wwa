@@ -19,6 +19,11 @@ DATO_API_TOKEN=12300000000bb592578e78628dae95
 # install dependencies
 $ npm install # Or yarn install
 
+# build the globe component
+$ cd external/globe
+$ npm install
+$ npm run build
+
 # serve with hot reload at localhost:9920
 $ npm run dev
 

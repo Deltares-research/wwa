@@ -1,23 +1,40 @@
 <template>
-  <section class="container">
+  <v-app>
+    <v-container>
+      <v-layout row wrap>
+        <v-flex xs12 md6 offset-md3>
+          <v-globe></v-globe>
+        </v-flex>
+        <v-flex>
+          <h1 class="title">
+            wwa
+          </h1>
+          <h2 class="subtitle">
+            World Water Atlas
+          </h2>
+          <div class="links">
+            <nuxt-link to="/narratives/slug">Narrative</nuxt-link>
+          </div>
+        </v-flex>
+      </v-layout>
+    </v-container>
     <div>
-      <v-globe></v-globe>
-      <h1 class="title">
-        wwa
-      </h1>
-      <h2 class="subtitle">
-        World Water Atlas
-      </h2>
-      <div class="links">
-       <nuxt-link to="/narratives/slug">Narrative</nuxt-link>
-      </div>
+
     </div>
   </section>
-</template>
+  </v-app>
 
+</template>
 <script>
+import Vue from 'vue'
+import Vuetify from 'vuetify'
+
 import VGlobe from '~/components/VGlobe.vue'
 
+// this makes sure the css is included in the html
+import 'vuetify/dist/vuetify.min.css'
+
+Vue.use(Vuetify)
 export default {
   components: {
     VGlobe

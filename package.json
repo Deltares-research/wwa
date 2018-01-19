@@ -39,7 +39,8 @@
   },
   "dependencies": {
     "nuxt": "^1.0.0",
-    "three": "^0.89.0"
+    "three": "^0.89.0",
+    "vuetify": "^0.17.6"
   },
   "devDependencies": {
     "ava": "0.24.0",

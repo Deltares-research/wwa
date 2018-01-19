@@ -83,6 +83,9 @@ export default {
   },
   methods: {
     handleResize () {
+
+      // We're getting the cardSize here because the size
+      // of the canvas itself can is not changing on screen resize
       // reset the aspect ratio
       this.camera.aspect = this.cardSize[0] / this.cardSize[1]
       // recompute projection

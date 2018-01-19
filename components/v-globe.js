@@ -34,8 +34,7 @@ export default {
         this.handleResize()
         this.renderer.clear()
         this.renderer.render(this.scene, this.camera)
-      }
-      catch (err) {
+      } catch (err) {
         const fallbackElement = this.$el.querySelector('.fallback')
         fallbackElement.classList.remove('hidden')
       }
@@ -83,7 +82,6 @@ export default {
   },
   methods: {
     handleResize () {
-
       // We're getting the cardSize here because the size
       // of the canvas itself can is not changing on screen resize
       // reset the aspect ratio

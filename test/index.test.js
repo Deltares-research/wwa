@@ -44,10 +44,9 @@ test('Route / exits and render HTML with CSS applied', async t => {
   t.not(element, null)
 })
 
-
 // Example of testing via DOM checking
 test('Globe should appear', async t => {
-  console.log()
+  console.log('this should be able to render to a ', Canvas, 'but maybe it only supports 2d')
   const window = await nuxt.renderAndGetWindow(`http://${server.host}:${server.port}/`)
   const element = window.document.querySelector('.globe')
   t.not(element, null)

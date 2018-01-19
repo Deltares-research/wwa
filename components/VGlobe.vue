@@ -2,6 +2,9 @@
   <v-card class="globe-card">
     <v-card-media>
       <div class="globe">
+        <div class="fallback hidden">
+          <v-icon>fa-globe</v-icon>
+        </div>
       </div>
     </v-card-media>
   </v-card>
@@ -13,5 +16,8 @@
     min-width: 100%;
     min-height: 50vh;
     max-height: 50vh;
+  }
+  .hidden {
+    display: none;
   }
 </style>

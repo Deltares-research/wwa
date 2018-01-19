@@ -20,13 +20,19 @@ export default {
     // wait for elements to render (v-card/v-card-media)
     // otherwise this.$el.querySelector won't work
     Vue.nextTick(() => {
-      this.renderer = this.createRenderer()
-      this.scene = this.createScene()
-      this.camera = this.createCamera(this.scene)
-      // resize the canvas
-      this.handleResize()
-      this.renderer.clear()
-      this.renderer.render(this.scene, this.camera)
+      try {
+        this.renderer = this.createRenderer()
+        this.scene = this.createScene()
+        this.camera = this.createCamera(this.scene)
+        // resize the canvas
+        this.handleResize()
+        this.renderer.clear()
+        this.renderer.render(this.scene, this.camera)
+      }
+      catch (err) {
+        const fallbackElement = this.$el.querySelector('.fallback')
+        fallbackElement.classList.remove('hidden')
+      }
     })
 
     // window is the event handler fo resize, so we need to subscribe to it

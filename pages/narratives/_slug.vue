@@ -1,5 +1,5 @@
 <template>
-  <Globe :activeStory="slug" />
+  <VGlobe :activeStory="slug" />
 </template>
 
 <script>

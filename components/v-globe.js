@@ -16,6 +16,12 @@ export default {
       message: ''
     }
   },
+  props: {
+    activeStory: {
+      type: String,
+      required: false
+    }
+  },
   mounted () {
     // wait for elements to render (v-card/v-card-media)
     // otherwise this.$el.querySelector won't work
@@ -88,8 +94,8 @@ export default {
       // redraw
       this.renderer.render(this.scene, this.camera)
     },
-    panTo (id) {
-      console.log('panning to', id)
+    pan () {
+      console.log('panning to', this.activeStory)
     },
     /**
      * Create a renderer in the element

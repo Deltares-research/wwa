@@ -1,16 +1,18 @@
-.YlGnBu .q0-5{
+.YlGnBu .q0-5 {
   fill: rgb(255,255,204);
 }
-.YlGnBu .q1-5{
+.YlGnBu .q1-5 {
   fill: rgb(161,218,180);
 }
-.YlGnBu .q2-5{
+
+.YlGnBu .q2-5 {
   fill: rgb(65,182,196);
 }
-.YlGnBu .q3-5{
+.YlGnBu .q3-5 {
   fill: rgb(44,127,184);
 }
-.YlGnBu .q4-5{
+.too-much,
+.YlGnBu .q4-5 {
   fill: rgb(37,52,148);
 }
 
@@ -26,6 +28,7 @@
 .YlOrRd .q3-5 {
   fill: rgb(240,59,32);
 }
+.too-little
 .YlOrRd .q4-5 {
   fill: rgb(189,0,38);
 }
@@ -60,6 +63,7 @@
 .Oranges .q3-5 {
   fill: rgb(230,85,13);
 }
+.too-dirty
 .Oranges .q4-5 {
   fill: rgb(166,54,3);
 }

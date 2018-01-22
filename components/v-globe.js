@@ -19,7 +19,9 @@ export default {
     },
     markers: {
       type: Array,
-      default: markers
+      default () {
+        return markers
+      }
     }
   },
   mounted () {

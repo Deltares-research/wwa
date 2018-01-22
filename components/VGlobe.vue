@@ -1,19 +1,17 @@
 <template>
-  <v-card class="globe-card">
-    <v-card-media>
-      <div class="globe">
-        <div class="fallback hidden">
-          <v-icon>fa-globe</v-icon>
-        </div>
+  <div class="globe-container">
+    <div class="globe">
+      <div class="fallback hidden">
+        <div>backup globe</div>
       </div>
-    </v-card-media>
-  </v-card>
+    </div>
+  </div>
 
 </template>
 <script src="./v-globe.js"></script>
 <style>
-  .globe {
-    min-width: 100%;
+  .globe-container {
+    width: 100vw;
     min-height: 50vh;
     max-height: 50vh;
   }

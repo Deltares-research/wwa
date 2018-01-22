@@ -1,11 +1,5 @@
 import * as THREE from 'three'
 import Vue from 'vue'
-import Vuetify from 'vuetify'
-
-// this makes sure the css is included in the html
-import 'vuetify/dist/vuetify.min.css'
-
-Vue.use(Vuetify)
 
 export default {
   data () {
@@ -23,22 +17,18 @@ export default {
     }
   },
   mounted () {
-    // wait for elements to render (v-card/v-card-media)
-    // otherwise this.$el.querySelector won't work
-    Vue.nextTick(() => {
-      try {
-        this.renderer = this.createRenderer()
-        this.scene = this.createScene()
-        this.camera = this.createCamera(this.scene)
-        // resize the canvas
-        this.handleResize()
-        this.renderer.clear()
-        this.renderer.render(this.scene, this.camera)
-      } catch (err) {
-        const fallbackElement = this.$el.querySelector('.fallback')
-        fallbackElement.classList.remove('hidden')
-      }
-    })
+    try {
+      this.renderer = this.createRenderer()
+      this.scene = this.createScene()
+      this.camera = this.createCamera(this.scene)
+      // resize the canvas
+      this.handleResize()
+      this.renderer.clear()
+      this.renderer.render(this.scene, this.camera)
+    } catch (err) {
+      const fallbackElement = this.$el.querySelector('.fallback')
+      fallbackElement.classList.remove('hidden')
+    }
 
     // window is the event handler fo resize, so we need to subscribe to it
     window.addEventListener(
@@ -47,19 +37,19 @@ export default {
     )
   },
   computed: {
-    cardSize: {
+    containerSize: {
       get () {
         // lookup the size of the globe card element
         let size = [0, 0]
-        if (this.globeCardElement != null) {
-          size = [this.globeCardElement.clientWidth, this.globeCardElement.clientHeight]
+        if (this.globeContainerElement != null) {
+          size = [this.globeContainerElement.clientWidth, this.globeContainerElement.clientHeight]
         }
         return size
       },
       cache: false
 
     },
-    globeCardElement: {
+    globeContainerElement: {
       // lookup the globe element
       get () {
         let el = this.$el
@@ -82,14 +72,14 @@ export default {
   },
   methods: {
     handleResize () {
-      // We're getting the cardSize here because the size
+      // We're getting the containerSize here because the size
       // of the canvas itself can is not changing on screen resize
       // reset the aspect ratio
-      this.camera.aspect = this.cardSize[0] / this.cardSize[1]
+      this.camera.aspect = this.containerSize[0] / this.containerSize[1]
       // recompute projection
       this.camera.updateProjectionMatrix()
       // set the size to the rederer
-      this.renderer.setSize(this.cardSize[0], this.cardSize[1])
+      this.renderer.setSize(this.containerSize[0], this.containerSize[1])
       // clear the screen
       this.renderer.clear()
       // redraw
@@ -156,7 +146,7 @@ export default {
      */
     createCamera (scene) {
       const camera = new THREE.PerspectiveCamera(
-        30, this.cardSize[0] / this.cardSize[1], 0.1, 300
+        30, this.containerSize[0] / this.containerSize[1], 0.1, 300
       )
       camera.position.set(0, 20, 20)
       camera.lookAt(scene.position)

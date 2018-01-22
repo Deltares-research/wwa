@@ -1,5 +1,8 @@
 import * as THREE from 'three'
 
+// get the markers exported by dato
+import markers from 'static/data/globeMarkers.json'
+
 export default {
   data () {
     return {
@@ -13,6 +16,10 @@ export default {
     activeStory: {
       type: String,
       required: false
+    },
+    markers: {
+      type: Array,
+      default: markers
     }
   },
   mounted () {

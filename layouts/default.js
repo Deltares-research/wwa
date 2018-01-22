@@ -1,5 +1,6 @@
 import VGlobe from '~/components/VGlobe'
 
+
 export default {
   data () {
     return {

@@ -67,6 +67,7 @@
     "postcss-hexrgba": "^1.0.0",
     "postcss-nested": "^3.0.0",
     "postcss-responsive-type": "^1.0.0",
-    "push-dir": "^0.4.1"
+    "push-dir": "^0.4.1",
+    "webpack-bundle-analyzer": "^2.9.2"
   }
 }

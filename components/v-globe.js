@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import Vue from 'vue'
 
 export default {
   data () {

@@ -1,0 +1,120 @@
+:root {
+  /* Yellow Green Blue  */
+  --yl-gn-bu--0-5: rgb(255,255,204);
+  --yl-gn-bu--1-5: rgb(161,218,180);
+  --yl-gn-bu--2-5: rgb(65,182,196);
+  --yl-gn-bu--3-5: rgb(44,127,184);
+  --yl-gn-bu--4-5: rgb(37,52,148);
+
+  /* Yellow Orange Red */
+  --yl-or-rd--0-5: rgb(255,255,178);
+  --yl-or-rd--1-5: rgb(254,204,92);
+  --yl-or-rd--2-5: rgb(253,141,60);
+  --yl-or-rd--3-5: rgb(240,59,32);
+  --yl-or-rd--4-5: rgb(189,0,38);
+
+  /* Red Purple */
+  --rd-pu--0-5: rgb(254,235,226);
+  --rd-pu--1-5: rgb(251,180,185);
+  --rd-pu--2-5: rgb(247,104,161);
+  --rd-pu--3-5: rgb(197,27,138);
+  --rd-pu--4-5: rgb(122,1,119);
+
+  /* Oranges */
+  --or--0-5:rgb(254,237,222);
+  --or--1-5:rgb(253,190,133);
+  --or--2-5:rgb(253,141,60);
+  --or--3-5:rgb(230,85,13);
+  --or--4-5:rgb(166,54,3);
+
+  /* Themes */
+  --too-dirty: var(--or-4-5);
+  --too-dirty--light: var(--or-3-5);
+  --too-little: var(--yl-or-rd--2-5);
+  --too-little--light: var(--yl-or-rd-1-5);
+  --too-much: var(--yl-gn-bu-4-5);
+  --too-much--light: var(--yl-gn-bu-3-5);
+}
+
+.too-dirty {
+  fill: var(--too-dirty);
+}
+.too-dirty .light {
+  fill: var(--too-dirty--light);
+}
+.too-little {
+  fill: var(--too-little);
+}
+.too-little--light {
+  fill: var(--too-little--light);
+}
+.too-much {
+  fill: var(--too-much);
+}
+.too-much .light {
+  fill: var(--too-much--light);
+}
+
+.yl-gn-bu .q0-5 {
+  fill: var(--yl-gn-bu--0-5);
+}
+.yl-gn-bu .q1-5 {
+  fill: var(--yl-gn-bu--1-5);
+}
+.yl-gn-bu .q2-5 {
+  fill: var(--yl-gn-bu--2-5);
+}
+.yl-gn-bu .q3-5 {
+  fill: var(--yl-gn-bu--3-5);
+}
+.yl-gn-bu .q4-5 {
+  fill: var(--yl-gn-bu--4-5);
+}
+
+.yl-or-rd .q0-5 {
+  fill: var(--yl-or-rd--0-5);
+}
+.yl-or-rd .q1-5 {
+  fill: var(--yl-or-rd--1-5)
+}
+.yl-or-rd .q2-5 {
+  fill: var(--yl-or-rd--2-5)
+}
+.yl-or-rd .q3-5 {
+  fill: var(--yl-or-rd--3-5)
+}
+.yl-or-rd .q4-5 {
+  fill: var(--yl-or-rd--4-5)
+}
+
+.rd-pu .q0-5 {
+  fill: var(--rd-pu--0-5)
+}
+.rd-pu .q1-5 {
+  fill: var(--rd-pu--1-5)
+}
+.rd-pu .q2-5 {
+  fill: var(--rd-pu--2-5)
+}
+.rd-pu .q3-5 {
+  fill: var(--rd-pu--3-5)
+}
+.rd-pu .q4-5 {
+  fill: var(--rd-pu--4-5)
+}
+
+.oranges .q0-5 {
+  fill: var(--or--0-5);
+}
+.oranges .q1-5 {
+  fill: var(--or--1-5);
+}
+.oranges .q2-5 {
+  fill: var(--or--2-5);
+}
+.oranges .q3-5 {
+  fill: var(--or--3-5);
+}
+.oranges .q4-5 {
+  fill: var(--or--4-5);
+}

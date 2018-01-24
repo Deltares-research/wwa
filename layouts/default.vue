@@ -1,9 +1,12 @@
 <template>
   <div>
+    <v-globe :activeStory="activeStory"></v-globe>
+
     <nuxt/>
   </div>
 </template>
-
+<script src="./default.js">
+</script>
 <style>
 html {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;

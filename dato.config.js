@@ -23,12 +23,12 @@ module.exports = (dato, root, i18n) => {
     case 'globe':
       generateGlobeMarkers(dato, root, i18n)
       break
-    case 'chapters':
-      generateChapters(dato, root, i18n)
+    case 'books':
+      generateBooks(dato, root, i18n)
       break
     default:
       generateGlobeMarkers(dato, root, i18n)
-      generateChapters(dato, root, i18n)
+      generateBooks(dato, root, i18n)
   }
 }
 
@@ -41,22 +41,16 @@ module.exports = (dato, root, i18n) => {
  * @param {i18n} i18n
  */
 function generateGlobeMarkers (dato, root, i18n) {
-  const markers = dato.chapters
-    .filter(filterPublished)
-    .map(({ entity }) => {
-      const { title, slug, pages, characterPortrait, characterName, chapterType } = entity
-      const path = `/chapters/${slug}`
-      const chapterTitle = title
-      return getPagesByIds(dato, pages).map(entity => {
-        entity.path = `${path}/pages/${entity.slug}`
-        entity.chapter = `${chapterType}: ${chapterTitle}`
-        entity.characterPortrait = characterPortrait
-        entity.characterName = characterName
-        delete entity.body
-        return entity
+  const books = getBooks(dato)
+  const markers = books.map(book => getChaptersFromBook(dato, book))
+    .reduce((a, b) => a.concat(b), []) // Flat array of chapters
+    .map(chapter => {
+      // Use location of first page as chapter location
+      chapter.location = chapter.pages[0].location
+      delete chapter.pages
+      return chapter
       })
-    }).reduce((a, b) => a.concat(b), []) // Flatten array by reducing to concatenating array
-  root.createDataFile('data/globeMarkers.json', 'json', markers)
+  root.createDataFile('static/data/globeMarkers.json', 'json', markers)
 }
 
 /**
@@ -67,31 +61,95 @@ function generateGlobeMarkers (dato, root, i18n) {
  * @param {Root} root - Project root
  * @param {i18n} i18n
  */
-function generateChapters (dato, root, i18n) {
-  const chapters = dato.chapters
+function generateBooks (dato, root, i18n) {
+  const books = getBooks(dato)
+  books.forEach(book => root.createDataFile(`static/data/books/${book.slug}/index.json`, 'json', book))
+  root.createDataFile(`static/data/books/index.json`, 'json', books)
+
+  const chapters = books.map(book => getChaptersFromBook(dato, book))
+    .reduce((a, b) => a.concat(b), [])
+  chapters.forEach(chapter => root.createDataFile(`static/data/books/${chapter.book.slug}/chapters/${chapter.slug}/index.json`, 'json', chapter))
+}
+
+/**
+ * Get Dato Book entities
+ *
+ * @param {Dato} dato
+ */
+function getBooks (dato) {
+  return dato.books
     .filter(filterPublished)
     .map(({ entity }) => {
-      const { title, slug, pages, characterPortrait, characterName, chapterType, influence } = entity
-      const path = `/chapters/${slug}`
-      const chapterTitle = title
-      const pageEntities = getPagesByIds(dato, pages).map(entity => {
-        entity.path = `${path}/pages/${entity.slug}`
-        entity.chapter = `${chapterType}: ${chapterTitle}`
-        entity.characterPortrait = characterPortrait
-        entity.characterName = characterName
+      // Loop over books
+      const { title, slug, chapters } = entity
+      const path = `/narratives/${slug}`
+      const chapterEntities = getChaptersById(dato, chapters).map(entity => {
+        entity.path = `${path}/${slug}`
+        entity.book = title
         return entity
       })
+      // create book
       return {
         title,
         slug,
         path,
-        pageEntities,
-        influence
+        chapters: chapterEntities
+      }
+      })
+}
+
+/**
+ * Get Dato Chapter entities by Dato Book
+ *
+ * @param {Dato} dato
+*/
+function getChaptersFromBook (dato, book) {
+  return book.chapters
+    .filter(filterPublished)
+    .map(chapterEntity => {
+      const { title, slug, pages, characterPortrait, characterName, chapterType, influences } = chapterEntity
+      const path = `${book.path}/${slug}`
+      const chapterBook = {
+        path: book.path,
+        slug: book.slug,
+        title: book.title
+      }
+      const pageEntities = getPagesByIds(dato, pages).map(pageEntity => {
+        pageEntity.path = `${path}/${pageEntity.slug}`
+        pageEntity.chapter = { path, slug, chapterType, title }
+        pageEntity.book = chapterBook
+        pageEntity.characterPortrait = characterPortrait
+        pageEntity.characterName = characterName
+        return pageEntity
+      })
+      let influencesArray = (influences || '').split(/,\s?/)
+      influencesArray = (influencesArray[0] !== '') ? influencesArray : []
+
+      return {
+        title,
+        slug,
+        path,
+        book: chapterBook,
+        pages: pageEntities,
+        characterName,
+        characterPortrait,
+        influences: influencesArray
       }
     })
+}
 
-  chapters.forEach(chapter => {
-    root.createDataFile(`data/chapters/${chapter.slug}.json`, 'json', chapter)
+/**
+ * Get Dato Chapter entities by array of Ids
+ *
+ * @param {Dato} dato
+ * @param {number[]} ids
+ * @returns {object[]}
+ */
+function getChaptersById (dato, ids) {
+  return ids.map((id) => {
+    const { entity } = dato.find(id)
+    const { title, slug, pages, characterName, characterPortrait, chapterType, influence, subTheme } = entity
+    return { title, slug, pages, characterName, characterPortrait, chapterType, influence, subTheme }
   })
 }
 
@@ -99,11 +157,11 @@ function generateChapters (dato, root, i18n) {
  * Get Dato Page entities by array of Ids
  *
  * @param {Dato} dato
- * @param {number[]} pageIds
+ * @param {number[]} ids
  * @returns {object[]}
  */
-function getPagesByIds (dato, pageIds) {
-  return pageIds.map((id) => {
+function getPagesByIds (dato, ids) {
+  return ids.map((id) => {
     const { entity } = dato.find(id)
     const { title, slug, location, keywords, theme, mainText } = entity
     return {
@@ -133,5 +191,5 @@ function filterPublished (item) {
   if (includeUnpublished) {
     return true
   }
-  return item.published
+  return true // return item.published eventually
 }

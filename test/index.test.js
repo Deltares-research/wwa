@@ -1,5 +1,6 @@
 import test from 'ava'
 import { Nuxt, Builder } from 'nuxt'
+import { Canvas } from 'canvas'
 import { resolve } from 'path'
 
 // Nuxt defaults, but override them with package.json config when set
@@ -16,7 +17,7 @@ server.port++
 // the server at the end of the test
 let nuxt = null
 
-// Init Nuxt.js and start listeningß†
+// Init Nuxt.js and start listening
 test.before('Init Nuxt.js', async t => {
   const rootDir = resolve(__dirname, '..')
   let config = {}
@@ -40,6 +41,14 @@ test('Route / exits and render HTML with CSS applied', async t => {
   console.log()
   const window = await nuxt.renderAndGetWindow(`http://${server.host}:${server.port}/`)
   const element = window.document.querySelector('.title')
+  t.not(element, null)
+})
+
+// Example of testing via DOM checking
+test('Globe should appear', async t => {
+  console.log('this should be able to render to a ', Canvas, 'but maybe it only supports 2d')
+  const window = await nuxt.renderAndGetWindow(`http://${server.host}:${server.port}/`)
+  const element = window.document.querySelector('.globe')
   t.not(element, null)
 })
 

@@ -186,6 +186,7 @@ export default {
     },
     /**
      * Adds markers to the sphere.
+     * @param {Scene} scene - avatars are added to this scene.
      */
     addMarkers (scene) {
       const loader = new TextureLoader()
@@ -221,6 +222,9 @@ export default {
         }
       )
     },
+    /**
+     * Render the scene using the camera
+     */
     render () {
       this.renderer.clear()
       this.renderer.render(this.scene, this.camera)

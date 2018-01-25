@@ -62,12 +62,10 @@ export default {
 }
 </script>
 
-<style>
-:root {
+<style scoped>
+article {
   --padding-v: calc(.5rem + .5vw);
   --padding-h: calc(1rem + 1vw);
-}
-article {
   background-color: var(--ui-white);
   padding: var(--padding-v) var(--padding-h);
   margin: 25vh auto;

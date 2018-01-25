@@ -1,4 +1,9 @@
 :root {
+  /* Base colors */
+  --ui-white: #fff;
+  --ui-black: #00001e;
+  --ui-grey: #667;
+
   /* Yellow Green Blue  */
   --yl-gn-bu--0-5: rgb(255,255,204);
   --yl-gn-bu--1-5: rgb(161,218,180);
@@ -34,6 +39,10 @@
   --too-little--light: var(--yl-or-rd-1-5);
   --too-much: var(--yl-gn-bu-4-5);
   --too-much--light: var(--yl-gn-bu-3-5);
+}
+
+html {
+  background-color: var(--ui-black);
 }
 
 .too-dirty {

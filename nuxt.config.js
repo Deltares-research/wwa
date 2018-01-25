@@ -8,9 +8,7 @@ const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
 } : {}
 
 module.exports = {
-  /*
-  ** Headers of the page
-  */
+  // Headers of the page
   head: {
     title: 'wwa',
     meta: [
@@ -22,19 +20,11 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-  /*
-  ** Customize the progress bar color
-  */
-  loading: { color: '#3B8070' },
   // include routerbase
   ...routerBase,
-  /*
-  ** Build configuration
-  */
+  // Build configuration
   build: {
-    /*
-    ** Run ESLint on save
-    */
+    // Run ESLint on save
     extend (config, { isDev, isClient }) {
       if (isDev && isClient) {
         config.module.rules.push({
@@ -45,9 +35,8 @@ module.exports = {
         })
       }
     },
-    /*
-    ** Define dynamic routes to generate for dist
-    */
+    // Define dynamic routes to generate for dist,
+    // TODO: make function based on content from Dato
     generate: {
       routes: [
         '/narratives/slug'
@@ -55,9 +44,8 @@ module.exports = {
     },
     // add postcss plugins
     postcss: [
-      require('postcss-nested')(),
-      require('postcss-responsive-type')(),
-      require('postcss-hexrgba')()
+      // require('postcss-custom-properties'),
+      require('postcss-calc')
     ],
     plugins: [
       // creat report.html with bundle size

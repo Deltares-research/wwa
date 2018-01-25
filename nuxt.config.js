@@ -1,3 +1,6 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+
 // only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
 const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
   router: {
@@ -56,6 +59,16 @@ module.exports = {
       require('postcss-nested')(),
       require('postcss-responsive-type')(),
       require('postcss-hexrgba')()
+    ],
+    plugins: [
+      // creat report.html with bundle size
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        openAnalyzer: false
+      }),
+      new UglifyJSPlugin({
+        sourceMap: true
+      })
     ]
   }
 }

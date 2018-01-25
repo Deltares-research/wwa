@@ -1,4 +1,5 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 // only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
 const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
@@ -64,6 +65,9 @@ module.exports = {
       new BundleAnalyzerPlugin({
         analyzerMode: 'static',
         openAnalyzer: false
+      }),
+      new UglifyJSPlugin({
+        sourceMap: true
       })
     ]
   }

@@ -13,11 +13,8 @@
 
 </template>
 <script>
-  import VGlobe from '~/components/VGlobe.vue'
-
   export default {
     components: {
-      VGlobe
     }
   }
 </script>

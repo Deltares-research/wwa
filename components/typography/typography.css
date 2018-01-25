@@ -1,0 +1,84 @@
+:root {
+  /* Scales */
+  --minor-second: 1.067;
+  --major-second: 1.125;
+  --minor-third: 1.200;
+  --major-third: 1.250;
+  --perfect-fourth: 1.333;
+  --augm-fourth: 1.414;
+  --perfect-fifth: 1.500;
+  --golden-ratio: 1.618;
+  /* Setup */
+  --min-viewport: 480px;
+  --viewport-range: calc(640 - 480);
+  --base-size: 16px;
+  /* --rem-in-px: 16px; */
+  --lower-ratio: var(--minor-third); /* One of the above scales */
+  --upper-ratio: var(--augm-fourth); /* One of the above scales */
+  /* Calculated */
+  --ratio-range: calc(var(--upper-ratio) - var(--lower-ratio));
+  --line-height: calc(var(--lower-ratio) + var(--ratio-range) * (100vw - var(--min-viewport)) / var(--viewport-range) );
+}
+
+html {
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--base-size);
+  color: var(--ui-black);
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+p {
+  line-height: var(--line-height);
+}
+h1,
+.h1 {
+  --min-font: calc(var(--base-size) * var(--lower-ratio) * var(--lower-ratio) * var(--lower-ratio) * var(--lower-ratio));
+  --max-font: calc(var(--base-size) * var(--upper-ratio) * var(--upper-ratio) * var(--upper-ratio) * var(--upper-ratio));
+  --font-range: calc((var(--max-font) - var(--min-font)) * var(--rem-in-px));
+  --font-responsive: calc(var(--min-font) + var(--font-range) * (100vw - var(--min-viewport)) / var(--viewport-range));
+  font-size: var(--min-font);
+  font-size: var(--font-responsive, var(--min-font))
+}
+
+h2,
+.h2 {
+  --min-font: calc(var(--base-size) * var(--lower-ratio) * var(--lower-ratio) * var(--lower-ratio));
+  --max-font: calc(var(--base-size) * var(--upper-ratio) * var(--upper-ratio) * var(--upper-ratio));
+  --font-range: calc((var(--max-font) - var(--min-font)) * var(--rem-in-px));
+  --font-responsive: calc(var(--min-font) + var(--font-range) * (100vw - var(--min-viewport)) / var(--viewport-range));
+  font-size: var(--min-font);
+  font-size: var(--font-responsive, var(--min-font))
+}
+
+h3,
+.h3 {
+  --min-font: calc(var(--base-size) * var(--lower-ratio) * var(--lower-ratio));
+  --max-font: calc(var(--base-size) * var(--upper-ratio) * var(--upper-ratio));
+  --font-range: calc((var(--max-font) - var(--min-font)) * var(--rem-in-px));
+  --font-responsive: calc(var(--min-font) + var(--font-range) * (100vw - var(--min-viewport)) / var(--viewport-range));
+  font-size: var(--min-font);
+  font-size: var(--font-responsive, var(--min-font))
+}
+
+h4,
+.h4 {
+  --min-font: calc(var(--base-size) * var(--lower-ratio));
+  --max-font: calc(var(--base-size) * var(--upper-ratio));
+  --font-range: calc((var(--max-font) - var(--min-font)) * var(--rem-in-px));
+  --font-responsive: calc(var(--min-font) + var(--font-range) * (100vw - var(--min-viewport)) / var(--viewport-range));
+  font-size: var(--min-font);
+  font-size: var(--font-responsive, var(--min-font))
+}
+
+h5,
+.h5 {
+  font-size: var(--base-size);
+}
+
+h6,
+.h6 {
+  font-size: var(--base-size);
+}

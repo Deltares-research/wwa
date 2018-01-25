@@ -30,17 +30,16 @@ export default {
   left: 0;
   right: 0;
   white-space: nowrap;
-
 }
 .card-list li {
   display: inline-flex;
   width: 50vw;
   min-width: 240px;
   max-width: 960px;
-  height: 8rem;
+  height: 16rem;
+  max-height: 25vh;
   margin: 0;
   padding: calc(.5rem + .5vw);
-  padding-bottom: 0;
   vertical-align: top;
   white-space: normal;
 }

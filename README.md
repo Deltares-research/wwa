@@ -27,12 +27,26 @@ $ npm run build
 # serve with hot reload at localhost:9920
 $ npm run dev
 
+
+# check sourcecode quality
+$ npm run lint
+
+# run tests
+$ npm run test
+
+# generate static project
+$ npm run generate
+
 # build for production and launch server
 $ npm run build
 $ npm start
 
-# generate static project
-$ npm run generate
+# build and generate also generate a report in .nuxt/dist/report.html
+
+# deploy to github pages
+$ npm run generate:gh-pages
+$ npm run deploy
+
 ```
 
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).

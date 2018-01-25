@@ -70,6 +70,7 @@
     "postcss-calc": "6.0.1",
     "postcss-custom-properties": "6.2.0",
     "push-dir": "^0.4.1",
+    "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack-bundle-analyzer": "^2.9.2"
   }
 }

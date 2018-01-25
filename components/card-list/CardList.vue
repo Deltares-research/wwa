@@ -1,7 +1,7 @@
 <template>
   <ul v-if="cards" class="card-list">
     <li v-for="card in cards" v-bind:key="card.slug">
-      <Card
+      <card-component
         v-bind:title="card.title"
         v-bind:slug="card.slug"
         v-bind:path="card.path"
@@ -13,10 +13,10 @@
   </ul>
 </template>
 <script>
-import Card from '~/components/card/Card'
+import CardComponent from '~/components/card-component/CardComponent'
 export default {
   components: {
-    Card
+    CardComponent
   },
   props: [ 'cards' ]
 }

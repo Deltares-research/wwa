@@ -2,11 +2,26 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 // only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
-const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
-  router: {
+const routerBase = {}
+const plugins = [
+  // creat report.html with bundle size
+  new BundleAnalyzerPlugin({
+    analyzerMode: 'static',
+    openAnalyzer: false
+  })
+]
+
+// extra options for github pages
+if (process.env.DEPLOY_ENV === 'GH_PAGES') {
+  routerBase.router = {
     base: '/wwa/'
   }
-} : {}
+  plugins.push(
+    new UglifyJSPlugin({
+      sourceMap: false
+    })
+  )
+}
 
 module.exports = {
   // Headers of the page
@@ -48,15 +63,6 @@ module.exports = {
       // require('postcss-custom-properties'),
       require('postcss-calc')
     ],
-    plugins: [
-      // creat report.html with bundle size
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        openAnalyzer: false
-      }),
-      new UglifyJSPlugin({
-        sourceMap: true
-      })
-    ]
+    plugins: plugins
   }
 }

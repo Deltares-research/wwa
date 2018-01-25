@@ -15,6 +15,8 @@
  * @property {string[]} availableLocales - Available languages in ISO 639-1
  */
 
+const _ = require('lodash')
+
 const includeUnpublished = !!process.env.UNPUBLISHED
 const exportScope = process.env.DATO_EXPORT
 
@@ -163,14 +165,16 @@ function getChaptersById (dato, ids) {
 function getPagesByIds (dato, ids) {
   return ids.map((id) => {
     const { entity } = dato.find(id)
-    const { title, slug, location, keywords, theme, mainText } = entity
+    const { title, slug, location, keywords, theme, mainText, zoom } = entity
     return {
       title,
       slug,
       body: mainText,
+      // empty locations go in the ocean
       location: {
-        lat: location.latitude,
-        lon: location.longitude
+        lat: _.get(location, 'latitude', 0),
+        lon: _.get(location, 'longitude', 0),
+        zoom: zoom
       },
       metadata: {
         keywords,

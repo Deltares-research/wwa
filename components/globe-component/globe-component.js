@@ -3,11 +3,19 @@
 // https://github.com/mrdoob/three.js/issues/10711
 import {
   PerspectiveCamera, WebGLRenderer, Scene, SphereGeometry, MeshPhongMaterial,
-  Mesh, DirectionalLight
-}  from 'three'
+  Mesh, DirectionalLight, Sprite,
+  LinearFilter,
+  TextureLoader, SpriteMaterial
+} from 'three'
+
+import {polar2cartesian, deg2rad} from './geometry.js'
 
 // get the markers exported by dato
 import markers from 'static/data/globeMarkers.json'
+
+const assetsRoot = 'https://www.datocms-assets.com'
+
+const GLOBE_RADIUS = 5
 
 export default {
   data () {
@@ -33,17 +41,19 @@ export default {
   mounted () {
     try {
       this.renderer = this.createRenderer()
-      this.scene = this.createScene()
-      this.camera = this.createCamera(this.scene)
-      // resize the canvas
-      this.handleResize()
-      this.renderer.clear()
-      this.renderer.render(this.scene, this.camera)
     } catch (err) {
       const fallbackElement = this.$el.querySelector('.fallback')
       fallbackElement.classList.remove('hidden')
+      return
     }
-
+    this.scene = this.createScene()
+    this.addMarkers()
+    this.camera = this.createCamera(this.scene)
+    this.pan()
+    this.zoom()
+    // resize the canvas
+    this.handleResize()
+    this.render()
     // window is the event handler fo resize, so we need to subscribe to it
     window.addEventListener(
       'resize',
@@ -99,8 +109,17 @@ export default {
       // redraw
       this.renderer.render(this.scene, this.camera)
     },
+    /**
+     * Pan to the active story
+     */
     pan () {
       console.log('panning to', this.activeStory)
+    },
+    /**
+     * Zoom to the zoom level of the active story
+     */
+    zoom () {
+      console.log('zooming to', this.activeStory)
     },
     /**
      * Create a renderer in the element
@@ -126,9 +145,8 @@ export default {
       // minimal scene (TODO: append real globe)
       const scene = new Scene()
 
-      const RADIUS = 5
       const sphereGeometry = new SphereGeometry(
-        RADIUS, 32, 32
+        GLOBE_RADIUS, 32, 32
       )
       const sphereMaterial = new MeshPhongMaterial({
         color: 0xFFFFFF,
@@ -165,6 +183,52 @@ export default {
       camera.position.set(0, 20, 20)
       camera.lookAt(scene.position)
       return camera
+    },
+    addMarkers () {
+      // add the markers to the scene
+      const loader = new TextureLoader()
+      // loop over all markers and add them after the texture is loaded
+      this.markers.forEach(
+        (marker) => {
+          const lat = deg2rad(marker.location.lat)
+          const lon = deg2rad(marker.location.lon)
+          const position = polar2cartesian(GLOBE_RADIUS * 1.3, lat, lon)
+          if (marker.characterPortrait == null) {
+            return
+          }
+          // we get these from a remote url, this means that the canvas
+          // will be marked as tainted:
+          // https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image
+          const url = assetsRoot + marker.characterPortrait.path
+          // load and wait for it to add the avatar and re-render
+          loader.load(
+            url,
+            (texture) => {
+              // allow non power of 2 textures
+              texture.minFilter = LinearFilter
+              const avatarMaterial = new SpriteMaterial({
+                map: texture,
+                color: 0xffffff
+              })
+              const avatar = new Sprite(avatarMaterial)
+              // store the avatar so we can zoom to it
+              marker.avatar = avatar
+              avatar.position.x = position.x
+              avatar.position.y = position.y
+              avatar.position.z = position.z
+              this.scene.add(avatar)
+              this.render()
+            }
+          )
+        }
+      )
+    },
+    /**
+     * Render the scene using the camera
+     */
+    render () {
+      this.renderer.clear()
+      this.renderer.render(this.scene, this.camera)
     }
   }
 }

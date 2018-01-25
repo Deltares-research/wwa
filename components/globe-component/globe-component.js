@@ -3,7 +3,7 @@
 // https://github.com/mrdoob/three.js/issues/10711
 import {
   PerspectiveCamera, WebGLRenderer, Scene, SphereGeometry, MeshPhongMaterial,
-  Mesh, DirectionalLight, Color, Sprite,
+  Mesh, DirectionalLight, Sprite,
   LinearFilter,
   TextureLoader, SpriteMaterial
 } from 'three'

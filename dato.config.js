@@ -49,7 +49,7 @@ function generateGlobeMarkers (dato, root, i18n) {
       chapter.location = chapter.pages[0].location
       delete chapter.pages
       return chapter
-      })
+    })
   root.createDataFile('static/data/globeMarkers.json', 'json', markers)
 }
 
@@ -95,7 +95,7 @@ function getBooks (dato) {
         path,
         chapters: chapterEntities
       }
-      })
+    })
 }
 
 /**

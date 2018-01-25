@@ -4,7 +4,7 @@
 import {
   PerspectiveCamera, WebGLRenderer, Scene, SphereGeometry, MeshPhongMaterial,
   Mesh, DirectionalLight
-}  from 'three'
+} from 'three'
 
 // get the markers exported by dato
 import markers from 'static/data/globeMarkers.json'

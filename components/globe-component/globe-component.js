@@ -119,7 +119,7 @@ export default {
      * Zoom to the zoom level of the active story
      */
     zoom () {
-      console.log('panning to', this.activeStory)
+      console.log('zooming to', this.activeStory)
     },
     /**
      * Create a renderer in the element
@@ -195,6 +195,9 @@ export default {
           const lat = deg2rad(marker.location.lat)
           const lon = deg2rad(marker.location.lon)
           const position = polar2cartesian(GLOBE_RADIUS * 1.3, lat, lon)
+          if (marker.characterPortrait == null) {
+            return
+          }
           const url = assetsRoot + marker.characterPortrait.path
           // load and wait for it to add the avatar and re-render
           loader.load(

@@ -1,8 +1,13 @@
 :root {
-  /* Base colors */
-  --ui-white: #fff;
-  --ui-black: #00001e;
-  --ui-grey: #667;
+  /* Rijksoverheid colors */
+  --ro--or-bu--0-5: #ffab4c;
+  --ro--or-bu--1-5: #ffc08c;
+  --ro--or-bu--2-5: #ffddc7;
+  --ro--or-bu--3-5: #809cae;
+  --ro--or-bu--4-5: #467388;
+  --ro--neutral: #dde4eb;
+  --ro--blue: var(--ro--or-bu--4-5);
+  --ro--blue--light: var(--ro--or-bu--3-5);
 
   /* Yellow Green Blue  */
   --yl-gn-bu--0-5: rgb(255,255,204);
@@ -32,17 +37,24 @@
   --or--3-5:rgb(230,85,13);
   --or--4-5:rgb(166,54,3);
 
-  /* Themes */
+  /* Them colors */
   --too-dirty: var(--or-4-5);
   --too-dirty--light: var(--or-3-5);
   --too-little: var(--yl-or-rd--2-5);
   --too-little--light: var(--yl-or-rd-1-5);
   --too-much: var(--yl-gn-bu-4-5);
   --too-much--light: var(--yl-gn-bu-3-5);
+
+  /* UI colors */
+  --ui--white: #fff;
+  --ui--black: #00001e;
+  --ui--text: var(--ro--blue);
+  --ui--text--light: var(--ro--blue--light);
+  --ui--text--invert: var(--ui--white);
 }
 
 html {
-  background-color: var(--ui-black);
+  background-color: var(--ui--black);
 }
 
 .too-dirty {

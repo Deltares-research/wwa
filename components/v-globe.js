@@ -1,3 +1,6 @@
+// Only import relevant parts
+// At the moment this does not allow for optimization
+// https://github.com/mrdoob/three.js/issues/10711
 import {
   PerspectiveCamera, WebGLRenderer, Scene, SphereGeometry, MeshPhongMaterial,
   Mesh, DirectionalLight

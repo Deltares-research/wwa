@@ -47,7 +47,7 @@ export default {
       return
     }
     this.scene = this.createScene()
-    this.addMarkers(this.scene)
+    this.addMarkers()
     this.camera = this.createCamera(this.scene)
     this.pan()
     this.zoom()
@@ -184,12 +184,10 @@ export default {
       camera.lookAt(scene.position)
       return camera
     },
-    /**
-     * Adds markers to the sphere.
-     * @param {Scene} scene - avatars are added to this scene.
-     */
-    addMarkers (scene) {
+    addMarkers () {
+      // add the markers to the scene
       const loader = new TextureLoader()
+      // loop over all markers and add them after the texture is loaded
       this.markers.forEach(
         (marker) => {
           const lat = deg2rad(marker.location.lat)
@@ -198,6 +196,9 @@ export default {
           if (marker.characterPortrait == null) {
             return
           }
+          // we get these from a remote url, this means that the canvas
+          // will be marked as tainted:
+          // https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image
           const url = assetsRoot + marker.characterPortrait.path
           // load and wait for it to add the avatar and re-render
           loader.load(
@@ -215,7 +216,7 @@ export default {
               avatar.position.x = position.x
               avatar.position.y = position.y
               avatar.position.z = position.z
-              scene.add(avatar)
+              this.scene.add(avatar)
               this.render()
             }
           )

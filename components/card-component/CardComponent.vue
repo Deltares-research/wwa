@@ -28,7 +28,7 @@ article {
   --padding-h: calc(1rem + 1vw);
   width: 100%;
   padding: var(--padding-v) var(--padding-h);
-  background-color: var(--ui-white);
+  background-color: var(--ui--white);
 }
 article a {
   color: inherit;

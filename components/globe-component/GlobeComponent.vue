@@ -8,7 +8,7 @@
   </div>
 
 </template>
-<script src="./v-globe.js"></script>
+<script src="./globe-component.js"></script>
 <style>
   .globe-container {
     width: 100vw;

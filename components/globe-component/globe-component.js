@@ -191,7 +191,6 @@ export default {
       const loader = new TextureLoader()
       this.markers.forEach(
         (marker) => {
-          console.log('adding marker', marker)
           const lat = deg2rad(marker.location.lat)
           const lon = deg2rad(marker.location.lon)
           const position = polar2cartesian(GLOBE_RADIUS * 1.3, lat, lon)

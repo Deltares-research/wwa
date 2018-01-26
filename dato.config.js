@@ -91,14 +91,27 @@ function getBooks (dato) {
   return dato.books
     .filter(filterPublished)
     .map(({ entity }) => {
-      // Loop over books
       const { title, slug, chapters } = entity
       const path = `${contentBasePath}/${slug}`
       const chapterEntities = chapters.map(id => {
         const { entity } = dato.find(id)
-        const { title, slug, chapterType } = entity
+        const { title, slug, pages, chapterType } = entity
         const chapterPath = `${path}/${slug}`
-        return { title, slug, path: chapterPath, chapterType }
+        let location = null
+
+        // No Array.prototype function, so we can break the loop
+        for (const pageId of pages) {
+          const page = dato.find(pageId)
+          if (page && page.location) {
+            location = {
+              lat: page.location.latitude,
+              lng: page.location.longitude,
+              zoom: page.zoomlevel
+            }
+            break
+          }
+        }
+        return { title, slug, location, path: chapterPath, chapterType }
       })
 
       // create book
@@ -135,9 +148,9 @@ function getChapters (dato, book) {
       const path = `${book.path}/${slug}`
       const pagesFormatted = pages.map(page => {
         const location = (page.location) ? {
-          latitude: page.location.latitude,
-          longitude: page.location.longitude,
-          zoomlevel: page.zoomlevel
+          lat: page.location.latitude,
+          lng: page.location.longitude,
+          zoom: page.zoomlevel
         } : null
         return {
           title: page.title,
@@ -157,7 +170,7 @@ function getChapters (dato, book) {
         }
       })
       const storyteller = pagesFormatted[0].storyteller
-      const location = pagesFormatted[0].location
+      const location = pagesFormatted.filter(page => page.location)[0].location
 
       return {
         title,

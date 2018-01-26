@@ -8,8 +8,8 @@
         </li>
       </ul>
       <div class="storyteller">
-        {{storyteller}}
-        {{storytellerAvatar}}
+        {{storyteller.name}}
+        {{storyteller.avatar}}
       </div>
     </header>
     <section v-if="page.body" class="body">

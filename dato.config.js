@@ -17,18 +17,23 @@
 
 const includeUnpublished = !!process.env.UNPUBLISHED
 const exportScope = process.env.DATO_EXPORT
+const contentBasePath = '/narratives'
 
 module.exports = (dato, root, i18n) => {
   switch (exportScope) {
-    case 'globe':
-      generateGlobeMarkers(dato, root, i18n)
-      break
     case 'books':
       generateBooks(dato, root, i18n)
       break
-    default:
+    case 'chapters':
+      generateChapters(dato, root, i18n)
+      break
+    case 'globe':
       generateGlobeMarkers(dato, root, i18n)
+      break
+    default:
+      generateChapters(dato, root, i18n)
       generateBooks(dato, root, i18n)
+      generateGlobeMarkers(dato, root, i18n)
   }
 }
 
@@ -41,12 +46,9 @@ module.exports = (dato, root, i18n) => {
  * @param {i18n} i18n
  */
 function generateGlobeMarkers (dato, root, i18n) {
-  const books = getBooks(dato)
-  const markers = books.map(book => getChaptersFromBook(dato, book))
+  const markers = getChapters(dato)
     .reduce((a, b) => a.concat(b), []) // Flat array of chapters
     .map(chapter => {
-      // Use location of first page as chapter location
-      chapter.location = chapter.pages[0].location
       delete chapter.pages
       return chapter
     })
@@ -54,8 +56,7 @@ function generateGlobeMarkers (dato, root, i18n) {
 }
 
 /**
- * Write out JSON file with an array of objects based on pages from DatoCMS
- * Used for the globe visualisation
+ * Write out Book JSONs
  *
  * @param {Dato} dato - DatoCMS API
  * @param {Root} root - Project root
@@ -65,9 +66,17 @@ function generateBooks (dato, root, i18n) {
   const books = getBooks(dato)
   books.forEach(book => root.createDataFile(`static/data/books/${book.slug}/index.json`, 'json', book))
   root.createDataFile(`static/data/books/index.json`, 'json', books)
+}
 
-  const chapters = books.map(book => getChaptersFromBook(dato, book))
-    .reduce((a, b) => a.concat(b), [])
+/**
+ * Write out Chapter JSONs
+ *
+ * @param {Dato} dato - DatoCMS API
+ * @param {Root} root - Project root
+ * @param {i18n} i18n
+ */
+function generateChapters (dato, root, i18n) {
+  const chapters = getChapters(dato)
   chapters.forEach(chapter => root.createDataFile(`static/data/books/${chapter.book.slug}/chapters/${chapter.slug}/index.json`, 'json', chapter))
 }
 
@@ -82,12 +91,14 @@ function getBooks (dato) {
     .map(({ entity }) => {
       // Loop over books
       const { title, slug, chapters } = entity
-      const path = `/narratives/${slug}`
-      const chapterEntities = getChaptersById(dato, chapters).map(entity => {
-        entity.path = `${path}/${slug}`
-        entity.book = title
-        return entity
+      const path = `${contentBasePath}/${slug}`
+      const chapterEntities = chapters.map(id => {
+        const { entity } = dato.find(id)
+        const { title, slug, chapterType } = entity
+        const chapterPath = `${path}/${slug}`
+        return { title, slug, path: chapterPath, chapterType }
       })
+
       // create book
       return {
         title,
@@ -99,85 +110,64 @@ function getBooks (dato) {
 }
 
 /**
- * Get Dato Chapter entities by Dato Book
+ * Get Dato Chapter entities
  *
  * @param {Dato} dato
+ * @param {DatoObject} [book] optional book to get chapters from
 */
-function getChaptersFromBook (dato, book) {
-  return book.chapters
+function getChapters (dato, book) {
+  const chapters = (book) ? book.chapters : dato.chapters
+
+  return chapters
     .filter(filterPublished)
-    .map(chapterEntity => {
-      const { title, slug, pages, characterPortrait, characterName, chapterType, influences } = chapterEntity
-      const path = `${book.path}/${slug}`
-      const chapterBook = {
-        path: book.path,
-        slug: book.slug,
-        title: book.title
+    .map(chapter => {
+      const { title, slug, pages, chapterType } = chapter
+      const bookRef = dato.books.filter(book => book.chapters.some(
+        bookChapter => bookChapter.id === chapter.id)
+      )[0] // get first book of array of books filtered based on reverse lookup
+      const book = {
+        path: `${contentBasePath}/${bookRef.slug}`,
+        slug: bookRef.slug,
+        title: bookRef.title
       }
-      const pageEntities = getPagesByIds(dato, pages).map(pageEntity => {
-        pageEntity.path = `${path}/${pageEntity.slug}`
-        pageEntity.chapter = { path, slug, chapterType, title }
-        pageEntity.book = chapterBook
-        pageEntity.characterPortrait = characterPortrait
-        pageEntity.characterName = characterName
-        return pageEntity
+      const path = `${book.path}/${slug}`
+      const pagesFormatted = pages.map(page => {
+        const location = (page.location) ? {
+          latitude: page.location.latitude,
+          longitude: page.location.longitude,
+          zoomlevel: page.zoomlevel
+        } : null
+        return {
+          title: page.title,
+          slug: page.slug,
+          path: `${path}/${page.slug}`,
+          location,
+          storyteller: {
+            name: page.storyteller,
+            avatar: page.storytellerAvatar
+          },
+          images: page.images,
+          graphs: page.graphs,
+          video: page.video,
+          files: page.files,
+          links: page.links,
+          keywords: page.keywords
+        }
       })
-      let influencesArray = (influences || '').split(/,\s?/)
-      influencesArray = (influencesArray[0] !== '') ? influencesArray : []
+      const storyteller = pagesFormatted[0].storyteller
+      const location = pagesFormatted[0].location
 
       return {
         title,
         slug,
         path,
-        book: chapterBook,
-        pages: pageEntities,
-        characterName,
-        characterPortrait,
-        influences: influencesArray
+        location,
+        book,
+        chapterType,
+        storyteller,
+        pages: pagesFormatted
       }
     })
-}
-
-/**
- * Get Dato Chapter entities by array of Ids
- *
- * @param {Dato} dato
- * @param {number[]} ids
- * @returns {object[]}
- */
-function getChaptersById (dato, ids) {
-  return ids.map((id) => {
-    const { entity } = dato.find(id)
-    const { title, slug, pages, characterName, characterPortrait, chapterType, influence, subTheme } = entity
-    return { title, slug, pages, characterName, characterPortrait, chapterType, influence, subTheme }
-  })
-}
-
-/**
- * Get Dato Page entities by array of Ids
- *
- * @param {Dato} dato
- * @param {number[]} ids
- * @returns {object[]}
- */
-function getPagesByIds (dato, ids) {
-  return ids.map((id) => {
-    const { entity } = dato.find(id)
-    const { title, slug, location, keywords, theme, mainText } = entity
-    return {
-      title,
-      slug,
-      body: mainText,
-      location: {
-        lat: location.latitude,
-        lon: location.longitude
-      },
-      metadata: {
-        keywords,
-        theme
-      }
-    }
-  })
 }
 
 /**

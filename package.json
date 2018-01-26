@@ -43,6 +43,7 @@
     ]
   },
   "dependencies": {
+    "axios": "0.17.1",
     "font-awesome": "^4.7.0",
     "nuxt": "^1.0.0",
     "three": "^0.89.0"

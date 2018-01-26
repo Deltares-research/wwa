@@ -7,19 +7,19 @@
 
 <script>
 import CardList from '~/components/card-list/CardList'
-import book from '~/static/data/books/coastal-safety/index.json'
-
-const title = book.title
-const chapters = book.chapters
+import loadData from '~/lib/load-data'
 
 export default {
+  asyncData (context) {
+    return loadData(context)
+  },
   components: {
     CardList
   },
   data () {
     return {
-      title,
-      chapters
+      title: '',
+      chapters: []
     }
   }
 }

@@ -7,9 +7,9 @@
           <nuxt-link v-bind:for="influence.path">{{ influence.title }}</nuxt-link>
         </li>
       </ul>
-      <div class="storyteller">
-        {{storyteller.name}}
-        {{storyteller.avatar}}
+      <div class="storyteller" v-if="page.storyteller">
+        {{page.storyteller.name}}
+        {{page.storyteller.avatar}}
       </div>
     </header>
     <section v-if="page.body" class="body">
@@ -68,7 +68,6 @@ article {
   --padding-h: calc(1rem + 1vw);
   background-color: var(--ui-white);
   padding: var(--padding-v) var(--padding-h);
-  margin: 25vh auto;
   width: 90vw;
   min-height: 25vh;
   min-width: 320px;

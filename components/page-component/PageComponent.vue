@@ -66,7 +66,7 @@ export default {
 article {
   --padding-v: calc(.5rem + .5vw);
   --padding-h: calc(1rem + 1vw);
-  background-color: var(--ui-white);
+  background-color: var(--ui--white);
   padding: var(--padding-v) var(--padding-h);
   width: 90vw;
   min-height: 25vh;

@@ -15,6 +15,8 @@
  * @property {string[]} availableLocales - Available languages in ISO 639-1
  */
 
+const _ = require('lodash')
+
 const includeUnpublished = !!process.env.UNPUBLISHED
 const exportScope = process.env.DATO_EXPORT
 const contentBasePath = '/narratives'

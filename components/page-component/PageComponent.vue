@@ -8,8 +8,11 @@
         </li>
       </ul>
       <div class="storyteller" v-if="page.storyteller">
-        {{page.storyteller.name}}
-        {{page.storyteller.avatar}}
+        <avatar-component
+          v-bind:avatar="page.storyteller.avatar"
+          v-bind:name="page.storyteller.name"
+          />
+          {{page.storyteller.name}}
       </div>
     </header>
     <section v-if="page.body" class="body">
@@ -37,6 +40,7 @@
 
 <script>
 import '~/components/colors/colors.css'
+import AvatarComponent from '~/components/avatar-component/avatarComponent'
 
 export default {
   props: {
@@ -58,6 +62,9 @@ export default {
     // 'title',
     // 'video',
     // 'zoomLevel'
+  },
+  components: {
+    AvatarComponent
   }
 }
 </script>

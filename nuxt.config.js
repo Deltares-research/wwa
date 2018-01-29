@@ -50,6 +50,10 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+      config.module.rules.push({
+        test: /\.glsl$/,
+        loader: 'webpack-glsl-loader'
+      })
     },
     // Define dynamic routes to generate for dist,
     // TODO: make function based on content from Dato

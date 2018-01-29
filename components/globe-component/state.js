@@ -1,8 +1,8 @@
 class State {
-  constructor() {
-    this.current = 'hfo';
-    this.target = 'hfo';
+  constructor () {
+    this.current = 'hfo'
+    this.target = 'hfo'
   }
 }
 
-export default State;
+export default State

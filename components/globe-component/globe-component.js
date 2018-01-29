@@ -1,20 +1,28 @@
 // Only import relevant parts
 // At the moment this does not allow for optimization
 // https://github.com/mrdoob/three.js/issues/10711
-import {
-  WebGLRenderer, Scene,
-  PerspectiveCamera,
-  Geometry, Mesh, SphereGeometry, Sprite, CubicBezierCurve3, Line,
-  SpriteMaterial, MeshPhongMaterial, LineBasicMaterial,
-  DirectionalLight,
-  LinearFilter,
-  TextureLoader
-} from 'three'
+// import {
+//   WebGLRenderer, Scene,
+//   PerspectiveCamera,
+//   Geometry, Mesh, SphereGeometry, Sprite, CubicBezierCurve3, Line,
+//   SpriteMaterial, MeshPhongMaterial, LineBasicMaterial,
+//   DirectionalLight,
+//   LinearFilter,
+//   TextureLoader
+// } from 'three'
+
+import * as THREE from 'three'
 
 import {polar2cartesian, deg2rad} from './geometry.js'
 
 // get the markers exported by dato
 import markers from 'static/data/globeMarkers.json'
+
+import Glow from './glow'
+import Water from './water'
+import Avatar from './avatar'
+import State from './state'
+import Particles from './particles'
 
 const assetsRoot = 'https://www.datocms-assets.com'
 
@@ -63,15 +71,16 @@ export default {
       fallbackElement.classList.remove('hidden')
       return
     }
+    this.camera = this.createCamera()
     this.scene = this.createScene()
     this.addMarkers()
     this.addCurves()
-    this.camera = this.createCamera(this.scene)
     this.pan()
     this.zoom()
     // resize the canvas
     this.handleResize()
-    this.render()
+    this.animate()
+    // this.render()
     // window is the event handler fo resize, so we need to subscribe to it
     window.addEventListener(
       'resize',
@@ -89,7 +98,6 @@ export default {
         return size
       },
       cache: false
-
     },
     globeContainerElement: {
       // lookup the globe element
@@ -125,7 +133,7 @@ export default {
       // clear the screen
       this.renderer.clear()
       // redraw
-      this.renderer.render(this.scene, this.camera)
+      // this.renderer.render(this.scene, this.camera)
     },
     /**
      * Pan to the active story
@@ -144,11 +152,15 @@ export default {
      * @returns {Renderer}
      */
     createRenderer () {
-      const renderer = new WebGLRenderer({
+      const renderer = new THREE.WebGLRenderer({
         alpha: false,
         antialias: true,
         autoClear: false
       })
+
+      renderer.setPixelRatio(window.devicePixelRatio)
+      // renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x00002A)
 
       // append the globe canvas to our mounted element
       this.globeElement.appendChild(renderer.domElement)
@@ -161,32 +173,42 @@ export default {
      */
     createScene () {
       // minimal scene (TODO: append real globe)
-      const scene = new Scene()
+      const scene = new THREE.Scene()
 
-      const sphereGeometry = new SphereGeometry(
-        GLOBE_RADIUS, 32, 32
-      )
-      const sphereMaterial = new MeshPhongMaterial({
-        color: 0xFFFFFF,
-        opacity: 0.8,
-        wireframe: true,
-        transparent: true
-      })
+      const globe = new THREE.Object3D()
+      globe.position.set(0, 0, 0)
 
-      const sphere = new Mesh(
-        sphereGeometry,
-        sphereMaterial
-      )
-      sphere.position.set(0, 0, 0)
-      scene.add(sphere)
-      // just a light to show the sphere
-      const light = new DirectionalLight(0xffffff, 3.2)
-      // from the side
-      light.position.set(15, 0, 15)
-      light.lookAt(sphere)
+      const state = new State() // TODO: this should be done differently
+      const particles = new Particles(state)
+      particles.load(() => particles.update())
+      globe.add(particles.mesh)
+
+      const water = new Water()
+      globe.add(water.mesh)
+
+      const glow = new Glow(this.camera)
+      globe.add(glow.mesh)
+
+      const avatar = new Avatar()
+      avatar.load(avs => globe.add(avs))
+
+      scene.add(globe)
+
+      const light = new THREE.AmbientLight(0xffffff)
       scene.add(light)
 
+      const dirLight = new THREE.DirectionalLight(0xffaa66, 4.2)
+      dirLight.position.set(15, 13, 15)
+
       return scene
+    },
+    /**
+     * Creates a raycaster for detecting mouseover over avatars
+     * @return {THEE.Raycaster} a THREE Raycaster
+     */
+    createRaycaster () {
+      const raycaster = new THREE.Raycaster()
+      raycaster.params.Points.threshold = 0.4
     },
 
     /**
@@ -194,12 +216,10 @@ export default {
      * @param {Scene} scene - scene (used to look at).
      * @returns {Camera} Camera, looking at the scene.
      */
-    createCamera (scene) {
-      const camera = new PerspectiveCamera(
-        30, this.containerSize[0] / this.containerSize[1], 0.1, 300
-      )
-      camera.position.set(0, 20, 20)
-      camera.lookAt(scene.position)
+    createCamera () {
+      const camera = new THREE.PerspectiveCamera(30, this.containerSize[0] / this.containerSize[1], 0.1, 300)
+      camera.position.z = 30
+
       return camera
     },
     addCurves () {
@@ -234,20 +254,20 @@ export default {
         to.control.setLength(GLOBE_RADIUS * smoothDist)
 
         // use this curve to calculate the points on the curve
-        let curve = new CubicBezierCurve3(from.xyz, from.control, to.control, to.xyz)
+        let curve = new THREE.CubicBezierCurve3(from.xyz, from.control, to.control, to.xyz)
 
-        let geometry = new Geometry()
+        let geometry = new THREE.Geometry()
         geometry.vertices = curve.getPoints(50)
 
-        let material = new LineBasicMaterial({
-          color: 0x7fcdbb,
-          opacity: 0.5,
-          linewidth: 1,
-          transparent: true
+        let material = new THREE.LineBasicMaterial({
+          color: 0xff0000,
+          // opacity: 0.9,
+          // linewidth: 1,
+          // transparent: true
         })
 
         // Create the final Object3d to add to the scene
-        var curveObject = new Line(geometry, material)
+        var curveObject = new THREE.Line(geometry, material)
         // TODO: how do you group all objects together
         paths.push(curve)
         this.scene.add(curveObject)
@@ -255,7 +275,7 @@ export default {
     },
     addMarkers () {
       // add the markers to the scene
-      const loader = new TextureLoader()
+      const loader = new THREE.TextureLoader()
       // loop over all markers and add them after the texture is loaded
       this.markers.forEach(
         (marker) => {
@@ -274,12 +294,12 @@ export default {
             url,
             (texture) => {
               // allow non power of 2 textures
-              texture.minFilter = LinearFilter
-              const avatarMaterial = new SpriteMaterial({
+              texture.minFilter = THREE.LinearFilter
+              const avatarMaterial = new THREE.SpriteMaterial({
                 map: texture,
                 color: 0xffffff
               })
-              const avatar = new Sprite(avatarMaterial)
+              const avatar = new THREE.Sprite(avatarMaterial)
               // store the avatar so we can zoom to it
               marker.avatar = avatar
               avatar.position.x = position.x
@@ -293,11 +313,38 @@ export default {
       )
     },
     /**
-     * Render the scene using the camera
+     * Render and animate the scene.
+     * @return {[type]} [description]
      */
-    render () {
-      this.renderer.clear()
+    animate () {
+      requestAnimationFrame(this.animate)
+
+      // particles.uniforms.time.value += 0.1;
+      // glow.uniforms.viewVector.value = new THREE.Vector3().subVectors(camera.position, globe.position);
+
+      // globe.rotation.y += 0.0005;
+
+      // stats.begin();
+
+      // raycaster.setFromCamera(mouse, camera);
+
+      // intersections = raycaster.intersectObjects(avatar.mesh.children);
+
+      // avatar.mesh.children.forEach(d => d.material.color = WHITE);
+
+      // if (intersections.length > 0) {
+      //   intersections[0].object.material.color = RED;
+
+      //   globeEl
+      //     .st({ cursor: 'pointer' });
+      // } else {
+      //   globeEl
+      //     .st({ cursor: 'default' });
+      // }
+
       this.renderer.render(this.scene, this.camera)
+
+      // stats.end();
     }
   }
 }

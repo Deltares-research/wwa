@@ -34,7 +34,7 @@ export function cartesian2polar (x, y, z) {
 // degrees to radians (not clipping)
 export const deg2rad = deg => deg * (Math.PI / 180)
 
-// these two functions clip
+// these two functions do NOT clamp
 export const lat2rad = scaleLinear()
   .domain([-90, 90])
   .range([0, Math.PI])

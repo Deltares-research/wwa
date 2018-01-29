@@ -4,7 +4,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const books = require('./static/data/books/index.json')
 
 const routes = books.map((book) => {
-  return `pages/narratives/${book.slug}/`
+  return `narratives/${book.slug}/`
 })
 
 
@@ -20,6 +20,11 @@ const plugins = [
 const env = {
   // TODO make this a bit more flexible (also allow surge deployment)
   baseUrl: 'http://localhost:9920'
+}
+
+if (process.env.NODE_ENV === 'production') {
+  // root
+  env.baseUrl = ''
 }
 
 // extra options for github pages

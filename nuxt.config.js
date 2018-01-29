@@ -10,6 +10,10 @@ const plugins = [
     openAnalyzer: false
   })
 ]
+const env = {
+  // TODO make this a bit more flexible (also allow surge deployment)
+  baseURL: 'http://localhost:9020/'
+}
 
 // extra options for github pages
 if (process.env.DEPLOY_ENV === 'GH_PAGES') {
@@ -21,6 +25,8 @@ if (process.env.DEPLOY_ENV === 'GH_PAGES') {
       sourceMap: true
     })
   )
+  // use the deployment url
+  env.baseUrl = 'https://deltares.github.io' + routerBase.router.base
 }
 
 module.exports = {
@@ -64,5 +70,6 @@ module.exports = {
       require('postcss-calc')
     ],
     plugins: plugins
-  }
+  },
+  env: env
 }

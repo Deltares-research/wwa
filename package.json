@@ -19,7 +19,7 @@
     "globe:build": "npm run build --prefix external/globe",
     "build:gh-pages": "cross-env DEPLOY_ENV=GH_PAGES nuxt build",
     "generate:gh-pages": "cross-env DEPLOY_ENV=GH_PAGES nuxt generate",
-    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup",
+    "deploy": "gh-pages -d dist",
     "data:dev": "cross-env UNPUBLISHED=1 dato dump",
     "data:build": "dato dump",
     "data:chapters": "cross-env DATO_EXPORT=chapters dato dump",
@@ -73,7 +73,6 @@
     "postcss": "^6.0.16",
     "postcss-calc": "6.0.1",
     "postcss-custom-properties": "6.2.0",
-    "push-dir": "^0.4.1",
     "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack-bundle-analyzer": "^2.9.2"
   }

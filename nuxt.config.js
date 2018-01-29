@@ -1,5 +1,6 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const path = require('path')
 
 // only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
 const routerBase = {}
@@ -50,10 +51,18 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+
       config.module.rules.push({
         test: /\.glsl$/,
         loader: 'webpack-glsl-loader'
       })
+
+      config.module.rules.push({
+        test: /three\/examples\/js/,
+        use: 'imports-loader?THREE=three'
+      })
+
+      // config.resolve.alias['three-examples'] = path.join(__dirname, './node_modules/three/examples/js')
     },
     // Define dynamic routes to generate for dist,
     // TODO: make function based on content from Dato

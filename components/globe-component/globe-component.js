@@ -12,6 +12,9 @@
 // } from 'three'
 
 import * as THREE from 'three'
+// import OrbitControls from './OrbitControls'
+// import 'three-examples/controls/OrbitControls'
+// import Stats from 'three-examples/libs/stats.min'
 
 import {polar2cartesian, deg2rad} from './geometry.js'
 
@@ -71,8 +74,14 @@ export default {
       fallbackElement.classList.remove('hidden')
       return
     }
+
+    // this.stats = new Stats()
+
     this.camera = this.createCamera()
     this.scene = this.createScene()
+
+    // const controls = new OrbitControls(this.camera)
+
     this.addMarkers()
     this.addCurves()
     this.pan()
@@ -260,10 +269,7 @@ export default {
         geometry.vertices = curve.getPoints(50)
 
         let material = new THREE.LineBasicMaterial({
-          color: 0xff0000,
-          // opacity: 0.9,
-          // linewidth: 1,
-          // transparent: true
+          color: 0xff0000
         })
 
         // Create the final Object3d to add to the scene
@@ -320,11 +326,11 @@ export default {
       requestAnimationFrame(this.animate)
 
       // particles.uniforms.time.value += 0.1;
-      // glow.uniforms.viewVector.value = new THREE.Vector3().subVectors(camera.position, globe.position);
+      // this.glow.uniforms.viewVector.value = new THREE.Vector3().subVectors(camera.position, globe.position);
 
       // globe.rotation.y += 0.0005;
 
-      // stats.begin();
+      // this.stats.begin()
 
       // raycaster.setFromCamera(mouse, camera);
 
@@ -344,7 +350,7 @@ export default {
 
       this.renderer.render(this.scene, this.camera)
 
-      // stats.end();
+      // this.stats.end()
     }
   }
 }

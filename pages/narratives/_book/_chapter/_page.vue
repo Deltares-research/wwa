@@ -25,7 +25,7 @@ export default {
     PageComponent
   },
   methods: {
-    observeIntersectingChildren: function () {
+    observeIntersectingChildren () {
       const intersectionRatio = 0.001
       const observer = new IntersectionObserver(entries => {
         trackVisibility(entries)
@@ -54,7 +54,7 @@ export default {
         }
       }
     },
-    scrollToSlug: function () {
+    scrollToSlug () {
       const activePage = document.getElementById(this.$route.params.page)
       const windowHeight = (window.innerHeight || document.clientHeight)
       const top = activePage.getBoundingClientRect().top || windowHeight

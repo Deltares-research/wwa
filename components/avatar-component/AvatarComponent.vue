@@ -1,7 +1,9 @@
 <template>
   <div>
-    <img v-bind:src="avatarSrc">
+    <img v-bind:src="imgSrc">
+    <text>{{name}}</text>
   </div>
+
   </template>
 
 <script>
@@ -10,7 +12,7 @@ import _defaultAvatarSrc from './assets/Portrait_Placeholder.png'
 
 export default {
   props: {
-    avatar: {
+    img: {
       type: Object
     },
     name: {
@@ -20,10 +22,10 @@ export default {
     // 'storyteller',
   },
   computed: {
-    avatarSrc: function () {
+    imgSrc: function () {
       var src = _defaultAvatarSrc
-      if (this.avatar && this.avatar.imgixHost) {
-        src = this.avatar.imgixHost + this.avatar.value.path
+      if (this.img && this.img.imgixHost) {
+        src = this.img.imgixHost + this.img.value.path
       }
       return src
     }
@@ -35,5 +37,6 @@ export default {
 img {
   width: 6rem;
   height: 6rem;
+
 }
 </style>

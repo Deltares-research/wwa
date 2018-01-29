@@ -9,7 +9,7 @@
       </ul>
       <div class="storyteller" v-if="page.storyteller">
         <avatar-component
-          v-bind:avatar="page.storyteller.avatar"
+          v-bind:img="page.storyteller.avatar"
           v-bind:name="page.storyteller.name"
           />
           {{page.storyteller.name}}

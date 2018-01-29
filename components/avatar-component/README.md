@@ -6,7 +6,10 @@ storyteller name is for the title attribute
 
 ## How to use
 
-`<avatar-component v-bind:avatar="storyteller" v-bind:avatar="storytellername" />`
+<avatar-component
+  v-bind:avatar="page.storyteller.avatar"
+  v-bind:name="page.storyteller.name"
+  />
 
 The following properties ar used:
 

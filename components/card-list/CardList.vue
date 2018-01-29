@@ -23,24 +23,23 @@ export default {
 </script>
 <style>
 .card-list {
-  overflow-x: scroll;
-  overflow-y: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
   position: absolute;
   bottom: 0;
-  left: 0;
   right: 0;
+  top:0;
   white-space: nowrap;
 }
 .card-list li {
-  display: inline-flex;
-  width: 50vw;
+  display: flex;
+  width: 25vw;
   min-width: 240px;
   max-width: 960px;
   height: 16rem;
   max-height: 25vh;
   margin: 0;
   padding: calc(.5rem + .5vw);
-  vertical-align: top;
   white-space: normal;
 }
 </style>

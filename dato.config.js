@@ -39,7 +39,7 @@ module.exports = (dato, root, i18n) => {
       generateByTag(dato, root, i18n, 'keywords')
       break
     case 'themes':
-      generateByTag(dato, root, i18n, 'theme')
+      generateThemes(dato, root, i18n)
       break
     default:
       generateChapters(dato, root, i18n)
@@ -47,7 +47,7 @@ module.exports = (dato, root, i18n) => {
       generateGlobeMarkers(dato, root, i18n)
       generateByTag(dato, root, i18n, 'influences')
       generateByTag(dato, root, i18n, 'keywords')
-      generateByTag(dato, root, i18n, 'themes')
+      generateThemes(dato, root, i18n)
   }
 }
 
@@ -114,6 +114,24 @@ function generateByTag (dato, root, i18n, tagType) {
 }
 
 /**
+ * Write out JSON files by theme
+ *
+ * @param {Dato} dato - DatoCMS API
+ * @param {Root} root - Project root
+ * @param {i18n} i18n
+ */
+function generateThemes (dato, root, i18n) {
+  const books = getBooks(dato)
+  const themes = collectBooksByTheme(books)
+  const dir = 'themes'
+  for (const theme in themes) {
+    const books = themes[theme]
+    root.createDataFile(`static/data/${dir}/${slug(theme)}.json`, 'json', books)
+  }
+  root.createDataFile(`static/data/${dir}/index.json`, 'json', Object.keys(themes))
+}
+
+/**
  * Get Dato Book entities
  *
  * @param {Dato} dato
@@ -122,7 +140,7 @@ function getBooks (dato) {
   return dato.books
     .filter(filterPublished)
     .map(({ entity }) => {
-      const { title, slug, chapters } = entity
+      const { chapters, slug, title, theme } = entity
       const path = `${contentBasePath}/${slug}`
       const chapterEntities = chapters
         .filter(filterPublished)
@@ -149,10 +167,11 @@ function getBooks (dato) {
 
       // create book
       return {
-        title,
-        slug,
+        chapters: chapterEntities,
         path,
-        chapters: chapterEntities
+        slug,
+        theme,
+        title
       }
     })
 }
@@ -293,14 +312,13 @@ function getParent (dato, child) {
 }
 
 /**
- * collect Page entties in object by tag
+ * collect Page entities in object by tag
  *
  * @param {DatoRecord[]} pages
  * @param {string} tagType type of tag to use
  * @returns {object} arrays of Pages by tag
  */
 function collectPagesByTagType (pages, tagType) {
-  tagType = (tagType === 'themes') ? 'theme' : tagType // Theme is the only singular tag
   return pages
     .map(page => {
       const { book, chapter, keywords, location, influences, slug, storyteller, theme, title } = page
@@ -321,5 +339,22 @@ function collectPagesByTagType (pages, tagType) {
       tags[match.tag] = tags[match.tag] || []
       tags[match.tag].push(match.page)
       return tags
+    }, {})
+}
+
+/**
+ * collect Book entities in object by theme
+ *
+ * @param {DatoRecord[]} books
+ * @returns {object} arrays of Books by theme
+ */
+function collectBooksByTheme (books) {
+  return books
+    .reduce((themes, book) => {
+      if (book.theme) {
+        themes[book.theme] = themes[book.theme] || []
+        themes[book.theme].push(book)
+      }
+      return themes
     }, {})
 }

@@ -1,3 +1,5 @@
+const slug = require('slug')
+
 /**
  * @typedef Dato
  * @type {object} - DatoCMS API object
@@ -30,29 +32,23 @@ module.exports = (dato, root, i18n) => {
     case 'globe':
       generateGlobeMarkers(dato, root, i18n)
       break
+    case 'influences':
+      generateByTag(dato, root, i18n, 'influences')
+      break
+    case 'keywords':
+      generateByTag(dato, root, i18n, 'keywords')
+      break
+    case 'themes':
+      generateByTag(dato, root, i18n, 'theme')
+      break
     default:
       generateChapters(dato, root, i18n)
       generateBooks(dato, root, i18n)
       generateGlobeMarkers(dato, root, i18n)
+      generateByTag(dato, root, i18n, 'influences')
+      generateByTag(dato, root, i18n, 'keywords')
+      generateByTag(dato, root, i18n, 'themes')
   }
-}
-
-/**
- * Write out JSON file with an array of objects based on pages from DatoCMS
- * Used for the globe visualisation
- *
- * @param {Dato} dato - DatoCMS API
- * @param {Root} root - Project root
- * @param {i18n} i18n
- */
-function generateGlobeMarkers (dato, root, i18n) {
-  const markers = getChapters(dato)
-    .reduce((a, b) => a.concat(b), []) // Flat array of chapters
-    .map(chapter => {
-      delete chapter.pages
-      return chapter
-    })
-  root.createDataFile('static/data/globeMarkers.json', 'json', markers)
 }
 
 /**
@@ -78,6 +74,43 @@ function generateBooks (dato, root, i18n) {
 function generateChapters (dato, root, i18n) {
   const chapters = getChapters(dato)
   chapters.forEach(chapter => root.createDataFile(`static/data/books/${chapter.book.slug}/chapters/${chapter.slug}/index.json`, 'json', chapter))
+}
+
+/**
+ * Write out JSON file with an array of objects based on pages from DatoCMS
+ * Used for the globe visualisation
+ *
+ * @param {Dato} dato - DatoCMS API
+ * @param {Root} root - Project root
+ * @param {i18n} i18n
+ */
+function generateGlobeMarkers (dato, root, i18n) {
+  const markers = getChapters(dato)
+    .reduce((a, b) => a.concat(b), []) // Flat array of chapters
+    .map(chapter => {
+      delete chapter.pages
+      return chapter
+    })
+  root.createDataFile('static/data/globeMarkers.json', 'json', markers)
+}
+
+/**
+ * Write out JSON files by tagType
+ *
+ * @param {Dato} dato - DatoCMS API
+ * @param {Root} root - Project root
+ * @param {i18n} i18n
+ * @param {string} tagType
+ */
+function generateByTag (dato, root, i18n, tagType) {
+  const pages = getPages(dato)
+  const tags = collectPagesByTagType(pages, tagType)
+  const dir = tagType
+  for (const tag in tags) {
+    const pages = tags[tag]
+    root.createDataFile(`static/data/${dir}/${slug(tag)}.json`, 'json', pages)
+  }
+  root.createDataFile(`static/data/${dir}/index.json`, 'json', Object.keys(tags))
 }
 
 /**
@@ -166,7 +199,14 @@ function getChapters (dato, book) {
  * @param {DatoRecord} [chapter] optional chapter to get chapters from
 */
 function getPages (dato, chapterRef) {
-  const pages = (chapterRef) ? chapterRef.pages : dato.pages
+  let pages = []
+  if (chapterRef) {
+    pages = chapterRef.pages
+  } else {
+    pages = dato.chapters
+      .map(chapter => chapter.pages)
+      .reduce((a, b) => a.concat(b), [])
+  }
   return pages
     .filter(filterPublished)
     .map(page => {
@@ -189,6 +229,7 @@ function getPages (dato, chapterRef) {
         title: chapterRef.title,
         type: chapterRef.chapterType
       }
+      const theme = bookRef.theme
       const path = `${chapter.path}/${slug}`
       return {
         body,
@@ -206,6 +247,7 @@ function getPages (dato, chapterRef) {
           avatar: page.storytellerAvatar,
           name: page.storyteller
         },
+        theme,
         title,
         video
       }
@@ -248,4 +290,36 @@ function getParent (dato, child) {
     .filter(parent => parent[`${childType}s`].some(
       childFromParent => childFromParent.id === child.id
     ))[0]
+}
+
+/**
+ * collect Page entties in object by tag
+ *
+ * @param {DatoRecord[]} pages
+ * @param {string} tagType type of tag to use
+ * @returns {object} arrays of Pages by tag
+ */
+function collectPagesByTagType (pages, tagType) {
+  tagType = (tagType === 'themes') ? 'theme' : tagType // Theme is the only singular tag
+  return pages
+    .map(page => {
+      const { book, chapter, keywords, location, influences, slug, storyteller, theme, title } = page
+      return {
+        tags: page[tagType],
+        page: { book, chapter, keywords, location, influences, slug, storyteller, theme, title }
+      }
+    })
+    .filter(match => Boolean(match.tags)) // filter falsy (false, undefined, '')
+    .map(match => match.tags.split(/,\s*/).map(tag => {
+      return {
+        tag: tag.toLowerCase(),
+        page: match.page
+      }
+    }))
+    .reduce((a, b) => a.concat(b), []) // Flat array of keywords
+    .reduce((tags, match) => {
+      tags[match.tag] = tags[match.tag] || []
+      tags[match.tag].push(match.page)
+      return tags
+    }, {})
 }

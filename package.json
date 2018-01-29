@@ -22,9 +22,12 @@
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup",
     "data:dev": "cross-env UNPUBLISHED=1 dato dump",
     "data:build": "dato dump",
+    "data:books": "cross-env DATO_EXPORT=books dato dump",
     "data:chapters": "cross-env DATO_EXPORT=chapters dato dump",
     "data:globe": "cross-env DATO_EXPORT=globe dato dump",
-    "data:books": "cross-env DATO_EXPORT=books dato dump",
+    "data:keywords": "cross-env DATO_EXPORT=keywords dato dump",
+    "data:influences": "cross-env DATO_EXPORT=influences dato dump",
+    "data:themes": "cross-env DATO_EXPORT=themes dato dump",
     "test": "ava"
   },
   "config": {
@@ -47,6 +50,7 @@
     "d3-scale": "^1.0.7",
     "font-awesome": "^4.7.0",
     "nuxt": "^1.0.0",
+    "slug": "0.9.1",
     "three": "^0.89.0"
   },
   "devDependencies": {

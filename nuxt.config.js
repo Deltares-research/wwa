@@ -18,7 +18,7 @@ if (process.env.DEPLOY_ENV === 'GH_PAGES') {
   }
   plugins.push(
     new UglifyJSPlugin({
-      sourceMap: false
+      sourceMap: true
     })
   )
 }

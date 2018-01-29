@@ -11,56 +11,56 @@
 import loadData from '~/lib/load-data'
 import PageComponent from '~/components/page-component/PageComponent'
 
-function observeIntersectingChildren (component) {
-  const intersectionRatio = 0.001
-  const observer = new IntersectionObserver(entries => {
-    trackVisibility(entries, component, intersectionRatio)
-    // TODO: Pan & Zoom to
-  }, {
-    // No explicit root, we want the viewport
-    rootMargin: '-40% 0% -40% 0%', // Start from middle of screen
-    thresholds: [ intersectionRatio ]
-  })
-  const pageComponentsArray = [].slice.call(component.$el.children)
-  pageComponentsArray.forEach(el => observer.observe(el))
-}
-
-function trackVisibility (entries, component, intersectionRatio) {
-  // No Array.prototype function, so we can break the loop
-  for (const entry of entries) {
-    if (entry.isIntersecting) {
-      const book = component.$route.params.book
-      const chapter = component.$route.params.chapter
-      const page = entry.target.id
-      const path = `/narratives/${book}/${chapter}/${page}`
-      if (path !== window.location.pathname) {
-        history.pushState({}, page, path)
-      }
-      break
-    }
-  }
-}
-
-function scrollToSlug (id) {
-  const activePage = document.getElementById(id)
-  const windowHeight = (window.innerHeight || document.clientHeight)
-  const top = activePage.getBoundingClientRect().top || windowHeight
-  const y = Math.round(top - (windowHeight / 2)) // match with margin between PageComponents
-  window.scroll(0, y)
-}
-
 export default {
   asyncData (context) {
     return loadData(context)
   },
   mounted () {
     if ('IntersectionObserver' in window) {
-      observeIntersectingChildren(this)
+      this.observeIntersectingChildren()
     }
-    scrollToSlug(this.$route.params.page)
+    this.scrollToSlug()
   },
   components: {
     PageComponent
+  },
+  methods: {
+    observeIntersectingChildren: function () {
+      const intersectionRatio = 0.001
+      const observer = new IntersectionObserver(entries => {
+        trackVisibility(entries)
+        // TODO: Pan & Zoom to
+      }, {
+        // No explicit root, we want the viewport
+        rootMargin: '-40% 0% -40% 0%', // Start from middle of screen
+        thresholds: [ intersectionRatio ]
+      })
+      const pageComponentsArray = [].slice.call(this.$el.children)
+      pageComponentsArray.forEach(el => observer.observe(el))
+
+      const trackVisibility = entries => {
+        // No Array.prototype function, so we can break the loop
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const book = this.$route.params.book
+            const chapter = this.$route.params.chapter
+            const page = entry.target.id
+            const path = `/narratives/${book}/${chapter}/${page}`
+            if (path !== window.location.pathname) {
+              history.pushState({}, page, path)
+            }
+            break
+          }
+        }
+      }
+    },
+    scrollToSlug: function () {
+      const activePage = document.getElementById(this.$route.params.page)
+      const windowHeight = (window.innerHeight || document.clientHeight)
+      const top = activePage.getBoundingClientRect().top || windowHeight
+      const y = Math.round(top - (windowHeight / 2)) // match with margin between PageComponents
+      window.scroll(0, y)
+    }
   }
 }
 </script>

@@ -91,26 +91,28 @@ function getBooks (dato) {
     .map(({ entity }) => {
       const { title, slug, chapters } = entity
       const path = `${contentBasePath}/${slug}`
-      const chapterEntities = chapters.map(id => {
-        const { entity } = dato.find(id)
-        const { title, slug, pages, chapterType } = entity
-        const chapterPath = `${path}/${slug}`
-        let location = null
+      const chapterEntities = chapters
+        .filter(filterPublished)
+        .map(id => {
+          const { entity } = dato.find(id)
+          const { title, slug, pages, chapterType } = entity
+          const chapterPath = `${path}/${slug}`
+          let location = null
 
-        // No Array.prototype function, so we can break the loop
-        for (const pageId of pages) {
-          const page = dato.find(pageId)
-          if (page && page.location) {
-            location = {
-              lat: page.location.latitude,
-              lng: page.location.longitude,
-              zoom: page.zoomlevel
+          // No Array.prototype function, so we can break the loop
+          for (const pageId of pages) {
+            const page = dato.find(pageId)
+            if (page && page.location) {
+              location = {
+                lat: page.location.latitude,
+                lng: page.location.longitude,
+                zoom: page.zoomlevel
+              }
+              break
             }
-            break
           }
-        }
-        return { title, slug, location, path: chapterPath, chapterType }
-      })
+          return { location, path: chapterPath, slug, title, type: chapterType }
+        })
 
       // create book
       return {
@@ -126,59 +128,86 @@ function getBooks (dato) {
  * Get Dato Chapter entities
  *
  * @param {Dato} dato
- * @param {DatoObject} [book] optional book to get chapters from
+ * @param {DatoRecord} [book] optional book to get chapters from
 */
 function getChapters (dato, book) {
   const chapters = (book) ? book.chapters : dato.chapters
-
   return chapters
     .filter(filterPublished)
     .map(chapter => {
-      const { title, slug, pages, chapterType } = chapter
-      const bookRef = dato.books.filter(book => book.chapters.some(
-        bookChapter => bookChapter.id === chapter.id)
-      )[0] // get first book of array of books filtered based on reverse lookup
+      const { title, slug, chapterType } = chapter
+      const bookRef = getParent(dato, chapter)
       const book = {
         path: `${contentBasePath}/${bookRef.slug}`,
         slug: bookRef.slug,
         title: bookRef.title
       }
       const path = `${book.path}/${slug}`
-      const pagesFormatted = pages.map(page => {
-        const location = (page.location) ? {
-          lat: page.location.latitude,
-          lng: page.location.longitude,
-          zoom: page.zoomlevel
-        } : null
-        return {
-          title: page.title,
-          slug: page.slug,
-          path: `${path}/${page.slug}`,
-          location,
-          storyteller: {
-            name: page.storyteller,
-            avatar: page.storytellerAvatar
-          },
-          images: page.images,
-          graphs: page.graphs,
-          video: page.video,
-          files: page.files,
-          links: page.links,
-          keywords: page.keywords
-        }
-      })
-      const storyteller = pagesFormatted[0].storyteller
-      const location = pagesFormatted.filter(page => page.location)[0].location
-
+      const pages = getPages(dato, chapter)
+      const storyteller = pages.filter(page => page.location)[0].storyteller
+      const location = pages.filter(page => page.location)[0].location
       return {
-        title,
-        slug,
-        path,
-        location,
         book,
-        chapterType,
+        location,
+        pages,
+        path,
+        slug,
         storyteller,
-        pages: pagesFormatted
+        title,
+        type: chapterType
+      }
+    })
+}
+
+/**
+ * Get Dato Page entities
+ *
+ * @param {Dato} dato
+ * @param {DatoRecord} [chapter] optional chapter to get chapters from
+*/
+function getPages (dato, chapterRef) {
+  const pages = (chapterRef) ? chapterRef.pages : dato.pages
+  return pages
+    .filter(filterPublished)
+    .map(page => {
+      const { body, files, graphs, images, keywords, links, slug, title, video } = page
+      const location = (page.location) ? {
+        lat: page.location.latitude,
+        lng: page.location.longitude,
+        zoom: page.zoomlevel
+      } : null
+      chapterRef = chapterRef || getParent(dato, page)
+      const bookRef = getParent(dato, chapterRef)
+      const book = {
+        path: `${contentBasePath}/${bookRef.slug}`,
+        slug: bookRef.slug,
+        title: bookRef.title
+      }
+      const chapter = {
+        path: `${book.path}/${chapterRef.path}`,
+        slug: chapterRef.slug,
+        title: chapterRef.title,
+        type: chapterRef.chapterType
+      }
+      const path = `${chapter.path}/${slug}`
+      return {
+        body,
+        book,
+        chapter,
+        files,
+        graphs,
+        images,
+        keywords,
+        links,
+        location,
+        path,
+        slug,
+        storyteller: {
+          avatar: page.storytellerAvatar,
+          name: page.storyteller
+        },
+        title,
+        video
       }
     })
 }
@@ -195,4 +224,28 @@ function filterPublished (item) {
     return true
   }
   return true // return item.published eventually
+}
+
+/**
+ * Get 'parent' of child when no tree structure is defined
+ *
+ * @param {Dato} dato
+ * @param {DatoRecord} child
+ * @returns {DatoRecord} parent
+ */
+function getParent (dato, child) {
+  const childType = child.itemType.apiKey // get machine-readable entity name
+  let parentType
+  switch (childType) {
+    case 'page':
+      parentType = 'chapter'
+      break
+    case 'chapter':
+      parentType = 'book'
+  }
+
+  return dato[`${parentType}s`] // hacky pluralisation
+    .filter(parent => parent[`${childType}s`].some(
+      childFromParent => childFromParent.id === child.id
+    ))[0]
 }

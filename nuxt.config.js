@@ -8,7 +8,6 @@ const routes = books.map((book) => {
   return `narratives/${book.slug}/`
 })
 
-
 // only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
 const routerBase = {}
 const plugins = [

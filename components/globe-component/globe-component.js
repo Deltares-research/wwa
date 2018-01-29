@@ -2,10 +2,13 @@
 // At the moment this does not allow for optimization
 // https://github.com/mrdoob/three.js/issues/10711
 import {
-  PerspectiveCamera, WebGLRenderer, Scene, SphereGeometry, MeshPhongMaterial,
-  Mesh, DirectionalLight, Sprite,
+  WebGLRenderer, Scene,
+  PerspectiveCamera,
+  Geometry, Mesh, SphereGeometry, Sprite, CubicBezierCurve3, Line,
+  SpriteMaterial, MeshPhongMaterial, LineBasicMaterial,
+  DirectionalLight,
   LinearFilter,
-  TextureLoader, SpriteMaterial
+  TextureLoader
 } from 'three'
 
 import {polar2cartesian, deg2rad} from './geometry.js'
@@ -36,6 +39,20 @@ export default {
       default () {
         return markers
       }
+    },
+    connections: {
+      type: Array,
+      default () {
+        const connections = []
+        for (var i = 0; i < 100; i++) {
+          // Based on this example https://brunodigiuseppe.wordpress.com/2015/02/14/flight-paths-with-threejs/
+          const from = {lat: Math.random() * 180 - 90, lon: Math.random() * 360}
+          const to = {lat: 0, lon: 0}
+          const record = {from, to}
+          connections.push(record)
+        }
+        return connections
+      }
     }
   },
   mounted () {
@@ -48,6 +65,7 @@ export default {
     }
     this.scene = this.createScene()
     this.addMarkers()
+    this.addCurves()
     this.camera = this.createCamera(this.scene)
     this.pan()
     this.zoom()
@@ -183,6 +201,57 @@ export default {
       camera.position.set(0, 20, 20)
       camera.lookAt(scene.position)
       return camera
+    },
+    addCurves () {
+      const paths = []
+      this.connections.forEach((record) => {
+        const from = record.from
+        const to = record.to
+        // Convert to radian
+        from.φ = deg2rad(from.lat)
+        from.θ = deg2rad(from.lon)
+        from.xyz = polar2cartesian(GLOBE_RADIUS, from.φ, from.θ)
+        to.φ = deg2rad(to.lat)
+        to.θ = deg2rad(to.lon)
+        to.xyz = polar2cartesian(GLOBE_RADIUS, to.φ, to.θ)
+
+        let distance = from.xyz.distanceTo(to.xyz)
+        // here we are creating the control points for the first ones.
+        from.control = from.xyz.clone()
+        to.control = to.xyz.clone()
+        let mid = from.control.clone().add(to.control).multiplyScalar(0.5)
+        // TODO replace by d3 scale?
+        // not sure what this does
+        function map (x, inMin, inMax, outMin, outMax) {
+          return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
+        }
+
+        var smoothDist = map(distance, 0, 10, 0, 15 / distance)
+        mid.setLength(GLOBE_RADIUS * smoothDist)
+        from.control.add(mid)
+        to.control.add(mid)
+        from.control.setLength(GLOBE_RADIUS * smoothDist)
+        to.control.setLength(GLOBE_RADIUS * smoothDist)
+
+        // use this curve to calculate the points on the curve
+        let curve = new CubicBezierCurve3(from.xyz, from.control, to.control, to.xyz)
+
+        let geometry = new Geometry()
+        geometry.vertices = curve.getPoints(50)
+
+        let material = new LineBasicMaterial({
+          color: 0x7fcdbb,
+          opacity: 0.5,
+          linewidth: 1,
+          transparent: true
+        })
+
+        // Create the final Object3d to add to the scene
+        var curveObject = new Line(geometry, material)
+        // TODO: how do you group all objects together
+        paths.push(curve)
+        this.scene.add(curveObject)
+      })
     },
     addMarkers () {
       // add the markers to the scene

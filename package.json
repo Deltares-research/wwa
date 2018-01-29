@@ -22,6 +22,7 @@
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup",
     "data:dev": "cross-env UNPUBLISHED=1 dato dump",
     "data:build": "dato dump",
+    "data:chapters": "cross-env DATO_EXPORT=chapters dato dump",
     "data:globe": "cross-env DATO_EXPORT=globe dato dump",
     "data:books": "cross-env DATO_EXPORT=books dato dump",
     "test": "ava"
@@ -42,6 +43,7 @@
     ]
   },
   "dependencies": {
+    "axios": "0.17.1",
     "d3-scale": "^1.0.7",
     "font-awesome": "^4.7.0",
     "nuxt": "^1.0.0",

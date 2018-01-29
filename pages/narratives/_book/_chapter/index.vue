@@ -7,19 +7,19 @@
 
 <script>
 import CardList from '~/components/card-list/CardList'
-import chapter from '~/static/data/books/coastal-safety/chapters/impacts-on-coastal-safety/index.json'
-
-const title = chapter.title
-const pages = chapter.pages
+import loadData from '~/lib/load-data'
 
 export default {
+  asyncData (context) {
+    return loadData(context)
+  },
   components: {
     CardList
   },
   data () {
     return {
-      title,
-      pages
+      title: '',
+      pages: []
     }
   }
 }

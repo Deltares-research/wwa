@@ -19,7 +19,7 @@
     "globe:build": "npm run build --prefix external/globe",
     "build:gh-pages": "cross-env DEPLOY_ENV=GH_PAGES nuxt build",
     "generate:gh-pages": "cross-env DEPLOY_ENV=GH_PAGES nuxt generate",
-    "deploy": "gh-pages -d dist",
+    "deploy": "gh-pages -t -d dist",
     "data:dev": "cross-env UNPUBLISHED=1 dato dump",
     "data:build": "dato dump",
     "data:chapters": "cross-env DATO_EXPORT=chapters dato dump",

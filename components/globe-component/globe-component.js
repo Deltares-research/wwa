@@ -18,7 +18,6 @@ import Particles from './particles'
 const assetsRoot = 'https://www.datocms-assets.com'
 
 const GLOBE_RADIUS = 5
-const RED = new THREE.Color(0xff0000)
 const WHITE = new THREE.Color(0xffffff)
 
 export default {
@@ -378,10 +377,10 @@ export default {
 
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
-      this.avatar.mesh.children.forEach(function (d) { d.material.color = WHITE })
+      this.avatar.mesh.children.forEach(function (d) { d.material.color = d.data.themeColor })
 
       if (this.intersections.length > 0) {
-        this.intersections[0].object.material.color = RED
+        this.intersections[0].object.material.color = WHITE
 
       //   globeEl
       //     .st({ cursor: 'pointer' });

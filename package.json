@@ -47,6 +47,7 @@
     "d3-jetpack": "^2.0.16",
     "d3-scale": "^1.0.7",
     "d3-scale-chromatic": "^1.2.0",
+    "es6-tween": "^5.1.0",
     "font-awesome": "^4.7.0",
     "nuxt": "^1.0.0",
     "three": "^0.89.0"

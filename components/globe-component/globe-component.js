@@ -3,7 +3,8 @@ import 'three-examples/controls/OrbitControls'
 // import 'three-examples/controls/OrbitControls'
 // import Stats from 'three-examples/libs/stats.min'
 
-import {polar2cartesian, deg2rad} from './geometry.js'
+import { Tween, autoPlay, Easing } from 'es6-tween'
+import { cartesian2polar, polar2cartesian, deg2rad } from './geometry.js'
 
 // get the markers exported by dato
 import markers from 'static/data/globeMarkers.json'
@@ -82,16 +83,24 @@ export default {
     // resize the canvas
     this.handleResize()
     this.animate()
-    // this.render()
+
     // window is the event handler fo resize, so we need to subscribe to it
     window.addEventListener(
       'resize',
       this.handleResize
     )
 
+    autoPlay(true);
+
     this.renderer.domElement.addEventListener(
       'mousemove',
       this.handleMouseMove,
+      false
+    )
+
+    this.renderer.domElement.addEventListener(
+      'click',
+      this.handleClick,
       false
     )
   },
@@ -101,7 +110,10 @@ export default {
         // lookup the size of the globe card element
         let size = [0, 0]
         if (this.globeContainerElement != null) {
-          size = [this.globeContainerElement.clientWidth, this.globeContainerElement.clientHeight]
+          size = [
+            this.globeContainerElement.clientWidth,
+            this.globeContainerElement.clientHeight
+          ]
         }
         return size
       },
@@ -142,6 +154,31 @@ export default {
       this.renderer.clear()
       // redraw
       // this.renderer.render(this.scene, this.camera)
+    },
+    handleClick (event) {
+      if (this.intersections.length > 0) {
+        const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
+
+        const targetPos = {
+          x: this.intersections[0].object.position.x,
+          y: this.intersections[0].object.position.y,
+          z: this.intersections[0].object.position.z
+        }
+
+        const to = cartesian2polar(targetPos.x, targetPos.y, targetPos.z)
+        to.radius = from.radius
+
+        const tween = new Tween(from)
+          .to(to, 3000)
+          .on('update', ({ radius, latitude, longitude }) => {
+            const cart = polar2cartesian(radius, latitude, longitude)
+            this.camera.position.set(cart.x, cart.y, cart.z)
+
+            this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+          })
+          .easing(Easing.Cubic.InOut)
+          .start()
+      }
     },
     handleMouseMove (event) {
       event.preventDefault()

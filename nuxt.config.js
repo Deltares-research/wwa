@@ -26,7 +26,7 @@ if (process.env.DEPLOY_ENV === 'GH_PAGES') {
 module.exports = {
   // Headers of the page
   head: {
-    title: 'wwa',
+    title: 'World Water Atlas',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

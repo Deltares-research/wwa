@@ -3,7 +3,7 @@
     <ul class="inline-list">
       <li v-for="keyword in tags" v-bind:key="keyword.slug">
         <nuxt-link class="tag" v-bind:to="keyword.unsetLink">
-          {{keyword.title }}
+          <span class="sr-only">remove </span>{{keyword.title }}
         </nuxt-link>
       </li>
     </ul>
@@ -14,6 +14,7 @@
 <script>
 import CardList from '~/components/card-list/CardList'
 import loadData from '~/lib/load-data'
+import '~/components/a11y/a11y.css'
 import '~/components/list/list.css'
 import '~/components/tag/tag.css'
 

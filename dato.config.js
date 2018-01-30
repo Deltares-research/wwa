@@ -265,10 +265,10 @@ function getPages (dato, chapterRef) {
         files,
         graphs,
         images,
-        keywords: tagStringToObjArray(keywords, 'keywords'),
+        keywords: tagStringToLinkObject(keywords, 'keywords'),
         links,
         location,
-        influences: tagStringToObjArray(influences, 'influences'),
+        influences: tagStringToLinkObject(influences, 'influences'),
         path,
         slug,
         storyteller: {
@@ -380,7 +380,7 @@ function collectBooksByTheme (books) {
  * @param {sting} tagType
  * @returns {linkObject}
  */
-function tagStringToObjArray (tagString, tagType) {
+function tagStringToLinkObject (tagString, tagType) {
   return (tagString || '').split(/,\s?/).map(tag => {
     const title = tag.toLowerCase()
     const slug = slugify(tag)

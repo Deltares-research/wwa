@@ -1,18 +1,5 @@
-// Only import relevant parts
-// At the moment this does not allow for optimization
-// https://github.com/mrdoob/three.js/issues/10711
-// import {
-//   WebGLRenderer, Scene,
-//   PerspectiveCamera,
-//   Geometry, Mesh, SphereGeometry, Sprite, CubicBezierCurve3, Line,
-//   SpriteMaterial, MeshPhongMaterial, LineBasicMaterial,
-//   DirectionalLight,
-//   LinearFilter,
-//   TextureLoader
-// } from 'three'
-
 import * as THREE from 'three'
-// import OrbitControls from './OrbitControls'
+import 'three-examples/controls/OrbitControls'
 // import 'three-examples/controls/OrbitControls'
 // import Stats from 'three-examples/libs/stats.min'
 
@@ -80,8 +67,8 @@ export default {
     this.camera = this.createCamera()
     this.scene = this.createScene()
 
-    // const controls = new OrbitControls(this.camera)
-
+    const controls = new THREE.OrbitControls(this.camera, this.globeContainerElement)
+    console.log(controls)
     this.addMarkers()
     this.addCurves()
     this.pan()

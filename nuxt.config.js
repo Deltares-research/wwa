@@ -62,7 +62,7 @@ module.exports = {
         use: 'imports-loader?THREE=three'
       })
 
-      // config.resolve.alias['three-examples'] = path.join(__dirname, './node_modules/three/examples/js')
+      config.resolve.alias['three-examples'] = path.join(__dirname, './node_modules/three/examples/js')
     },
     // Define dynamic routes to generate for dist,
     // TODO: make function based on content from Dato

@@ -21,7 +21,7 @@ export default {
   async asyncData (context) {
     const { params, route } = context
     const keywords = params.keywords.split('+')
-    const { tags = [], results = [] } = await loadData(context, { keywords })
+    const data = await loadData(context, { keywords })
     const base = route.path.replace(/(\+?[^/])*(\/?)$/, '') // remove all tags
     const tags = data.tags.map(tag => {
       const excludingSelf = data.tags
@@ -33,7 +33,7 @@ export default {
     })
     return {
       tags,
-      results
+      results: data.results || []
     }
   },
   components: {

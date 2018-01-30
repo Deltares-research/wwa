@@ -229,7 +229,7 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, keywords, links, slug, title, video } = page
+      const { body, files, graphs, images, influences, keywords, links, slug, title, video } = page
       const location = (page.location) ? {
         lat: page.location.latitude,
         lng: page.location.longitude,
@@ -321,10 +321,10 @@ function getParent (dato, child) {
 function collectPagesByTagType (pages, tagType) {
   return pages
     .map(page => {
-      const { book, chapter, keywords, location, influences, slug, storyteller, theme, title } = page
+      const { book, chapter, keywords, location, influences, path, slug, storyteller, theme, title } = page
       return {
         tags: page[tagType],
-        page: { book, chapter, keywords, location, influences, slug, storyteller, theme, title }
+        page: { book, chapter, keywords, location, influences, path, slug, storyteller, theme, title }
       }
     })
     .filter(match => Boolean(match.tags)) // filter falsy (false, undefined, '')

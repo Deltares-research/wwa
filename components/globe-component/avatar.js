@@ -18,7 +18,7 @@ class Avatar {
    * @return {[type]}          [description]
    */
   load (finished) {
-    loadData('data/wwa_nbs.json', (err, result) => {
+    loadData('data/globeMarkers.json', (err, result) => {
       if (err) {
         console.error('marker data could not be loaded', err)
       }
@@ -34,7 +34,7 @@ class Avatar {
         const avatar = new THREE.Sprite(material.clone())
         // latitude and longitude are mixed up in the data
         const lon = lon2rad(d.location.lat)
-        const lat = lat2rad(d.location.lon)
+        const lat = lat2rad(d.location.lng)
 
         const x = SCALE * GLOBE_RADIUS * Math.sin(lat) * Math.cos(lon)
         const y = SCALE * GLOBE_RADIUS * Math.sin(lat) * Math.sin(lon)

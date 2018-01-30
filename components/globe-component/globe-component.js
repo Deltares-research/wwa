@@ -166,7 +166,9 @@ export default {
         }
 
         const to = cartesian2polar(targetPos.x, targetPos.y, targetPos.z)
-        to.radius = from.radius
+        // to.radius = this.intersections[0].object.data.location.zoom === null ? from.radius : this.intersections[0].object.data.location.zoom
+        // to.radius = from.radius
+        to.radius = 7 + Math.random() * 13
 
         const tween = new Tween(from)
           .to(to, 3000)

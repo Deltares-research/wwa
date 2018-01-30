@@ -14,6 +14,7 @@
 <script>
 import CardList from '~/components/card-list/CardList'
 import loadData from '~/lib/load-data'
+import '~/components/list/list.css'
 import '~/components/tag/tag.css'
 
 export default {

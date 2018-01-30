@@ -47,6 +47,18 @@ $ npm start
 $ npm run generate:gh-pages
 $ npm run deploy
 
+# deploy to surge (for intermediate versions/AB testing)
+# website will be online at name-wwa-version
+$ npm run generate
+$ surge -p dist -d name-wwa-version.surge.sh
+
 ```
 
+
+
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
+See also the relevant docs
+- [Standard](https://standardjs.com/) the style guide for javascript
+- [Ava](https://github.com/avajs/ava) the test runner
+- [Github pages](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/) github deployment (already setup)
+- [Surge](http://surge.sh/) front-end publishing

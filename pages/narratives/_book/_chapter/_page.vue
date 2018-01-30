@@ -13,7 +13,7 @@ import PageComponent from '~/components/page-component/PageComponent'
 
 export default {
   asyncData (context) {
-    return loadData(context)
+    return loadData(context, context.params)
   },
   mounted () {
     if ('IntersectionObserver' in window) {

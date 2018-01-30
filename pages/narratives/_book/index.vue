@@ -11,7 +11,7 @@ import loadData from '~/lib/load-data'
 
 export default {
   asyncData (context) {
-    return loadData(context)
+    return loadData(context, context.params)
   },
   components: {
     CardList

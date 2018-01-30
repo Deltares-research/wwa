@@ -1,17 +1,39 @@
 <template>
   <section>
-    <card-list v-bind:cards="pages" />
+    <ul class="inline-list">
+      <li v-for="tag in tags" v-bind:key="tag.slug">
+        <nuxt-link class="tag" v-bind:to="tag.unsetLink">
+          {{tag.title }}
+        </nuxt-link>
+      </li>
+    </ul>
+    <card-list v-bind:cards="entries" />
   </section>
 </template>
 
 <script>
 import CardList from '~/components/card-list/CardList'
 import loadData from '~/lib/load-data'
+import '~/components/tag/tag.css'
 
 export default {
-  asyncData (context) {
-    const keywords = context.params.keywords.split('+')
-    return { pages: loadData(context, { keywords }) || [] }
+  async asyncData (context) {
+    const { params, route } = context
+    const keywords = params.keywords.split('+')
+    const data = await loadData(context, { keywords })
+    const base = route.path.replace(/(\+?[^/])*(\/?)$/, '') // remove all tags
+    const tags = data.tags.map(tag => {
+      const excludingSelf = data.tags
+        .filter(t => t.slug !== tag.slug)
+        .map(t => t.slug)
+        .join('+')
+      tag.unsetLink = `${base}${excludingSelf}`
+      return tag
+    })
+    return {
+      tags,
+      entries: data.entries || []
+    }
   },
   components: {
     CardList

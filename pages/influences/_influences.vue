@@ -1,6 +1,6 @@
 <template>
   <section>
-    <card-list v-bind:cards="pages" />
+    <card-list v-bind:cards="entries" />
   </section>
 </template>
 
@@ -9,9 +9,10 @@ import CardList from '~/components/card-list/CardList'
 import loadData from '~/lib/load-data'
 
 export default {
-  asyncData (context) {
-    const influences = context.params.influences.split('+')
-    return { pages: loadData(context, { influences }) || [] }
+  async asyncData (context) {
+    const keywords = context.params.keywords.split('+')
+    const data = await loadData(context, { keywords })
+    return { entries: data.entries || [] }
   },
   components: {
     CardList

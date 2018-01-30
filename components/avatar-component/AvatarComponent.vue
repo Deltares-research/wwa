@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="avatar">
     <img v-bind:src="imgSrc">
     {{name}}
   </div>
@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style>
-img {
+.avatar img {
   width: 6rem;
   height: 6rem;
   display:block;

@@ -7,10 +7,20 @@ attribute float ix;
 
 varying vec3 vColor;
 
+/**
+ * Random function
+ * @param  {[type]} vec2 co            [description]
+ * @return {[type]}      [description]
+ */
 float rand(vec2 co) {
   return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
+/**
+ * Cubic in/out easing function
+ * @param  {[type]} float t             [description]
+ * @return {[type]}       [description]
+ */
 float cubicInOut(float t) {
   if (t < 0.5) {
     return 4.0 * t * t * t;
@@ -20,12 +30,26 @@ float cubicInOut(float t) {
 }
 //rand(vec2(position.x, position.y))
 
+/**
+ * Vertex shader that determines the position of the particles.
+ * It calculates the transition for the position, as well as from
+ * the source color to the target color.
+ * @return {[type]} [description]
+ */
 void main() {
+  /**
+   * Number of particles
+   * @type {Number}
+   */
   float DATA_SIZE = 57773.0; // UPDATE THIS WITH DIFFERENT DATASET!!
   // float MAX_DELAY = 10.0 * (5.0 - value);
   float TRANSITION_SPEED = 0.1;
 
   // float delay = (ix / DATA_SIZE) * MAX_DELAY;
+  /**
+   * Incremental delay for each particle on transition
+   * @type {[type]}
+   */
   float delay = ((ix / DATA_SIZE) * 15.0) + (((5.0 - value) / 5.0) * 30.0);
   // float delay2 = ((ix / DATA_SIZE) * 30.0) + (((5.0 - value) / 5.0) * 30.0);
 

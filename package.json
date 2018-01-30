@@ -47,7 +47,10 @@
   },
   "dependencies": {
     "axios": "0.17.1",
+    "d3-jetpack": "^2.0.16",
     "d3-scale": "^1.0.7",
+    "d3-scale-chromatic": "^1.2.0",
+    "es6-tween": "^5.1.0",
     "font-awesome": "^4.7.0",
     "nuxt": "^1.0.0",
     "slug": "0.9.1",
@@ -71,6 +74,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "gh-pages": "^1.1.0",
+    "imports-loader": "^0.7.1",
     "jsdom": "11.5.1",
     "json-stringify-safe": "5.0.1",
     "lodash": "^4.17.4",
@@ -79,6 +83,7 @@
     "postcss-calc": "6.0.1",
     "postcss-custom-properties": "6.2.0",
     "uglifyjs-webpack-plugin": "^1.1.6",
-    "webpack-bundle-analyzer": "^2.9.2"
+    "webpack-bundle-analyzer": "^2.9.2",
+    "webpack-glsl-loader": "^1.0.1"
   }
 }

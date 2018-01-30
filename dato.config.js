@@ -1,4 +1,4 @@
-const slug = require('slug')
+const slugify = require('slug')
 
 /**
  * @typedef Dato
@@ -15,6 +15,14 @@ const slug = require('slug')
  * @type {object}
  * @property {string} locale - Current language in ISO 639-1
  * @property {string[]} availableLocales - Available languages in ISO 639-1
+ */
+
+/**
+ * @typedef linkObject
+ * @type {object}
+ * @property {title} title - Human-readable name
+ * @property {slug} slug - Machine-readable name
+ * @property {path} path - Resource location
  */
 
 const includeUnpublished = !!process.env.UNPUBLISHED
@@ -106,11 +114,15 @@ function generateByTag (dato, root, i18n, tagType) {
   const pages = getPages(dato)
   const tags = collectPagesByTagType(pages, tagType)
   const dir = tagType
+  const index = []
   for (const tag in tags) {
     const pages = tags[tag]
-    root.createDataFile(`static/data/${dir}/${slug(tag)}.json`, 'json', pages)
+    const tagObj = Object.assign({}, tags[tag])
+    delete tagObj.entries // not needed in index
+    index.push(tagObj)
+    root.createDataFile(`static/data/${dir}/${slugify(tag)}.json`, 'json', pages)
   }
-  root.createDataFile(`static/data/${dir}/index.json`, 'json', Object.keys(tags))
+  root.createDataFile(`static/data/${dir}/index.json`, 'json', index.filter(i => i.slug !== 'unfiled'))
 }
 
 /**
@@ -126,7 +138,7 @@ function generateThemes (dato, root, i18n) {
   const dir = 'themes'
   for (const theme in themes) {
     const books = themes[theme]
-    root.createDataFile(`static/data/${dir}/${slug(theme)}.json`, 'json', books)
+    root.createDataFile(`static/data/${dir}/${slugify(theme)}.json`, 'json', books)
   }
   root.createDataFile(`static/data/${dir}/index.json`, 'json', Object.keys(themes))
 }
@@ -229,7 +241,7 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, keywords, links, slug, title, video } = page
+      const { body, files, graphs, images, influences, keywords, links, slug, title, video } = page
       const location = (page.location) ? {
         lat: page.location.latitude,
         lng: page.location.longitude,
@@ -243,7 +255,7 @@ function getPages (dato, chapterRef) {
         title: bookRef.title
       }
       const chapter = {
-        path: `${book.path}/${chapterRef.path}`,
+        path: `${book.path}/${chapterRef.slug}`,
         slug: chapterRef.slug,
         title: chapterRef.title,
         type: chapterRef.chapterType
@@ -257,10 +269,10 @@ function getPages (dato, chapterRef) {
         files,
         graphs,
         images,
-        keywords,
+        keywords: tagStringToLinkObject(keywords, 'keywords'),
         links,
         location,
-        influences,
+        influences: tagStringToLinkObject(influences, 'influences'),
         path,
         slug,
         storyteller: {
@@ -322,23 +334,28 @@ function getParent (dato, child) {
 function collectPagesByTagType (pages, tagType) {
   return pages
     .map(page => {
-      const { book, chapter, keywords, location, influences, slug, storyteller, theme, title } = page
+      const { book, chapter, keywords, location, influences, path, slug, storyteller, theme, title } = page
       return {
         tags: page[tagType],
-        page: { book, chapter, keywords, location, influences, slug, storyteller, theme, title }
+        page: { book, chapter, keywords, location, influences, path, slug, storyteller, theme, title }
       }
     })
     .filter(match => Boolean(match.tags)) // filter falsy (false, undefined, '')
-    .map(match => match.tags.split(/,\s*/).map(tag => {
+    .map(match => match.tags.map(tag => {
       return {
-        tag: tag.toLowerCase(),
+        tag: tag,
         page: match.page
       }
     }))
     .reduce((a, b) => a.concat(b), []) // Flat array of keywords
     .reduce((tags, match) => {
-      tags[match.tag] = tags[match.tag] || []
-      tags[match.tag].push(match.page)
+      tags[match.tag.slug] = tags[match.tag.slug] || {
+        title: match.tag.title,
+        slug: match.tag.slug,
+        path: match.tag.path,
+        entries: []
+      }
+      tags[match.tag.slug].entries.push(match.page)
       return tags
     }, {})
 }
@@ -358,4 +375,20 @@ function collectBooksByTheme (books) {
       }
       return themes
     }, {})
+}
+
+/**
+ * Convert comma-separated string to array of linkObjects
+ *
+ * @param {string} tagString
+ * @param {sting} tagType
+ * @returns {linkObject}
+ */
+function tagStringToLinkObject (tagString, tagType) {
+  return (tagString || 'unfiled').split(/,\s?/).map(tag => {
+    const title = tag.toLowerCase()
+    const slug = slugify(tag).toLowerCase()
+    const path = `/${tagType}/${slug}`
+    return { title, slug, path }
+  })
 }

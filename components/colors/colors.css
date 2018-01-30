@@ -1,13 +1,20 @@
 :root {
-  /* Rijksoverheid colors */
-  --ro--or-bu--0-5: #ffab4c;
-  --ro--or-bu--1-5: #ffc08c;
-  --ro--or-bu--2-5: #ffddc7;
-  --ro--or-bu--3-5: #809cae;
-  --ro--or-bu--4-5: #467388;
-  --ro--neutral: #dde4eb;
-  --ro--blue: var(--ro--or-bu--4-5);
-  --ro--blue--light: var(--ro--or-bu--3-5);
+  /**
+   * PBL booklet colors
+   *
+   * Don\ use the text colors directly,
+   * instead take a look at the UI colors at the bottom
+   */
+  --booklet--or-bu--0-5: #ffab4c;
+  --booklet--or-bu--1-5: #ffc08c;
+  --booklet--or-bu--2-5: #ffddc7;
+  --booklet--or-bu--3-5: #809cae;
+  --booklet--or-bu--4-5: #467388;
+  --booklet--neutral: #dde4eb;
+  --booklet--text: var(--booklet--or-bu--4-5);
+  --booklet--text--light: var(--booklet--or-bu--3-5);
+  --booklet--action: var(--booklet--or-bu--0-5);
+  --booklet--action--light: var(--booklet--or-bu--1-5);
 
   /* Yellow Green Blue  */
   --yl-gn-bu--0-5: rgb(255,255,204);
@@ -48,9 +55,11 @@
   /* UI colors */
   --ui--white: #fff;
   --ui--black: #00001e;
-  --ui--text: var(--ro--blue);
-  --ui--text--light: var(--ro--blue--light);
+  --ui--text: var(--booklet--text);
+  --ui--text--light: var(--booklet--text--light);
   --ui--text--invert: var(--ui--white);
+  --ui--action: var(--booklet--action);
+  --ui--action--light: var(--booklet--action--light);
 }
 
 html {

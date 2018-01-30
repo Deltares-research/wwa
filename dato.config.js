@@ -114,11 +114,15 @@ function generateByTag (dato, root, i18n, tagType) {
   const pages = getPages(dato)
   const tags = collectPagesByTagType(pages, tagType)
   const dir = tagType
+  const index = []
   for (const tag in tags) {
     const pages = tags[tag]
-    root.createDataFile(`static/data/${dir}/${slugify(tag).toLowerCase()}.json`, 'json', pages)
+    const tagObj = Object.assign({}, tags[tag])
+    delete tagObj.entries // not needed in index
+    index.push(tagObj)
+    root.createDataFile(`static/data/${dir}/${slugify(tag)}.json`, 'json', pages)
   }
-  root.createDataFile(`static/data/${dir}/index.json`, 'json', Object.keys(tags))
+  root.createDataFile(`static/data/${dir}/index.json`, 'json', index.filter(i => i.slug !== 'unfiled'))
 }
 
 /**
@@ -381,9 +385,9 @@ function collectBooksByTheme (books) {
  * @returns {linkObject}
  */
 function tagStringToLinkObject (tagString, tagType) {
-  return (tagString || '').split(/,\s?/).map(tag => {
+  return (tagString || 'unfiled').split(/,\s?/).map(tag => {
     const title = tag.toLowerCase()
-    const slug = slugify(tag)
+    const slug = slugify(tag).toLowerCase()
     const path = `/${tagType}/${slug}`
     return { title, slug, path }
   })

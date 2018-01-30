@@ -17,6 +17,8 @@ import Particles from './particles'
 const assetsRoot = 'https://www.datocms-assets.com'
 
 const GLOBE_RADIUS = 5
+const RED = new THREE.Color(0xff0000)
+const WHITE = new THREE.Color(0xffffff)
 
 export default {
   data () {
@@ -68,7 +70,11 @@ export default {
     this.scene = this.createScene()
 
     const controls = new THREE.OrbitControls(this.camera, this.globeContainerElement)
-    console.log(controls)
+
+    this.mouse = new THREE.Vector2()
+    this.intersections = []
+
+    this.createRaycaster()
     this.addMarkers()
     this.addCurves()
     this.pan()
@@ -81,6 +87,12 @@ export default {
     window.addEventListener(
       'resize',
       this.handleResize
+    )
+
+    this.renderer.domElement.addEventListener(
+      'mousemove',
+      this.handleMouseMove,
+      false
     )
   },
   computed: {
@@ -130,6 +142,12 @@ export default {
       this.renderer.clear()
       // redraw
       // this.renderer.render(this.scene, this.camera)
+    },
+    handleMouseMove (event) {
+      event.preventDefault()
+
+      this.mouse.x = ((event.clientX / this.renderer.domElement.clientWidth) * 2) - 1
+      this.mouse.y = -((event.clientY / this.renderer.domElement.clientHeight) * 2) + 1
     },
     /**
      * Pan to the active story
@@ -185,8 +203,8 @@ export default {
       const glow = new Glow(this.camera)
       globe.add(glow.mesh)
 
-      const avatar = new Avatar()
-      avatar.load(avs => globe.add(avs))
+      this.avatar = new Avatar()
+      this.avatar.load(avs => globe.add(avs))
 
       scene.add(globe)
 
@@ -203,8 +221,8 @@ export default {
      * @return {THEE.Raycaster} a THREE Raycaster
      */
     createRaycaster () {
-      const raycaster = new THREE.Raycaster()
-      raycaster.params.Points.threshold = 0.4
+      this.raycaster = new THREE.Raycaster()
+      this.raycaster.params.Points.threshold = 0.4
     },
 
     /**
@@ -256,7 +274,7 @@ export default {
         geometry.vertices = curve.getPoints(50)
 
         let material = new THREE.LineBasicMaterial({
-          color: 0xff0000
+          color: 0xff7700
         })
 
         // Create the final Object3d to add to the scene
@@ -319,21 +337,19 @@ export default {
 
       // this.stats.begin()
 
-      // raycaster.setFromCamera(mouse, camera);
+      this.raycaster.setFromCamera(this.mouse, this.camera)
+      this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
+      this.avatar.mesh.children.forEach(function (d) { d.material.color = WHITE })
 
-      // intersections = raycaster.intersectObjects(avatar.mesh.children);
-
-      // avatar.mesh.children.forEach(d => d.material.color = WHITE);
-
-      // if (intersections.length > 0) {
-      //   intersections[0].object.material.color = RED;
+      if (this.intersections.length > 0) {
+        this.intersections[0].object.material.color = RED
 
       //   globeEl
       //     .st({ cursor: 'pointer' });
       // } else {
       //   globeEl
       //     .st({ cursor: 'default' });
-      // }
+      }
 
       this.renderer.render(this.scene, this.camera)
 

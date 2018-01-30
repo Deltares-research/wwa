@@ -1,9 +1,9 @@
 <template>
   <section>
     <ul class="inline-list">
-      <li v-for="tag in tags" v-bind:key="tag.slug">
-        <nuxt-link class="tag" v-bind:to="tag.unsetLink">
-          {{tag.title }}
+      <li v-for="keyword in tags" v-bind:key="keyword.slug">
+        <nuxt-link class="tag" v-bind:to="keyword.unsetLink">
+          {{keyword.title }}
         </nuxt-link>
       </li>
     </ul>

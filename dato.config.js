@@ -116,7 +116,7 @@ function generateByTag (dato, root, i18n, tagType) {
   const dir = tagType
   for (const tag in tags) {
     const pages = tags[tag]
-    root.createDataFile(`static/data/${dir}/${slugify(tag)}.json`, 'json', pages)
+    root.createDataFile(`static/data/${dir}/${slugify(tag).toLowerCase()}.json`, 'json', pages)
   }
   root.createDataFile(`static/data/${dir}/index.json`, 'json', Object.keys(tags))
 }

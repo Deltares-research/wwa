@@ -1,5 +1,12 @@
 <template>
   <section>
+    <ul class="inline-list">
+      <li v-for="influence in tags" v-bind:key="influence.slug">
+        <nuxt-link v-bind:to="influence.path">
+          {{ influence.title }}
+        </nuxt-link>
+      </li>
+    </ul>
     <card-list v-bind:cards="entries" />
   </section>
 </template>
@@ -10,9 +17,14 @@ import loadData from '~/lib/load-data'
 
 export default {
   async asyncData (context) {
-    const keywords = context.params.keywords.split('+')
-    const data = await loadData(context, { keywords })
-    return { entries: data.entries || [] }
+    const { params } = context
+    const influences = params.influences.split('+')
+    const data = await loadData(context, { influences })
+    const tags = data.tags
+    return {
+      tags,
+      entries: data.entries || []
+    }
   },
   components: {
     CardList

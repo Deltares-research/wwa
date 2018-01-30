@@ -260,6 +260,7 @@ function getPages (dato, chapterRef) {
         keywords,
         links,
         location,
+        influences,
         path,
         slug,
         storyteller: {

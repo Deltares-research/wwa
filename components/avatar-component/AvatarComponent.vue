@@ -1,7 +1,7 @@
 <template>
   <div>
     <img v-bind:src="imgSrc">
-    <text>{{name}}</text>
+    {{name}}
   </div>
 
   </template>
@@ -37,6 +37,6 @@ export default {
 img {
   width: 6rem;
   height: 6rem;
-
+  display:block;
 }
 </style>

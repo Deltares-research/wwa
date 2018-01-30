@@ -7,7 +7,7 @@
         </nuxt-link>
       </li>
     </ul>
-    <card-list v-bind:cards="entries" />
+    <card-list v-bind:cards="results" />
   </section>
 </template>
 
@@ -24,7 +24,7 @@ export default {
     const tags = data.tags
     return {
       tags,
-      entries: data.entries || []
+      results: data.results || []
     }
   },
   components: {

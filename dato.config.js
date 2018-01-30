@@ -1,4 +1,4 @@
-const slug = require('slug')
+const slugify = require('slug')
 
 /**
  * @typedef Dato
@@ -15,6 +15,14 @@ const slug = require('slug')
  * @type {object}
  * @property {string} locale - Current language in ISO 639-1
  * @property {string[]} availableLocales - Available languages in ISO 639-1
+ */
+
+/**
+ * @typedef linkObject
+ * @type {object}
+ * @property {title} title - Human-readable name
+ * @property {slug} slug - Machine-readable name
+ * @property {path} path - Resource location
  */
 
 const includeUnpublished = !!process.env.UNPUBLISHED
@@ -108,7 +116,7 @@ function generateByTag (dato, root, i18n, tagType) {
   const dir = tagType
   for (const tag in tags) {
     const pages = tags[tag]
-    root.createDataFile(`static/data/${dir}/${slug(tag)}.json`, 'json', pages)
+    root.createDataFile(`static/data/${dir}/${slugify(tag)}.json`, 'json', pages)
   }
   root.createDataFile(`static/data/${dir}/index.json`, 'json', Object.keys(tags))
 }
@@ -126,7 +134,7 @@ function generateThemes (dato, root, i18n) {
   const dir = 'themes'
   for (const theme in themes) {
     const books = themes[theme]
-    root.createDataFile(`static/data/${dir}/${slug(theme)}.json`, 'json', books)
+    root.createDataFile(`static/data/${dir}/${slugify(theme)}.json`, 'json', books)
   }
   root.createDataFile(`static/data/${dir}/index.json`, 'json', Object.keys(themes))
 }
@@ -243,7 +251,7 @@ function getPages (dato, chapterRef) {
         title: bookRef.title
       }
       const chapter = {
-        path: `${book.path}/${chapterRef.path}`,
+        path: `${book.path}/${chapterRef.slug}`,
         slug: chapterRef.slug,
         title: chapterRef.title,
         type: chapterRef.chapterType
@@ -257,10 +265,10 @@ function getPages (dato, chapterRef) {
         files,
         graphs,
         images,
-        keywords,
+        keywords: tagStringToObjArray(keywords, 'keywords'),
         links,
         location,
-        influences,
+        influences: tagStringToObjArray(influences, 'influences'),
         path,
         slug,
         storyteller: {
@@ -329,16 +337,21 @@ function collectPagesByTagType (pages, tagType) {
       }
     })
     .filter(match => Boolean(match.tags)) // filter falsy (false, undefined, '')
-    .map(match => match.tags.split(/,\s*/).map(tag => {
+    .map(match => match.tags.map(tag => {
       return {
-        tag: tag.toLowerCase(),
+        tag: tag,
         page: match.page
       }
     }))
     .reduce((a, b) => a.concat(b), []) // Flat array of keywords
     .reduce((tags, match) => {
-      tags[match.tag] = tags[match.tag] || []
-      tags[match.tag].push(match.page)
+      tags[match.tag.slug] = tags[match.tag.slug] || {
+        title: match.tag.title,
+        slug: match.tag.slug,
+        path: match.tag.path,
+        entries: []
+      }
+      tags[match.tag.slug].entries.push(match.page)
       return tags
     }, {})
 }
@@ -358,4 +371,20 @@ function collectBooksByTheme (books) {
       }
       return themes
     }, {})
+}
+
+/**
+ * Convert comma-separated string to array of linkObjects
+ *
+ * @param {string} tagString
+ * @param {sting} tagType
+ * @returns {linkObject}
+ */
+function tagStringToObjArray (tagString, tagType) {
+  return (tagString || '').split(/,\s?/).map(tag => {
+    const title = tag.toLowerCase()
+    const slug = slugify(tag)
+    const path = `/${tagType}/${slug}`
+    return { title, slug, path }
+  })
 }

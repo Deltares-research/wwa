@@ -23,7 +23,7 @@
 <script>
 import CardList from '~/components/card-list/CardList'
 import loadData from '~/lib/load-data'
-import { union } from '~/lib/set-operations'
+import { unionByProp } from '~/lib/set-operations'
 import '~/components/a11y/a11y.css'
 import '~/components/list/list.css'
 import '~/components/tag/tag.css'

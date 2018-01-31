@@ -59,7 +59,7 @@ export default {
     availableKeywords () {
       // Build available keywords objects from results
       return this.results
-        .reduce((acc, result) => union(acc, result.keywords), [])
+        .reduce((acc, result) => unionByProp(acc, result.keywords, 'slug'), [])
         .filter(keyword => this.activeKeywords.every(active => active.slug !== keyword.slug))
     }
   },

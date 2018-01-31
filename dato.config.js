@@ -174,7 +174,7 @@ function getBooks (dato) {
               break
             }
           }
-          return { location, path: chapterPath, slug, title, type: chapterType }
+          return { pageCount: pages.length, location, path: chapterPath, slug, title, type: chapterType }
         })
 
       // create book
@@ -213,6 +213,7 @@ function getChapters (dato, book) {
       const location = pages.filter(page => page.location)[0].location
       return {
         book,
+        pageCount: pages.length,
         location,
         pages,
         path,

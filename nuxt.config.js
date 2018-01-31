@@ -82,6 +82,7 @@ module.exports = {
     },
     // add postcss plugins
     postcss: [
+      require('autoprefixer'),
       // require('postcss-custom-properties'),
       require('postcss-calc')
     ],

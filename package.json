@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "ava": "^0.24.0",
-    "babel-core": "6.26.0",
+    "autoprefixer": "7.2.5",
     "babel-eslint": "^7.2.3",
     "babel-preset-env": "^1.6.1",
     "canvas": "^1.6.9",

@@ -2,7 +2,7 @@
   <article>
     <nuxt-link v-bind:to="path">
       <h1>{{title}}</h1>
-      <svg-icon v-if="theme" v-bind:icon="theme" />
+      <svg-icon v-if="theme" v-bind:icon="theme.slug" />
       <p>{{body}}</p>
     </nuxt-link>
   </article>

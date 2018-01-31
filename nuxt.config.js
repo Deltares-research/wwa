@@ -98,8 +98,9 @@ module.exports = {
     },
     // add postcss plugins
     postcss: [
-      // require('postcss-custom-properties'),
-      require('postcss-calc')
+      require('postcss-import')(),
+      require('postcss-custom-properties')(),
+      require('postcss-calc')()
     ],
     plugins: plugins
   },

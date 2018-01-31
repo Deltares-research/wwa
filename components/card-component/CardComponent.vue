@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import '~/components/colors/colors.css'
 import '~/components/svg-icon/SvgIcon'
 
 export default {
@@ -23,6 +22,8 @@ export default {
 </script>
 
 <style scoped>
+@import '../colors/colors.css';
+
 article {
   --padding-v: calc(.5rem + .5vw);
   --padding-h: calc(1rem + 1vw);

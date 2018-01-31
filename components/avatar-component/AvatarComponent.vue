@@ -7,7 +7,6 @@
   </template>
 
 <script>
-import '~/components/colors/colors.css'
 import _defaultAvatarSrc from './assets/Portrait_Placeholder.png'
 
 export default {

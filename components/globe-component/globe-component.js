@@ -20,6 +20,7 @@ const assetsRoot = 'https://www.datocms-assets.com'
 const GLOBE_RADIUS = 5
 const WHITE = new THREE.Color(0xffffff)
 const vOffset = 15
+const vOffsetFactor = vOffset / 100
 
 export default {
   data () {
@@ -146,9 +147,8 @@ export default {
       // of the canvas itself is not changing on screen resize
       const width = this.containerSize[0]
       const height = this.containerSize[1]
-      const vShift = vOffset / 100
       const renderWidth = this.containerSize[0]
-      const renderHeight = this.containerSize[1] * (1 + vShift)
+      const renderHeight = this.containerSize[1] * (1 + vOffsetFactor)
       // reset the aspect ratio
       this.camera.aspect = renderWidth / renderHeight
       // recompute projection
@@ -277,13 +277,11 @@ export default {
     createCamera () {
       const width = this.containerSize[0]
       const height = this.containerSize[1]
-      const vShift = vOffset / 100
       const renderWidth = this.containerSize[0]
-      const renderHeight = this.containerSize[1] * (1 + vShift)
+      const renderHeight = this.containerSize[1] * (1 + vOffsetFactor)
       const camera = new THREE.PerspectiveCamera(30, renderWidth / renderHeight, 0.1, 300)
-      camera.position.z = 30 * (1 + vShift) * (1 + vShift)
-      camera.setViewOffset(renderWidth, renderHeight, 0, height * vShift, width, height)
-      camera.up = new THREE.Vector3(0, vOffset, 0)
+      camera.position.z = 30 * (1 + vOffsetFactor) * (1 + vOffsetFactor)
+      camera.setViewOffset(renderWidth, renderHeight, 0, height * vOffsetFactor, width, height)
       console.log(camera)
       return camera
     },

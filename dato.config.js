@@ -152,7 +152,7 @@ function getBooks (dato) {
   return dato.books
     .filter(filterPublished)
     .map(({ entity }) => {
-      const { chapters, slug, title, theme } = entity
+      const { body, chapters, slug, title, theme } = entity
       const path = `${contentBasePath}/${slug}`
       const chapterEntities = chapters
         .filter(filterPublished)
@@ -179,6 +179,7 @@ function getBooks (dato) {
 
       // create book
       return {
+        body,
         chapters: chapterEntities,
         path,
         slug,

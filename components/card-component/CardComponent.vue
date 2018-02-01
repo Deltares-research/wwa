@@ -1,15 +1,15 @@
 <template>
-  <article>
+  <article class="card-component">
     <nuxt-link v-bind:to="path">
       <h1>{{title}}</h1>
-      <svg-icon v-if="theme" v-bind:icon="theme" />
+      <!-- <svg-icon v-if="theme" v-bind:icon="theme" /> -->
       <p>{{body}}</p>
     </nuxt-link>
   </article>
 </template>
 
 <script>
-import '~/components/svg-icon/SvgIcon'
+// import '~/components/svg-icon/SvgIcon'
 
 export default {
   // data () {
@@ -21,22 +21,22 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 @import '../colors/colors.css';
 
-article {
+.card-component {
   --padding-v: calc(.5rem + .5vw);
   --padding-h: calc(1rem + 1vw);
   width: 100%;
   padding: var(--padding-v) var(--padding-h);
   background-color: var(--ui--white);
 }
-article a {
+.card-component a {
   color: inherit;
   text-decoration: none;
 }
-article h1,
-article p {
+.card-component h1,
+.card-component p {
   width: 100%;
 }
 </style>

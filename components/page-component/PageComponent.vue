@@ -1,5 +1,5 @@
 <template>
-  <article>
+  <article class="page-component">
     <header>
       <h1>{{page.title}}</h1>
       <ul class="influences">
@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style scoped>
-article {
+.page-component {
   --padding-v: calc(.5rem + .5vw);
   --padding-h: calc(1rem + 1vw);
   background-color: var(--ui--white);

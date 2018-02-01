@@ -1,6 +1,6 @@
 <template>
   <section>
-    <ul class="inline-list">
+    <ul class="list--inline">
       <li v-for="keyword in tags" v-bind:key="keyword.slug">
         <nuxt-link class="tag" v-bind:to="keyword.unsetLink">
           <span class="sr-only">remove </span>{{keyword.title }}

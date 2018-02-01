@@ -8,7 +8,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const books = require('./static/data/books/index.json')
 
 const routes = books.map((book) => {
-  return `narratives/${book.slug}/`
+  return `/narratives/${book.slug}/`
 })
 
 // TODO: We want to enable these, but they give an error. They end up as null in the final config.
@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'production') {
 // extra options for github pages
 if (process.env.DEPLOY_ENV === 'GH_PAGES') {
   routerBase.router = {
-    base: '/wwa/'
+    base: '/wwa'
   }
   plugins.push(
     new UglifyJSPlugin({
@@ -89,13 +89,6 @@ module.exports = {
         test: /\.glsl$/,
         loader: 'webpack-glsl-loader'
       })
-
-      config.module.rules.push({
-        test: /three\/examples\/js/,
-        use: 'imports-loader?THREE=three'
-      })
-
-      config.resolve.alias['three-examples'] = path.join(__dirname, './node_modules/three/examples/js')
     },
     // Define dynamic routes to generate for dist,
     // TODO: make function based on content from Dato

@@ -8,6 +8,7 @@
         v-bind:body="card.body"
         v-bind:theme="card.theme"
         v-bind:video="card.video"
+        v-bind:count="card.pageCount"
       />
     </li>
   </ul>

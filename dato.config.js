@@ -152,7 +152,7 @@ function getBooks (dato) {
   return dato.books
     .filter(filterPublished)
     .map(({ entity }) => {
-      const { chapters, slug, title, theme } = entity
+      const { body, chapters, slug, title, theme } = entity
       const path = `${contentBasePath}/${slug}`
       const chapterEntities = chapters
         .filter(filterPublished)
@@ -174,11 +174,12 @@ function getBooks (dato) {
               break
             }
           }
-          return { location, path: chapterPath, slug, title, type: chapterType }
+          return { pageCount: pages.length, location, path: chapterPath, slug, title, type: chapterType }
         })
 
       // create book
       return {
+        body,
         chapters: chapterEntities,
         path,
         slug,
@@ -212,6 +213,7 @@ function getChapters (dato, book) {
       const location = pages.filter(page => page.location)[0].location
       return {
         book,
+        pageCount: pages.length,
         location,
         pages,
         path,

@@ -4,7 +4,7 @@
       <h1>{{page.title}}</h1>
       <ul class="influences">
         <li v-for="influence in page.influences" v-bind:key="influence.slug">
-          <nuxt-link v-bind:for="influence.path">{{ influence.title }}</nuxt-link>
+          <nuxt-link v-bind:to="influence.path">{{ influence.title }}</nuxt-link>
         </li>
       </ul>
       <div class="storyteller" v-if="page.storyteller">
@@ -16,7 +16,7 @@
       </div>
     </header>
     <section v-if="page.body" class="body">
-      {{body}}
+      {{page.body}}
     </section>
     <section v-if="page.pictures" class="pictures">
       <picture v-for="picture in page.pictures" v-bind:key="picture.id">

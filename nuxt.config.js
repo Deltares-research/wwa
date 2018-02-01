@@ -88,21 +88,24 @@ module.exports = {
         test: /three\/examples\/js/,
         use: 'imports-loader?THREE=three'
       })
-
       config.resolve.alias['three-examples'] = path.join(__dirname, './node_modules/three/examples/js')
     },
+    // Create separate css file
+    extractCSS: true,
     // Define dynamic routes to generate for dist,
     // TODO: make function based on content from Dato
     generate: {
       routes: routes
     },
     // add postcss plugins
-    postcss: [
-      require('postcss-import')(),
-      require('postcss-custom-properties')(),
-      require('postcss-calc')()
-    ],
-    plugins: plugins
+    postcss: {
+      plugins: {
+        'postcss-import': {},
+        'postcss-calc': {},
+        'postcss-custom-properties': {}
+      }
+    },
+    plugins
   },
-  env: env
+  env
 }

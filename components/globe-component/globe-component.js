@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import 'three-examples/controls/OrbitControls'
+// import OrbitControls from 'orbit-controls-es6'
 // import 'three-examples/controls/OrbitControls'
 // import Stats from 'three-examples/libs/stats.min'
 
@@ -19,6 +19,8 @@ const assetsRoot = 'https://www.datocms-assets.com'
 
 const GLOBE_RADIUS = 5
 const WHITE = new THREE.Color(0xffffff)
+const vOffset = 15
+const vOffsetFactor = vOffset / 100
 
 export default {
   data () {
@@ -69,7 +71,7 @@ export default {
     this.camera = this.createCamera()
     this.scene = this.createScene()
 
-    const controls = new THREE.OrbitControls(this.camera, this.globeContainerElement)
+    // const controls = new OrbitControls(this.camera, this.globeContainerElement)
 
     this.mouse = new THREE.Vector2()
     this.intersections = []
@@ -89,7 +91,7 @@ export default {
       this.handleResize
     )
 
-    autoPlay(true);
+    autoPlay(true)
 
     this.renderer.domElement.addEventListener(
       'mousemove',
@@ -142,13 +144,17 @@ export default {
   methods: {
     handleResize () {
       // We're getting the containerSize here because the size
-      // of the canvas itself can is not changing on screen resize
+      // of the canvas itself is not changing on screen resize
+      const width = this.containerSize[0]
+      const height = this.containerSize[1]
+      const renderWidth = this.containerSize[0]
+      const renderHeight = this.containerSize[1] * (1 + vOffsetFactor)
       // reset the aspect ratio
-      this.camera.aspect = this.containerSize[0] / this.containerSize[1]
+      this.camera.aspect = renderWidth / renderHeight
       // recompute projection
       this.camera.updateProjectionMatrix()
       // set the size to the rederer
-      this.renderer.setSize(this.containerSize[0], this.containerSize[1])
+      this.renderer.setSize(width, height)
       // clear the screen
       this.renderer.clear()
       // redraw
@@ -269,9 +275,14 @@ export default {
      * @returns {Camera} Camera, looking at the scene.
      */
     createCamera () {
-      const camera = new THREE.PerspectiveCamera(30, this.containerSize[0] / this.containerSize[1], 0.1, 300)
-      camera.position.z = 30
-
+      const width = this.containerSize[0]
+      const height = this.containerSize[1]
+      const renderWidth = this.containerSize[0]
+      const renderHeight = this.containerSize[1] * (1 + vOffsetFactor)
+      const camera = new THREE.PerspectiveCamera(30, renderWidth / renderHeight, 0.1, 300)
+      camera.position.z = 30 * (1 + vOffsetFactor) * (1 + vOffsetFactor)
+      camera.setViewOffset(renderWidth, renderHeight, 0, height * vOffsetFactor, width, height)
+      console.log(camera)
       return camera
     },
     addCurves () {
@@ -283,6 +294,7 @@ export default {
         from.φ = deg2rad(from.lat)
         from.θ = deg2rad(from.lon)
         from.xyz = polar2cartesian(GLOBE_RADIUS, from.φ, from.θ)
+
         to.φ = deg2rad(to.lat)
         to.θ = deg2rad(to.lon)
         to.xyz = polar2cartesian(GLOBE_RADIUS, to.φ, to.θ)

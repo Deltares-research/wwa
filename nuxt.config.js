@@ -11,6 +11,11 @@ const routes = books.map((book) => {
   return `narratives/${book.slug}/`
 })
 
+// TODO: We want to enable these, but they give an error. They end up as null in the final config.
+const postcss = [
+  // require('postcss-custom-properties')(),
+  // require('postcss-calc')()
+]
 
 // only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
 const routerBase = {}
@@ -83,12 +88,6 @@ module.exports = {
         test: /\.glsl$/,
         loader: 'webpack-glsl-loader'
       })
-
-      config.module.rules.push({
-        test: /three\/examples\/js/,
-        use: 'imports-loader?THREE=three'
-      })
-      config.resolve.alias['three-examples'] = path.join(__dirname, './node_modules/three/examples/js')
     },
     // Create separate css file
     extractCSS: true,
@@ -98,14 +97,12 @@ module.exports = {
       routes: routes
     },
     // add postcss plugins
-    postcss: {
-      plugins: {
-        'postcss-import': {},
-        'postcss-calc': {},
+    postcss: postcss,
+    plugins: plugins
         'postcss-custom-properties': {}
       }
     },
     plugins
   },
-  env
+  env: env
 }

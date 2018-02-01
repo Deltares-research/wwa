@@ -47,7 +47,7 @@ export default {
             const page = entry.target.id
             const path = `/narratives/${book}/${chapter}/${page}`
             if (path !== window.location.pathname) {
-              history.pushState({}, page, path)
+              history.replaceState({}, page, path)
             }
             break
           }

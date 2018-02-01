@@ -36,9 +36,9 @@
       <section v-if="page.links" class="links">
         Links: {{page.links}}
       </section>
-      <ul v-if="page.keywords" class="keywords">
+      <ul v-if="page.keywords" class="keywords list--inline">
         <li v-for="keyword in page.keywords" v-bind:key="keyword.slug">
-          <nuxt-link v-bind:to="keyword.path">{{ keyword.title }}</nuxt-link>
+          <nuxt-link class="tag" v-bind:to="keyword.path">{{ keyword.title }}</nuxt-link>
         </li>
       </ul>
     </footer>
@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import '~/components/colors/colors.css'
 import AvatarComponent from '~/components/avatar-component/avatarComponent'
 
 export default {
@@ -77,11 +76,14 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+@import '../colors/colors.css';
+
 .page-component {
   --padding-v: calc(.5rem + .5vw);
   --padding-h: calc(1rem + 1vw);
   background-color: var(--ui--white);
+  color: var(--ui--text);
   padding: var(--padding-v) var(--padding-h);
   width: 90vw;
   min-height: 25vh;
@@ -90,12 +92,7 @@ export default {
   position:relative;
 }
 
-.t_margin_2r
-{
-  margin-top: 2rem;
-}
-
-article img
+.page-component img
 {
   display:flex;
   max-width:100%;

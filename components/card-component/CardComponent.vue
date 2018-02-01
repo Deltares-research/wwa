@@ -28,6 +28,7 @@ export default {
   padding: var(--padding-v) var(--padding-h);
   background-color: var(--ui--white);
   box-sizing: border-box;
+  color: var(--ui--text);
 }
 .card-component a {
   color: inherit;

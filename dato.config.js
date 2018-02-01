@@ -100,6 +100,7 @@ function generateChapters (dato, root, i18n) {
 function generateGlobeMarkers (dato, root, i18n) {
   const markers = getChapters(dato)
     .reduce((a, b) => a.concat(b), []) // Flat array of chapters
+    .filter(chapter => chapter.location)
     .map(chapter => {
       delete chapter.pages
       return chapter

@@ -20,13 +20,15 @@ export default {
 }
 </script>
 <style>
-html {
-  padding: 0;
-  margin: 0;
-}
-.globe-component {
-  position: fixed;
-  z-index: -1;
-  top:0;
-}
+  /* normalize (reset to a common default) the stylesheets */
+  @import '~normalize.css/normalize.css';
+  html {
+    padding: 0;
+    margin: 0;
+  }
+  .globe-component {
+    position: fixed;
+    z-index: -1;
+    top:0;
+  }
 </style>

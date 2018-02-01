@@ -1,5 +1,6 @@
 .list--inline {
-  list-style: none
+  list-style: none;
+  padding: 0;
 }
 .list--inline > li {
   display: inline-block;

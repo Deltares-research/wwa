@@ -21,13 +21,13 @@ export default {
 
 <style>
 @import '../colors/colors.css';
-
 .card-component {
   --padding-v: calc(.5rem + .5vw);
   --padding-h: calc(1rem + 1vw);
   width: 100%;
   padding: var(--padding-v) var(--padding-h);
   background-color: var(--ui--white);
+  box-sizing: border-box;
 }
 .card-component a {
   color: inherit;

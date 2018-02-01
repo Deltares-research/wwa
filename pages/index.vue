@@ -1,5 +1,8 @@
 <template>
-  <card-list v-bind:cards="cards" />
+  <div>
+    <h1>World Water Atlas</h1>
+    <card-list v-bind:cards="books" />
+  </div>
 </template>
 
 <script>
@@ -7,12 +10,13 @@ import CardList from '~/components/card-list/CardList'
 import books from '~/static/data/books/index.json'
 
 export default {
+  layout: 'list',
   components: {
     CardList
   },
   data () {
     return {
-      cards: books
+      books
     }
   }
 }

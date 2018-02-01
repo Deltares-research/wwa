@@ -10,6 +10,7 @@ import CardList from '~/components/card-list/CardList'
 import loadData from '~/lib/load-data'
 
 export default {
+  layout: 'list',
   asyncData (context) {
     return loadData(context, context.params)
   },

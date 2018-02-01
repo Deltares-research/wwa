@@ -28,7 +28,8 @@ export default {
   overflow-y: hidden;
   white-space: nowrap;
   padding:0;
-  margin:1rem 0;
+  margin: 0 0 1rem 0;
+
 }
 
 .card-list-item {
@@ -37,7 +38,7 @@ export default {
   min-width: 280px;
   max-width: 960px;
   height: 16rem;
-  max-height: 24vh;
+  max-height: 20vh;
   margin: 0 1vw;
   vertical-align: top;
   white-space: normal;

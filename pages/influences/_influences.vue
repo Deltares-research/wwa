@@ -22,6 +22,7 @@ import influences from '~/static/data/influences/index.json'
 import '~/components/list/list.css'
 
 export default {
+  layout: 'list',
   async asyncData (context) {
     const { params } = context
     const activeInfluences = params.influences.split('+')

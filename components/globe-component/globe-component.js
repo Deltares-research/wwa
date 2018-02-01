@@ -282,7 +282,6 @@ export default {
       const camera = new THREE.PerspectiveCamera(30, renderWidth / renderHeight, 0.1, 300)
       camera.position.z = 30 * (1 + vOffsetFactor) * (1 + vOffsetFactor)
       camera.setViewOffset(renderWidth, renderHeight, 0, height * vOffsetFactor, width, height)
-      console.log(camera)
       return camera
     },
     addCurves () {

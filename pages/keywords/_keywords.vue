@@ -14,11 +14,9 @@
 <script>
 import CardList from '~/components/card-list/CardList'
 import loadData from '~/lib/load-data'
-import '~/components/a11y/a11y.css'
-import '~/components/list/list.css'
-import '~/components/tag/tag.css'
 
 export default {
+  layout: 'list',
   async asyncData (context) {
     const { params, route } = context
     const keywords = params.keywords.split('+')

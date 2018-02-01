@@ -26,6 +26,7 @@ article {
   padding: var(--padding-v) var(--padding-h);
   background-color: var(--ui--white);
 }
+article a {
   color: inherit;
   text-decoration: none;
 }

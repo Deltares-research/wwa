@@ -8,9 +8,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const books = require('./static/data/books/index.json')
 
 const routes = books.map((book) => {
-  return `narratives/${book.slug}/`
+  return `/narratives/${book.slug}/`
 })
-
 
 // only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
 const routerBase = {}
@@ -34,7 +33,7 @@ if (process.env.NODE_ENV === 'production') {
 // extra options for github pages
 if (process.env.DEPLOY_ENV === 'GH_PAGES') {
   routerBase.router = {
-    base: '/wwa/'
+    base: '/wwa'
   }
   plugins.push(
     new UglifyJSPlugin({

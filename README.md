@@ -19,14 +19,8 @@ DATO_API_TOKEN=<TOKEN>
 # install dependencies
 $ npm install # Or yarn install
 
-# build the globe component
-$ cd external/globe
-$ npm install
-$ npm run build
-
 # serve with hot reload at localhost:9920
 $ npm run dev
-
 
 # check sourcecode quality
 $ npm run lint
@@ -41,11 +35,10 @@ $ npm run generate
 $ npm run build
 $ npm start
 
-# build and generate also generate a report in .nuxt/dist/report.html
+# build and generate also generates a report in .nuxt/dist/report.html
 
 # deploy to github pages
-$ npm run generate:gh-pages
-$ npm run deploy
+$ npm run deploy:gh-pages
 
 # deploy to surge (for intermediate versions/AB testing)
 # website will be online at name-wwa-version

@@ -1,4 +1,5 @@
 <template>
+  <article>
     <nuxt-link v-bind:to="path">
       <h1>{{title}} {{count || ''}}</h1>
       <svg-icon v-if="theme" v-bind:icon="theme.slug" />

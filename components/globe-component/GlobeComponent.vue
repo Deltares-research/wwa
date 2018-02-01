@@ -12,8 +12,7 @@
 <style>
   .globe-container {
     width: 100vw;
-    min-height: 50vh;
-    max-height: 50vh;
+    height: 100vh;
   }
   .hidden {
     display: none;

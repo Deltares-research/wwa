@@ -42,12 +42,13 @@ export default {
         // No Array.prototype function, so we can break the loop
         for (const entry of entries) {
           if (entry.isIntersecting) {
+            const base = this.$route.base || ''
             const book = this.$route.params.book
             const chapter = this.$route.params.chapter
             const page = entry.target.id
-            const path = `/narratives/${book}/${chapter}/${page}`
+            const path = `${base}/narratives/${book}/${chapter}/${page}`
             if (path !== window.location.pathname) {
-              history.pushState({}, page, path)
+              history.replaceState({}, page, path)
             }
             break
           }

@@ -195,8 +195,8 @@ function getBooks (dato) {
  * @param {Dato} dato
  * @param {DatoRecord} [book] optional book to get chapters from
 */
-function getChapters (dato, book) {
-  const chapters = (book) ? book.chapters : dato.chapters
+function getChapters (dato, bookRef) {
+  const chapters = (bookRef) ? bookRef.chapters : dato.chapters
   return chapters
     .filter(filterPublished)
     .map(chapter => {
@@ -250,19 +250,19 @@ function getPages (dato, chapterRef) {
         zoom: page.zoomlevel
       } : null
       chapterRef = chapterRef || getParent(dato, page)
-      const bookRef = getParent(dato, chapterRef)
-      const book = {
+      const bookRef = getParent(dato, chapterRef) || {}
+      const book = (bookRef) ? {
         path: `${contentBasePath}/${bookRef.slug}`,
         slug: bookRef.slug,
         title: bookRef.title
-      }
+      } : {}
       const chapter = {
         path: `${book.path}/${chapterRef.slug}`,
         slug: chapterRef.slug,
         title: chapterRef.title,
         type: chapterRef.chapterType
       }
-      const theme = bookRef.theme
+      const theme = (bookRef && typeof bookRef.theme === 'object') ? bookRef.theme : tagStringToLinkObject(bookRef.theme, 'themes')
       const path = `${chapter.path}/${slug}`
       return {
         body,

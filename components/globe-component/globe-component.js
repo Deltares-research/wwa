@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import OrbitControls from 'orbit-controls-es6'
+// import OrbitControls from 'orbit-controls-es6'
 // import 'three-examples/controls/OrbitControls'
 // import Stats from 'three-examples/libs/stats.min'
 
@@ -71,7 +71,7 @@ export default {
     this.camera = this.createCamera()
     this.scene = this.createScene()
 
-    const controls = new OrbitControls(this.camera, this.globeContainerElement)
+    // const controls = new OrbitControls(this.camera, this.globeContainerElement)
 
     this.mouse = new THREE.Vector2()
     this.intersections = []

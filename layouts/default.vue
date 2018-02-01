@@ -1,5 +1,8 @@
 <template>
   <main>
+    <!--[if lte IE 12]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
     <globe-component class="globe-component" :activeStory="activeStory" />
     <nuxt/>
   </main>

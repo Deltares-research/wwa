@@ -18,6 +18,11 @@ const slugify = require('slug')
  */
 
 /**
+ * @typedef DatoRecord
+ * @type {object}
+ */
+
+/**
  * @typedef linkObject
  * @type {object}
  * @property {title} title - Human-readable name
@@ -183,7 +188,7 @@ function getBooks (dato) {
         chapters: chapterEntities,
         path,
         slug,
-        theme,
+        theme: tagStringToLinkObject(theme, 'themes'),
         title
       }
     })
@@ -201,7 +206,7 @@ function getChapters (dato, bookRef) {
     .filter(filterPublished)
     .map(chapter => {
       const { title, slug, chapterType } = chapter
-      const bookRef = getParent(dato, chapter)
+      bookRef = bookRef || getParent(dato, chapter)
       const book = {
         path: `${contentBasePath}/${bookRef.slug}`,
         slug: bookRef.slug,
@@ -209,8 +214,9 @@ function getChapters (dato, bookRef) {
       }
       const path = `${book.path}/${slug}`
       const pages = getPages(dato, chapter)
-      const storyteller = pages.filter(page => page.location)[0].storyteller
-      const location = pages.filter(page => page.location)[0].location
+      const firstLocationPage = pages.filter(page => page.location)[0]
+      const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
+      const location = (firstLocationPage) ? firstLocationPage.location : null
       return {
         book,
         pageCount: pages.length,
@@ -372,8 +378,13 @@ function collectBooksByTheme (books) {
   return books
     .reduce((themes, book) => {
       if (book.theme) {
-        themes[book.theme] = themes[book.theme] || []
-        themes[book.theme].push(book)
+        themes[book.theme.slug] = themes[book.theme.slug] || {
+          title: book.theme.title,
+          slug: book.theme.slug,
+          path: book.theme.path,
+          entries: []
+        }
+        themes[book.theme.slug].entries.push(book)
       }
       return themes
     }, {})

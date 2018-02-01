@@ -5,7 +5,7 @@
       <h1>{{page.title}}</h1>
       <ul class="influences">
         <li v-for="influence in page.influences" v-bind:key="influence.slug">
-          <nuxt-link v-bind:for="influence.path">{{ influence.title }}</nuxt-link>
+          <nuxt-link v-bind:to="influence.path">{{ influence.title }}</nuxt-link>
         </li>
       </ul>
       <div class="storyteller" v-if="page.storyteller">
@@ -38,7 +38,7 @@
       </section>
       <ul v-if="page.keywords" class="keywords">
         <li v-for="keyword in page.keywords" v-bind:key="keyword.slug">
-          <nuxt-link v-bind:for="keyword.path">{{ keyword.title }}</nuxt-link>
+          <nuxt-link v-bind:to="keyword.path">{{ keyword.title }}</nuxt-link>
         </li>
       </ul>
     </footer>

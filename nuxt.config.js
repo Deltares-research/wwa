@@ -11,6 +11,12 @@ const routes = books.map((book) => {
   return `/narratives/${book.slug}/`
 })
 
+// TODO: We want to enable these, but they give an error. They end up as null in the final config.
+const postcss = [
+  // require('postcss-custom-properties')(),
+  // require('postcss-calc')()
+]
+
 // only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
 const routerBase = {}
 const plugins = [
@@ -49,6 +55,7 @@ if (process.env.DEPLOY_ENV === 'GH_PAGES') {
   // use the deployment url
   env.baseUrl = 'https://deltares.github.io' + '/wwa'
 }
+
 
 module.exports = {
   // Headers of the page
@@ -96,10 +103,7 @@ module.exports = {
       routes: routes
     },
     // add postcss plugins
-    postcss: [
-      // require('postcss-custom-properties'),
-      require('postcss-calc')
-    ],
+    postcss: postcss,
     plugins: plugins
   },
   env: env

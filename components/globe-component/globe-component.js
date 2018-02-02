@@ -1,10 +1,7 @@
 import * as THREE from 'three'
-// import OrbitControls from 'orbit-controls-es6'
-// import 'three-examples/controls/OrbitControls'
-// import Stats from 'three-examples/libs/stats.min'
-
 import { Tween, autoPlay, Easing } from 'es6-tween'
 import { cartesian2polar, polar2cartesian, deg2rad } from './geometry.js'
+import { OrbitControls } from './orbit-controls.js'
 
 // get the markers exported by dato
 import markers from 'static/data/globeMarkers.json'
@@ -28,6 +25,7 @@ export default {
       renderer: null,
       camera: null,
       scene: null,
+      controls: null,
       message: ''
     }
   },
@@ -71,7 +69,7 @@ export default {
     this.camera = this.createCamera()
     this.scene = this.createScene()
 
-    // const controls = new OrbitControls(this.camera, this.globeContainerElement)
+    this.controls = new OrbitControls(this.camera, this.globeContainerElement)
 
     this.mouse = new THREE.Vector2()
     this.intersections = []

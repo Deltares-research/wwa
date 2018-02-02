@@ -2,7 +2,7 @@
   <section>
     <ul class="list--inline">
       <li v-for="keyword in activeKeywords" v-bind:key="keyword.slug">
-        <nuxt-link class="tag" v-bind:to="keyword.unsetLink">
+        <nuxt-link class="tag tag--removable" v-bind:to="keyword.unsetLink">
           <span class="sr-only">remove </span>{{keyword.title }}
         </nuxt-link>
       </li>
@@ -24,17 +24,13 @@
 import CardList from '~/components/card-list/CardList'
 import loadData from '~/lib/load-data'
 import { unionByProp } from '~/lib/set-operations'
-import '~/components/a11y/a11y.css'
-import '~/components/list/list.css'
-import '~/components/tag/tag.css'
 
 export default {
+  layout: 'list',
   async asyncData (context) {
     const { params } = context
     const keywordsFromUrl = params.keywords.split('+')
-    const data = await loadData(context, { keywords: keywordsFromUrl })
-    const results = (data) ? data.results : []
-    const keywords = data.tags
+    const { results = [], tags: keywords = [] } = await loadData(context, { keywords: keywordsFromUrl })
 
     return {
       keywords,

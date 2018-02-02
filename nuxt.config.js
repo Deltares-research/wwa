@@ -10,10 +10,13 @@ const routes = books.map((book) => {
 })
 
 // TODO: We want to enable these, but they give an error. They end up as null in the final config.
-const postcss = [
-  // require('postcss-custom-properties')(),
-  // require('postcss-calc')()
-]
+const postcss = {
+  plugins: {
+    'postcss-import': {},
+    'postcss-calc': {},
+    'postcss-custom-properties': {}
+  }
+}
 
 // only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
 const routerBase = {}
@@ -24,6 +27,7 @@ const plugins = [
     openAnalyzer: false
   })
 ]
+
 const env = {
   // TODO make this a bit more flexible (also allow surge deployment)
   baseUrl: 'http://localhost:9920'
@@ -55,7 +59,11 @@ if (process.env.DEPLOY_ENV === 'GH_PAGES') {
 }
 
 module.exports = {
-  // Headers of the page
+  // Css entry file
+  css: [
+    'normalize.css',
+    '~/base.css'
+  ],
   head: {
     title: 'World Water Atlas',
     meta: [
@@ -68,9 +76,7 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-  css: [
-    'normalize.css'
-  ],
+
   // include routerbase
   ...routerBase,
   // Build configuration
@@ -91,6 +97,8 @@ module.exports = {
         loader: 'webpack-glsl-loader'
       })
     },
+    // Create separate css file
+    extractCSS: true,
     // Define dynamic routes to generate for dist,
     // TODO: make function based on content from Dato
     generate: {
@@ -98,7 +106,7 @@ module.exports = {
     },
     // add postcss plugins
     postcss: postcss,
-    plugins: plugins
+    plugins
   },
   env: env
 }

@@ -87,6 +87,7 @@
     "postcss": "^6.0.16",
     "postcss-calc": "6.0.1",
     "postcss-custom-properties": "6.2.0",
+    "postcss-import": "11.0.0",
     "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack-bundle-analyzer": "^2.9.2",
     "webpack-glsl-loader": "^1.0.1"

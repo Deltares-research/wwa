@@ -1,6 +1,6 @@
 <template>
-  <svg v-bind:class="`svg-icon ${icon} ${iconVariant}`" xmlns:x="http://www.w3.org/1999/xlink">
-    <use v-bind:href="`#${icon}`" />
+  <svg v-bind:class="`svg-icon ${icon} ${iconVariant}`" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <use v-bind:xlink:href="`#${icon}`" />
   </svg>
 </template>
 

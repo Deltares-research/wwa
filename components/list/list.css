@@ -1,7 +1,15 @@
 .list--inline {
-  list-style: none
+  list-style: none;
+  padding: 0;
 }
 .list--inline > li {
   display: inline-block;
-  vertical-align: top;
+  margin: 0 0 0 1em;
+}
+.list--inline > li:last-child {
+  margin-right: 0;
+}
+.list--scroll {
+  white-space: nowrap;
+  overflow: scroll
 }

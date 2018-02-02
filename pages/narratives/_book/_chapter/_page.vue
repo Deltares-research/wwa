@@ -58,9 +58,11 @@ export default {
     scrollToSlug () {
       const activePage = document.getElementById(this.$route.params.page)
       const windowHeight = (window.innerHeight || document.clientHeight)
-      const top = activePage.getBoundingClientRect().top || windowHeight
-      const y = Math.round(top - (windowHeight / 2)) // match with margin between PageComponents
-      window.scroll(0, y)
+      if (activePage) {
+        const top = activePage.getBoundingClientRect().top || windowHeight
+        const y = Math.round(top - (windowHeight / 2)) // match with margin between PageComponents
+        window.scroll(0, y)
+      }
     }
   }
 }

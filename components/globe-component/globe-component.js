@@ -245,7 +245,7 @@ export default {
       const glow = new Glow(this.camera)
       globe.add(glow.mesh)
 
-      this.avatar = new Avatar()
+      this.avatar = new Avatar(markers)
       this.avatar.load(avs => globe.add(avs))
 
       scene.add(globe)

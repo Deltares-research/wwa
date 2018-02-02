@@ -14,7 +14,10 @@ const postcss = {
   plugins: {
     'postcss-import': {},
     'postcss-calc': {},
-    'postcss-custom-properties': {}
+    'postcss-custom-properties': {
+      // TODO: check warnings about variables declared outside :root
+      warnings: false
+    }
   }
 }
 

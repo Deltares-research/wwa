@@ -2,7 +2,7 @@
   <div>
     <div class="list--scroll">
       <h1>{{title}}</h1>
-      <title-list v-bind:titles="books" v-bind:active="{ slug }" v-bind:exclude="true" />
+      <title-list v-bind:titles="books" v-bind:active="[{ slug }]" v-bind:exclude="true" />
     </div>
     <card-list v-bind:cards="chapters" />
   </div>
@@ -37,4 +37,3 @@ export default {
     vertical-align: baseline;
   }
 </style>
-

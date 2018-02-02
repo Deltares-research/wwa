@@ -15,7 +15,7 @@
 export default {
   props: {
     titles: Array,
-    active: [ Array, Object ],
+    active: Array,
     exclude: {
       type: Boolean,
       default: false

@@ -28,13 +28,26 @@ export default {
   top:0;
 }
 
-.app {
+.app,
+.card-list,
+.card-list-item {
   position: fixed;
-  color: var(--ui--text--invert);
   bottom: 0;
   left: 0;
   right: 0;
   min-height: 20rem;
   max-height: 20vh;
+  color: var(--ui--text--invert);
 }
+
+.card-list {
+  box-sizing: border-box;
+  padding-top: 5rem;
+  z-index: -1;
+}
+
+.card-list-item {
+  position: static;
+}
+
 </style>

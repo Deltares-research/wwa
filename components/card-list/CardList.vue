@@ -27,18 +27,17 @@ export default {
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
-  padding:0;
-  margin: 0 0 1rem 0;
-
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
 }
 
 .card-list-item {
+  position: static;
   display: inline-flex;
   width: 50vw;
   min-width: 280px;
   max-width: 960px;
-  height: 16rem;
-  max-height: 20vh;
   margin: 0 1vw;
   vertical-align: top;
   white-space: normal;

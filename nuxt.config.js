@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const books = require('./static/data/books/index.json')
 
 const routes = books.map((book) => {
-  return `narratives/${book.slug}/`
+  return `/narratives/${book.slug}/`
 })
 
 // TODO: We want to enable these, but they give an error. They end up as null in the final config.
@@ -41,7 +41,7 @@ if (process.env.NODE_ENV === 'production') {
 // extra options for github pages
 if (process.env.DEPLOY_ENV === 'GH_PAGES') {
   routerBase.router = {
-    base: '/wwa/'
+    base: '/wwa'
   }
   plugins.push(
     new UglifyJSPlugin({
@@ -60,7 +60,22 @@ if (process.env.DEPLOY_ENV === 'GH_PAGES') {
 
 module.exports = {
   // Css entry file
-  css: ['~/base.css'],
+  head: {
+    title: 'World Water Atlas',
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'description', name: 'description', content: 'World Water Atlas' },
+      { 'http-equiv': 'x-ua-compatible',  content: 'ie=edge' }
+    ],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ]
+  },
+  css: [
+    '~/base.css',
+    'normalize.css'
+  ],
   // include routerbase
   ...routerBase,
   // Build configuration

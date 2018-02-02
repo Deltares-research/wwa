@@ -9,7 +9,7 @@
 import CardList from '~/components/card-list/CardList'
 import TitleList from '~/components/title-list/TitleList'
 import loadData from '~/lib/load-data'
-import influences from '~/static/data/influences/index.json'
+import allInfluences from '~/static/data/influences/index.json'
 import '~/components/list/list.css'
 
 export default {
@@ -18,8 +18,11 @@ export default {
     const { params } = context
     const activeInfluences = [ params.influences ]
     const { results = [] } = await loadData(context, { influences: activeInfluences })
+    // Build active influences objects from url
+    const activeInfluences = tags
+      .filter(tag => influencesFromUrl.some(active => active === tag.slug))
     return {
-      influences,
+      influences: allInfluences,
       activeInfluences,
       results
     }
@@ -27,11 +30,6 @@ export default {
   components: {
     CardList,
     TitleList
-  },
-  data () {
-    return {
-      theme: this.$route.params.theme
-    }
   }
 }
 </script>

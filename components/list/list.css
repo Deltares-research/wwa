@@ -5,6 +5,7 @@
 .list--inline > li {
   display: inline-block;
   margin: 0 0 0 1em;
+  vertical-align: top;
 }
 .list--inline > li:last-child {
   margin-right: 0;

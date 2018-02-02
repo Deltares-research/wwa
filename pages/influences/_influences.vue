@@ -1,6 +1,6 @@
 <template>
   <section>
-    <title-list v-bind:titles="influences" v-bind:active="{ slug: activeInfluences[0] }" />
+    <title-list v-bind:titles="influences" v-bind:active="activeInfluences" />
     <card-list v-bind:cards="results" />
   </section>
 </template>
@@ -16,7 +16,7 @@ export default {
   layout: 'list',
   async asyncData (context) {
     const { params } = context
-    const influencesFromUrl = [ params.influences ]
+    const influencesFromUrl = params.influences.split('+')
     const { results = [] } = await loadData(context, { influences: influencesFromUrl })
     // Build active influences objects from url
     const activeInfluences = allInfluences

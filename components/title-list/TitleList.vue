@@ -1,7 +1,7 @@
 <template>
   <ul class="title-list list--inline">
     <li class="h1 title-list-item" v-for="item in titles" v-bind:key="item.slug">
-      <nuxt-link v-if="item.slug !== active.slug" v-bind:to="item.path">
+      <nuxt-link v-if="active.every(t => t.slug !== item.slug)" v-bind:to="item.path">
         <span class="sr-only">Go to book</span> {{item.title}}
       </nuxt-link>
       <span v-else-if="!exclude">

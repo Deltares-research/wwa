@@ -6,13 +6,21 @@ import { lon2rad, lat2rad } from './common'
 
 const SCALE = 1.1
 
-const TOO_MUCH = 0xff0077
-const TOO_LITTLE = 0x00ff77
-const TOO_DIRTY = 0x0077ff
+const TOO_MUCH = 0x41b6c4
+const TOO_LITTLE = 0xfd8d3c
+const TOO_DIRTY = 0xa63603
+const THEME_COLORS = {
+  'too much': TOO_MUCH,
+  'too little': TOO_LITTLE,
+  'too dirty': TOO_DIRTY
+}
 
 class Avatar {
   constructor () {
-    this.texture = new THREE.TextureLoader().load('sample_avatar_rounded.png')
+    this.textures = {}
+    this.textures['too dirty'] = new THREE.TextureLoader().load('/avatars/too-dirty.png')
+    this.textures['too much'] = new THREE.TextureLoader().load('/avatars/too-much.png')
+    this.textures['too little'] = new THREE.TextureLoader().load('/avatars/too-little.png')
     this.mesh = new THREE.Object3D()
   }
 
@@ -31,22 +39,11 @@ class Avatar {
       //   map: this.texture,
       //   color: 0xffffff
       // })
-
-      const that = this
-
       result[0].forEach((d, i) => {
-        let themeColor = 0x000000
-
-        if (i % 3 === 0) {
-          themeColor = TOO_MUCH
-        } else if (i % 3 === 1) {
-          themeColor = TOO_LITTLE
-        } else if (i % 3 === 2) {
-          themeColor = TOO_DIRTY
-        }
-
+        const themeColor = THEME_COLORS[d.book.theme]
+        const texture = this.textures[d.book.theme]
         const material = new THREE.SpriteMaterial({
-          map: this.texture,
+          map: texture,
           color: new THREE.Color(themeColor)
         })
 
@@ -71,7 +68,7 @@ class Avatar {
         avatar.data = d
         avatar.data.themeColor = new THREE.Color(themeColor)
 
-        that.mesh.add(avatar)
+        this.mesh.add(avatar)
       })
 
       finished(this.mesh)

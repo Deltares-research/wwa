@@ -47,7 +47,7 @@ export default {
         for (var i = 0; i < 100; i++) {
           // Based on this example https://brunodigiuseppe.wordpress.com/2015/02/14/flight-paths-with-threejs/
           const from = {lat: Math.random() * 180 - 90, lon: Math.random() * 360}
-          const to = {lat: 0, lon: 0}
+          const to = {lat: 12, lon: 0}
           const record = {from, to}
           connections.push(record)
         }
@@ -75,7 +75,7 @@ export default {
     this.intersections = []
 
     this.createRaycaster()
-    this.addMarkers()
+    // this.addMarkers()
     this.addCurves()
     this.pan()
     this.zoom()
@@ -280,7 +280,6 @@ export default {
       const camera = new THREE.PerspectiveCamera(30, renderWidth / renderHeight, 0.1, 300)
       camera.position.z = 30 * (1 + vOffsetFactor) * (1 + vOffsetFactor)
       camera.setViewOffset(renderWidth, renderHeight, 0, height * vOffsetFactor, width, height)
-      console.log(camera)
       return camera
     },
     addCurves () {
@@ -321,8 +320,12 @@ export default {
         let geometry = new THREE.Geometry()
         geometry.vertices = curve.getPoints(50)
 
+        // Use THREE.MeshLine if you need wider line
         let material = new THREE.LineBasicMaterial({
-          color: 0xff7700
+          color: 0xff0077,
+          blending: THREE.AdditiveBlending,
+          opacity: 0.8,
+          transparent: true
         })
 
         // Create the final Object3d to add to the scene

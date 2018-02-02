@@ -16,10 +16,10 @@ export default {
   layout: 'list',
   async asyncData (context) {
     const { params } = context
-    const activeInfluences = [ params.influences ]
-    const { results = [] } = await loadData(context, { influences: activeInfluences })
+    const influencesFromUrl = [ params.influences ]
+    const { results = [] } = await loadData(context, { influences: influencesFromUrl })
     // Build active influences objects from url
-    const activeInfluences = tags
+    const activeInfluences = allInfluences
       .filter(tag => influencesFromUrl.some(active => active === tag.slug))
     return {
       influences: allInfluences,

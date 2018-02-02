@@ -63,7 +63,7 @@ class Particles {
   load (finished) {
     const that = this
 
-    loadData('data/land.csv', (err, result) => {
+    loadData('https://s3-eu-west-1.amazonaws.com/deltares-opendata/wwa/wri/land.csv', (err, result) => {
       if (err) {
         console.error('particle data could not be loaded')
       }

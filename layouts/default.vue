@@ -23,7 +23,6 @@ export default {
 }
 </script>
 <style>
-  /* normalize (reset to a common default) the stylesheets */
   html {
     padding: 0;
     margin: 0;

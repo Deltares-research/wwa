@@ -30,9 +30,7 @@ export default {
   async asyncData (context) {
     const { params } = context
     const keywordsFromUrl = params.keywords.split('+')
-    const data = await loadData(context, { keywords: keywordsFromUrl })
-    const results = (data) ? data.results : []
-    const keywords = data.tags
+    const { results = [], tags: keywords = [] } = await loadData(context, { keywords: keywordsFromUrl })
 
     return {
       keywords,

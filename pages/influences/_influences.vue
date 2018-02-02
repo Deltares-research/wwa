@@ -16,7 +16,7 @@ export default {
   layout: 'list',
   async asyncData (context) {
     const { params } = context
-    const activeInfluences = params.influences
+    const activeInfluences = [ params.influences ]
     const { results = [] } = await loadData(context, { influences: activeInfluences })
     return {
       influences,

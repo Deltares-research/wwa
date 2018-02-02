@@ -1,7 +1,7 @@
 <template>
   <article class="page-component">
     <header>
-      <div v-bind:class="page.theme+' colorband'"></div>
+      <div v-bind:class="page.theme[0].slug+' colorband'"></div>
       <h1>{{page.title}}</h1>
       <ul class="influences">
         <li v-for="influence in page.influences" v-bind:key="influence.slug">

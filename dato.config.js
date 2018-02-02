@@ -81,7 +81,7 @@ function generateBooks (dato, root, i18n) {
  * Write out Chapter JSONs
  *
  * @param {Dato} dato - DatoCMS API
- * @param {Root} root - Project root
+ * @param {Root} root - Project rootle.log
  * @param {i18n} i18n
  */
 function generateChapters (dato, root, i18n) {
@@ -211,7 +211,8 @@ function getChapters (dato, bookRef) {
       const book = {
         path: `${contentBasePath}/${bookRef.slug}`,
         slug: bookRef.slug,
-        title: bookRef.title
+        title: bookRef.title,
+        theme: bookRef.theme
       }
       const path = `${book.path}/${slug}`
       const pages = getPages(dato, chapter)

@@ -1,7 +1,7 @@
 <template>
   <section>
     <ul class="list--inline">
-      <li v-for="keyword in tags" v-bind:key="keyword.slug">
+      <li v-for="keyword in activeKeywords" v-bind:key="keyword.slug">
         <nuxt-link class="tag tag--removable" v-bind:to="keyword.unsetLink">
           <span class="sr-only">remove </span>{{keyword.title }}
         </nuxt-link>
@@ -23,13 +23,14 @@
 <script>
 import CardList from '~/components/card-list/CardList'
 import loadData from '~/lib/load-data'
+import { unionByProp } from '~/lib/set-operations'
 
 export default {
   layout: 'list',
   async asyncData (context) {
-    const { params, route } = context
-    const keywords = params.keywords.split('+')
-    const data = await loadData(context, { keywords })
+    const { params } = context
+    const keywordsFromUrl = params.keywords.split('+')
+    const data = await loadData(context, { keywords: keywordsFromUrl })
     const results = (data) ? data.results : []
     const keywords = data.tags
 
@@ -43,16 +44,16 @@ export default {
   },
   computed: {
     activeKeywords () {
-    const base = route.path.replace(/(\+?[^/])*(\/?)$/, '') // remove all tags
-    const tags = data.tags.map(tag => {
-      const excludingSelf = data.tags
-        .filter(t => t.slug !== tag.slug)
-        .map(t => t.slug)
-        .join('+')
-      tag.unsetLink = `${base}${excludingSelf}`
-      return tag
-    })
-    return {
+      const base = this.$route.path.replace(/(\+?[^/])*(\/?)$/, '') // remove all tags
+      return this.keywords.map(tag => {
+        const excludingSelf = this.keywords
+          .filter(t => t.slug !== tag.slug)
+          .map(t => t.slug)
+          .join('+')
+        tag.unsetLink = `${base}${excludingSelf}`
+        return tag
+      })
+    },
     availableKeywords () {
       // Build available keywords objects from results
       return this.results
@@ -60,7 +61,12 @@ export default {
         .filter(keyword => this.activeKeywords.every(active => active.slug !== keyword.slug))
     }
   },
-  components: {
-    CardList
-  }  }
-/script>
+  methods: {
+    updatePath (event) {
+      const keywordSlug = event.target.value
+      const path = this.$route.path.replace(/\/$/, '') // remove trailing slash
+      this.$router.push(`${path}+${keywordSlug}`)
+    }
+  }
+}
+</script>

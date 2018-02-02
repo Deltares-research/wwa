@@ -60,22 +60,23 @@ if (process.env.DEPLOY_ENV === 'GH_PAGES') {
 
 module.exports = {
   // Css entry file
+  css: [
+    'normalize.css',
+    '~/base.css'
+  ],
   head: {
     title: 'World Water Atlas',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'World Water Atlas' },
-      { 'http-equiv': 'x-ua-compatible',  content: 'ie=edge' }
+      { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-  css: [
-    '~/base.css',
-    'normalize.css'
-  ],
+
   // include routerbase
   ...routerBase,
   // Build configuration

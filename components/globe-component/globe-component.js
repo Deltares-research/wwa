@@ -245,7 +245,10 @@ export default {
       const glow = new Glow(this.camera)
       globe.add(glow.mesh)
 
-      this.avatar = new Avatar()
+      // get the baseUrl
+      const { base = '/' } = this.$router.options
+
+      this.avatar = new Avatar(markers, base)
       this.avatar.load(avs => globe.add(avs))
 
       scene.add(globe)

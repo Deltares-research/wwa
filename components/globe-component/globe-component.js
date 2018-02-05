@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { Tween, autoPlay, Easing } from 'es6-tween'
-import { cartesian2polar, polar2cartesian, deg2rad } from './geometry.js'
+import { cartesian2polar, polar2cartesian, deg2rad } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
 
 // get the markers exported by dato

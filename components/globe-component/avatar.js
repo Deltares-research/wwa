@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 import { GLOBE_RADIUS, INIT_ANGLE, INIT_AXIS } from './constants'
-import { lon2rad, lat2rad } from './common'
+import { polar2cartesian, lon2rad, lat2rad } from './common'
 
 const SCALE = 1.1
 
@@ -45,10 +45,7 @@ class Avatar {
       const lon = lon2rad(d.location.lat)
       const lat = lat2rad(d.location.lng)
 
-      const x = SCALE * GLOBE_RADIUS * Math.sin(lat) * Math.cos(lon)
-      const y = SCALE * GLOBE_RADIUS * Math.sin(lat) * Math.sin(lon)
-      const z = SCALE * GLOBE_RADIUS * Math.cos(lat)
-
+      const {x, y, z} = polar2cartesian(SCALE * GLOBE_RADIUS, lat, lon)
       const position = new THREE.Vector3(x, y, z)
       position.applyAxisAngle(INIT_AXIS, INIT_ANGLE)
 

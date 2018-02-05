@@ -18,9 +18,9 @@ class Avatar {
   constructor (markers, base) {
     this.markers = markers
     this.textures = {}
-    this.textures['too dirty'] = new THREE.TextureLoader().load(base + '/avatars/too-dirty.png')
-    this.textures['too much'] = new THREE.TextureLoader().load(base + '/avatars/too-much.png')
-    this.textures['too little'] = new THREE.TextureLoader().load(base + '/avatars/too-little.png')
+    this.textures['too dirty'] = new THREE.TextureLoader().load(base + 'avatars/too-dirty.png')
+    this.textures['too much'] = new THREE.TextureLoader().load(base + 'avatars/too-much.png')
+    this.textures['too little'] = new THREE.TextureLoader().load(base + 'avatars/too-little.png')
     this.mesh = new THREE.Object3D()
   }
 

@@ -75,13 +75,11 @@ export default {
     this.intersections = []
 
     this.createRaycaster()
-    // this.addMarkers()
     this.addCurves()
-    this.pan()
-    this.zoom()
     // resize the canvas
     this.handleResize()
     this.animate()
+    this.panAndZoom()
 
     // window is the event handler fo resize, so we need to subscribe to it
     window.addEventListener(
@@ -141,8 +139,7 @@ export default {
   },
   watch: {
     activeMarker (newMarker, oldMarker) {
-      this.pan()
-      this.zoom()
+      this.panAndZoom()
     }
   },
   methods: {
@@ -165,9 +162,9 @@ export default {
       // this.renderer.render(this.scene, this.camera)
     },
     handleClick (event) {
+      console.log('intersections', this.intersections)
       if (this.intersections.length > 0) {
         const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
-
         const targetPos = {
           x: this.intersections[0].object.position.x,
           y: this.intersections[0].object.position.y,
@@ -200,21 +197,11 @@ export default {
     /**
      * Pan to the active story
      */
-    pan () {
+    panAndZoom () {
       if (this.activeMarker) {
         console.log('panning to', this.activeMarker.location)
       } else {
         console.log('no active marker, not panning')
-      }
-    },
-    /**
-     * Zoom to the zoom level of the active story
-     */
-    zoom () {
-      if (this.activeMarker) {
-        console.log('zooming to', this.activeMarker.location)
-      } else {
-        console.log('no marker, no zoom')
       }
     },
     /**

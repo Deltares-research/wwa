@@ -282,13 +282,16 @@ export default {
         const from = record.from
         const to = record.to
         // Convert to radian
-        from.φ = deg2rad(from.lat)
-        from.θ = deg2rad(from.lon)
-        from.xyz = polar2cartesian(GLOBE_RADIUS, from.φ, from.θ)
+        // inclination θ (latitude), azimuth φ (longitude)
+        from.θ = deg2rad(from.lat)
+        from.φ = deg2rad(from.lon)
+        let cart = polar2cartesian(GLOBE_RADIUS, from.θ, from.φ)
+        from.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
 
-        to.φ = deg2rad(to.lat)
-        to.θ = deg2rad(to.lon)
-        to.xyz = polar2cartesian(GLOBE_RADIUS, to.φ, to.θ)
+        to.θ = deg2rad(to.lat)
+        to.φ = deg2rad(to.lon)
+        cart = polar2cartesian(GLOBE_RADIUS, to.θ, to.φ)
+        to.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
 
         let distance = from.xyz.distanceTo(to.xyz)
         // here we are creating the control points for the first ones.

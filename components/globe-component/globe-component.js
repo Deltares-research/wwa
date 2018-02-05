@@ -30,8 +30,8 @@ export default {
     }
   },
   props: {
-    activeStory: {
-      type: String,
+    activeMarker: {
+      type: Object,
       required: false
     },
     markers: {
@@ -139,6 +139,12 @@ export default {
     }
 
   },
+  watch: {
+    activeMarker (newMarker, oldMarker) {
+      this.pan()
+      this.zoom()
+    }
+  },
   methods: {
     handleResize () {
       // We're getting the containerSize here because the size
@@ -195,13 +201,21 @@ export default {
      * Pan to the active story
      */
     pan () {
-      console.log('panning to', this.activeStory)
+      if (this.activeMarker) {
+        console.log('panning to', this.activeMarker.location)
+      } else {
+        console.log('no active marker, not panning')
+      }
     },
     /**
      * Zoom to the zoom level of the active story
      */
     zoom () {
-      console.log('zooming to', this.activeStory)
+      if (this.activeMarker) {
+        console.log('zooming to', this.activeMarker.location)
+      } else {
+        console.log('no marker, no zoom')
+      }
     },
     /**
      * Create a renderer in the element

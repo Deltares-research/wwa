@@ -1,23 +1,10 @@
 <template>
   <main>
-    <globe-component class="globe-component" :activeStory="activeStory" />
+    <globe-component class="globe-component" :activeMarker="activeMarker" />
     <nuxt class="app" />
   </main>
 </template>
-<script>
-import '~/components/typography/typography.css'
-import GlobeComponent from '~/components/globe-component/GlobeComponent'
-
-export default {
-  data () {
-    return {
-      activeStory: this.$route.params.slug
-    }
-  },
-  components: {
-    GlobeComponent
-  }
-}
+<script src="./default-component.js">
 </script>
 <style>
 @import '../components/colors/colors.css';

@@ -3,24 +3,11 @@
     <!--[if lte IE 12]>
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
     <![endif]-->
-    <globe-component class="globe-component" :activeStory="activeStory" />
+    <globe-component class="globe-component" :activeMarker="activeMarker" />
     <nuxt/>
   </main>
 </template>
-<script>
-import '~/components/typography/typography.css'
-import GlobeComponent from '~/components/globe-component/GlobeComponent'
-
-export default {
-  data () {
-    return {
-      activeStory: this.$route.params.slug
-    }
-  },
-  components: {
-    GlobeComponent
-  }
-}
+<script src="./default-component.js">
 </script>
 <style>
   html {

@@ -1,5 +1,9 @@
 <template>
   <div>
+    <header class="header">
+      <h1 class="h2 invert"><nuxt-link v-bind:to="book.path">{{book.title}}</nuxt-link></h1>
+      <h2 class="h1 invert"><nuxt-link v-bind:to="chapter.path">{{chapter.title}}</nuxt-link></h2>
+    </header>
     <page-component v-for="page in pages" v-bind:key="page.slug"
       v-bind:page="page"
       v-bind:id="page.slug"
@@ -12,8 +16,16 @@ import loadData from '~/lib/load-data'
 import PageComponent from '~/components/page-component/PageComponent'
 
 export default {
-  asyncData (context) {
-    return loadData(context, context.params)
+  async asyncData (context) {
+    const { pages } = await loadData(context, context.params)
+    const book = pages[0].book
+    const chapter = pages[0].chapter
+
+    return {
+      book,
+      chapter,
+      pages
+    }
   },
   mounted () {
     if ('IntersectionObserver' in window) {
@@ -69,8 +81,19 @@ export default {
 </script>
 
 <style>
-.page-component:first-child {
+.header {
+  max-width: 960px;
+  width: 100%;
+  margin: auto;
   margin-top: 62.5vh;
+  color: #fff;
+}
+.header a {
+  color: inherit;
+  text-decoration: none;
+}
+.header + .page-component {
+  margin-top: 0;
 }
 .page-component {
   margin: 50vh auto; /* Note that these margins should collapse */

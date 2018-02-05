@@ -164,28 +164,8 @@ export default {
     handleClick (event) {
       console.log('intersections', this.intersections)
       if (this.intersections.length > 0) {
-        const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
-        const targetPos = {
-          x: this.intersections[0].object.position.x,
-          y: this.intersections[0].object.position.y,
-          z: this.intersections[0].object.position.z
-        }
-
-        const to = cartesian2polar(targetPos.x, targetPos.y, targetPos.z)
-        // to.radius = this.intersections[0].object.data.location.zoom === null ? from.radius : this.intersections[0].object.data.location.zoom
-        // to.radius = from.radius
-        to.radius = 7 + Math.random() * 13
-
-        const tween = new Tween(from)
-          .to(to, 3000)
-          .on('update', ({ radius, latitude, longitude }) => {
-            const cart = polar2cartesian(radius, latitude, longitude)
-            this.camera.position.set(cart.x, cart.y, cart.z)
-
-            this.camera.lookAt(new THREE.Vector3(0, 0, 0))
-          })
-          .easing(Easing.Cubic.InOut)
-          .start()
+        const { data } = this.intersections[0].object
+        this.$router.push(data.path)
       }
     },
     handleMouseMove (event) {
@@ -200,6 +180,16 @@ export default {
     panAndZoom () {
       if (this.activeMarker) {
         console.log('panning to', this.activeMarker.location)
+        // const tween = new Tween(from)
+        //   .to(to, 3000)
+        //   .on('update', ({ radius, latitude, longitude }) => {
+        //     const cart = polar2cartesian(radius, latitude, longitude)
+        //     this.camera.position.set(cart.x, cart.y, cart.z)
+
+        //     this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+        //   })
+        //   .easing(Easing.Cubic.InOut)
+        //   .start()
       } else {
         console.log('no active marker, not panning')
       }
@@ -338,45 +328,6 @@ export default {
         paths.push(curve)
         this.scene.add(curveObject)
       })
-    },
-    addMarkers () {
-      // add the markers to the scene
-      const loader = new THREE.TextureLoader()
-      // loop over all markers and add them after the texture is loaded
-      this.markers.forEach(
-        (marker) => {
-          const lat = deg2rad(marker.location.lat)
-          const lon = deg2rad(marker.location.lon)
-          const position = polar2cartesian(GLOBE_RADIUS * 1.3, lat, lon)
-          if (marker.characterPortrait == null) {
-            return
-          }
-          // we get these from a remote url, this means that the canvas
-          // will be marked as tainted:
-          // https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image
-          const url = assetsRoot + marker.characterPortrait.path
-          // load and wait for it to add the avatar and re-render
-          loader.load(
-            url,
-            (texture) => {
-              // allow non power of 2 textures
-              texture.minFilter = THREE.LinearFilter
-              const avatarMaterial = new THREE.SpriteMaterial({
-                map: texture,
-                color: 0xffffff
-              })
-              const avatar = new THREE.Sprite(avatarMaterial)
-              // store the avatar so we can zoom to it
-              marker.avatar = avatar
-              avatar.position.x = position.x
-              avatar.position.y = position.y
-              avatar.position.z = position.z
-              this.scene.add(avatar)
-              this.render()
-            }
-          )
-        }
-      )
     },
     /**
      * Render and animate the scene.

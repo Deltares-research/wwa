@@ -142,7 +142,6 @@ export default {
       this.panAndZoom()
     },
     markers (newMarkers, oldMarkers) {
-      console.log('old', oldMarkers)
       const globe = this.globe
       const markers = newMarkers.filter(marker => marker.location)
       this.avatar.clear()
@@ -190,7 +189,6 @@ export default {
 
         const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
         const to = { radius, latitude: lat, longitude: lng }
-        console.log(from, to)
         const tween = new Tween(from)
           .to(to, 3000)
           .on('update', ({ radius, latitude, longitude }) => {

@@ -6,7 +6,35 @@
     <nuxt class="app" />
   </main>
 </template>
-<script src="./default-component.js">
+<script>
+import events from '~/components/events/events'
+import GlobeComponent from '~/components/globe-component/GlobeComponent'
+import loadData from '~/lib/load-data'
+
+export default {
+  async asyncData (context) {
+    const { books } = await loadData(context)
+    const baseMarkers = books.map(book => book.chapters).reduce((a, b) => a.concat(b))
+    return { baseMarkers }
+  },
+  data () {
+    return {
+      activeMarker: null,
+      markers: []
+    }
+  },
+  created () {
+    this.$events.$on(events.activeMarkerChanged, marker => {
+      this.activeMarker = marker
+    })
+    this.$events.$on(events.markersChanged, markers => {
+      this.markers = markers || this.baseMarkers
+    })
+  },
+  components: {
+    GlobeComponent
+  }
+}
 </script>
 <style>
 @import '../components/colors/colors.css';

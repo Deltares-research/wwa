@@ -187,8 +187,6 @@ export default {
 
         const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
         const to = { radius, latitude: θ, longitude: φ }
-        console.log(from, to)
-        console.log('camera position', this.camera.position.toArray())
         const tween = new Tween(from)
         tween
           .to(to, 3000)
@@ -198,7 +196,6 @@ export default {
             this.camera.lookAt(new THREE.Vector3(0, 0, 0))
           })
           .on('complete', () => {
-            console.log('camera complete', this.camera.position.toArray() )
           })
           .easing(Easing.Cubic.InOut)
 
@@ -285,7 +282,18 @@ export default {
       const renderWidth = this.containerSize[0]
       const renderHeight = this.containerSize[1] * (1 + vOffsetFactor)
       const camera = new THREE.PerspectiveCamera(30, renderWidth / renderHeight, 0.1, 300)
-      camera.position.z = 30 * (1 + vOffsetFactor) * (1 + vOffsetFactor)
+
+      const θ = lat2rad(0)
+      const φ = lon2rad(0)
+      const point = polar2cartesian(40, θ, φ)
+      camera.position.x = point.x
+      camera.position.y = point.y
+      camera.position.z = point.z
+      // set initial rotation
+      camera.rotation.z = 0.5 * Math.PI
+      // set rotation
+      console.log('camera rotation', camera.rotation)
+      // fix aspect ratio
       camera.setViewOffset(renderWidth, renderHeight, 0, height * vOffsetFactor, width, height)
       return camera
     },

@@ -158,13 +158,13 @@ function getBooks (dato) {
   return dato.books
     .filter(filterPublished)
     .map(({ entity }) => {
-      const { body, chapters, slug, title, theme } = entity
+      const { body, chapters, slug, title } = entity
       const path = `${contentBasePath}/${slug}`
       const chapterEntities = chapters
         .filter(filterPublished)
         .map(id => {
           const { entity } = dato.find(id)
-          const { title, slug, pages, chapterType } = entity
+          const { title, slug, pages, chapterType, themes } = entity
           const chapterPath = `${path}/${slug}`
           let location = null
 
@@ -180,8 +180,9 @@ function getBooks (dato) {
               break
             }
           }
-          return { pageCount: pages.length, location, path: chapterPath, slug, title, type: chapterType }
+          return { pageCount: pages.length, location, path: chapterPath, slug, title, type: chapterType,}
         })
+      const themes = chapters.reduce( (bookThemes, chapterThemes) => bookThemes.concat(chapterThemes), [])
 
       // create book
       return {
@@ -189,7 +190,7 @@ function getBooks (dato) {
         chapters: chapterEntities,
         path,
         slug,
-        theme: tagStringToLinkObject(theme, 'themes'),
+        themes,
         title
       }
     })
@@ -212,10 +213,10 @@ function getChapters (dato, bookRef) {
         path: `${contentBasePath}/${bookRef.slug}`,
         slug: bookRef.slug,
         title: bookRef.title,
-        theme: bookRef.theme
       }
       const path = `${book.path}/${slug}`
       const pages = getPages(dato, chapter)
+      const themes = pages.reduce( (chapterThemes, pageTheme) => chapterThemes += pageTheme , '')
       const firstLocationPage = pages.filter(page => page.location)[0]
       const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
       const location = (firstLocationPage) ? firstLocationPage.location : null
@@ -228,7 +229,8 @@ function getChapters (dato, bookRef) {
         slug,
         storyteller,
         title,
-        type: chapterType
+        type: chapterType,
+        themes: tagStringToLinkObject(themes, 'themes')
       }
     })
 }

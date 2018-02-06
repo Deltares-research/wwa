@@ -1,5 +1,5 @@
 <template>
-  <article class="page-component" v-bind:class="themeClasses">
+  <article class="page-component" v-bind:class="page.theme.slug">
     <header>
        <h1>{{page.title}}</h1>
       <ul class="influences">
@@ -74,17 +74,6 @@ export default {
   },
   components: {
     AvatarComponent
-  },
-  computed: {
-    themeClasses: function () {
-      if (this.page.theme && this.page.theme.length > 0) {
-        return this.page.theme.reduce(
-          function (t, e) {
-            return t + e.slug + ' '
-          }, ''
-        )
-      }
-    }
   }
 }
 </script>

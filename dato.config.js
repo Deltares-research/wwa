@@ -251,7 +251,7 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, influences, keywords, links, slug, title, video } = page
+      const { body, files, graphs, images, influences, keywords, links, slug, title, video, theme} = page
       const location = (page.location) ? {
         lat: page.location.latitude,
         lng: page.location.longitude,
@@ -270,7 +270,6 @@ function getPages (dato, chapterRef) {
         title: chapterRef.title,
         type: chapterRef.chapterType
       }
-      const theme = (bookRef && typeof bookRef.theme === 'object') ? bookRef.theme : tagStringToLinkObject(bookRef.theme, 'themes')
       const path = `${chapter.path}/${slug}`
       return {
         body,
@@ -289,7 +288,7 @@ function getPages (dato, chapterRef) {
           avatar: page.storytellerAvatar,
           name: page.storyteller
         },
-        theme,
+        theme: stringToLinkObject(theme, 'themes'),
         title,
         video
       }
@@ -393,6 +392,24 @@ function collectBooksByTheme (books) {
 }
 
 /**
+ * Convert string to linkObject
+ *
+ * @param {string} tagString
+ * @param {sting} tagType
+ * @returns {linkObject}
+ */
+function stringToLinkObject (tagString, tagType) {
+  const string = tagString || 'unfiled'
+  const slug = slugify(string).toLowerCase()
+  return {
+    title: string.toLowerCase(),
+    slug : slug,
+    path: `/${tagType}/${slug}`
+  }
+}
+
+
+/**
  * Convert comma-separated string to array of linkObjects
  *
  * @param {string} tagString
@@ -400,10 +417,7 @@ function collectBooksByTheme (books) {
  * @returns {linkObject}
  */
 function tagStringToLinkObject (tagString, tagType) {
-  return (tagString || 'unfiled').split(/,\s?/).map(tag => {
-    const title = tag.toLowerCase()
-    const slug = slugify(tag).toLowerCase()
-    const path = `/${tagType}/${slug}`
-    return { title, slug, path }
+  return(tagString || 'unfiled').split(/,\s?/).map(tag => {
+    return stringToLinkObject(tag, tagType)
   })
 }

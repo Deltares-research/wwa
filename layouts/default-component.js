@@ -1,20 +1,20 @@
-import Vue from 'vue'
-import VueEvents from 'vue-events'
-
 import '~/components/typography/typography.css'
 import GlobeComponent from '~/components/globe-component/GlobeComponent'
-
-Vue.use(VueEvents)
+import events from '~/components/events/events'
 
 export default {
   data () {
     return {
-      activeMarker: null
+      activeMarker: null,
+      markers: []
     }
   },
   created () {
-    this.$events.$on('marker-selected', marker => {
+    this.$events.$on(events.activeMarkerChanged, marker => {
       this.activeMarker = marker
+    })
+    this.$events.$on(events.markersChanged, markers => {
+      this.markers = markers
     })
   },
   methods: {

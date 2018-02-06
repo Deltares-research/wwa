@@ -1,9 +1,6 @@
-import Vue from 'vue'
-import VueEvents from 'vue-events'
 import loadData from '~/lib/load-data'
 import PageComponent from '~/components/page-component/PageComponent'
-
-Vue.use(VueEvents)
+import events from '~/components/events/events'
 
 export default {
   async asyncData (context) {
@@ -23,13 +20,13 @@ export default {
       activePage: null
     }
   },
-  created () {
-  },
   mounted () {
     const activePages = this.pages.filter(page => page.slug === this.slug)
-    console.log('page', activePages)
-    this.activePage = activePages[0]
-    this.$events.$emit('marker-selected', this.activePage)
+    if (activePages) {
+      this.activePage = activePages[0]
+      this.$events.$emit(events.activeMarkerChanged, this.activePage)
+      this.$events.$emit(events.markersChanged, this.pages)
+    }
     if ('IntersectionObserver' in window) {
       this.observeIntersectingChildren()
     }

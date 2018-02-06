@@ -10,7 +10,6 @@ import CardList from '~/components/card-list/CardList'
 import books from '~/static/data/books/index.json'
 
 export default {
-  layout: 'list',
   components: {
     CardList
   },

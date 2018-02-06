@@ -1,7 +1,6 @@
 <template>
-  <article class="page-component">
+  <article class="page-component" v-bind:class="themeClasses">
     <header>
-      <div v-bind:class="page.theme[0].slug+' colorband'"></div>
       <h1>{{page.title}}</h1>
       <ul class="influences">
         <li v-for="influence in page.influences" v-bind:key="influence.slug">
@@ -29,9 +28,12 @@
         <figcaption>{{graph.alt}}</figcaption>
       </figure>
     </section>
-    <section v-if="page.video" class="video">
-      <img v-bind:src="page.video.thumbnailUrl"/>
-    </section>
+    <iframe v-if="page.video" class="video"
+    v-bind:src="'https://www.' + page.video.provider + '.com/embed/' + page.video.providerUid"
+    v-bind:width="page.video.width"
+    v-bind:height="page.video.height"
+    >
+    </iframe>
     <footer class="t_margin_2r">
       <section v-if="page.links" class="links">
         Links: {{page.links}}
@@ -72,6 +74,18 @@ export default {
   },
   components: {
     AvatarComponent
+  },
+  computed: {
+    themeClasses: function () {
+      if (this.page.theme && this.page.theme.length > 0) {
+        var themes = []
+        var i
+        for (i in this.page.theme) {
+          themes = themes + this.page.theme[i].slug + ' '
+        }
+      }
+      return themes
+    }
   }
 }
 </script>
@@ -92,20 +106,37 @@ export default {
   position:relative;
 }
 
-.page-component img
-{
-  display:flex;
-  max-width:100%;
-  margin:0 auto;
-}
-
-.colorband
-{
+.page-component::before {
+  content: '';
   position:absolute;
   top:0;
   left:0;
   right:0;
-  height:32px;
+  height:1rem;
+}
+
+.page-component.too-little::before {
+  background-color: var(--too-little);
+}
+
+.page-component.too-dirty::before {
+  background-color: var(--too-dirty);
+}
+
+.page-component.too-much::before {
+  background-color: var(--too-much);
+}
+
+.page-component .video {
+  margin:2rem auto;
+}
+
+.page-component .images img,
+.page-component .graphs img,
+ {
+  display:flex;
+  max-width:100%;
+  margin:0 auto;
 }
 
 </style>

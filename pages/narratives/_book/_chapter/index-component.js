@@ -7,7 +7,6 @@ import loadData from '~/lib/load-data'
 Vue.use(VueEvents)
 
 export default {
-  layout: 'list',
   asyncData (context) {
     return loadData(context, context.params)
   },

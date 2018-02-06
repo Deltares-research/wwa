@@ -11,7 +11,6 @@ import SvgIcon from '~/components/svg-icon/SvgIcon'
 import loadData from '~/lib/load-data'
 
 export default {
-  layout: 'list',
   asyncData (context) {
     return loadData(context, context.params)
   },

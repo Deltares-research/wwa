@@ -261,16 +261,6 @@ export default {
 
       const dirLight = new THREE.DirectionalLight(0xffaa66, 4.2)
       dirLight.position.set(15, 13, 15)
-
-      const axesHelper = new THREE.AxesHelper(5)
-      scene.add(axesHelper)
-
-      const polarGridHelper = new THREE.PolarGridHelper(
-        7, 10, 8, 64, 0x0000ff, 0x808080
-      )
-      polarGridHelper.position.y = 0
-      polarGridHelper.position.x = 0
-      // scene.add(polarGridHelper)
       return scene
     },
     /**

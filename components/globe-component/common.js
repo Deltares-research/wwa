@@ -21,15 +21,14 @@ export function polar2cartesian (radius, latitude, longitude) {
  * @param {Number} x - x coordinate
  * @param {Number} y - y coordinate
  * @param {Number} z - z coordinate
- * @returns {Object} Object with radius, latitude, longitude
+ * @returns {Object} Object with r (radius), θ (latitude in radians), azimuth φ (longitude in radians)
  */
 export function cartesian2polar (x, y, z) {
-  // inclination θ (latitude), azimuth φ (longitude)
-  const radius = Math.sqrt((x * x) + (y * y) + (z * z))
-  const latitude = Math.acos(z / radius)
-  const longitude = Math.atan2(y, x)
-
-  return { radius, latitude, longitude }
+  // radius r, inclination θ (latitude), azimuth φ (longitude)
+  const r = Math.sqrt((x * x) + (y * y) + (z * z))
+  const θ = Math.acos(z / r)
+  const φ = Math.atan2(y, x)
+  return { r, θ, φ }
 }
 
 export const deg2rad = deg => deg * (Math.PI / 180)
@@ -41,3 +40,11 @@ export const lat2rad = scaleLinear()
 export const lon2rad = scaleLinear()
   .domain([180, -180])
   .range([0, 2 * Math.PI])
+
+export const θ2deg = scaleLinear()
+  .domain([0, Math.PI])
+  .range([-90, 90])
+
+export const φ2deg = scaleLinear()
+  .domain([0, 2 * Math.PI])
+  .range([180, -180])

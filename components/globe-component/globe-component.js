@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { Tween, autoPlay, Easing } from 'es6-tween'
-import { cartesian2polar, polar2cartesian, lat2rad, lon2rad } from './common.js'
+import { cartesian2polar, polar2cartesian, lat2rad, lon2rad, θ2deg, φ2deg } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
 
 // get the markers exported by dato
@@ -77,7 +77,7 @@ export default {
     // resize the canvas
     this.handleResize()
     this.animate()
-    this.panAndZoom()
+    this.panToActiveMarker()
 
     // window is the event handler fo resize, so we need to subscribe to it
     window.addEventListener(
@@ -137,7 +137,8 @@ export default {
   },
   watch: {
     activeMarker (newMarker, oldMarker) {
-      this.panAndZoom()
+      console.log('panning and zooming')
+      this.panAndZoom(oldMarker, newMarker)
     }
   },
   methods: {
@@ -160,9 +161,10 @@ export default {
       // this.renderer.render(this.scene, this.camera)
     },
     handleClick (event) {
-      console.log('intersections', this.intersections)
       if (this.intersections.length > 0) {
         const { data } = this.intersections[0].object
+        // navigate to path
+        console.log('navigating to', data)
         this.$router.push(data.path)
       }
     },
@@ -172,35 +174,43 @@ export default {
       this.mouse.x = ((event.clientX / this.renderer.domElement.clientWidth) * 2) - 1
       this.mouse.y = -((event.clientY / this.renderer.domElement.clientHeight) * 2) + 1
     },
-    /**
-     * Pan to the active story
-     */
-    panAndZoom () {
+    panToActiveMarker () {
       if (this.activeMarker && this.activeMarker.location) {
-        const { lat, lng, zoom } = this.activeMarker.location
-        // convert to radians
-        const θ = lat2rad(lat)
-        const φ = lon2rad(lng)
-        const radius = 40 - zoom
-
         const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
-        const to = { radius, latitude: θ, longitude: φ }
-        const tween = new Tween(from)
-        tween
-          .to(to, 3000)
-          .on('update', ({ radius, latitude, longitude }) => {
-            const cart = polar2cartesian(radius, θ, φ)
-            this.camera.position.set(cart.x, cart.y, cart.z)
-            this.camera.lookAt(new THREE.Vector3(0, 0, 0))
-          })
-          .on('complete', () => {
-          })
-          .easing(Easing.Cubic.InOut)
+        from.lat = θ2deg(from.θ)
+        from.lng = φ2deg(from.φ)
 
-        tween.start()
+        // create a to object
+        const to = {}
+        // clone object
+        Object.assign(to, this.activeMarker.location)
+        to.θ = lat2rad(to.lat)
+        to.φ = lon2rad(to.lng)
+        to.r = 40 - from.zoom
+
       } else {
         console.log('no active marker, not panning')
       }
+
+    },
+    /**
+     * Pan to the active story
+     */
+    panAndZoom (from, to) {
+      console.log('navigating', from, 'to', to)
+      const tween = new Tween(from)
+      tween
+        .to(to, 3000)
+        .on('update', ({ r, θ, φ }) => {
+          const cart = polar2cartesian(r, θ, φ)
+          this.camera.position.set(cart.x, cart.y, cart.z)
+          this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+        })
+        .on('complete', () => {
+        })
+        .easing(Easing.Cubic.InOut)
+
+      tween.start()
     },
     /**
      * Create a renderer in the element

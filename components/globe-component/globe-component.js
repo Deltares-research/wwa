@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { Tween, autoPlay, Easing } from 'es6-tween'
-import { cartesian2polar, polar2cartesian, lat2rad, lon2rad, theta2deg, phi2deg } from './common.js'
+import { cartesian2polar, polar2cartesian, lat2theta, lon2phi, theta2lat, phi2lon } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
 
 // get the markers exported by dato
@@ -141,10 +141,12 @@ export default {
         return
       }
       // by default use camera position
+      // We use the phi, theta notation, as used in
+      // https://en.wikipedia.org/wiki/Spherical_coordinate_system
       const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
       const to = {}
-      to.theta = lat2rad(newMarker.location.lat)
-      to.phi = lon2rad(newMarker.location.lng)
+      to.theta = lat2theta(newMarker.location.lat)
+      to.phi = lon2phi(newMarker.location.lng)
       to.r = 40 - newMarker.location.zoom
       this.panAndZoom(from, to)
     }
@@ -172,7 +174,6 @@ export default {
       if (this.intersections.length > 0) {
         const { data } = this.intersections[0].object
         // navigate to path
-        console.log('navigating to', data)
         this.$router.push(data.path)
       }
     },
@@ -185,27 +186,26 @@ export default {
     panToActiveMarker () {
       if (this.activeMarker && this.activeMarker.location) {
         const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
-        from.lat = theta2deg(from.theta)
-        from.lng = phi2deg(from.phi)
+        from.lat = theta2lat(from.theta)
+        from.lng = phi2lon(from.phi)
 
         // create a to object
-        const to = {}
-        // clone object
-        Object.assign(to, this.activeMarker.location)
-        to.theta = lat2rad(to.lat)
-        to.phi = lon2rad(to.lng)
+        const to = {
+          lat: this.activeMarker.location.lat,
+          lng: this.activeMarker.location.lng,
+          zoom: this.activeMarker.location.zoom
+        }
+        to.theta = lat2theta(to.lat)
+        to.phi = lon2phi(to.lng)
         to.r = 40 - from.zoom
-
       } else {
         console.log('no active marker, not panning')
       }
-
     },
     /**
      * Pan to the active story
      */
     panAndZoom (from, to) {
-      console.log('navigating', from, 'to', to)
       const tween = new Tween(from)
       tween
         .to(to, 3000)
@@ -298,8 +298,8 @@ export default {
       const camera = new THREE.PerspectiveCamera(30, renderWidth / renderHeight, 0.1, 300)
 
       // lat, lon in radians
-      const theta = lat2rad(40)
-      const phi = lon2rad(40)
+      const theta = lat2theta(40)
+      const phi = lon2phi(40)
       const point = polar2cartesian(40, theta, phi)
       camera.position.x = point.x
       camera.position.y = point.y
@@ -319,13 +319,13 @@ export default {
         const to = record.to
         // Convert to radian
         // inclination theta (latitude), azimuth phi (longitude)
-        from.theta = lat2rad(from.lat)
-        from.phi = lon2rad(from.lon)
+        from.theta = lat2theta(from.lat)
+        from.phi = lon2phi(from.lon)
         let cart = polar2cartesian(GLOBE_RADIUS, from.theta, from.phi)
         from.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
 
-        to.theta = lat2rad(to.lat)
-        to.phi = lon2rad(to.lon)
+        to.theta = lat2theta(to.lat)
+        to.phi = lon2phi(to.lon)
         cart = polar2cartesian(GLOBE_RADIUS, to.theta, to.phi)
         to.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
 

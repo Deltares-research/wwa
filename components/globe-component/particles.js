@@ -3,7 +3,7 @@ import { loadData } from 'd3-jetpack'
 import { scaleLinear } from 'd3-scale'
 import { range } from 'd3-array'
 import { color } from 'd3-color'
-import { lat2rad, lon2rad, polar2cartesian } from './common'
+import { lat2theta, lon2phi, polar2cartesian } from './common'
 import { metrics } from './metrics'
 import { GLOBE_RADIUS } from './constants'
 
@@ -71,8 +71,8 @@ class Particles {
       }
       this.data = result[0]
         .map(d => ({
-          lat: lat2rad(+d.lat),
-          lon: lon2rad(+d.lon),
+          lat: lat2theta(+d.lat),
+          lon: lon2phi(+d.lon),
           g: +d.GRAY50MSRW,
           // bt: +d.BT,
           // ba: +d.BA,
@@ -115,13 +115,12 @@ class Particles {
             const radius = (GLOBE_RADIUS + height(d[m]))
             const point = polar2cartesian(radius, d.lat, d.lon)
             const pos = new THREE.Vector3(point.x, point.y, point.z)
-            // pos.applyAxisAngle(INIT_AXIS, INIT_ANGLE)
 
             metrics[m].positions[(i * 3) + 0] = pos.x
             metrics[m].positions[(i * 3) + 1] = pos.y
             metrics[m].positions[(i * 3) + 2] = pos.z
 
-            const rgb = d[m] < 0 || d.lat < lat2rad(-60) ? { r: 76, g: 76, b: 76 } : color(c(d[m]))
+            const rgb = d[m] < 0 || d.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(c(d[m]))
             metrics[m].colors[(i * 3) + 0] = rgb2unit(rgb.r)
             metrics[m].colors[(i * 3) + 1] = rgb2unit(rgb.g)
             metrics[m].colors[(i * 3) + 2] = rgb2unit(rgb.b)

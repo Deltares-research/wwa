@@ -137,14 +137,11 @@ export default {
   },
   watch: {
     activeMarker (newMarker, oldMarker) {
+      if (!(newMarker.location)) {
+        return
+      }
       // by default use camera position
       const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
-      // but if we have an old marker, use that one
-      if (oldMarker != null) {
-        from.θ = lat2rad(oldMarker.location.lat)
-        from.φ = lon2rad(oldMarker.location.lng)
-        from.r = 40 - oldMarker.location.zoom
-      }
       const to = {}
       to.θ = lat2rad(newMarker.location.lat)
       to.φ = lon2rad(newMarker.location.lng)

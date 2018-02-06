@@ -140,6 +140,13 @@ export default {
   watch: {
     activeMarker (newMarker, oldMarker) {
       this.panAndZoom()
+    },
+    markers (newMarkers, oldMarkers) {
+      console.log('old', oldMarkers)
+      const globe = this.globe
+      const markers = newMarkers.filter(marker => marker.location)
+      this.avatar.clear()
+      this.avatar.load(markers, avs => globe.add(avs))
     }
   },
   methods: {
@@ -162,7 +169,6 @@ export default {
       // this.renderer.render(this.scene, this.camera)
     },
     handleClick (event) {
-      console.log('intersections', this.intersections)
       if (this.intersections.length > 0) {
         const { data } = this.intersections[0].object
         this.$router.push(data.path)
@@ -228,6 +234,7 @@ export default {
       const scene = new THREE.Scene()
 
       const globe = new THREE.Object3D()
+      this.globe = globe
       globe.position.set(0, 0, 0)
 
       const state = new State() // TODO: this should be done differently
@@ -244,8 +251,8 @@ export default {
       // get the baseUrl
       const { base = '/' } = this.$router.options
 
-      this.avatar = new Avatar(markers, base)
-      this.avatar.load(avs => globe.add(avs))
+      this.avatar = new Avatar(base)
+      this.avatar.load(markers, avs => globe.add(avs))
 
       scene.add(globe)
 

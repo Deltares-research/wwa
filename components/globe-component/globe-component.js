@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { Tween, autoPlay, Easing } from 'es6-tween'
-import { cartesian2polar, polar2cartesian, deg2rad } from './common.js'
+import { cartesian2polar, polar2cartesian, lat2rad, lon2rad } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
 
 // get the markers exported by dato
@@ -47,7 +47,7 @@ export default {
         for (var i = 0; i < 100; i++) {
           // Based on this example https://brunodigiuseppe.wordpress.com/2015/02/14/flight-paths-with-threejs/
           const from = {lat: Math.random() * 180 - 90, lon: Math.random() * 360}
-          const to = {lat: 12, lon: 0}
+          const to = {lat: 0, lon: 0}
           const record = {from, to}
           connections.push(record)
         }
@@ -180,17 +180,25 @@ export default {
     panAndZoom () {
       if (this.activeMarker && this.activeMarker.location) {
         const { lat, lng, zoom } = this.activeMarker.location
+        // convert to radians
+        const θ = lat2rad(lat)
+        const φ = lon2rad(lng)
         const radius = 40 - zoom
 
         const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
-        const to = { radius, latitude: lat, longitude: lng }
+        const to = { radius, latitude: θ, longitude: φ }
         console.log(from, to)
+        console.log('camera position', this.camera.position.toArray())
         const tween = new Tween(from)
+        tween
           .to(to, 3000)
           .on('update', ({ radius, latitude, longitude }) => {
-            const cart = polar2cartesian(radius, latitude, longitude)
+            const cart = polar2cartesian(radius, θ, φ)
             this.camera.position.set(cart.x, cart.y, cart.z)
             this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+          })
+          .on('complete', () => {
+            console.log('camera complete', this.camera.position.toArray() )
           })
           .easing(Easing.Cubic.InOut)
 
@@ -288,13 +296,13 @@ export default {
         const to = record.to
         // Convert to radian
         // inclination θ (latitude), azimuth φ (longitude)
-        from.θ = deg2rad(from.lat)
-        from.φ = deg2rad(from.lon)
+        from.θ = lat2rad(from.lat)
+        from.φ = lon2rad(from.lon)
         let cart = polar2cartesian(GLOBE_RADIUS, from.θ, from.φ)
         from.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
 
-        to.θ = deg2rad(to.lat)
-        to.φ = deg2rad(to.lon)
+        to.θ = lat2rad(to.lat)
+        to.φ = lon2rad(to.lon)
         cart = polar2cartesian(GLOBE_RADIUS, to.θ, to.φ)
         to.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
 

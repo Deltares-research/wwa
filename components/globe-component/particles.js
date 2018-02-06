@@ -3,9 +3,9 @@ import { loadData } from 'd3-jetpack'
 import { scaleLinear } from 'd3-scale'
 import { range } from 'd3-array'
 import { color } from 'd3-color'
-import { lat2rad, lon2rad } from './common'
+import { lat2rad, lon2rad, polar2cartesian } from './common'
 import { metrics } from './metrics'
-import { GLOBE_RADIUS, INIT_ANGLE, INIT_AXIS } from './constants'
+import { GLOBE_RADIUS } from './constants'
 
 const rgb2unit = scaleLinear()
   .domain([0, 255])
@@ -61,8 +61,10 @@ class Particles {
   }
 
   load (finished) {
-    const that = this
-
+    // Load data in format:
+    // -89.772727273,-60.0,0.0,0.0,0.0,0.0,0.0,0.0
+    // -89.772727273,60.0,0.0,0.0,0.0,0.0,0.0,0.0
+    // -89.318181818,-140.0,0.0,0.0,0.0,0.0,0.0,0.0
     loadData('https://s3-eu-west-1.amazonaws.com/deltares-opendata/wwa/wri/land.csv', (err, result) => {
       if (err) {
         console.error('particle data could not be loaded')
@@ -83,7 +85,7 @@ class Particles {
         }))
         .sort((a, b) => b[this.state.target] - a[this.state.target])
 
-      that.initGeometry()
+      this.initGeometry()
 
       Object.keys(metrics).forEach((m) => {
         metrics[m].positions = new Float32Array(this.data.length * 3)
@@ -91,6 +93,7 @@ class Particles {
         metrics[m].values = new Float32Array(this.data.length)
         metrics[m].indices = new Float32Array(this.data.length)
 
+        // initial position
         if (m === 'init') {
           this.data.forEach((d, i) => {
             // TODO: why does it not start with zero?
@@ -110,13 +113,9 @@ class Particles {
 
           this.data.forEach((d, i) => {
             const radius = (GLOBE_RADIUS + height(d[m]))
-
-            const x = radius * Math.sin(d.lat) * Math.cos(d.lon)
-            const y = radius * Math.sin(d.lat) * Math.sin(d.lon)
-            const z = radius * Math.cos(d.lat)
-
-            const pos = new THREE.Vector3(x, y, z)
-            pos.applyAxisAngle(INIT_AXIS, INIT_ANGLE)
+            const point = polar2cartesian(radius, d.lat, d.lon)
+            const pos = new THREE.Vector3(point.x, point.y, point.z)
+            // pos.applyAxisAngle(INIT_AXIS, INIT_ANGLE)
 
             metrics[m].positions[(i * 3) + 0] = pos.x
             metrics[m].positions[(i * 3) + 1] = pos.y

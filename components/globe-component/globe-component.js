@@ -229,8 +229,10 @@ export default {
      * @returns {Scene} Scene with a sphere
      */
     createScene () {
+
       // minimal scene (TODO: append real globe)
       const scene = new THREE.Scene()
+
 
       const globe = new THREE.Object3D()
       globe.position.set(0, 0, 0)
@@ -260,6 +262,15 @@ export default {
       const dirLight = new THREE.DirectionalLight(0xffaa66, 4.2)
       dirLight.position.set(15, 13, 15)
 
+      const axesHelper = new THREE.AxesHelper(5)
+      scene.add(axesHelper)
+
+      const polarGridHelper = new THREE.PolarGridHelper(
+        7, 10, 8, 64, 0x0000ff, 0x808080
+      )
+      polarGridHelper.position.y = 0
+      polarGridHelper.position.x = 0
+      // scene.add(polarGridHelper)
       return scene
     },
     /**
@@ -283,17 +294,18 @@ export default {
       const renderHeight = this.containerSize[1] * (1 + vOffsetFactor)
       const camera = new THREE.PerspectiveCamera(30, renderWidth / renderHeight, 0.1, 300)
 
-      const θ = lat2rad(0)
-      const φ = lon2rad(0)
+      // lat, lon in radians
+      const θ = lat2rad(40)
+      const φ = lon2rad(40)
       const point = polar2cartesian(40, θ, φ)
       camera.position.x = point.x
       camera.position.y = point.y
       camera.position.z = point.z
-      // set initial rotation
-      camera.rotation.z = 0.5 * Math.PI
-      // set rotation
-      console.log('camera rotation', camera.rotation)
-      // fix aspect ratio
+
+      // TODO: somehow z is upside down, check why this is
+      camera.up = new THREE.Vector3(0, 0, -1)
+
+      // set aspect ratio
       camera.setViewOffset(renderWidth, renderHeight, 0, height * vOffsetFactor, width, height)
       return camera
     },
@@ -360,30 +372,15 @@ export default {
     animate () {
       requestAnimationFrame(this.animate)
 
-      // particles.uniforms.time.value += 0.1;
-      // this.glow.uniforms.viewVector.value = new THREE.Vector3().subVectors(camera.position, globe.position);
-
-      // globe.rotation.y += 0.0005;
-
-      // this.stats.begin()
-
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
       this.avatar.mesh.children.forEach(function (d) { d.material.color = d.data.themeColor })
 
       if (this.intersections.length > 0) {
         this.intersections[0].object.material.color = WHITE
-
-      //   globeEl
-      //     .st({ cursor: 'pointer' });
-      // } else {
-      //   globeEl
-      //     .st({ cursor: 'default' });
       }
-
       this.renderer.render(this.scene, this.camera)
 
-      // this.stats.end()
     }
   }
 }

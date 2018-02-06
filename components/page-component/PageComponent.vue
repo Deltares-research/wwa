@@ -131,8 +131,7 @@ export default {
   margin:2rem auto;
 }
 
-.page-component .images img,
-.page-component .graphs img,
+.page-component picture img
  {
   display:flex;
   max-width:100%;

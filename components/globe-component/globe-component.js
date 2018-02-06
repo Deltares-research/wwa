@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { Tween, autoPlay, Easing } from 'es6-tween'
-import { cartesian2polar, polar2cartesian, lat2rad, lon2rad, θ2deg, φ2deg } from './common.js'
+import { cartesian2polar, polar2cartesian, lat2rad, lon2rad, theta2deg, phi2deg } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
 
 // get the markers exported by dato
@@ -143,8 +143,8 @@ export default {
       // by default use camera position
       const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
       const to = {}
-      to.θ = lat2rad(newMarker.location.lat)
-      to.φ = lon2rad(newMarker.location.lng)
+      to.theta = lat2rad(newMarker.location.lat)
+      to.phi = lon2rad(newMarker.location.lng)
       to.r = 40 - newMarker.location.zoom
       this.panAndZoom(from, to)
     }
@@ -185,15 +185,15 @@ export default {
     panToActiveMarker () {
       if (this.activeMarker && this.activeMarker.location) {
         const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
-        from.lat = θ2deg(from.θ)
-        from.lng = φ2deg(from.φ)
+        from.lat = theta2deg(from.theta)
+        from.lng = phi2deg(from.phi)
 
         // create a to object
         const to = {}
         // clone object
         Object.assign(to, this.activeMarker.location)
-        to.θ = lat2rad(to.lat)
-        to.φ = lon2rad(to.lng)
+        to.theta = lat2rad(to.lat)
+        to.phi = lon2rad(to.lng)
         to.r = 40 - from.zoom
 
       } else {
@@ -209,8 +209,8 @@ export default {
       const tween = new Tween(from)
       tween
         .to(to, 3000)
-        .on('update', ({ r, θ, φ }) => {
-          const cart = polar2cartesian(r, θ, φ)
+        .on('update', ({ r, theta, phi }) => {
+          const cart = polar2cartesian(r, theta, phi)
           this.camera.position.set(cart.x, cart.y, cart.z)
           this.camera.lookAt(new THREE.Vector3(0, 0, 0))
         })
@@ -298,9 +298,9 @@ export default {
       const camera = new THREE.PerspectiveCamera(30, renderWidth / renderHeight, 0.1, 300)
 
       // lat, lon in radians
-      const θ = lat2rad(40)
-      const φ = lon2rad(40)
-      const point = polar2cartesian(40, θ, φ)
+      const theta = lat2rad(40)
+      const phi = lon2rad(40)
+      const point = polar2cartesian(40, theta, phi)
       camera.position.x = point.x
       camera.position.y = point.y
       camera.position.z = point.z
@@ -318,15 +318,15 @@ export default {
         const from = record.from
         const to = record.to
         // Convert to radian
-        // inclination θ (latitude), azimuth φ (longitude)
-        from.θ = lat2rad(from.lat)
-        from.φ = lon2rad(from.lon)
-        let cart = polar2cartesian(GLOBE_RADIUS, from.θ, from.φ)
+        // inclination theta (latitude), azimuth phi (longitude)
+        from.theta = lat2rad(from.lat)
+        from.phi = lon2rad(from.lon)
+        let cart = polar2cartesian(GLOBE_RADIUS, from.theta, from.phi)
         from.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
 
-        to.θ = lat2rad(to.lat)
-        to.φ = lon2rad(to.lon)
-        cart = polar2cartesian(GLOBE_RADIUS, to.θ, to.φ)
+        to.theta = lat2rad(to.lat)
+        to.phi = lon2rad(to.lon)
+        cart = polar2cartesian(GLOBE_RADIUS, to.theta, to.phi)
         to.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
 
         let distance = from.xyz.distanceTo(to.xyz)

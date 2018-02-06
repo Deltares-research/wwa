@@ -178,18 +178,23 @@ export default {
      * Pan to the active story
      */
     panAndZoom () {
-      if (this.activeMarker) {
-        console.log('panning to', this.activeMarker.location)
-        // const tween = new Tween(from)
-        //   .to(to, 3000)
-        //   .on('update', ({ radius, latitude, longitude }) => {
-        //     const cart = polar2cartesian(radius, latitude, longitude)
-        //     this.camera.position.set(cart.x, cart.y, cart.z)
+      if (this.activeMarker && this.activeMarker.location) {
+        const { lat, lng, zoom } = this.activeMarker.location
+        const radius = 40 - zoom
 
-        //     this.camera.lookAt(new THREE.Vector3(0, 0, 0))
-        //   })
-        //   .easing(Easing.Cubic.InOut)
-        //   .start()
+        const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
+        const to = { radius, latitude: lat, longitude: lng }
+        console.log(from, to)
+        const tween = new Tween(from)
+          .to(to, 3000)
+          .on('update', ({ radius, latitude, longitude }) => {
+            const cart = polar2cartesian(radius, latitude, longitude)
+            this.camera.position.set(cart.x, cart.y, cart.z)
+            this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+          })
+          .easing(Easing.Cubic.InOut)
+
+        tween.start()
       } else {
         console.log('no active marker, not panning')
       }

@@ -1,7 +1,7 @@
 <template>
   <article class="page-component" v-bind:class="themeClasses">
     <header>
-      <h1>{{page.title}}</h1>
+       <h1>{{page.title}}</h1>
       <ul class="influences">
         <li v-for="influence in page.influences" v-bind:key="influence.slug">
           <nuxt-link v-bind:to="influence.path">{{ influence.title }}</nuxt-link>
@@ -78,13 +78,12 @@ export default {
   computed: {
     themeClasses: function () {
       if (this.page.theme && this.page.theme.length > 0) {
-        var themes = []
-        var i
-        for (i in this.page.theme) {
-          themes = themes + this.page.theme[i].slug + ' '
-        }
+        return this.page.theme.reduce(
+          function (t, e) {
+            return t + e.slug + ' '
+          }, ''
+        )
       }
-      return themes
     }
   }
 }

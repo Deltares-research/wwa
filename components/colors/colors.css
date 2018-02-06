@@ -68,27 +68,21 @@ html {
 
 .too-dirty {
   fill: var(--too-dirty);
-  background-color: var(--too-dirty);
 }
 .too-dirty .light {
   fill: var(--too-dirty--light);
-  background-color: var(--too-dirty--light);
 }
 .too-little {
   fill: var(--too-little);
-  background-color: var(--too-little);
 }
 .too-little--light {
   fill: var(--too-little--light);
-  background-color: var(--too-little--light);
 }
 .too-much {
   fill: var(--too-much);
-  background-color: var(--too-much);
 }
 .too-much .light {
   fill: var(--too-much--light);
-  background-color: var(--too-much--light);
 }
 
 .yl-gn-bu .q0-5 {

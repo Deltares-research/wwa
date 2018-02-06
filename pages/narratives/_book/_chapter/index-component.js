@@ -10,11 +10,7 @@ export default {
   asyncData (context) {
     return loadData(context, context.params)
   },
-  created () {
-    console.log('chapter index created')
-  },
   mounted () {
-    console.log('chapter index mounted')
     const marker = {
       slug: this.slug,
       location: this.location,

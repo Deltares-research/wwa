@@ -12,8 +12,6 @@ import Avatar from './avatar'
 import State from './state'
 import Particles from './particles'
 
-const assetsRoot = 'https://www.datocms-assets.com'
-
 const GLOBE_RADIUS = 5
 const WHITE = new THREE.Color(0xffffff)
 const vOffset = 15
@@ -229,11 +227,8 @@ export default {
      * @returns {Scene} Scene with a sphere
      */
     createScene () {
-
       // minimal scene (TODO: append real globe)
       const scene = new THREE.Scene()
-
-
       const globe = new THREE.Object3D()
       globe.position.set(0, 0, 0)
 
@@ -370,7 +365,6 @@ export default {
         this.intersections[0].object.material.color = WHITE
       }
       this.renderer.render(this.scene, this.camera)
-
     }
   }
 }

@@ -12,3 +12,7 @@ script:
   - npm run test
   - npm run lint
   - npm run gh-pages:generate
+# staging environment in datocms
+notifications:
+  webhooks:
+  - https://webhooks.datocms.com/85346aa7eb904faa0ea9/deploy-results

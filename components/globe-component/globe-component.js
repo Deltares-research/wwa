@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { Tween, autoPlay, Easing } from 'es6-tween'
-import { cartesian2polar, polar2cartesian, deg2rad } from './geometry.js'
+import { cartesian2polar, polar2cartesian, lat2theta, lon2phi, theta2lat, phi2lon } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
 
 // get the markers exported by dato
@@ -11,8 +11,6 @@ import Water from './water'
 import Avatar from './avatar'
 import State from './state'
 import Particles from './particles'
-
-const assetsRoot = 'https://www.datocms-assets.com'
 
 const GLOBE_RADIUS = 5
 const WHITE = new THREE.Color(0xffffff)
@@ -30,8 +28,8 @@ export default {
     }
   },
   props: {
-    activeStory: {
-      type: String,
+    activeMarker: {
+      type: Object,
       required: false
     },
     markers: {
@@ -47,7 +45,7 @@ export default {
         for (var i = 0; i < 100; i++) {
           // Based on this example https://brunodigiuseppe.wordpress.com/2015/02/14/flight-paths-with-threejs/
           const from = {lat: Math.random() * 180 - 90, lon: Math.random() * 360}
-          const to = {lat: 12, lon: 0}
+          const to = {lat: 0, lon: 0}
           const record = {from, to}
           connections.push(record)
         }
@@ -75,13 +73,11 @@ export default {
     this.intersections = []
 
     this.createRaycaster()
-    // this.addMarkers()
     this.addCurves()
-    this.pan()
-    this.zoom()
     // resize the canvas
     this.handleResize()
     this.animate()
+    this.panToActiveMarker()
 
     // window is the event handler fo resize, so we need to subscribe to it
     window.addEventListener(
@@ -139,6 +135,22 @@ export default {
     }
 
   },
+  watch: {
+    activeMarker (newMarker, oldMarker) {
+      if (!(newMarker.location)) {
+        return
+      }
+      // by default use camera position
+      // We use the phi, theta notation, as used in
+      // https://en.wikipedia.org/wiki/Spherical_coordinate_system
+      const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
+      const to = {}
+      to.theta = lat2theta(newMarker.location.lat)
+      to.phi = lon2phi(newMarker.location.lng)
+      to.r = 40 - newMarker.location.zoom
+      this.panAndZoom(from, to)
+    }
+  },
   methods: {
     handleResize () {
       // We're getting the containerSize here because the size
@@ -160,29 +172,9 @@ export default {
     },
     handleClick (event) {
       if (this.intersections.length > 0) {
-        const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
-
-        const targetPos = {
-          x: this.intersections[0].object.position.x,
-          y: this.intersections[0].object.position.y,
-          z: this.intersections[0].object.position.z
-        }
-
-        const to = cartesian2polar(targetPos.x, targetPos.y, targetPos.z)
-        // to.radius = this.intersections[0].object.data.location.zoom === null ? from.radius : this.intersections[0].object.data.location.zoom
-        // to.radius = from.radius
-        to.radius = 7 + Math.random() * 13
-
-        const tween = new Tween(from)
-          .to(to, 3000)
-          .on('update', ({ radius, latitude, longitude }) => {
-            const cart = polar2cartesian(radius, latitude, longitude)
-            this.camera.position.set(cart.x, cart.y, cart.z)
-
-            this.camera.lookAt(new THREE.Vector3(0, 0, 0))
-          })
-          .easing(Easing.Cubic.InOut)
-          .start()
+        const { data } = this.intersections[0].object
+        // navigate to path
+        this.$router.push(data.path)
       }
     },
     handleMouseMove (event) {
@@ -191,17 +183,42 @@ export default {
       this.mouse.x = ((event.clientX / this.renderer.domElement.clientWidth) * 2) - 1
       this.mouse.y = -((event.clientY / this.renderer.domElement.clientHeight) * 2) + 1
     },
+    panToActiveMarker () {
+      if (this.activeMarker && this.activeMarker.location) {
+        const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
+        from.lat = theta2lat(from.theta)
+        from.lng = phi2lon(from.phi)
+
+        // create a to object
+        const to = {
+          lat: this.activeMarker.location.lat,
+          lng: this.activeMarker.location.lng,
+          zoom: this.activeMarker.location.zoom
+        }
+        to.theta = lat2theta(to.lat)
+        to.phi = lon2phi(to.lng)
+        to.r = 40 - from.zoom
+      } else {
+        console.log('no active marker, not panning')
+      }
+    },
     /**
      * Pan to the active story
      */
-    pan () {
-      console.log('panning to', this.activeStory)
-    },
-    /**
-     * Zoom to the zoom level of the active story
-     */
-    zoom () {
-      console.log('zooming to', this.activeStory)
+    panAndZoom (from, to) {
+      const tween = new Tween(from)
+      tween
+        .to(to, 3000)
+        .on('update', ({ r, theta, phi }) => {
+          const cart = polar2cartesian(r, theta, phi)
+          this.camera.position.set(cart.x, cart.y, cart.z)
+          this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+        })
+        .on('complete', () => {
+        })
+        .easing(Easing.Cubic.InOut)
+
+      tween.start()
     },
     /**
      * Create a renderer in the element
@@ -230,7 +247,6 @@ export default {
     createScene () {
       // minimal scene (TODO: append real globe)
       const scene = new THREE.Scene()
-
       const globe = new THREE.Object3D()
       globe.position.set(0, 0, 0)
 
@@ -258,7 +274,6 @@ export default {
 
       const dirLight = new THREE.DirectionalLight(0xffaa66, 4.2)
       dirLight.position.set(15, 13, 15)
-
       return scene
     },
     /**
@@ -281,7 +296,19 @@ export default {
       const renderWidth = this.containerSize[0]
       const renderHeight = this.containerSize[1] * (1 + vOffsetFactor)
       const camera = new THREE.PerspectiveCamera(30, renderWidth / renderHeight, 0.1, 300)
-      camera.position.z = 30 * (1 + vOffsetFactor) * (1 + vOffsetFactor)
+
+      // lat, lon in radians
+      const theta = lat2theta(40)
+      const phi = lon2phi(40)
+      const point = polar2cartesian(40, theta, phi)
+      camera.position.x = point.x
+      camera.position.y = point.y
+      camera.position.z = point.z
+
+      // TODO: somehow z is upside down, check why this is
+      camera.up = new THREE.Vector3(0, 0, -1)
+
+      // set aspect ratio
       camera.setViewOffset(renderWidth, renderHeight, 0, height * vOffsetFactor, width, height)
       return camera
     },
@@ -291,13 +318,16 @@ export default {
         const from = record.from
         const to = record.to
         // Convert to radian
-        from.φ = deg2rad(from.lat)
-        from.θ = deg2rad(from.lon)
-        from.xyz = polar2cartesian(GLOBE_RADIUS, from.φ, from.θ)
+        // inclination theta (latitude), azimuth phi (longitude)
+        from.theta = lat2theta(from.lat)
+        from.phi = lon2phi(from.lon)
+        let cart = polar2cartesian(GLOBE_RADIUS, from.theta, from.phi)
+        from.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
 
-        to.φ = deg2rad(to.lat)
-        to.θ = deg2rad(to.lon)
-        to.xyz = polar2cartesian(GLOBE_RADIUS, to.φ, to.θ)
+        to.theta = lat2theta(to.lat)
+        to.phi = lon2phi(to.lon)
+        cart = polar2cartesian(GLOBE_RADIUS, to.theta, to.phi)
+        to.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
 
         let distance = from.xyz.distanceTo(to.xyz)
         // here we are creating the control points for the first ones.
@@ -338,45 +368,6 @@ export default {
         this.scene.add(curveObject)
       })
     },
-    addMarkers () {
-      // add the markers to the scene
-      const loader = new THREE.TextureLoader()
-      // loop over all markers and add them after the texture is loaded
-      this.markers.forEach(
-        (marker) => {
-          const lat = deg2rad(marker.location.lat)
-          const lon = deg2rad(marker.location.lon)
-          const position = polar2cartesian(GLOBE_RADIUS * 1.3, lat, lon)
-          if (marker.characterPortrait == null) {
-            return
-          }
-          // we get these from a remote url, this means that the canvas
-          // will be marked as tainted:
-          // https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image
-          const url = assetsRoot + marker.characterPortrait.path
-          // load and wait for it to add the avatar and re-render
-          loader.load(
-            url,
-            (texture) => {
-              // allow non power of 2 textures
-              texture.minFilter = THREE.LinearFilter
-              const avatarMaterial = new THREE.SpriteMaterial({
-                map: texture,
-                color: 0xffffff
-              })
-              const avatar = new THREE.Sprite(avatarMaterial)
-              // store the avatar so we can zoom to it
-              marker.avatar = avatar
-              avatar.position.x = position.x
-              avatar.position.y = position.y
-              avatar.position.z = position.z
-              this.scene.add(avatar)
-              this.render()
-            }
-          )
-        }
-      )
-    },
     /**
      * Render and animate the scene.
      * @return {[type]} [description]
@@ -384,30 +375,14 @@ export default {
     animate () {
       requestAnimationFrame(this.animate)
 
-      // particles.uniforms.time.value += 0.1;
-      // this.glow.uniforms.viewVector.value = new THREE.Vector3().subVectors(camera.position, globe.position);
-
-      // globe.rotation.y += 0.0005;
-
-      // this.stats.begin()
-
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
       this.avatar.mesh.children.forEach(function (d) { d.material.color = d.data.themeColor })
 
       if (this.intersections.length > 0) {
         this.intersections[0].object.material.color = WHITE
-
-      //   globeEl
-      //     .st({ cursor: 'pointer' });
-      // } else {
-      //   globeEl
-      //     .st({ cursor: 'default' });
       }
-
       this.renderer.render(this.scene, this.camera)
-
-      // this.stats.end()
     }
   }
 }

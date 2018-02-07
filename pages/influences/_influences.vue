@@ -13,7 +13,6 @@ import allInfluences from '~/static/data/influences/index.json'
 import '~/components/list/list.css'
 
 export default {
-  layout: 'list',
   async asyncData (context) {
     const { params } = context
     const influencesFromUrl = params.influences.split('+')

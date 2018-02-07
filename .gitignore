@@ -13,3 +13,4 @@ data
 
 # Environment variables
 .env
+backup

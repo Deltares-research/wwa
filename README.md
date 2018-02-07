@@ -40,6 +40,9 @@ $ npm start
 # deploy to github pages
 $ npm run deploy:gh-pages
 
+# Make sure you periodically backup
+$ npm run data:backup
+
 # deploy to surge (for intermediate versions/AB testing)
 # website will be online at name-wwa-version
 $ npm run generate

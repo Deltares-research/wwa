@@ -36,7 +36,6 @@ export default {
   },
   mounted () {
     const activePages = this.pages.filter(page => page.slug === this.slug)
-    console.log('page', activePages)
     this.activePage = activePages[0]
     this.$events.$emit(events.disableGlobeNavigation)
     this.$events.$emit(events.featuresChanged, this.pages)
@@ -52,7 +51,6 @@ export default {
   methods: {
     updateActiveFeature (slug = this.slug) {
       const activePages = this.pages.filter(page => page.slug === slug)
-      console.log(activePages)
       if (activePages) {
         this.activePage = activePages[0]
         this.$events.$emit(events.activeFeatureChanged, this.activePage)

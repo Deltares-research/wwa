@@ -11,8 +11,8 @@ import events from '~/components/events/events'
 
 export default {
   async asyncData (context) {
-    const { pages, title } = await loadData(context, context.params)
-    return { pages, title }
+    const { location, pages, path, slug, title } = await loadData(context, context.params)
+    return { location, pages, path, slug, title }
   },
   mounted () {
     const marker = {

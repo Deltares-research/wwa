@@ -77,7 +77,6 @@ export default {
     // resize the canvas
     this.handleResize()
     this.animate()
-    this.panToActiveMarker()
 
     // window is the event handler fo resize, so we need to subscribe to it
     window.addEventListener(
@@ -137,7 +136,7 @@ export default {
   },
   watch: {
     activeMarker (newMarker, oldMarker) {
-      if (!(newMarker.location)) {
+      if (!(newMarker) || !(newMarker.location)) {
         return
       }
       // by default use camera position
@@ -151,7 +150,6 @@ export default {
       this.panAndZoom(from, to)
     },
     markers (newMarkers, oldMarkers) {
-      console.log('old', oldMarkers)
       const globe = this.globe
       const markers = newMarkers.filter(marker => marker.location)
       this.avatar.clear()
@@ -189,25 +187,6 @@ export default {
 
       this.mouse.x = ((event.clientX / this.renderer.domElement.clientWidth) * 2) - 1
       this.mouse.y = -((event.clientY / this.renderer.domElement.clientHeight) * 2) + 1
-    },
-    panToActiveMarker () {
-      if (this.activeMarker && this.activeMarker.location) {
-        const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
-        from.lat = theta2lat(from.theta)
-        from.lng = phi2lon(from.phi)
-
-        // create a to object
-        const to = {
-          lat: this.activeMarker.location.lat,
-          lng: this.activeMarker.location.lng,
-          zoom: this.activeMarker.location.zoom
-        }
-        to.theta = lat2theta(to.lat)
-        to.phi = lon2phi(to.lng)
-        to.r = 40 - from.zoom
-      } else {
-        console.log('no active marker, not panning')
-      }
     },
     /**
      * Pan to the active story

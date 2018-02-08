@@ -35,21 +35,24 @@ export default {
     }
   },
   mounted () {
-    const activePages = this.pages.filter(page => page.slug === this.slug)
-    if (activePages) {
-      this.activePage = activePages[0]
-      this.$events.$emit(events.activeMarkerChanged, this.activePage)
-      this.$events.$emit(events.markersChanged, this.pages)
-    }
+    this.$events.$emit(events.featuresChanged, this.pages)
     if ('IntersectionObserver' in window) {
       this.observeIntersectingChildren()
     }
     this.scrollToSlug()
+    this.updateActiveFeature()
   },
   components: {
     PageComponent
   },
   methods: {
+    updateActiveFeature (slug = this.slug) {
+      const activePages = this.pages.filter(page => page.slug === slug)
+      if (activePages) {
+        this.activePage = activePages[0]
+        this.$events.$emit(events.activeFeatureChanged, this.activePage)
+      }
+    },
     observeIntersectingChildren () {
       const intersectionRatio = 0.001
       const observer = new IntersectionObserver(entries => {
@@ -67,13 +70,14 @@ export default {
         // No Array.prototype function, so we can break the loop
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            const { base = '' } = this.$router.options
+            const { base = '/' } = this.$router.options
             const book = this.$route.params.book
             const chapter = this.$route.params.chapter
-            const page = entry.target.id
-            const path = `${base}narratives/${book}/${chapter}/${page}`
+            const slug = entry.target.id
+            const path = `${base}narratives/${book}/${chapter}/${slug}`
             if (path !== window.location.pathname) {
-              history.replaceState({}, page, path)
+              history.replaceState({}, 'page', path)
+              this.updateActiveFeature(slug)
             }
             break
           }

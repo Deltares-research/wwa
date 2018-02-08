@@ -86,7 +86,12 @@ function generateBooks (dato, root, i18n) {
  */
 function generateChapters (dato, root, i18n) {
   const chapters = getChapters(dato)
-  chapters.forEach(chapter => root.createDataFile(`static/data/books/${chapter.book.slug}/chapters/${chapter.slug}/index.json`, 'json', chapter))
+  for (const chapterId in chapters) {
+    const chapter = chapters[chapterId]
+    if (chapter.book != null) { // so that null result will not be written out
+       root.createDataFile(`static/data/books/${chapter.book.slug}/chapters/${chapter.slug}/index.json`, 'json', chapter)
+    }
+  }
 }
 
 /**
@@ -207,14 +212,20 @@ function getChapters (dato, bookRef) {
     .filter(filterPublished)
     .map(chapter => {
       const { title, slug, chapterType } = chapter
-      bookRef = bookRef || getParent(dato, chapter)
-      const book = {
-        path: `${contentBasePath}/${bookRef.slug}`,
-        slug: bookRef.slug,
-        title: bookRef.title,
-        theme: bookRef.theme
+      var parentBook = bookRef || getParent(dato, chapter)
+      if (parentBook != null) { // if else so that a null result is valid
+        var book = {
+          path: `${contentBasePath}/${parentBook.slug}`,
+          slug: parentBook.slug,
+          title: parentBook.title,
+          theme: parentBook.theme
+        }
+        const path = `${parentBook.path}/${slug}`
       }
-      const path = `${book.path}/${slug}`
+      else {
+        var book = null
+        var path = null
+      }
       const pages = getPages(dato, chapter)
       const firstLocationPage = pages.filter(page => page.location)[0]
       const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
@@ -328,10 +339,12 @@ function getParent (dato, child) {
       parentType = 'book'
   }
 
-  return dato[`${parentType}s`] // hacky pluralisation
-    .filter(parent => parent[`${childType}s`].some(
+  const parentsArr = dato[`${parentType}s`].filter(parent => parent[`${childType}s`].some(
       childFromParent => childFromParent.id === child.id
-    ))[0]
+    ))
+
+  var parent = parentsArr[0] || null; // so that a null result is valid
+  return parent // hacky pluralisation
 }
 
 /**

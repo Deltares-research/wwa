@@ -19,9 +19,6 @@ export default {
   asyncData (context) {
     return loadData(context, context.params)
   },
-  mounted () {
-    this.$events.$emit(events.enableGlobeNavigation)
-  },
   components: {
     CardList,
     TitleList
@@ -37,6 +34,7 @@ export default {
       location: this.location,
       path: this.path
     }
+    this.$events.$emit(events.enableGlobeNavigation)
     this.$events.$emit(events.activeFeatureChanged, marker)
     this.$events.$emit(events.featuresChanged, null)
   }

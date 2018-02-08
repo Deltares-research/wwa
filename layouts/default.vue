@@ -7,8 +7,8 @@
   </main>
 </template>
 <script>
-import events from '~/components/events/events'
 import GlobeComponent from '~/components/globe-component/GlobeComponent'
+import events from '~/components/events/events'
 import loadData from '~/lib/load-data'
 
 export default {

@@ -149,6 +149,13 @@ export default {
       to.phi = lon2phi(newMarker.location.lng)
       to.r = 40 - newMarker.location.zoom
       this.panAndZoom(from, to)
+    },
+    markers (newMarkers, oldMarkers) {
+      console.log('old', oldMarkers)
+      const globe = this.globe
+      const markers = newMarkers.filter(marker => marker.location)
+      this.avatar.clear()
+      this.avatar.load(markers, avs => globe.add(avs))
     }
   },
   methods: {

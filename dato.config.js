@@ -164,7 +164,7 @@ function getBooks (dato) {
         .filter(filterPublished)
         .map(id => {
           const { entity } = dato.find(id)
-          const { title, slug, pages, chapterType, themes } = entity
+          const { title, slug, pages, chapterType } = entity
           const chapterPath = `${path}/${slug}`
           let location = null
 
@@ -180,9 +180,16 @@ function getBooks (dato) {
               break
             }
           }
-          return { pageCount: pages.length, location, path: chapterPath, slug, title, type: chapterType,}
+          return {
+            pageCount: pages.length,
+            location,
+            path: chapterPath,
+            slug,
+            title,
+            type: chapterType
+          }
         })
-      const themes = chapters.map(chapter => {return chapter.themes})
+      const themes = chapters.map(chapter => { return chapter.themes })
 
       // create book
       return {
@@ -212,11 +219,11 @@ function getChapters (dato, bookRef) {
       const book = {
         path: `${contentBasePath}/${bookRef.slug}`,
         slug: bookRef.slug,
-        title: bookRef.title,
+        title: bookRef.title
       }
       const path = `${book.path}/${slug}`
       const pages = getPages(dato, chapter)
-      const themes = pages.map(page => {return page.theme})
+      const themes = pages.map(page => { return page.theme })
       const firstLocationPage = pages.filter(page => page.location)[0]
       const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
       const location = (firstLocationPage) ? firstLocationPage.location : null
@@ -253,7 +260,7 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, influences, keywords, links, slug, title, video} = page
+      const { body, files, graphs, images, influences, keywords, links, slug, title, video } = page
       const theme = (page.theme != null) ? {
         title: page.theme.title,
         slug: page.theme.slug,
@@ -410,11 +417,10 @@ function stringToLinkObject (tagString, tagType) {
   const slug = slugify(string).toLowerCase()
   return {
     title: string.toLowerCase(),
-    slug : slug,
+    slug: slug,
     path: `/${tagType}/${slug}`
   }
 }
-
 
 /**
  * Convert comma-separated string to array of linkObjects
@@ -424,7 +430,7 @@ function stringToLinkObject (tagString, tagType) {
  * @returns {linkObject}
  */
 function tagStringToLinkObject (tagString, tagType) {
-  return(tagString || 'unfiled').split(/,\s?/).map(tag => {
+  return (tagString || 'unfiled').split(/,\s?/).map(tag => {
     return stringToLinkObject(tag, tagType)
   })
 }

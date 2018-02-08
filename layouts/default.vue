@@ -36,9 +36,14 @@ export default {
   }
 }
 </script>
+
 <style>
 @import '../components/colors/colors.css';
 
+  html {
+    padding: 0;
+    margin: 0;
+  }
 .globe-component {
   position: fixed;
   z-index: -1;
@@ -66,5 +71,4 @@ export default {
 .card-list-item {
   position: static;
 }
-
 </style>

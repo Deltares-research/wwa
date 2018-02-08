@@ -25,6 +25,12 @@ export default {
   },
   components: {
     CardList
+  },
+  data () {
+    return {
+      title: '',
+      pages: []
+    }
   }
 }
 </script>

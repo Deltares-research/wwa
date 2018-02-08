@@ -4,8 +4,6 @@ const path = require('path')
 const dotenv = require('dotenv')
 const request = require('request')
 
-
-
 module.exports = (dato, root, i18n) => {
   dotenv.load({ silent: true })
   const client = new SiteClient(process.env.DATO_API_TOKEN)

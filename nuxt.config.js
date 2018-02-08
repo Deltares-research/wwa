@@ -14,12 +14,19 @@ const postcss = {
   plugins: {
     'postcss-import': {},
     'postcss-calc': {},
-    'postcss-custom-properties': {}
+    'postcss-custom-properties': {
+      // TODO: check warnings about variables declared outside :root
+      warnings: false
+    }
   }
 }
 
 // only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
-const routerBase = {}
+const routerBase = {
+  router: {
+    base: '/'
+  }
+}
 const plugins = [
   // creat report.html with bundle size
   new BundleAnalyzerPlugin({
@@ -78,7 +85,7 @@ module.exports = {
   },
 
   // include routerbase
-  ...routerBase,
+  router: routerBase.router,
   // Build configuration
   build: {
     // Run ESLint on save

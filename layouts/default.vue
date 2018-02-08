@@ -1,28 +1,41 @@
 <template>
   <main>
-    <!--[if lte IE 12]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-    <![endif]-->
-    <globe-component class="globe-component" :activeStory="activeStory" />
+    <globe-component class="globe-component" :activeMarker="activeMarker" />
     <nuxt/>
   </main>
 </template>
 <script>
+import Vue from 'vue'
+import VueEvents from 'vue-events'
+
 import '~/components/typography/typography.css'
 import GlobeComponent from '~/components/globe-component/GlobeComponent'
+
+Vue.use(VueEvents)
 
 export default {
   data () {
     return {
-      activeStory: this.$route.params.slug
+      activeMarker: null
     }
+  },
+  created () {
+    this.$events.$on('marker-selected', marker => {
+      this.activeMarker = marker
+    })
+  },
+  methods: {
   },
   components: {
     GlobeComponent
   }
 }
 </script>
+
 <style>
+  @import '../components/colors/colors.css';
+
+
   html {
     padding: 0;
     margin: 0;
@@ -31,5 +44,27 @@ export default {
     position: fixed;
     z-index: -1;
     top:0;
+  }
+
+  .app,
+  .card-list,
+  .card-list-item {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-height: 20rem;
+    max-height: 20vh;
+    color: var(--ui--text--invert);
+  }
+
+  .card-list {
+    box-sizing: border-box;
+    padding-top: 5rem;
+    z-index: -1;
+  }
+
+  .card-list-item {
+    position: static;
   }
 </style>

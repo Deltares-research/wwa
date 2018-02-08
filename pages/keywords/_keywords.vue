@@ -26,7 +26,6 @@ import loadData from '~/lib/load-data'
 import { unionByProp } from '~/lib/set-operations'
 
 export default {
-  layout: 'list',
   async asyncData (context) {
     const { params } = context
     const keywordsFromUrl = params.keywords.split('+')

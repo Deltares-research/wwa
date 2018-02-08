@@ -15,7 +15,6 @@ import loadData from '~/lib/load-data'
 import books from '~/static/data/books/index.json'
 
 export default {
-  layout: 'list',
   asyncData (context) {
     return loadData(context, context.params)
   },

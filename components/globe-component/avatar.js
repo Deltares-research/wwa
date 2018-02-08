@@ -1,8 +1,7 @@
 import * as THREE from 'three'
-import { loadData } from 'd3-jetpack'
 
-import { GLOBE_RADIUS, INIT_ANGLE, INIT_AXIS } from './constants'
-import { lon2rad, lat2rad } from './common'
+import { GLOBE_RADIUS } from './constants'
+import { polar2cartesian, lat2theta, lon2phi } from './common'
 
 const SCALE = 1.1
 
@@ -16,11 +15,12 @@ const THEME_COLORS = {
 }
 
 class Avatar {
-  constructor () {
+  constructor (markers, base) {
+    this.markers = markers
     this.textures = {}
-    this.textures['too dirty'] = new THREE.TextureLoader().load('/avatars/too-dirty.png')
-    this.textures['too much'] = new THREE.TextureLoader().load('/avatars/too-much.png')
-    this.textures['too little'] = new THREE.TextureLoader().load('/avatars/too-little.png')
+    this.textures['too dirty'] = new THREE.TextureLoader().load(base + 'avatars/too-dirty.png')
+    this.textures['too much'] = new THREE.TextureLoader().load(base + 'avatars/too-much.png')
+    this.textures['too little'] = new THREE.TextureLoader().load(base + 'avatars/too-little.png')
     this.mesh = new THREE.Object3D()
   }
 
@@ -30,49 +30,35 @@ class Avatar {
    * @return {[type]}          [description]
    */
   load (finished) {
-    loadData('data/globeMarkers.json', (err, result) => {
-      if (err) {
-        console.error('marker data could not be loaded', err)
-      }
-
-      // const material = new THREE.SpriteMaterial({
-      //   map: this.texture,
-      //   color: 0xffffff
-      // })
-      result[0].forEach((d, i) => {
-        const themeColor = THEME_COLORS[d.book.theme]
-        const texture = this.textures[d.book.theme]
-        const material = new THREE.SpriteMaterial({
-          map: texture,
-          color: new THREE.Color(themeColor)
-        })
-
-        const avatar = new THREE.Sprite(material)
-        // const avatar = new THREE.Sprite(material.clone())
-
-        // latitude and longitude are mixed up in the data
-        const lon = lon2rad(d.location.lat)
-        const lat = lat2rad(d.location.lng)
-
-        const x = SCALE * GLOBE_RADIUS * Math.sin(lat) * Math.cos(lon)
-        const y = SCALE * GLOBE_RADIUS * Math.sin(lat) * Math.sin(lon)
-        const z = SCALE * GLOBE_RADIUS * Math.cos(lat)
-
-        const position = new THREE.Vector3(x, y, z)
-        position.applyAxisAngle(INIT_AXIS, INIT_ANGLE)
-
-        avatar.position.x = position.x
-        avatar.position.y = position.y
-        avatar.position.z = position.z
-
-        avatar.data = d
-        avatar.data.themeColor = new THREE.Color(themeColor)
-
-        this.mesh.add(avatar)
+    this.markers.forEach((d, i) => {
+      const themeColor = THEME_COLORS[d.book.theme]
+      const texture = this.textures[d.book.theme]
+      const material = new THREE.SpriteMaterial({
+        map: texture,
+        color: new THREE.Color(themeColor)
       })
 
-      finished(this.mesh)
+      const avatar = new THREE.Sprite(material)
+      // const avatar = new THREE.Sprite(material.clone())
+
+      // latitude and longitude are mixed up in the data
+      const lon = lon2phi(d.location.lng)
+      const lat = lat2theta(d.location.lat)
+
+      const {x, y, z} = polar2cartesian(SCALE * GLOBE_RADIUS, lat, lon)
+      const position = new THREE.Vector3(x, y, z)
+
+      avatar.position.x = position.x
+      avatar.position.y = position.y
+      avatar.position.z = position.z
+
+      avatar.data = d
+      avatar.data.themeColor = new THREE.Color(themeColor)
+
+      this.mesh.add(avatar)
     })
+
+    finished(this.mesh)
   }
 }
 

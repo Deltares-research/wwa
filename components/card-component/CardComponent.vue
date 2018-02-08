@@ -2,7 +2,7 @@
   <article class="card-component">
     <nuxt-link v-bind:to="path">
       <h1>{{title}} {{count || ''}}</h1>
-      <svg-icon v-if="theme" v-bind:icon="theme.slug" />
+      <svg-icon v-if="theme && theme.slug" v-bind:icon="theme.slug" />
       <p>{{body}}</p>
     </nuxt-link>
   </article>

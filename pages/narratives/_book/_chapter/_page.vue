@@ -1,5 +1,9 @@
 <template>
   <div>
+    <header class="header">
+      <h1 class="h2 invert"><nuxt-link v-bind:to="book.path">{{book.title}}</nuxt-link></h1>
+      <h2 class="h1 invert"><nuxt-link v-bind:to="chapter.path">{{chapter.title}}</nuxt-link></h2>
+    </header>
     <page-component v-for="page in pages" v-bind:key="page.slug"
       v-bind:page="page"
       v-bind:id="page.slug"
@@ -8,14 +12,38 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import VueEvents from 'vue-events'
 import loadData from '~/lib/load-data'
 import PageComponent from '~/components/page-component/PageComponent'
 
+Vue.use(VueEvents)
+
 export default {
-  asyncData (context) {
-    return loadData(context, context.params)
+  async asyncData (context) {
+    const { pages } = await loadData(context, context.params)
+    const book = pages[0].book
+    const chapter = pages[0].chapter
+    const slug = context.params.page
+    return {
+      book,
+      chapter,
+      pages,
+      slug
+    }
+  },
+  data () {
+    return {
+      activePage: null
+    }
+  },
+  created () {
   },
   mounted () {
+    const activePages = this.pages.filter(page => page.slug === this.slug)
+    console.log('page', activePages)
+    this.activePage = activePages[0]
+    this.$events.$emit('marker-selected', this.activePage)
     if ('IntersectionObserver' in window) {
       this.observeIntersectingChildren()
     }
@@ -69,8 +97,19 @@ export default {
 </script>
 
 <style>
-.page-component:first-child {
+.header {
+  max-width: 960px;
+  width: 100%;
+  margin: auto;
   margin-top: 62.5vh;
+  color: #fff;
+}
+.header a {
+  color: inherit;
+  text-decoration: none;
+}
+.header + .page-component {
+  margin-top: 0;
 }
 .page-component {
   margin: 50vh auto; /* Note that these margins should collapse */

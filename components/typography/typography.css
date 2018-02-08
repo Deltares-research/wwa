@@ -1,3 +1,5 @@
+@import '../colors/colors.css';
+
 :root {
   /* Scales */
   --minor-second: 1.067;
@@ -38,6 +40,12 @@ h5, .h5,
 h6, .h6 {
   font-weight: bold;
 }
+
+.invert {
+  color: var(--ui--text-invert);
+  text-shadow: 0 0 1rem var(--ui--black);
+}
+
 
 p {
   line-height: var(--line-height);

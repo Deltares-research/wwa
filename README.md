@@ -1,6 +1,7 @@
-# wwa
+# World Water Atlas
 
-> World Water Atlas
+<!-- Show build status -->
+[![Build Status](https://travis-ci.org/Deltares/wwa.svg?branch=master)](https://travis-ci.org/Deltares/wwa)
 
 ## Technologies
 * [Nuxt.js](https://nuxtjs.org/guide)
@@ -12,6 +13,10 @@ Ask a colleague for the API key for read-access or log in to [DatoCMS](https://w
 ```
 DATO_API_TOKEN=<TOKEN>
 ```
+
+## Deployment
+
+Deployment is documented at the [travis github](https://docs.travis-ci.com/user/deployment/pages/) plugins website.
 
 ## Build Setup
 
@@ -39,6 +44,9 @@ $ npm start
 
 # deploy to github pages
 $ npm run deploy:gh-pages
+
+# Make sure you periodically backup
+$ npm run data:backup
 
 # deploy to surge (for intermediate versions/AB testing)
 # website will be online at name-wwa-version

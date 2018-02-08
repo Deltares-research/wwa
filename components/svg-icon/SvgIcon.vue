@@ -1,19 +1,30 @@
 <template>
-  <svg v-bind:class="`svg-icon ${icon} ${iconVariant}`" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <use v-bind:xlink:href="`#${icon}`" />
+  <svg v-bind:class="classObj" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <use v-bind:xlink:href="`#${this.icon}`" />
   </svg>
 </template>
-
 <script>
 import '~/components/colors/colors.css'
 
-const icon = this.icon
-const variant = this.variant
-
 export default {
-  computed: {
-    iconVariant: () => (this.variant) ? `${icon}--${variant}` : ''
+  props: {
+    icon: {
+      type: String,
+      required: true
+    },
+    variant: {
+      type: String,
+      required: false
+    }
   },
-  props: [ 'icon', 'variant' ]
+  computed: {
+    classObj () {
+      return {
+        'svg-icon': true,
+        [this.icon]: true,
+        [`${this.icon}--${this.variant}`]: (this.variant)
+      }
+    }
+  }
 }
 </script>

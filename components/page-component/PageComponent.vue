@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import AvatarComponent from '~/components/avatar-component/avatarComponent'
+import AvatarComponent from '~/components/avatar-component/AvatarComponent'
 
 export default {
   props: {
@@ -109,4 +109,3 @@ export default {
 }
 
 </style>
-

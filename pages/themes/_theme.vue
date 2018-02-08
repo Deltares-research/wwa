@@ -11,8 +11,9 @@ import SvgIcon from '~/components/svg-icon/SvgIcon'
 import loadData from '~/lib/load-data'
 
 export default {
-  asyncData (context) {
-    return loadData(context, context.params)
+  async asyncData (context) {
+    const books = await loadData(context, context.params)
+    return { books }
   },
   components: {
     CardList,

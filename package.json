@@ -20,6 +20,7 @@
     "deploy:gh-pages": "npm-run-all gh-pages:data gh-pages:generate gh-pages:deploy",
     "data:dev": "cross-env UNPUBLISHED=1 dato dump",
     "data:build": "dato dump",
+    "data:backup": "dato dump --config dato.backup.js",
     "data:books": "cross-env DATO_EXPORT=books dato dump",
     "data:chapters": "cross-env DATO_EXPORT=chapters dato dump",
     "data:globe": "cross-env DATO_EXPORT=globe dato dump",

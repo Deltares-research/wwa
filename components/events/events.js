@@ -10,5 +10,7 @@ export const disableGlobeNavigation = 'disable-globe-navigation'
 
 export default {
   activeFeatureChanged,
-  featuresChanged
+  featuresChanged,
+  enableGlobeNavigation,
+  disableGlobeNavigation
 }

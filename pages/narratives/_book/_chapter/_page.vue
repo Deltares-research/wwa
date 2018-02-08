@@ -73,7 +73,7 @@ export default {
             const { base = '/' } = this.$router.options
             const bookSlug = this.$route.params.book
             const chapterSlug = this.$route.params.chapter
-            const pagesSlug = entry.target.id
+            const pageSlug = entry.target.id
             const path = `${base}narratives/${bookSlug}/${chapterSlug}/${pageSlug}`
             if (path !== window.location.pathname) {
               history.replaceState({}, 'page', path)

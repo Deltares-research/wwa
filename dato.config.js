@@ -182,7 +182,7 @@ function getBooks (dato) {
           }
           return { pageCount: pages.length, location, path: chapterPath, slug, title, type: chapterType,}
         })
-      const themes = chapters.reduce( (bookThemes, chapterThemes) => bookThemes.concat(chapterThemes), [])
+      const themes = chapters.map(chapter => {return chapter.themes})
 
       // create book
       return {
@@ -216,7 +216,7 @@ function getChapters (dato, bookRef) {
       }
       const path = `${book.path}/${slug}`
       const pages = getPages(dato, chapter)
-      const themes = pages.reduce( (chapterThemes, pageTheme) => chapterThemes += pageTheme , '')
+      const themes = pages.map(page => {return page.theme})
       const firstLocationPage = pages.filter(page => page.location)[0]
       const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
       const location = (firstLocationPage) ? firstLocationPage.location : null
@@ -230,7 +230,7 @@ function getChapters (dato, bookRef) {
         storyteller,
         title,
         type: chapterType,
-        themes: tagStringToLinkObject(themes, 'themes')
+        themes
       }
     })
 }
@@ -253,7 +253,12 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, influences, keywords, links, slug, title, video, theme} = page
+      const { body, files, graphs, images, influences, keywords, links, slug, title, video} = page
+      const theme = (page.theme != null) ? {
+        title: page.theme.title,
+        slug: page.theme.slug,
+        path: `/themes/${page.theme.slug}`
+      } : null
       const location = (page.location) ? {
         lat: page.location.latitude,
         lng: page.location.longitude,
@@ -290,7 +295,7 @@ function getPages (dato, chapterRef) {
           avatar: page.storytellerAvatar,
           name: page.storyteller
         },
-        theme: stringToLinkObject(theme, 'themes'),
+        theme,
         title,
         video
       }

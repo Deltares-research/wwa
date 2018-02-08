@@ -37,12 +37,10 @@ export default {
       this.enableZoom = true
       this.enableRotate = true
     })
-    this.$events.$on(disableGlobeNavigation, marker => {
+    this.$events.$on(events.disableGlobeNavigation, marker => {
       this.enableZoom = false
       this.enableRotate = false
     })
-  },
-  methods: {
     this.$events.$on(events.featuresChanged, markers => {
       this.markers = markers || this.baseMarkers
     })

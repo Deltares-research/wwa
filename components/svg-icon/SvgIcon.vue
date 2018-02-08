@@ -19,12 +19,10 @@ export default {
   },
   computed: {
     classObj () {
-      const classes = {
-        'svg-icon': true
-      }
-      classes[this.icon] = true
-      if (this.variant) {
-        classes[`${this.icon}--${this.variant}`] = true
+      return {
+        'svg-icon': true,
+        [this.icon]: true,
+        [`${this.icon}--${this.variant}`]: (this.variant)
       }
     }
   }

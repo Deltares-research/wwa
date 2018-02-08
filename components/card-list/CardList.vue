@@ -1,7 +1,8 @@
 <template>
   <ul v-if="cards" class="card-list">
-    <li v-for="card in cards" v-bind:key="card.slug" class="card-list-item">
+    <li v-for="card, index in cards" v-bind:key="card.slug" class="card-list-item">
       <card-component
+        v-bind:delay="index * 100"
         v-bind:title="card.title"
         v-bind:slug="card.slug"
         v-bind:path="card.path"
@@ -23,6 +24,7 @@ export default {
 }
 </script>
 <style>
+
 .card-list {
   overflow-x: scroll;
   overflow-y: hidden;
@@ -42,6 +44,7 @@ export default {
   vertical-align: top;
   white-space: normal;
 }
+
 /* media min-width is based on li max-width * 100vw / li width */
 @media screen and (min-width: 560px) {
   .card-list-item:first-child {

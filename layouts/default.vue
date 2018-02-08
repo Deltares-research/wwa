@@ -37,7 +37,7 @@ export default {
       this.enableZoom = true
       this.enableRotate = true
     })
-    this.$events.$on(disableGlobeNavigation', marker => {
+    this.$events.$on(disableGlobeNavigation, marker => {
       this.enableZoom = false
       this.enableRotate = false
     })

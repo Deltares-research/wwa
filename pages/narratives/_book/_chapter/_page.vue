@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header class="header">
+    <header class="chapter-header">
       <h1 class="h2 invert"><nuxt-link v-bind:to="book.path">{{book.title}}</nuxt-link></h1>
       <h2 class="h1 invert"><nuxt-link v-bind:to="chapter.path">{{chapter.title}}</nuxt-link></h2>
     </header>
@@ -12,12 +12,9 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import VueEvents from 'vue-events'
 import loadData from '~/lib/load-data'
 import PageComponent from '~/components/page-component/PageComponent'
-
-Vue.use(VueEvents)
+import events from '~/components/events/events'
 
 export default {
   async asyncData (context) {
@@ -37,22 +34,25 @@ export default {
       activePage: null
     }
   },
-  created () {
-  },
   mounted () {
-    const activePages = this.pages.filter(page => page.slug === this.slug)
-    console.log('page', activePages)
-    this.activePage = activePages[0]
-    this.$events.$emit('marker-selected', this.activePage)
+    this.$events.$emit(events.featuresChanged, this.pages)
     if ('IntersectionObserver' in window) {
       this.observeIntersectingChildren()
     }
     this.scrollToSlug()
+    this.updateActiveFeature()
   },
   components: {
     PageComponent
   },
   methods: {
+    updateActiveFeature (slug = this.slug) {
+      const activePages = this.pages.filter(page => page.slug === slug)
+      if (activePages) {
+        this.activePage = activePages[0]
+        this.$events.$emit(events.activeFeatureChanged, this.activePage)
+      }
+    },
     observeIntersectingChildren () {
       const intersectionRatio = 0.001
       const observer = new IntersectionObserver(entries => {
@@ -70,13 +70,14 @@ export default {
         // No Array.prototype function, so we can break the loop
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            const { base = '' } = this.$router.options
-            const book = this.$route.params.book
-            const chapter = this.$route.params.chapter
-            const page = entry.target.id
-            const path = `${base}narratives/${book}/${chapter}/${page}`
+            const { base = '/' } = this.$router.options
+            const bookSlug = this.$route.params.book
+            const chapterSlug = this.$route.params.chapter
+            const pageSlug = entry.target.id
+            const path = `${base}narratives/${bookSlug}/${chapterSlug}/${pageSlug}`
             if (path !== window.location.pathname) {
-              history.replaceState({}, page, path)
+              history.replaceState({}, 'page', path)
+              this.updateActiveFeature(pageSlug)
             }
             break
           }
@@ -97,18 +98,18 @@ export default {
 </script>
 
 <style>
-.header {
+.chapter-header {
   max-width: 960px;
   width: 100%;
   margin: auto;
-  margin-top: 62.5vh;
+  margin-top: 40vh;
   color: #fff;
 }
-.header a {
+.chapter-header a {
   color: inherit;
   text-decoration: none;
 }
-.header + .page-component {
+.chapter-header + .page-component {
   margin-top: 0;
 }
 .page-component {

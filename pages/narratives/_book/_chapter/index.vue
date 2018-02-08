@@ -5,17 +5,15 @@
   </div>
 </template>
 <script>
-import Vue from 'vue'
-import VueEvents from 'vue-events'
-
 import CardList from '~/components/card-list/CardList'
 import loadData from '~/lib/load-data'
 
-Vue.use(VueEvents)
+import events from '~/components/events/events'
+
 export default {
   async asyncData (context) {
-    const { title, slug, chapters, book } = await loadData(context, context.params)
-    return { title, slug, chapters, bookTitle: book.title }
+    const { location, pages, path, slug, title } = await loadData(context, context.params)
+    return { location, pages, path, slug, title }
   },
   mounted () {
     const marker = {
@@ -23,7 +21,8 @@ export default {
       location: this.location,
       path: this.path
     }
-    this.$events.$emit('marker-selected', marker)
+    this.$events.$emit(events.activeFeatureChanged, marker)
+    this.$events.$emit(events.featuresChanged, null)
   },
   components: {
     CardList

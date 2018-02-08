@@ -50,7 +50,7 @@ export default {
 @import '../animations/animations.css';
 
 .card-list {
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
   padding-left: 0;

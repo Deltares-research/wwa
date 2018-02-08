@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { Tween, autoPlay, Easing } from 'es6-tween'
-import { cartesian2polar, polar2cartesian, lat2theta, lon2phi, theta2lat, phi2lon } from './common.js'
+import { cartesian2polar, polar2cartesian, lat2theta, lon2phi } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
 
 // get the markers exported by dato
@@ -77,7 +77,6 @@ export default {
     // resize the canvas
     this.handleResize()
     this.animate()
-    this.panToActiveMarker()
 
     // window is the event handler fo resize, so we need to subscribe to it
     window.addEventListener(
@@ -137,7 +136,7 @@ export default {
   },
   watch: {
     activeMarker (newMarker, oldMarker) {
-      if (!(newMarker.location)) {
+      if (!(newMarker) || !(newMarker.location)) {
         return
       }
       // by default use camera position
@@ -149,6 +148,12 @@ export default {
       to.phi = lon2phi(newMarker.location.lng)
       to.r = 40 - newMarker.location.zoom
       this.panAndZoom(from, to)
+    },
+    markers (newMarkers, oldMarkers) {
+      const globe = this.globe
+      const markers = newMarkers.filter(marker => marker.location)
+      this.avatar.clear()
+      this.avatar.load(markers, avs => globe.add(avs))
     }
   },
   methods: {
@@ -183,38 +188,16 @@ export default {
       this.mouse.x = ((event.clientX / this.renderer.domElement.clientWidth) * 2) - 1
       this.mouse.y = -((event.clientY / this.renderer.domElement.clientHeight) * 2) + 1
     },
-    panToActiveMarker () {
-      if (this.activeMarker && this.activeMarker.location) {
-        const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
-        from.lat = theta2lat(from.theta)
-        from.lng = phi2lon(from.phi)
-
-        // create a to object
-        const to = {
-          lat: this.activeMarker.location.lat,
-          lng: this.activeMarker.location.lng,
-          zoom: this.activeMarker.location.zoom
-        }
-        to.theta = lat2theta(to.lat)
-        to.phi = lon2phi(to.lng)
-        to.r = 40 - from.zoom
-      } else {
-        console.log('no active marker, not panning')
-      }
-    },
     /**
      * Pan to the active story
      */
     panAndZoom (from, to) {
       const tween = new Tween(from)
-      tween
         .to(to, 3000)
         .on('update', ({ r, theta, phi }) => {
           const cart = polar2cartesian(r, theta, phi)
           this.camera.position.set(cart.x, cart.y, cart.z)
           this.camera.lookAt(new THREE.Vector3(0, 0, 0))
-        })
-        .on('complete', () => {
         })
         .easing(Easing.Cubic.InOut)
 
@@ -247,7 +230,9 @@ export default {
     createScene () {
       // minimal scene (TODO: append real globe)
       const scene = new THREE.Scene()
+
       const globe = new THREE.Object3D()
+      this.globe = globe
       globe.position.set(0, 0, 0)
 
       const state = new State() // TODO: this should be done differently
@@ -264,8 +249,8 @@ export default {
       // get the baseUrl
       const { base = '/' } = this.$router.options
 
-      this.avatar = new Avatar(markers, base)
-      this.avatar.load(avs => globe.add(avs))
+      this.avatar = new Avatar(base)
+      this.avatar.load(markers, avs => globe.add(avs))
 
       scene.add(globe)
 
@@ -274,6 +259,7 @@ export default {
 
       const dirLight = new THREE.DirectionalLight(0xffaa66, 4.2)
       dirLight.position.set(15, 13, 15)
+
       return scene
     },
     /**
@@ -378,10 +364,10 @@ export default {
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
       this.avatar.mesh.children.forEach(function (d) { d.material.color = d.data.themeColor })
-
       if (this.intersections.length > 0) {
         this.intersections[0].object.material.color = WHITE
       }
+
       this.renderer.render(this.scene, this.camera)
     }
   }

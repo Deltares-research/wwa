@@ -1,8 +1,7 @@
 <template>
-  <article class="page-component">
+  <article class="page-component" v-bind:class="page.theme.slug">
     <header>
-      <div v-bind:class="page.theme+' colorband'"></div>
-      <h1>{{page.title}}</h1>
+       <h1>{{page.title}}</h1>
       <ul class="influences">
         <li v-for="influence in page.influences" v-bind:key="influence.slug">
           <nuxt-link v-bind:to="influence.path">{{ influence.title }}</nuxt-link>
@@ -29,9 +28,12 @@
         <figcaption>{{graph.alt}}</figcaption>
       </figure>
     </section>
-    <section v-if="page.video" class="video">
-      <img v-bind:src="page.video.thumbnailUrl"/>
-    </section>
+    <iframe v-if="page.video" class="video"
+    v-bind:src="'https://www.' + page.video.provider + '.com/embed/' + page.video.providerUid"
+    v-bind:width="page.video.width"
+    v-bind:height="page.video.height"
+    >
+    </iframe>
     <footer class="t_margin_2r">
       <section v-if="page.links" class="links">
         Links: {{page.links}}
@@ -92,20 +94,36 @@ export default {
   position:relative;
 }
 
-.page-component img
-{
-  display:flex;
-  max-width:100%;
-  margin:0 auto;
-}
-
-.colorband
-{
+.page-component::before {
+  content: '';
   position:absolute;
   top:0;
   left:0;
   right:0;
-  height:32px;
+  height:1rem;
+}
+
+.page-component.too-little::before {
+  background-color: var(--too-little);
+}
+
+.page-component.too-dirty::before {
+  background-color: var(--too-dirty);
+}
+
+.page-component.too-much::before {
+  background-color: var(--too-much);
+}
+
+.page-component .video {
+  margin:2rem auto;
+}
+
+.page-component picture img
+ {
+  display:flex;
+  max-width:100%;
+  margin:0 auto;
 }
 
 </style>

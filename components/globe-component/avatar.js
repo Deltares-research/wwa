@@ -9,18 +9,19 @@ const TOO_MUCH = 0x41b6c4
 const TOO_LITTLE = 0xfd8d3c
 const TOO_DIRTY = 0xa63603
 const THEME_COLORS = {
-  'too much': TOO_MUCH,
-  'too little': TOO_LITTLE,
-  'too dirty': TOO_DIRTY
+  'too-much': TOO_MUCH,
+  'too-little': TOO_LITTLE,
+  'too-dirty': TOO_DIRTY,
+  'undefined': 0x666666
 }
 
 class Avatar {
-  constructor (markers, base) {
-    this.markers = markers
+  constructor (base) {
     this.textures = {}
-    this.textures['too dirty'] = new THREE.TextureLoader().load(base + 'avatars/too-dirty.png')
-    this.textures['too much'] = new THREE.TextureLoader().load(base + 'avatars/too-much.png')
-    this.textures['too little'] = new THREE.TextureLoader().load(base + 'avatars/too-little.png')
+    this.textures['too-dirty'] = new THREE.TextureLoader().load(base + 'avatars/too-dirty.png')
+    this.textures['too-much'] = new THREE.TextureLoader().load(base + 'avatars/too-much.png')
+    this.textures['too-little'] = new THREE.TextureLoader().load(base + 'avatars/too-little.png')
+    this.textures['undefined'] = undefined
     this.mesh = new THREE.Object3D()
   }
 
@@ -29,10 +30,12 @@ class Avatar {
    * @param  {function} finished callback function, called when done
    * @return {[type]}          [description]
    */
-  load (finished) {
+  load (markers, finished) {
+    this.markers = markers
     this.markers.forEach((d, i) => {
-      const themeColor = THEME_COLORS[d.book.theme]
-      const texture = this.textures[d.book.theme]
+      const theme = (d.themes[0] && d.themes[0].slug) ? d.themes[0].slug : 'undefined'
+      const themeColor = THEME_COLORS[theme]
+      const texture = this.textures[theme]
       const material = new THREE.SpriteMaterial({
         map: texture,
         color: new THREE.Color(themeColor)
@@ -59,6 +62,11 @@ class Avatar {
     })
 
     finished(this.mesh)
+  }
+
+  clear () {
+    this.mesh.remove(...this.mesh.children)
+    this.markers = []
   }
 }
 

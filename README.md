@@ -1,6 +1,7 @@
-# wwa
+# World Water Atlas
 
-> World Water Atlas
+<!-- Show build status -->
+[![Build Status](https://travis-ci.org/Deltares/wwa.svg?branch=master)](https://travis-ci.org/Deltares/wwa)
 
 ## Technologies
 * [Nuxt.js](https://nuxtjs.org/guide)

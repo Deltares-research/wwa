@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>World Water Atlas</h1>
+    <h1 class="title">World Water Atlas</h1>
     <card-list v-bind:cards="books" />
   </div>
 </template>

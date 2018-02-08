@@ -13,4 +13,9 @@ data
 
 # Environment variables
 .env
+
+# backup files
 backup
+# external submodules
+external
+

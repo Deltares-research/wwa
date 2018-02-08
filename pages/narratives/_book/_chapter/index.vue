@@ -20,8 +20,8 @@ export default {
       location: this.location,
       path: this.path
     }
-    this.$events.$emit(events.activeMarkerChanged, marker)
-    this.$events.$emit(events.markersChanged, undefined)
+    this.$events.$emit(events.activeFeatureChanged, marker)
+    this.$events.$emit(events.featuresChanged, null)
   },
   components: {
     CardList

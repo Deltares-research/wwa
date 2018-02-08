@@ -24,11 +24,10 @@ export default {
     }
   },
   created () {
-    this.$events.$on(events.activeMarkerChanged, marker => {
+    this.$events.$on(events.activeFeatureChanged, marker => {
       this.activeMarker = marker
     })
-    this.$events.$on(events.markersChanged, markers => {
-      console.log(markers)
+    this.$events.$on(events.featuresChanged, markers => {
       this.markers = markers || this.baseMarkers
     })
   },

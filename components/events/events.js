@@ -3,10 +3,10 @@ import VueEvents from 'vue-events'
 
 Vue.use(VueEvents)
 
-export const activeMarkerChanged = 'active-marker-changed'
-export const markersChanged = 'markers-changed'
+export const activeFeatureChanged = 'active-feature-changed'
+export const featuresChanged = 'features-changed'
 
 export default {
-  activeMarkerChanged,
-  markersChanged
+  activeFeatureChanged,
+  featuresChanged
 }

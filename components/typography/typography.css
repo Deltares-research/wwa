@@ -42,7 +42,7 @@ h6, .h6 {
 }
 
 .invert {
-  color: var(--ui--text-invert);
+  color: var(--ui--text--invert);
   text-shadow: 0 0 1rem var(--ui--black);
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>{{title}}</h1>
-    <card-list v-bind:cards="pages" />
+    <h1 class="chapter-title">{{title}}</h1>
+    <card-list v-bind:cards="pages" v-bind:book="[{ 'foo': 'bar'}]" v-bind:title="[ bookTitle, title ]"/>
   </div>
 </template>
 <script>
@@ -12,10 +12,10 @@ import CardList from '~/components/card-list/CardList'
 import loadData from '~/lib/load-data'
 
 Vue.use(VueEvents)
-
 export default {
-  asyncData (context) {
-    return loadData(context, context.params)
+  async asyncData (context) {
+    const { title, slug, chapters, book } = await loadData(context, context.params)
+    return { title, slug, chapters, bookTitle: book.title }
   },
   mounted () {
     const marker = {
@@ -36,3 +36,15 @@ export default {
   }
 }
 </script>
+
+<style>
+.chapter-title {
+  color: white;
+}
+
+.chapter-title:before {
+  content: 'Chapter:';
+  display: inline-block;
+  margin-right: 5px;
+}
+</style>

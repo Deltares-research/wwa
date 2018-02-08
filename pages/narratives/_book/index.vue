@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="list--scroll">
-      <h1>{{title}}</h1>
+      <h1 class="book-title">{{title}}</h1>
       <title-list v-bind:titles="books" v-bind:active="[{ slug }]" v-bind:exclude="true" />
     </div>
-    <card-list v-bind:cards="chapters" />
+    <card-list v-bind:cards="chapters" v-bind:currentBook="{ title, slug, path}"/>
   </div>
 </template>
 
@@ -15,8 +15,9 @@ import loadData from '~/lib/load-data'
 import books from '~/static/data/books/index.json'
 
 export default {
-  asyncData (context) {
-    return loadData(context, context.params)
+  async asyncData (context) {
+    const { title, slug, path, chapters } = await loadData(context, context.params)
+    return { title, slug, path, chapters }
   },
   components: {
     CardList,
@@ -34,5 +35,14 @@ export default {
   .title-list {
     display: inline-block;
     vertical-align: baseline;
+  }
+  .book-title {
+    color: white;
+  }
+
+  .book-title:before {
+    content: 'Book:';
+    display: inline-block;
+    margin-right: 5px;
   }
 </style>

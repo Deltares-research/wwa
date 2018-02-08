@@ -206,19 +206,16 @@ export default {
      * Pan to the active story
      */
     panAndZoom (from, to) {
-        const tween = new Tween(from)
-      tween
-          .to(to, 3000)
+      const tween = new Tween(from)
+        .to(to, 3000)
         .on('update', ({ r, theta, phi }) => {
           const cart = polar2cartesian(r, theta, phi)
-            this.camera.position.set(cart.x, cart.y, cart.z)
-            this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+          this.camera.position.set(cart.x, cart.y, cart.z)
+          this.camera.lookAt(new THREE.Vector3(0, 0, 0))
         })
-        .on('complete', () => {
-          })
-          .easing(Easing.Cubic.InOut)
+        .easing(Easing.Cubic.InOut)
 
-        tween.start()
+      tween.start()
     },
     /**
      * Create a renderer in the element

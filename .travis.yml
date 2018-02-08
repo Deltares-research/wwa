@@ -16,3 +16,11 @@ script:
 notifications:
   webhooks:
   - https://webhooks.datocms.com/85346aa7eb904faa0ea9/deploy-results
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
+  local-dir: dist
+  keep-history: true
+  on:
+    branch: master

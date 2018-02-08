@@ -247,6 +247,7 @@ export default {
     createScene () {
       // minimal scene (TODO: append real globe)
       const scene = new THREE.Scene()
+
       const globe = new THREE.Object3D()
       this.globe = globe
       globe.position.set(0, 0, 0)
@@ -265,8 +266,8 @@ export default {
       // get the baseUrl
       const { base = '/' } = this.$router.options
 
-      this.avatar = new Avatar(markers, base)
-      this.avatar.load(avs => globe.add(avs))
+      this.avatar = new Avatar(base)
+      this.avatar.load(markers, avs => globe.add(avs))
 
       scene.add(globe)
 
@@ -275,6 +276,7 @@ export default {
 
       const dirLight = new THREE.DirectionalLight(0xffaa66, 4.2)
       dirLight.position.set(15, 13, 15)
+
       return scene
     },
     /**
@@ -379,10 +381,10 @@ export default {
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
       this.avatar.mesh.children.forEach(function (d) { d.material.color = d.data.themeColor })
-
       if (this.intersections.length > 0) {
         this.intersections[0].object.material.color = WHITE
       }
+
       this.renderer.render(this.scene, this.camera)
     }
   }

@@ -21,7 +21,7 @@ class Avatar {
     this.textures['too-dirty'] = new THREE.TextureLoader().load(base + 'avatars/too-dirty.png')
     this.textures['too-much'] = new THREE.TextureLoader().load(base + 'avatars/too-much.png')
     this.textures['too-little'] = new THREE.TextureLoader().load(base + 'avatars/too-little.png')
-    this.textures['undefined'] = undefined
+    this.textures['undefined'] = new THREE.TextureLoader().load(base + 'avatars/book.png')
     this.mesh = new THREE.Object3D()
   }
 
@@ -56,7 +56,7 @@ class Avatar {
       avatar.position.z = position.z
 
       avatar.data = d
-      avatar.data.themeColor = new THREE.Color(themeColor)
+      avatar.themeColor = new THREE.Color(themeColor)
 
       this.mesh.add(avatar)
     })

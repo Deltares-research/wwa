@@ -385,7 +385,7 @@ export default {
 
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
-      this.avatar.mesh.children.forEach(function (d) { d.material.color = d.data.themeColor })
+      this.avatar.mesh.children.forEach(function (d) { d.material.color = d.themeColor })
       if (this.intersections.length > 0) {
         this.intersections[0].object.material.color = WHITE
       }

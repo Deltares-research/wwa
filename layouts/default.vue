@@ -2,7 +2,7 @@
   <main>
     <globe-component
       class="globe-component"
-      v-bind:activeMarker="activeMarker"
+      v-bind:active-marker="activeMarker"
       v-bind:enable-zoom="enableZoom"
       v-bind:enable-rotate="enableRotate"
     />

@@ -14,7 +14,7 @@ export default {
     CardList
   },
   mounted () {
-    this.$events.$emit('enable-globe')
+    this.$events.$emit('enable-globe-navigation')
   },
   data () {
     return {

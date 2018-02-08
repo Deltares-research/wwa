@@ -44,7 +44,7 @@ export default {
     console.log('page', activePages)
     this.activePage = activePages[0]
     this.$events.$emit('marker-selected', this.activePage)
-    this.$events.$emit('disable-globe')
+    this.$events.$emit('disable-globe-navigation')
     if ('IntersectionObserver' in window) {
       this.observeIntersectingChildren()
     }

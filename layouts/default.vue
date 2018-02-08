@@ -30,11 +30,11 @@ export default {
     this.$events.$on('marker-selected', marker => {
       this.activeMarker = marker
     })
-    this.$events.$on('enable-globe', marker => {
+    this.$events.$on('enable-globe-navigation', marker => {
       this.enableZoom = true
       this.enableRotate = true
     })
-    this.$events.$on('disable-globe', marker => {
+    this.$events.$on('disable-globe-navigation', marker => {
       this.enableZoom = false
       this.enableRotate = false
     })

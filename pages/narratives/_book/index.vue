@@ -19,7 +19,7 @@ export default {
     return loadData(context, context.params)
   },
   mounted () {
-    this.$events.$emit('enable-globe')
+    this.$events.$emit('enable-globe-navigation')
   },
   components: {
     CardList,

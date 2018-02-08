@@ -89,7 +89,7 @@ function generateChapters (dato, root, i18n) {
   for (const chapterId in chapters) {
     const chapter = chapters[chapterId]
     if (chapter.book != null) { // so that null result will not be written out
-       root.createDataFile(`static/data/books/${chapter.book.slug}/chapters/${chapter.slug}/index.json`, 'json', chapter)
+      root.createDataFile(`static/data/books/${chapter.book.slug}/chapters/${chapter.slug}/index.json`, 'json', chapter)
     }
   }
 }
@@ -212,19 +212,18 @@ function getChapters (dato, bookRef) {
     .filter(filterPublished)
     .map(chapter => {
       const { title, slug, chapterType } = chapter
-      var parentBook = bookRef || getParent(dato, chapter)
-      if (parentBook != null) { // if else so that a null result is valid
-        var book = {
+      let parentBook = bookRef || getParent(dato, chapter)
+      let book = null
+      let path = null
+      if (parentBook != null) {
+        // if else so that a null result is valid
+        book = {
           path: `${contentBasePath}/${parentBook.slug}`,
           slug: parentBook.slug,
           title: parentBook.title,
           theme: parentBook.theme
         }
-        const path = `${parentBook.path}/${slug}`
-      }
-      else {
-        var book = null
-        var path = null
+        path = `${parentBook.path}/${slug}`
       }
       const pages = getPages(dato, chapter)
       const firstLocationPage = pages.filter(page => page.location)[0]
@@ -340,10 +339,10 @@ function getParent (dato, child) {
   }
 
   const parentsArr = dato[`${parentType}s`].filter(parent => parent[`${childType}s`].some(
-      childFromParent => childFromParent.id === child.id
-    ))
+    childFromParent => childFromParent.id === child.id
+  ))
 
-  var parent = parentsArr[0] || null; // so that a null result is valid
+  var parent = parentsArr[0] || null // so that a null result is valid
   return parent // hacky pluralisation
 }
 

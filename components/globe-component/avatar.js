@@ -15,8 +15,7 @@ const THEME_COLORS = {
 }
 
 class Avatar {
-  constructor (markers, base) {
-    this.markers = markers
+  constructor (base) {
     this.textures = {}
     this.textures['too dirty'] = new THREE.TextureLoader().load(base + 'avatars/too-dirty.png')
     this.textures['too much'] = new THREE.TextureLoader().load(base + 'avatars/too-much.png')
@@ -29,7 +28,8 @@ class Avatar {
    * @param  {function} finished callback function, called when done
    * @return {[type]}          [description]
    */
-  load (finished) {
+  load (markers, finished) {
+    this.markers = markers
     this.markers.forEach((d, i) => {
       const themeColor = THEME_COLORS[d.book.theme]
       const texture = this.textures[d.book.theme]
@@ -59,6 +59,11 @@ class Avatar {
     })
 
     finished(this.mesh)
+  }
+
+  clear () {
+    this.mesh.remove(...this.mesh.children)
+    this.markers = []
   }
 }
 

@@ -406,23 +406,6 @@ function collectBooksByTheme (books) {
 }
 
 /**
- * Convert string to linkObject
- *
- * @param {string} tagString
- * @param {sting} tagType
- * @returns {linkObject}
- */
-function stringToLinkObject (tagString, tagType) {
-  const string = tagString || 'unfiled'
-  const slug = slugify(string).toLowerCase()
-  return {
-    title: string.toLowerCase(),
-    slug: slug,
-    path: `/${tagType}/${slug}`
-  }
-}
-
-/**
  * Convert comma-separated string to array of linkObjects
  *
  * @param {string} tagString
@@ -430,7 +413,12 @@ function stringToLinkObject (tagString, tagType) {
  * @returns {linkObject}
  */
 function tagStringToLinkObject (tagString, tagType) {
-  return (tagString || 'unfiled').split(/,\s?/).map(tag => {
-    return stringToLinkObject(tag, tagType)
+  return (tagString || 'unfiled').split(/,\s?/).map(string => {
+    const slug = slugify(string).toLowerCase()
+    return {
+      title: string.toLowerCase(),
+      slug: slug,
+      path: `/${tagType}/${slug}`
+    }
   })
 }

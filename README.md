@@ -14,6 +14,10 @@ Ask a colleague for the API key for read-access or log in to [DatoCMS](https://w
 DATO_API_TOKEN=<TOKEN>
 ```
 
+## Deployment
+
+Deployment is documented at the [travis github](https://docs.travis-ci.com/user/deployment/pages/) plugins website.
+
 ## Build Setup
 
 ``` bash

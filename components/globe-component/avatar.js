@@ -33,9 +33,6 @@ class Avatar {
     this.markers.forEach((d, i) => {
       const themeColor = THEME_COLORS[d.book.theme]
       const texture = this.textures[d.book.theme]
-      console.log('using texture', d.book.theme)
-      // TODO, this material now seems to be shared across all avatars
-      // make sure each avatar has its own material
       const material = new THREE.SpriteMaterial({
         map: texture,
         color: new THREE.Color(themeColor)

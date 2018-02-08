@@ -18,6 +18,9 @@ export default {
   asyncData (context) {
     return loadData(context, context.params)
   },
+  mounted () {
+    this.$events.$emit('enable-globe')
+  },
   components: {
     CardList,
     TitleList

@@ -24,6 +24,8 @@ export default {
       path: this.path
     }
     this.$events.$emit('marker-selected', marker)
+    // TODO: check if this is the best location to emit this event.
+    this.$events.$emit('enable-globe')
   },
   components: {
     CardList

@@ -38,6 +38,16 @@ export default {
         return markers
       }
     },
+    enableRotate: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    enableZoom: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
     connections: {
       type: Array,
       default () {
@@ -68,6 +78,7 @@ export default {
     this.scene = this.createScene()
 
     this.controls = new OrbitControls(this.camera, this.globeContainerElement)
+    this.controls.enablePan = false
 
     this.mouse = new THREE.Vector2()
     this.intersections = []
@@ -149,6 +160,18 @@ export default {
       to.phi = lon2phi(newMarker.location.lng)
       to.r = 40 - newMarker.location.zoom
       this.panAndZoom(from, to)
+    },
+    enableRotate (newValue, oldValue) {
+      if (!(this.controls)) {
+        return
+      }
+      this.controls.enableRotate = newValue
+    },
+    enableZoom (newValue, oldValue) {
+      if (!(this.controls)) {
+        return
+      }
+      this.controls.enableZoom = newValue
     }
   },
   methods: {
@@ -263,6 +286,9 @@ export default {
 
       // get the baseUrl
       const { base = '/' } = this.$router.options
+      // TODO: please leave this console log in the production code until we solve
+      // the missing avatars on the github deployment
+      console.log('using base url for avatars', base)
 
       this.avatar = new Avatar(markers, base)
       this.avatar.load(avs => globe.add(avs))

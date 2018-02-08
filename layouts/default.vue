@@ -1,6 +1,11 @@
 <template>
   <main>
-    <globe-component class="globe-component" :activeMarker="activeMarker" />
+    <globe-component
+      class="globe-component"
+      v-bind:activeMarker="activeMarker"
+      v-bind:enable-zoom="enableZoom"
+      v-bind:enable-rotate="enableRotate"
+    />
     <nuxt/>
   </main>
 </template>
@@ -16,12 +21,22 @@ Vue.use(VueEvents)
 export default {
   data () {
     return {
-      activeMarker: null
+      activeMarker: null,
+      enableZoom: true,
+      enableRotate: true
     }
   },
   created () {
     this.$events.$on('marker-selected', marker => {
       this.activeMarker = marker
+    })
+    this.$events.$on('enable-globe', marker => {
+      this.enableZoom = true
+      this.enableRotate = true
+    })
+    this.$events.$on('disable-globe', marker => {
+      this.enableZoom = false
+      this.enableRotate = false
     })
   },
   methods: {

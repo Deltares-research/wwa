@@ -13,6 +13,9 @@ export default {
   components: {
     CardList
   },
+  mounted () {
+    this.$events.$emit('enable-globe')
+  },
   data () {
     return {
       books

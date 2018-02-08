@@ -45,12 +45,12 @@
   --or--4-5:rgb(166,54,3);
 
   /* Them colors */
-  --too-dirty: var(--or-4-5);
-  --too-dirty--light: var(--or-3-5);
+  --too-dirty: var(--or--4-5);
+  --too-dirty--light: var(--or--3-5);
   --too-little: var(--yl-or-rd--2-5);
-  --too-little--light: var(--yl-or-rd-1-5);
-  --too-much: var(--yl-gn-bu-4-5);
-  --too-much--light: var(--yl-gn-bu-3-5);
+  --too-little--light: var(--yl-or-rd--1-5);
+  --too-much: var(--yl-gn-bu--4-5);
+  --too-much--light: var(--yl-gn-bu--3-5);
 
   /* UI colors */
   --ui--white: #fff;

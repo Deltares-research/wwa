@@ -38,4 +38,11 @@ export default {
   height: 6rem;
   display:block;
 }
+
+.avatar{
+  display:inline-block;
+  margin:1rem;
+  padding:1rem;
+  text-align:center;
+}
 </style>

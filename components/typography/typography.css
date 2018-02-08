@@ -93,3 +93,9 @@ h5, .h5 {
 h6, .h6 {
   font-size: var(--base-size);
 }
+a:hover,
+a:focus,
+a:active,
+a {
+  color: inherit;
+}

@@ -2,7 +2,7 @@
 
 /* Slide in animation */
 .slide-up {
-  transform: translateY(100%);
+  transform: translateY(100vh);
 }
 
 .slide-up-leave-active,
@@ -12,5 +12,5 @@
 
 .slide-up-enter,
 .slide-up-leave-to {
-  transform: translateY(100%);
+  transform: translateY(100vh);
 }

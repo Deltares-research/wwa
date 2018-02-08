@@ -10,16 +10,9 @@ import CardList from '~/components/card-list/CardList'
 import books from '~/static/data/books/index.json'
 
 export default {
-  components: {
-    CardList
-  },
+  components: { CardList },
   data () {
-    return {
-      books
-    }
+    return { books }
   }
 }
 </script>
-
-<style>
-</style>

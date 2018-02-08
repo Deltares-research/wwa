@@ -8,13 +8,14 @@
 <script>
 import CardList from '~/components/card-list/CardList'
 import books from '~/static/data/books/index.json'
+import events from '~/components/events/events'
 
 export default {
   components: {
     CardList
   },
   mounted () {
-    this.$events.$emit('enable-globe-navigation')
+    this.$events.$emit(events.enableGlobeNavigation)
   },
   data () {
     return {

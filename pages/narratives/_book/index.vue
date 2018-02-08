@@ -13,13 +13,14 @@ import CardList from '~/components/card-list/CardList'
 import TitleList from '~/components/title-list/TitleList'
 import loadData from '~/lib/load-data'
 import books from '~/static/data/books/index.json'
+import events from '~/components/events/events'
 
 export default {
   asyncData (context) {
     return loadData(context, context.params)
   },
   mounted () {
-    this.$events.$emit('enable-globe-navigation')
+    this.$events.$emit(events.enableGlobeNavigation)
   },
   components: {
     CardList,

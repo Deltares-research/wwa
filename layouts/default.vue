@@ -3,7 +3,7 @@
     <globe-component class="globe-component"
       v-bind:activeMarker="activeMarker"
       v-bind:markers="markers" />
-    <nuxt class="app" />
+    <nuxt />
   </main>
 </template>
 <script>
@@ -28,6 +28,7 @@ export default {
       this.activeMarker = marker
     })
     this.$events.$on(events.markersChanged, markers => {
+      console.log(markers)
       this.markers = markers || this.baseMarkers
     })
   },
@@ -50,7 +51,6 @@ export default {
   top:0;
 }
 
-.app,
 .card-list,
 .card-list-item {
   position: fixed;

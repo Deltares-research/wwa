@@ -13,20 +13,20 @@
 <script>
 import GlobeComponent from '~/components/globe-component/GlobeComponent'
 import events from '~/components/events/events'
-import loadData from '~/lib/load-data'
+import books from '~/static/data/books/index.json'
+
+const markers = books
+  .reduce((a, b) => a.concat(b.chapters), []) // flatten array
+  .filter(marker => marker.location)
 
 export default {
-  async asyncData (context) {
-    const { books } = await loadData(context)
-    const baseMarkers = books.map(book => book.chapters).reduce((a, b) => a.concat(b))
-    return { baseMarkers }
-  },
   data () {
     return {
       activeMarker: null,
+      baseMarkers: markers,
       enableZoom: true,
       enableRotate: true,
-      markers: []
+      markers
     }
   },
   created () {

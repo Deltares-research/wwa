@@ -42,9 +42,6 @@ module.exports = (dato, root, i18n) => {
     case 'chapters':
       generateChapters(dato, root, i18n)
       break
-    case 'globe':
-      generateGlobeMarkers(dato, root, i18n)
-      break
     case 'influences':
       generateByTag(dato, root, i18n, 'influences')
       break
@@ -57,7 +54,6 @@ module.exports = (dato, root, i18n) => {
     default:
       generateChapters(dato, root, i18n)
       generateBooks(dato, root, i18n)
-      generateGlobeMarkers(dato, root, i18n)
       generateByTag(dato, root, i18n, 'influences')
       generateByTag(dato, root, i18n, 'keywords')
       generateThemes(dato, root, i18n)
@@ -92,25 +88,6 @@ function generateChapters (dato, root, i18n) {
       root.createDataFile(`static/data/books/${chapter.book.slug}/chapters/${chapter.slug}/index.json`, 'json', chapter)
     }
   }
-}
-
-/**
- * Write out JSON file with an array of objects based on pages from DatoCMS
- * Used for the globe visualisation
- *
- * @param {Dato} dato - DatoCMS API
- * @param {Root} root - Project root
- * @param {i18n} i18n
- */
-function generateGlobeMarkers (dato, root, i18n) {
-  const markers = getChapters(dato)
-    .reduce((a, b) => a.concat(b), []) // Flat array of chapters
-    .filter(chapter => chapter.location)
-    .map(chapter => {
-      delete chapter.pages
-      return chapter
-    })
-  root.createDataFile('static/data/globeMarkers.json', 'json', markers)
 }
 
 /**

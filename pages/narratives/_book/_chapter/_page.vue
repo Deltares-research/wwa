@@ -52,6 +52,7 @@ export default {
   methods: {
     updateActiveFeature (slug = this.slug) {
       const activePages = this.pages.filter(page => page.slug === slug)
+      console.log(activePages)
       if (activePages) {
         this.activePage = activePages[0]
         this.$events.$emit(events.activeFeatureChanged, this.activePage)

@@ -11,9 +11,9 @@
 <script>
 import CardList from '~/components/card-list/CardList'
 import TitleList from '~/components/title-list/TitleList'
-import loadData from '~/lib/load-data'
 import books from '~/static/data/books/index.json'
 import events from '~/components/events/events'
+import loadData from '~/lib/load-data'
 
 export default {
   asyncData (context) {
@@ -30,6 +30,15 @@ export default {
     return {
       books
     }
+  },
+  mounted () {
+    const marker = {
+      slug: this.slug,
+      location: this.location,
+      path: this.path
+    }
+    this.$events.$emit(events.activeFeatureChanged, marker)
+    this.$events.$emit(events.featuresChanged, null)
   }
 }
 </script>

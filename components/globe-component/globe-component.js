@@ -3,9 +3,6 @@ import { Tween, autoPlay, Easing } from 'es6-tween'
 import { cartesian2polar, polar2cartesian, lat2theta, lon2phi } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
 
-// get the markers exported by dato
-import markers from 'static/data/globeMarkers.json'
-
 import Glow from './glow'
 import Water from './water'
 import Avatar from './avatar'
@@ -34,9 +31,7 @@ export default {
     },
     markers: {
       type: Array,
-      default () {
-        return markers
-      }
+      required: false
     },
     enableRotate: {
       type: Boolean,
@@ -202,6 +197,7 @@ export default {
       if (this.intersections.length > 0) {
         const { data } = this.intersections[0].object
         // navigate to path
+        console.log('path', data)
         this.$router.push(data.path)
       }
     },
@@ -276,7 +272,7 @@ export default {
       console.log('using base url for avatars', base)
 
       this.avatar = new Avatar(base)
-      this.avatar.load(markers, avs => globe.add(avs))
+      this.avatar.load(this.markers, avs => globe.add(avs))
 
       scene.add(globe)
 

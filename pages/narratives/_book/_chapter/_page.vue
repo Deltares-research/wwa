@@ -71,13 +71,13 @@ export default {
         for (const entry of entries) {
           if (entry.isIntersecting) {
             const { base = '/' } = this.$router.options
-            const book = this.$route.params.book
-            const chapter = this.$route.params.chapter
-            const slug = entry.target.id
-            const path = `${base}narratives/${book}/${chapter}/${slug}`
+            const bookSlug = this.$route.params.book
+            const chapterSlug = this.$route.params.chapter
+            const pagesSlug = entry.target.id
+            const path = `${base}narratives/${bookSlug}/${chapterSlug}/${pageSlug}`
             if (path !== window.location.pathname) {
               history.replaceState({}, 'page', path)
-              this.updateActiveFeature(slug)
+              this.updateActiveFeature(pageSlug)
             }
             break
           }

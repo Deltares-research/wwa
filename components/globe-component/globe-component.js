@@ -164,6 +164,9 @@ export default {
       const height = this.containerSize[1]
       const renderWidth = this.containerSize[0]
       const renderHeight = this.containerSize[1] * (1 + vOffsetFactor)
+
+      this.particles.handleResize(renderHeight)
+
       // reset the aspect ratio
       this.camera.aspect = renderWidth / renderHeight
       // recompute projection
@@ -236,9 +239,9 @@ export default {
       globe.position.set(0, 0, 0)
 
       const state = new State() // TODO: this should be done differently
-      const particles = new Particles(state)
-      particles.load(() => particles.update())
-      globe.add(particles.mesh)
+      this.particles = new Particles(state)
+      this.particles.load(() => this.particles.update())
+      globe.add(this.particles.mesh)
 
       const water = new Water()
       globe.add(water.mesh)

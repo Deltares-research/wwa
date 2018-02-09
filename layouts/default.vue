@@ -3,7 +3,7 @@
     <globe-component class="globe-component"
       v-bind:activeMarker="activeMarker"
       v-bind:markers="markers" />
-    <nuxt />
+    <!-- <nuxt /> -->
   </main>
 </template>
 <script>

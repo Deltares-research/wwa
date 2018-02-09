@@ -18,6 +18,10 @@ const height = scaleLinear()
   // .range([0, 0.18])
   .clamp(true)
 
+const p = scaleLinear()
+  .domain([780, 300])
+  .range([10.0, 4.0])
+
 const c = scaleLinear()
   .domain(range(6))
 
@@ -27,7 +31,8 @@ class Particles {
     this.data = []
 
     this.uniforms = {
-      time: { value: 0 }
+      time: { value: 0 },
+      pointSize: { value: 10.0 }
     }
 
     this.material = new THREE.ShaderMaterial({
@@ -58,6 +63,11 @@ class Particles {
     this.geometry.attributes.targetColor.needsUpdate = true
 
     this.uniforms.time.value = 0
+  }
+
+  handleResize (smallestHeight) {
+    console.log(smallestHeight, p(smallestHeight))
+    this.uniforms.pointSize.value = p(smallestHeight) < 1.0 ? 1.0 : p(smallestHeight)
   }
 
   load (finished) {

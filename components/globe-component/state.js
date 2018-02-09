@@ -1,7 +1,7 @@
 class State {
   constructor () {
-    this.current = 'hfo'
-    this.target = 'hfo'
+    this.current = 'dro'
+    this.target = 'dro'
   }
 }
 

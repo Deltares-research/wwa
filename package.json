@@ -25,6 +25,7 @@
     "data:chapters": "cross-env DATO_EXPORT=chapters dato dump",
     "data:keywords": "cross-env DATO_EXPORT=keywords dato dump",
     "data:influences": "cross-env DATO_EXPORT=influences dato dump",
+    "data:static-pages": "cross-env DATO_EXPORT=static_pages dato dump",
     "data:themes": "cross-env DATO_EXPORT=themes dato dump",
     "test": "ava"
   },

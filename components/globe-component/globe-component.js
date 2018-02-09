@@ -13,7 +13,7 @@ import State from './state'
 import Particles from './particles'
 
 const GLOBE_RADIUS = 5
-const WHITE = new THREE.Color(0xffffff)
+const WHITE = 0xffffff
 const vOffset = 15
 const vOffsetFactor = vOffset / 100
 
@@ -66,6 +66,8 @@ export default {
 
     this.camera = this.createCamera()
     this.scene = this.createScene()
+
+    this.clock = new THREE.Clock()
 
     this.controls = new OrbitControls(this.camera, this.globeContainerElement)
 
@@ -243,8 +245,8 @@ export default {
       this.particles.load(() => this.particles.update())
       globe.add(this.particles.mesh)
 
-      const water = new Water()
-      globe.add(water.mesh)
+      this.water = new Water()
+      globe.add(this.water.mesh)
 
       const glow = new Glow(this.camera)
       globe.add(glow.mesh)
@@ -363,6 +365,8 @@ export default {
      */
     animate () {
       requestAnimationFrame(this.animate)
+
+      this.water.uniforms.time.value += (this.clock.getDelta() * 0.1)
 
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)

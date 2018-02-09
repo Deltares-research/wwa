@@ -66,7 +66,6 @@ class Particles {
   }
 
   handleResize (smallestHeight) {
-    console.log(smallestHeight, p(smallestHeight))
     this.uniforms.pointSize.value = p(smallestHeight) < 1.0 ? 1.0 : p(smallestHeight)
   }
 

@@ -197,7 +197,6 @@ export default {
       if (this.intersections.length > 0) {
         const { data } = this.intersections[0].object
         // navigate to path
-        console.log('path', data)
         this.$router.push(data.path)
       }
     },

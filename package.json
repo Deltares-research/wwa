@@ -23,7 +23,6 @@
     "data:backup": "dato dump --config dato.backup.js",
     "data:books": "cross-env DATO_EXPORT=books dato dump",
     "data:chapters": "cross-env DATO_EXPORT=chapters dato dump",
-    "data:globe": "cross-env DATO_EXPORT=globe dato dump",
     "data:keywords": "cross-env DATO_EXPORT=keywords dato dump",
     "data:influences": "cross-env DATO_EXPORT=influences dato dump",
     "data:themes": "cross-env DATO_EXPORT=themes dato dump",

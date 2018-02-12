@@ -3,9 +3,10 @@
 </template>
 
 <script>
-import CardList from '~/components/card-list/CardList'
-import loadData from '~/lib/load-data'
 import books from '~/static/data/books/index.json'
+import CardList from '~/components/card-list/CardList'
+import events from '~/components/events/events'
+import loadData from '~/lib/load-data'
 
 export default {
   async asyncData (context) {
@@ -18,6 +19,16 @@ export default {
       books,
       book: {}
     }
+  },
+  mounted () {
+    const marker = {
+      slug: this.slug,
+      location: this.location,
+      path: this.path
+    }
+    this.$events.$emit(events.enableGlobeNavigation)
+    this.$events.$emit(events.activeFeatureChanged, marker)
+    this.$events.$emit(events.featuresChanged, null)
   }
 }
 </script>

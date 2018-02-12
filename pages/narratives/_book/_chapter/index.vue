@@ -21,6 +21,7 @@ export default {
       location: this.location,
       path: this.path
     }
+    this.$events.$emit(events.enableGlobeNavigation)
     this.$events.$emit(events.activeFeatureChanged, marker)
     this.$events.$emit(events.featuresChanged, null)
   },

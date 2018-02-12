@@ -3,9 +3,6 @@ import { Tween, autoPlay, Easing } from 'es6-tween'
 import { cartesian2polar, polar2cartesian, lat2theta, lon2phi } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
 
-// get the markers exported by dato
-import markers from 'static/data/globeMarkers.json'
-
 import Glow from './glow'
 import Water from './water'
 import Avatar from './avatar'
@@ -34,9 +31,17 @@ export default {
     },
     markers: {
       type: Array,
-      default () {
-        return markers
-      }
+      required: false
+    },
+    enableRotate: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    enableZoom: {
+      type: Boolean,
+      required: false,
+      default: true
     },
     connections: {
       type: Array,
@@ -68,6 +73,7 @@ export default {
     this.scene = this.createScene()
 
     this.controls = new OrbitControls(this.camera, this.globeContainerElement)
+    this.controls.enablePan = false
 
     this.mouse = new THREE.Vector2()
     this.intersections = []
@@ -148,6 +154,18 @@ export default {
       to.phi = lon2phi(newMarker.location.lng)
       to.r = 40 - newMarker.location.zoom
       this.panAndZoom(from, to)
+    },
+    enableRotate (newValue, oldValue) {
+      if (!(this.controls)) {
+        return
+      }
+      this.controls.enableRotate = newValue
+    },
+    enableZoom (newValue, oldValue) {
+      if (!(this.controls)) {
+        return
+      }
+      this.controls.enableZoom = newValue
     },
     markers (newMarkers, oldMarkers) {
       const globe = this.globe
@@ -248,9 +266,12 @@ export default {
 
       // get the baseUrl
       const { base = '/' } = this.$router.options
+      // TODO: please leave this console log in the production code until we solve
+      // the missing avatars on the github deployment
+      console.log('using base url for avatars', base)
 
       this.avatar = new Avatar(base)
-      this.avatar.load(markers, avs => globe.add(avs))
+      this.avatar.load(this.markers, avs => globe.add(avs))
 
       scene.add(globe)
 
@@ -363,7 +384,7 @@ export default {
 
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
-      this.avatar.mesh.children.forEach(function (d) { d.material.color = d.data.themeColor })
+      this.avatar.mesh.children.forEach(function (d) { d.material.color = d.themeColor })
       if (this.intersections.length > 0) {
         this.intersections[0].object.material.color = WHITE
       }

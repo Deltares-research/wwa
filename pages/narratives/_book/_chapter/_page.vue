@@ -35,6 +35,9 @@ export default {
     }
   },
   mounted () {
+    const activePages = this.pages.filter(page => page.slug === this.slug)
+    this.activePage = activePages[0]
+    this.$events.$emit(events.disableGlobeNavigation)
     this.$events.$emit(events.featuresChanged, this.pages)
     if ('IntersectionObserver' in window) {
       this.observeIntersectingChildren()

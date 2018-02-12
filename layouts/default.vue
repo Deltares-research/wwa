@@ -1,31 +1,45 @@
 <template>
   <main>
-    <globe-component class="globe-component"
-      v-bind:activeMarker="activeMarker"
-      v-bind:markers="markers" />
-    <nuxt />
+    <globe-component
+      class="globe-component"
+      v-bind:active-marker="activeMarker"
+      v-bind:enable-zoom="enableZoom"
+      v-bind:enable-rotate="enableRotate"
+      v-bind:markers="markers"
+    />
+    <nuxt/>
   </main>
 </template>
 <script>
 import GlobeComponent from '~/components/globe-component/GlobeComponent'
 import events from '~/components/events/events'
-import loadData from '~/lib/load-data'
+import books from '~/static/data/books/index.json'
+
+const markers = books
+  .reduce((a, b) => a.concat(b.chapters), []) // flatten array
+  .filter(marker => marker.location)
 
 export default {
-  async asyncData (context) {
-    const { books } = await loadData(context)
-    const baseMarkers = books.map(book => book.chapters).reduce((a, b) => a.concat(b))
-    return { baseMarkers }
-  },
   data () {
     return {
       activeMarker: null,
-      markers: []
+      baseMarkers: markers,
+      enableZoom: true,
+      enableRotate: true,
+      markers
     }
   },
   created () {
     this.$events.$on(events.activeFeatureChanged, marker => {
       this.activeMarker = marker
+    })
+    this.$events.$on(events.enableGlobeNavigation, marker => {
+      this.enableZoom = true
+      this.enableRotate = true
+    })
+    this.$events.$on(events.disableGlobeNavigation, marker => {
+      this.enableZoom = false
+      this.enableRotate = false
     })
     this.$events.$on(events.featuresChanged, markers => {
       this.markers = markers || this.baseMarkers

@@ -1,9 +1,6 @@
 <template>
   <div>
-    <header class="chapter-header">
-      <h1 class="h2 invert"><nuxt-link v-bind:to="book.path">{{book.title}}</nuxt-link></h1>
-      <h2 class="h1 invert"><nuxt-link v-bind:to="chapter.path">{{chapter.title}}</nuxt-link></h2>
-    </header>
+    <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
     <page-component v-for="page in pages" v-bind:key="page.slug"
       v-bind:page="page"
       v-bind:id="page.slug"
@@ -12,9 +9,10 @@
 </template>
 
 <script>
-import loadData from '~/lib/load-data'
+import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import PageComponent from '~/components/page-component/PageComponent'
 import events from '~/components/events/events'
+import loadData from '~/lib/load-data'
 
 export default {
   async asyncData (context) {
@@ -45,6 +43,7 @@ export default {
     this.updateActiveFeature()
   },
   components: {
+    NarrativeHeader,
     PageComponent
   },
   methods: {
@@ -91,18 +90,14 @@ export default {
 </script>
 
 <style>
-.chapter-header {
+.narrative-header {
   max-width: 960px;
   width: 100%;
   margin: auto;
   margin-top: 40vh;
-  color: #fff;
 }
-.chapter-header a {
-  color: inherit;
-  text-decoration: none;
-}
-.chapter-header + .page-component {
+
+.narrative-header + .page-component {
   margin-top: 0;
 }
 .page-component {

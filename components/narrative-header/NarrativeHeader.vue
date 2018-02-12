@@ -1,0 +1,66 @@
+<template>
+    <header v-if="chapter" class="narrative-header">
+      <!-- Book -->
+      <p class="narrative-header__book h2">
+        <nuxt-link  v-bind:to="book.path">
+          <span class="sr-only">Go to book</span> {{ book.title }}
+        </nuxt-link>
+      </p>
+      <h1 class="narrative-header__chapter">
+        <span class="sr-only">Go to book</span> {{ chapter.title }}
+      </h1>
+    </header>
+    <header v-else>
+      <h1 class="narrative-header__book h2">
+        <span class="sr-only">Go to book</span> {{ book.title }}
+      </h1>
+    </header>
+</template>
+
+<script>
+export default {
+  props: {
+    book: {
+      type: Object,
+      required: true
+    },
+    chapter: {
+      type: Object,
+      required: false
+    }
+  }
+}
+</script>
+
+<style>
+@import '../colors/colors.css';
+
+.narrative-header {
+  max-width: 960px;
+  margin: auto;
+}
+
+.narrative-header__book {
+  color: var(--ui--text--light);
+  position: relative;
+  text-transform: uppercase;
+}
+
+.narrative-header__book a {
+  color: inherit;
+  text-decoration: none;
+  transition: .2s color;
+}
+.narrative-header__book a:hover {
+  color: var(--ui--text--invert);
+}
+.narrative-header__book a::before {
+  content: '❮';
+  margin-left: -1.5rem;
+  position: absolute;
+}
+
+.narrative-header__chapter {
+  color: var(--ui--text--invert);
+}
+</style>

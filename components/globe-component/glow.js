@@ -18,11 +18,12 @@ class Glow {
       fragmentShader,
       side: THREE.BackSide,
       blending: THREE.AdditiveBlending,
-      transparent: true
+      transparent: true,
+      opacity: 0.5
     })
 
     this.mesh = new THREE.Mesh(this.geometry, this.material)
-    this.mesh.scale.multiplyScalar(1.25)
+    this.mesh.scale.multiplyScalar(1.35)
   }
 }
 

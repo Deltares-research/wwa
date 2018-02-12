@@ -1,8 +1,8 @@
 uniform vec3 viewVector;
 varying float intensity;
 
-float c = 0.6;
-float p = 7.7;
+float c = 0.25;
+float p = 2.7;
 
 void main() {
   vec3 vNormal = normalize(normalMatrix * normal);

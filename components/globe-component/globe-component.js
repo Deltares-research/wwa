@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { MeshLine, MeshLineMaterial } from 'three.meshline'
 import { Tween, autoPlay, Easing } from 'es6-tween'
 import { cartesian2polar, polar2cartesian, lat2theta, lon2phi } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
@@ -311,7 +312,16 @@ export default {
       return camera
     },
     addCurves () {
-      const paths = []
+      const material = new MeshLineMaterial({
+        lineWidth: 0.05,
+        color: new THREE.Color(1.0, 0.0, 0.0),
+        transparent: true,
+        depthTest: true,
+        opacity: 0.7
+      })
+
+      const curves = new THREE.Object3D()
+
       this.connections.forEach((record) => {
         const from = record.from
         const to = record.to
@@ -331,7 +341,7 @@ export default {
         // here we are creating the control points for the first ones.
         from.control = from.xyz.clone()
         to.control = to.xyz.clone()
-        let mid = from.control.clone().add(to.control).multiplyScalar(0.5)
+        let mid = from.control.clone().add(to.control).multiplyScalar(0.3)
         // TODO replace by d3 scale?
         // not sure what this does
         function map (x, inMin, inMax, outMin, outMax) {
@@ -351,20 +361,14 @@ export default {
         let geometry = new THREE.Geometry()
         geometry.vertices = curve.getPoints(50)
 
-        // Use THREE.MeshLine if you need wider line
-        let material = new THREE.LineBasicMaterial({
-          color: 0xff0077,
-          blending: THREE.AdditiveBlending,
-          opacity: 0.8,
-          transparent: true
-        })
+        // https://github.com/spite/THREE.MeshLine
+        const line = new MeshLine()
+        line.setGeometry(geometry)
 
-        // Create the final Object3d to add to the scene
-        var curveObject = new THREE.Line(geometry, material)
-        // TODO: how do you group all objects together
-        paths.push(curve)
-        this.scene.add(curveObject)
+        curves.add(new THREE.Mesh(line.geometry, material))
       })
+
+      this.scene.add(curves)
     },
     /**
      * Render and animate the scene.

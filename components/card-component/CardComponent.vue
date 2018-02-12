@@ -1,11 +1,13 @@
 <template>
-  <article class="card-component">
-    <nuxt-link v-bind:to="path">
-      <h1>{{title}} {{count || ''}}</h1>
-      <svg-icon v-if="theme && theme.slug" v-bind:icon="theme.slug" />
-      <p>{{body}}</p>
-    </nuxt-link>
-  </article>
+  <transition name="slide-up">
+    <article class="card-component" v-if="show">
+      <nuxt-link v-bind:to="path">
+        <h1>{{title}} {{count || ''}}</h1>
+        <svg-icon v-if="theme && theme.slug" v-bind:icon="theme.slug" />
+        <p>{{body}}</p>
+      </nuxt-link>
+    </article>
+  </transition>
 </template>
 
 <script>
@@ -15,12 +17,25 @@ export default {
   components: {
     SvgIcon
   },
-  props: [ 'body', 'count', 'image', 'path', 'slug', 'theme', 'title', 'video' ]
+  props: [ 'body', 'count', 'delay', 'image', 'path', 'slug', 'theme', 'title', 'video' ],
+  data () {
+    return {
+      show: false
+    }
+  },
+  mounted () {
+    setTimeout(() => {
+      this.show = true
+    }, this.delay)
+  }
 }
 </script>
 
 <style>
 @import '../colors/colors.css';
+@import '../animations/animations.css';
+
+/* end card show animation */
 .card-component {
   --padding-v: calc(.5rem + .5vw);
   --padding-h: calc(1rem + 1vw);

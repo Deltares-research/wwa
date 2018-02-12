@@ -11,19 +11,12 @@ import books from '~/static/data/books/index.json'
 import events from '~/components/events/events'
 
 export default {
-  components: {
-    CardList
-  },
+  components: { CardList },
   mounted () {
     this.$events.$emit(events.enableGlobeNavigation)
   },
   data () {
-    return {
-      books
-    }
+    return { books }
   }
 }
 </script>
-
-<style>
-</style>

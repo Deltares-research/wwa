@@ -57,7 +57,7 @@ vec4 Star_Swamp_3D_version_1518181399092_348_main() {
     c2 *= baseColor;
     c3 *= baseColor;
     
-    Star_Swamp_3D_version_1518181399092_348_gl_FragColor = vec4(brightness * vec3(c1 * 0.7 + c2 * 0.9 + c3 * 0.1), 0.8);
+    Star_Swamp_3D_version_1518181399092_348_gl_FragColor = vec4(brightness * vec3(c1 * 0.7 + c2 * 0.9 + c3 * 0.1), 0.85);
     
     return Star_Swamp_3D_version_1518181399092_348_gl_FragColor *= 1.0;
 }

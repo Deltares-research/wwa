@@ -16,16 +16,8 @@ class Water {
       uniforms: this.uniforms,
       vertexShader: require('./glsl/water.vert.glsl'),
       fragmentShader: require('./glsl/water.frag.glsl'),
-      // depthTest: true,
-      // vertexColors: true,
       transparent: true
     })
-
-    // this.material = new THREE.MeshPhongMaterial({
-    //   color: 0x000033,
-    //   opacity: 0.8,
-    //   transparent: true
-    // })
 
     this.mesh = new THREE.Mesh(this.geometry, this.material)
   }

@@ -67,7 +67,7 @@ h6, .h6 {
 }
 
 .invert {
-  color: var(--ui--text-invert);
+  color: var(--ui--text--invert);
   text-shadow: 0 0 1rem var(--ui--black);
 }
 
@@ -142,4 +142,10 @@ h4, .h4,
 h5, .h5,
 h6, .h6 {
   font-size: var(--base-size);
+}
+a:hover,
+a:focus,
+a:active,
+a {
+  color: inherit;
 }

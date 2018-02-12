@@ -36,6 +36,7 @@ export default {
   color: var(--ui--text--invert);
   text-decoration: none;
   transition: .2s opacity;
+  color: white;
 }
 
 .title-list a:hover {

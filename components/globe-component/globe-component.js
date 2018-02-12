@@ -194,6 +194,13 @@ export default {
       this.mouse.y = -((event.clientY / this.renderer.domElement.clientHeight) * 2) + 1
     },
     /**
+     * Animates the particles on the globe to the colors associated with the provided theme slug.
+     * @param {String} themeSlug one of the theme slugs: too-little, too-much or too-dirty
+     */
+    activateTheme (themeSlug) {
+      this.particles.activateTheme(themeSlug)
+    },
+    /**
      * Pan to the active story
      */
     panAndZoom (from, to) {
@@ -367,6 +374,7 @@ export default {
       requestAnimationFrame(this.animate)
 
       this.water.uniforms.time.value += (this.clock.getDelta() * 0.1)
+      this.particles.uniforms.time.value += 0.4
 
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)

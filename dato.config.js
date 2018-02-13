@@ -121,14 +121,13 @@ function generateByTag (dato, root, i18n, tagType) {
  * @param {i18n} i18n
  */
 function generateThemes (dato, root, i18n) {
-  const books = getBooks(dato)
-  const themes = collectBooksByTheme(books)
-  const dir = 'themes'
-  for (const theme in themes) {
-    const books = themes[theme]
-    root.createDataFile(`static/data/${dir}/${slugify(theme)}.json`, 'json', books)
+  const themes = getThemes(dato)
+  const chapters = getChapters(dato).filter(chapter => chapter.theme)
+  for (const theme of themes) {
+    const chaptersByTheme = chapters.filter(chapter => chapter.theme.slug === theme.slug)
+    root.createDataFile(`static/data/themes/${theme.slug}.json`, 'json', chaptersByTheme)
   }
-  root.createDataFile(`static/data/${dir}/index.json`, 'json', Object.keys(themes))
+  root.createDataFile(`static/data/themes/index.json`, 'json', themes)
 }
 
 /**
@@ -211,7 +210,7 @@ function getChapters (dato, bookRef) {
         path = `${parentBook.path}/${slug}`
       }
       const pages = getPages(dato, chapter)
-      const themes = pages.map(page => { return page.theme })
+      const theme = getDominantTheme(pages)
       const firstLocationPage = pages.filter(page => page.location)[0]
       const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
       const location = (firstLocationPage) ? firstLocationPage.location : null
@@ -225,7 +224,7 @@ function getChapters (dato, bookRef) {
         storyteller,
         title,
         type: chapterType,
-        themes
+        theme
       }
     })
 }
@@ -298,43 +297,18 @@ function getPages (dato, chapterRef) {
 }
 
 /**
- * filter item based on published flag,
- * or override when UNPUBLISHED is set.
- *
- * @param {DatoRecord} item
- * @returns {DatoRecord}
- */
-function filterPublished (item) {
-  if (includeUnpublished) {
-    return true
-  }
-  return true // return item.published eventually
-}
-
-/**
- * Get 'parent' of child when no tree structure is defined
+ * Get Dato Theme entities
  *
  * @param {Dato} dato
- * @param {DatoRecord} child
- * @returns {DatoRecord} parent
- */
-function getParent (dato, child) {
-  const childType = child.itemType.apiKey // get machine-readable entity name
-  let parentType
-  switch (childType) {
-    case 'page':
-      parentType = 'chapter'
-      break
-    case 'chapter':
-      parentType = 'book'
-  }
-
-  const parentsArr = dato[`${parentType}s`].filter(parent => parent[`${childType}s`].some(
-    childFromParent => childFromParent.id === child.id
-  ))
-
-  var parent = parentsArr[0] || null // so that a null result is valid
-  return parent // hacky pluralisation
+ * @returns {Object}
+*/
+function getThemes (dato) {
+  const themes = dato.themes
+  return themes.map(theme => {
+    const { body, slug, title } = theme
+    const path = `/themes/${slug}`
+    return { body, path, slug, title }
+  })
 }
 
 /**
@@ -374,25 +348,62 @@ function collectPagesByTagType (pages, tagType) {
 }
 
 /**
- * collect Book entities in object by theme
+ * filter item based on published flag,
+ * or override when UNPUBLISHED is set.
  *
- * @param {DatoRecord[]} books
- * @returns {object} arrays of Books by theme
+ * @param {DatoRecord} item
+ * @returns {DatoRecord}
  */
-function collectBooksByTheme (books) {
-  return books
-    .reduce((themes, book) => {
-      if (book.theme) {
-        themes[book.theme.slug] = themes[book.theme.slug] || {
-          title: book.theme.title,
-          slug: book.theme.slug,
-          path: book.theme.path,
-          entries: []
-        }
-        themes[book.theme.slug].entries.push(book)
+function filterPublished (item) {
+  if (includeUnpublished) {
+    return true
+  }
+  return true // return item.published eventually
+}
+
+/**
+ * Get 'parent' of child when no tree structure is defined
+ *
+ * @param {Dato} dato
+ * @param {DatoRecord} child
+ * @returns {DatoRecord} parent
+ */
+function getParent (dato, child) {
+  const childType = child.itemType.apiKey // get machine-readable entity name
+  let parentType
+  switch (childType) {
+    case 'page':
+      parentType = 'chapter'
+      break
+    case 'chapter':
+      parentType = 'book'
+  }
+
+  const parentsArr = dato[`${parentType}s`].filter(parent => parent[`${childType}s`].some(
+    childFromParent => childFromParent.id === child.id
+  ))
+
+  return parentsArr[0] || null // so that a null result is valid
+}
+
+/**
+ * Get highest occuring theme for array of items
+ *
+ * @param {Array} items
+ * @returns {Object} theme
+ */
+function getDominantTheme (items) {
+  const themes = items
+    .filter(item => item.theme) // strip out unset themes
+    .reduce((themes, item) => {
+      if (themes[item.theme.slug]) {
+        themes[item.theme.slug].score++
+      } else {
+        themes[item.theme.slug] = Object.assign(item.theme, { score: 0 })
       }
       return themes
     }, {})
+  return Object.values(themes).sort((a, b) => a.score > b.score)[0]
 }
 
 /**

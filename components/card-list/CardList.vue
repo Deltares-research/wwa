@@ -34,15 +34,14 @@ export default {
   padding-left: 0;
   padding-right: 0;
   margin: 0;
+  display: flex;
 }
 
 .card-list__item {
   position: static;
   display: inline-flex;
-  width: 50vw;
-  min-width: 280px;
-  max-width: 960px;
-  margin: 2vw 1vw 0 1vw;
+  height: 20rem;
+  margin: 2vw 1vw -10rem 1vw;
   vertical-align: top;
   white-space: normal;
 }

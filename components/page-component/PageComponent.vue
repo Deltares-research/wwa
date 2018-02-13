@@ -3,7 +3,7 @@
     <div class="page-content">
 
     <section class="page-body">
-      <h1>{{page.title}}</h1>
+      <h1 class="page-title">{{page.title}}</h1>
       <section v-if="page.body" class="body t_margin_2r">
         {{page.body}}
       </section>
@@ -25,31 +25,25 @@
       </iframe>
     </section>
 
-    <aside>
-      <div class="storyteller" v-if="page.storyteller">
+    <aside class="page-aside">
+      <section v-if="page.storyteller" class="storyteller">
+        <h3 class="title">Author</h3>
         <avatar-component
           v-bind:img="page.storyteller.avatar"
           v-bind:name="page.storyteller.name"
           />
-      </div>
-      <div class="theme">
-        <svg-icon v-if="page.theme && page.theme.slug" class="page-icon" v-bind:icon="page.theme.slug" />
-      </div>
-      <ul class="influences">
-        <li v-for="influence in page.influences" v-bind:key="influence.slug">
-          <nuxt-link v-bind:to="influence.path">{{ influence.title }}</nuxt-link>
-        </li>
-      </ul>
-      <div class="t_margin_2r">
-      <section v-if="page.links" class="links">
-        Links: {{page.links}}
       </section>
-      <ul v-if="page.keywords" class="keywords list--inline">
-        <li v-for="keyword in page.keywords" v-bind:key="keyword.slug">
-          <nuxt-link class="tag" v-bind:to="keyword.path">{{ keyword.title }}</nuxt-link>
-        </li>
-      </ul>
-    </div>
+
+      <section v-if="page.theme" class="theme">
+        <h3 class="title">Theme</h3>
+        <div class="theme-item">
+          <svg-icon v-if="page.theme && page.theme.slug" class="theme-icon" v-bind:icon="page.theme.slug" />
+          <span class="theme-caption"> {{ page.theme.title }} </span>
+        </div>
+      </section>
+
+      <SidebarLinksSection v-for="section in linkSections" v-bind:key="section"
+        v-if="page[section]" v-bind:links="page[section]" v-bind:title="section" />
     </aside>
     </div>
   </article>
@@ -57,14 +51,23 @@
 
 <script>
 import AvatarComponent from '~/components/avatar-component/AvatarComponent'
+import SidebarLinksSection from '~/components/sidebar-links-section/sidebarLinksSection'
 import SvgIcon from '~/components/svg-icon/SvgIcon'
 
+const linkSections = ['influences', 'links', 'keywords']
+
 export default {
+  data () {
+    return {
+      linkSections
+    }
+  },
   props: {
     page: { type: Object }
   },
   components: {
     AvatarComponent,
+    SidebarLinksSection,
     SvgIcon
   }
 }
@@ -72,22 +75,9 @@ export default {
 
 <style>
 @import '../colors/colors.css';
+
 .page-component {
-
   position: relative;
-}
-
-.page-content {
-  --padding-v: calc(.5rem + .5vw);
-  --padding-h: calc(1rem + 1vw);
-  background-color: var(--ui--white);
-  color: var(--ui--black);
-  max-width: 944px;
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  margin: 0 auto;
-  min-height: 25vh;
 }
 
 .page-component:first-of-type:before,
@@ -106,7 +96,36 @@ export default {
   top: -20rem;
 }
 
-.page-component aside {
+.page-content {
+  --padding-v: calc(1rem + .5vw);
+  --padding-h: calc(1rem + 1vw);
+  background-color: var(--ui--white);
+  color: var(--ui--black);
+  max-width: 944px;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  margin: 0 auto;
+  min-height: 25vh;
+}
+
+.page-title {
+  margin-top: 0;
+}
+
+.page-body {
+  font-size: .875rem;
+  line-height: 1.4;
+  flex-basis: 70%;
+}
+
+.page-body img {
+  max-width: 100%;
+}
+
+.page-component .page-aside {
+  --padding-v: calc(1rem + 1vw);
+  --padding-h: calc(1rem + 1vw);
   background: rgb(229,229, 232);
   padding: var(--padding-v) var(--padding-h);
   flex-basis: 30%;
@@ -121,16 +140,43 @@ export default {
 }
 
 .page-component .theme svg {
-  width: 4rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
 }
 
-.page-component picture img {
-  display:flex;
-  max-width:100%;
-  margin:0 auto;
+.page-component .storyteller {
+  margin-bottom: 1rem;
+}
+
+.page-aside .title {
+  text-transform: uppercase;
+  color: var(--ui--text--light);
+  font-size: .9rem;
 }
 
 
+/* create component for this style */
+.page-component .theme-item {
+  position: relative;
+  margin-bottom: 2rem;
+  min-height: 3rem;
+}
+
+.page-component .theme-icon {
+  display: inline-block;
+  width: 3rem;
+  border-radius: 100%;
+  vertical-align: top;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.page-component .theme-caption {
+  display: inline-block;
+  vertical-align: top;
+  padding-top: .4rem;
+  padding-left: calc( 3rem + .7rem );
+}
 
 </style>

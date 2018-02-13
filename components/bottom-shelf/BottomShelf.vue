@@ -1,6 +1,6 @@
 <template>
   <transition name="slide-up">
-    <div class="bottom-shelf" v-if="show">
+    <div class="bottom-shelf">
       <slot>
         <!-- content -->
       </slot>
@@ -10,14 +10,6 @@
 
 <script>
 export default {
-  data () {
-    return { show: false }
-  },
-  mounted () {
-    setTimeout(() => {
-      this.show = true
-    }, 400)
-  }
 }
 </script>
 

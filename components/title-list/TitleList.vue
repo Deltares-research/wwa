@@ -1,6 +1,6 @@
 <template>
   <ul class="title-list list--inline">
-    <li class="h1 title-list-item" v-for="item in titles" v-bind:key="item.slug">
+    <li class="h1 title-list__item" v-for="item in titles" v-bind:key="item.slug">
       <nuxt-link v-if="active.every(t => t.slug !== item.slug)" v-bind:to="item.path">
         <span class="sr-only">Go to book</span> {{item.title}}
       </nuxt-link>
@@ -27,19 +27,17 @@ export default {
 <style>
 @import '../colors/colors.css';
 
-.title-list-item {
-  text-shadow: 0 0 1rem var(--ui--black);
+.title-list__item {
+  color: var(--ui--text--invert);
 }
 
 .title-list a {
-  opacity: .5;
-  color: var(--ui--text--invert);
   text-decoration: none;
-  transition: .2s opacity;
-  color: white;
+  transition: .2s color;
+  color: var(--ui--text--light);
 }
 
 .title-list a:hover {
-  opacity: 1;
+  color: var(--ui--text--invert);
 }
 </style>

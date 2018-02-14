@@ -122,7 +122,12 @@ function generateByTag (dato, root, i18n, tagType) {
  */
 function generateThemes (dato, root, i18n) {
   const themes = getThemes(dato)
-  const chapters = getChapters(dato).filter(chapter => chapter.theme)
+  const chapters = getChapters(dato)
+    .filter(chapter => chapter.theme)
+    .map(chapter => {
+      delete chapter.pages
+      return chapter
+    })
   for (const theme of themes) {
     const chaptersByTheme = chapters.filter(chapter => chapter.theme.slug === theme.slug)
     root.createDataFile(`static/data/themes/${theme.slug}.json`, 'json', chaptersByTheme)
@@ -196,19 +201,17 @@ function getChapters (dato, bookRef) {
     .filter(filterPublished)
     .map(chapter => {
       const { title, slug, chapterType } = chapter
-      let parentBook = bookRef || getParent(dato, chapter)
-      let book = null
-      let path = null
-      if (parentBook != null) {
-        // if else so that a null result is valid
-        book = {
-          path: `${contentBasePath}/${parentBook.slug}`,
-          slug: parentBook.slug,
-          title: parentBook.title,
-          theme: parentBook.theme
-        }
-        path = `${parentBook.path}/${slug}`
+      const parentBook = bookRef || getParent(dato, chapter)
+      if (!parentBook) {
+        return false
       }
+      const book = {
+        path: `${contentBasePath}/${parentBook.slug}`,
+        slug: parentBook.slug,
+        title: parentBook.title,
+        theme: parentBook.theme
+      }
+      const path = `${book.path}/${slug}`
       const pages = getPages(dato, chapter)
       const theme = getDominantTheme(pages)
       const firstLocationPage = pages.filter(page => page.location)[0]
@@ -227,6 +230,7 @@ function getChapters (dato, bookRef) {
         theme
       }
     })
+    .filter(Boolean) // Filter falsy chapters (return false)
 }
 
 /**
@@ -248,7 +252,7 @@ function getPages (dato, chapterRef) {
     .filter(filterPublished)
     .map(page => {
       const { body, files, graphs, images, influences, keywords, links, slug, title, video } = page
-      const theme = (page.theme != null) ? {
+      const theme = (page.theme) ? {
         title: page.theme.title,
         slug: page.theme.slug,
         path: `/themes/${page.theme.slug}`
@@ -366,7 +370,7 @@ function filterPublished (item) {
  *
  * @param {Dato} dato
  * @param {DatoRecord} child
- * @returns {DatoRecord} parent
+ * @returns {DatoRecord|undefined} record or undefined
  */
 function getParent (dato, child) {
   const childType = child.itemType.apiKey // get machine-readable entity name
@@ -379,11 +383,10 @@ function getParent (dato, child) {
       parentType = 'book'
   }
 
-  const parentsArr = dato[`${parentType}s`].filter(parent => parent[`${childType}s`].some(
+  const parents = dato[`${parentType}s`].filter(parent => parent[`${childType}s`].some(
     childFromParent => childFromParent.id === child.id
   ))
-
-  return parentsArr[0] || null // so that a null result is valid
+  return (parents) ? parents[0] : undefined
 }
 
 /**

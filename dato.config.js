@@ -143,49 +143,18 @@ function generateThemes (dato, root, i18n) {
 function getBooks (dato) {
   return dato.books
     .filter(filterPublished)
-    .map(({ entity }) => {
-      const { body, chapters, slug, title } = entity
+    .map(book => {
+      const { body, slug, title } = book
       const path = `${contentBasePath}/${slug}`
-      const chapterEntities = chapters
+      const chapters = getChapters(dato, book)
         .filter(filterPublished)
-        .map(id => {
-          const { entity } = dato.find(id)
-          const { title, slug, pages, chapterType } = entity
-          const chapterPath = `${path}/${slug}`
-          let location = null
-
-          // No Array.prototype function, so we can break the loop
-          for (const pageId of pages) {
-            const page = dato.find(pageId)
-            if (page && page.location) {
-              location = {
-                lat: page.location.latitude,
-                lng: page.location.longitude,
-                zoom: page.zoomlevel
-              }
-              break
-            }
-          }
-          return {
-            pageCount: pages.length,
-            location,
-            path: chapterPath,
-            slug,
-            title,
-            type: chapterType
-          }
+        .map(chapter => {
+          const { location, pages, path, slug, title } = chapter
+          const theme = getDominantTheme(pages)
+          return { location, path, slug, title, theme }
         })
-      const themes = chapters.map(chapter => { return chapter.themes })
-
-      // create book
-      return {
-        body,
-        chapters: chapterEntities,
-        path,
-        slug,
-        themes,
-        title
-      }
+      const theme = getDominantTheme(chapters)
+      return { body, chapters, path, slug, title, theme }
     })
 }
 
@@ -213,7 +182,11 @@ function getChapters (dato, bookRef) {
       }
       const path = `${book.path}/${slug}`
       const pages = getPages(dato, chapter)
-      const theme = getDominantTheme(pages)
+      const theme = getDominantTheme(pages.map(page => (page.theme) ? {
+        title: page.theme.title,
+        slug: page.theme.slug,
+        path: `/themes/${page.theme.slug}`
+      } : {}))
       const firstLocationPage = pages.filter(page => page.location)[0]
       const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
       const location = (firstLocationPage) ? firstLocationPage.location : null
@@ -417,12 +390,12 @@ function getDominantTheme (items) {
  * @returns {linkObject}
  */
 function tagStringToLinkObject (tagString, tagType) {
-  return (tagString || 'unfiled').split(/,\s?/).map(string => {
+  return (tagString) ? tagString.split(/,\s?/).map(string => {
     const slug = slugify(string).toLowerCase()
     return {
       title: string.toLowerCase(),
       slug: slug,
       path: `/${tagType}/${slug}`
     }
-  })
+  }) : undefined
 }

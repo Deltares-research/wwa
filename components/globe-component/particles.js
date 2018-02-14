@@ -7,10 +7,12 @@ import { lat2theta, lon2phi, polar2cartesian } from './common'
 import { metrics } from './metrics'
 import { GLOBE_RADIUS } from './constants'
 
+/** Scale to convert RGB 0-255 range to 0-1 range */
 const rgb2unit = scaleLinear()
   .domain([0, 255])
   .range([0, 1])
 
+  /** Scale for particle height offset */
 const height = scaleLinear()
   .domain([0, 5])
   .range([0, 0])
@@ -18,6 +20,12 @@ const height = scaleLinear()
   // .range([0, 0.18])
   .clamp(true)
 
+/** Scale for particle size */
+const p = scaleLinear()
+  .domain([780, 300])
+  .range([10.0, 4.0])
+
+  /** Scale for colors */
 const c = scaleLinear()
   .domain(range(6))
 
@@ -27,7 +35,8 @@ class Particles {
     this.data = []
 
     this.uniforms = {
-      time: { value: 0 }
+      time: { value: 0 },
+      pointSize: { value: 10.0 }
     }
 
     this.material = new THREE.ShaderMaterial({
@@ -58,6 +67,27 @@ class Particles {
     this.geometry.attributes.targetColor.needsUpdate = true
 
     this.uniforms.time.value = 0
+  }
+
+  handleResize (smallestHeight) {
+    this.uniforms.pointSize.value = p(smallestHeight) < 1.0 ? 1.0 : p(smallestHeight)
+  }
+
+  activateTheme (theme) {
+    this.state.current = this.state.target
+    this.state.target = theme
+
+    this.colors.set(metrics[this.state.current].colors)
+    this.targetColors.set(metrics[this.state.target].colors)
+    this.indices.set(metrics[this.state.target].indices)
+    this.values.set(metrics[this.state.target].values)
+
+    this.mesh.geometry.attributes.color.needsUpdate = true
+    this.mesh.geometry.attributes.targetColor.needsUpdate = true
+    this.mesh.geometry.attributes.ix.needsUpdate = true
+    this.mesh.geometry.attributes.value.needsUpdate = true
+
+    this.uniforms.time.value = 0.0
   }
 
   load (finished) {
@@ -112,7 +142,19 @@ class Particles {
           c.range(metrics[m].colorRange)
 
           this.data.forEach((d, i) => {
-            const radius = (GLOBE_RADIUS + height(d[m]))
+            // TODO: this is temporary, until it has been decided what variables to use to illustrate the themes
+            let variable = m
+            if (m === 'too-little') {
+              variable = 'dro'
+            }
+            if (m === 'too-much') {
+              variable = 'hfo'
+            }
+            if (m === 'too-dirty') {
+              variable = 'eco_s'
+            }
+
+            const radius = (GLOBE_RADIUS + height(d[variable]))
             const point = polar2cartesian(radius, d.lat, d.lon)
             const pos = new THREE.Vector3(point.x, point.y, point.z)
 
@@ -120,12 +162,12 @@ class Particles {
             metrics[m].positions[(i * 3) + 1] = pos.y
             metrics[m].positions[(i * 3) + 2] = pos.z
 
-            const rgb = d[m] < 0 || d.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(c(d[m]))
+            const rgb = d[m] < 0 || d.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(c(d[variable]))
             metrics[m].colors[(i * 3) + 0] = rgb2unit(rgb.r)
             metrics[m].colors[(i * 3) + 1] = rgb2unit(rgb.g)
             metrics[m].colors[(i * 3) + 2] = rgb2unit(rgb.b)
 
-            metrics[m].values[i] = d[m]
+            metrics[m].values[i] = d[variable]
             metrics[m].indices[i] = i
           })
         }
@@ -144,17 +186,17 @@ class Particles {
     const targetPositions = new Float32Array(this.data.length * 3)
     this.geometry.addAttribute('targetPosition', new THREE.BufferAttribute(targetPositions, 3))
 
-    const colors = new Float32Array(this.data.length * 3)
-    this.geometry.addAttribute('color', new THREE.BufferAttribute(colors, 3))
+    this.colors = new Float32Array(this.data.length * 3)
+    this.geometry.addAttribute('color', new THREE.BufferAttribute(this.colors, 3))
 
-    const targetColors = new Float32Array(this.data.length * 3)
-    this.geometry.addAttribute('targetColor', new THREE.BufferAttribute(targetColors, 3))
+    this.targetColors = new Float32Array(this.data.length * 3)
+    this.geometry.addAttribute('targetColor', new THREE.BufferAttribute(this.targetColors, 3))
 
-    const values = new Float32Array(this.data.length)
-    this.geometry.addAttribute('value', new THREE.BufferAttribute(values, 1))
+    this.values = new Float32Array(this.data.length)
+    this.geometry.addAttribute('value', new THREE.BufferAttribute(this.values, 1))
 
-    const indices = new Float32Array(this.data.length)
-    this.geometry.addAttribute('ix', new THREE.BufferAttribute(indices, 1))
+    this.indices = new Float32Array(this.data.length)
+    this.geometry.addAttribute('ix', new THREE.BufferAttribute(this.indices, 1))
   }
 }
 

@@ -10,7 +10,7 @@ import State from './state'
 import Particles from './particles'
 
 const GLOBE_RADIUS = 5
-const WHITE = new THREE.Color(0xffffff)
+const WHITE = 0xffffff
 const vOffset = 15
 const vOffsetFactor = vOffset / 100
 
@@ -71,6 +71,8 @@ export default {
 
     this.camera = this.createCamera()
     this.scene = this.createScene()
+
+    this.clock = new THREE.Clock()
 
     this.controls = new OrbitControls(this.camera, this.globeContainerElement)
     this.controls.enablePan = false
@@ -182,6 +184,9 @@ export default {
       const height = this.containerSize[1]
       const renderWidth = this.containerSize[0]
       const renderHeight = this.containerSize[1] * (1 + vOffsetFactor)
+
+      this.particles.handleResize(renderHeight)
+
       // reset the aspect ratio
       this.camera.aspect = renderWidth / renderHeight
       // recompute projection
@@ -205,6 +210,13 @@ export default {
 
       this.mouse.x = ((event.clientX / this.renderer.domElement.clientWidth) * 2) - 1
       this.mouse.y = -((event.clientY / this.renderer.domElement.clientHeight) * 2) + 1
+    },
+    /**
+     * Animates the particles on the globe to the colors associated with the provided theme slug.
+     * @param {String} themeSlug one of the theme slugs: too-little, too-much or too-dirty
+     */
+    activateTheme (themeSlug) {
+      this.particles.activateTheme(themeSlug)
     },
     /**
      * Pan to the active story
@@ -254,12 +266,12 @@ export default {
       globe.position.set(0, 0, 0)
 
       const state = new State() // TODO: this should be done differently
-      const particles = new Particles(state)
-      particles.load(() => particles.update())
-      globe.add(particles.mesh)
+      this.particles = new Particles(state)
+      this.particles.load(() => this.particles.update())
+      globe.add(this.particles.mesh)
 
-      const water = new Water()
-      globe.add(water.mesh)
+      this.water = new Water()
+      globe.add(this.water.mesh)
 
       const glow = new Glow(this.camera)
       globe.add(glow.mesh)
@@ -381,6 +393,9 @@ export default {
      */
     animate () {
       requestAnimationFrame(this.animate)
+
+      this.water.uniforms.time.value += (this.clock.getDelta() * 0.1)
+      this.particles.uniforms.time.value += 0.4
 
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)

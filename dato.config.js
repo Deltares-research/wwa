@@ -48,6 +48,9 @@ module.exports = (dato, root, i18n) => {
     case 'keywords':
       generateByTag(dato, root, i18n, 'keywords')
       break
+    case 'static_pages':
+      generateStaticPages(dato, root, i18n)
+      break
     case 'themes':
       generateThemes(dato, root, i18n)
       break
@@ -56,6 +59,7 @@ module.exports = (dato, root, i18n) => {
       generateBooks(dato, root, i18n)
       generateByTag(dato, root, i18n, 'influences')
       generateByTag(dato, root, i18n, 'keywords')
+      generateStaticPages(dato, root, i18n)
       generateThemes(dato, root, i18n)
   }
 }
@@ -111,6 +115,25 @@ function generateByTag (dato, root, i18n, tagType) {
     root.createDataFile(`static/data/${dir}/${slugify(tag)}.json`, 'json', pages)
   }
   root.createDataFile(`static/data/${dir}/index.json`, 'json', index.filter(i => i.slug !== 'unfiled'))
+}
+
+/**
+ * Write out JSON files for static pages
+ *
+ * @param {Dato} dato - DatoCMS API
+ * @param {Root} root - Project root
+ * @param {i18n} i18n
+ */
+function generateStaticPages (dato, root, i18n) {
+  const staticPages = dato.staticPages
+    .filter(filterPublished)
+    .map(page => {
+      const { body, images, slug, title } = page
+      return { body, images, slug, title }
+    })
+  for (const page of staticPages) {
+    root.createDataFile(`static/data/${page.slug}.json`, 'json', page)
+  }
 }
 
 /**

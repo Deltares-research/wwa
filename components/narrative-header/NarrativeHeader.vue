@@ -1,18 +1,17 @@
 <template>
     <header v-if="chapter" class="narrative-header">
-      <!-- Book -->
       <p class="narrative-header__book h2">
         <nuxt-link  v-bind:to="book.path">
           <span class="sr-only">Go to book</span> {{ book.title }}
         </nuxt-link>
       </p>
       <h1 class="narrative-header__chapter">
-        <span class="sr-only">Go to book</span> {{ chapter.title }}
+        {{ chapter.title }}
       </h1>
     </header>
-    <header v-else>
+    <header v-else class="narrative-header">
       <h1 class="narrative-header__book h2">
-        <span class="sr-only">Go to book</span> {{ book.title }}
+        {{ book.title }}
       </h1>
     </header>
 </template>

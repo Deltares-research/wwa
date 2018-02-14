@@ -59,11 +59,20 @@ html {
   padding: 0;
   margin: 0;
 }
+main {
+  width: 0;
+  height: 0; /* do not obstruct globe */
+  overflow: visible;
+}
 
 .home,
 .home:hover {
+  display: block;
   color: var(--ui--text--invert);
   text-decoration: none;
+  position: relative;
+  z-index: 100;
+  padding: 1rem;
 }
 
 .globe-component {

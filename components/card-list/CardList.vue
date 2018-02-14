@@ -8,7 +8,6 @@
         v-bind:path="card.path"
         v-bind:body="card.body"
         v-bind:theme="card.theme"
-        v-bind:video="card.video"
         v-bind:count="card.pageCount"
       />
     </li>
@@ -21,7 +20,9 @@ export default {
   components: {
     CardComponent
   },
-  props: [ 'book', 'chapter', 'cards' ]
+  props: {
+    cards: Array
+  }
 }
 </script>
 <style>

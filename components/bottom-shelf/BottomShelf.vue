@@ -8,11 +8,6 @@
   </transition>
 </template>
 
-<script>
-export default {
-}
-</script>
-
 <style>
 @import '../colors/colors.css';
 

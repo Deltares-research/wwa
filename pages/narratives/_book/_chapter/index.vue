@@ -17,15 +17,12 @@ import loadData from '~/lib/load-data'
 export default {
   async asyncData (context) {
     const { pages } = await loadData(context, context.params)
-    const book = pages[0].book
-    const chapter = pages[0].chapter
-    const slug = context.params.page
-    return {
-      book,
-      chapter,
-      pages,
-      slug
-    }
+    const page = pages[0]
+    const book = page.book
+    const chapter = page.chapter
+    const slug = context.params.page || page.slug
+
+    return { book, chapter, pages, slug }
   },
   data () {
     return {

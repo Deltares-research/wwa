@@ -1,13 +1,13 @@
 <template>
   <dl class="theme-list">
     <template v-for="theme in themes">
-        <dt v-if="(theme.slug === activeSlug)" v-bind:class="`h3 active ${theme.slug}`" v-bind:key="theme.slug">
+        <dt v-if="(theme.slug === activeSlug)" v-bind:class="`h3 active ${theme.slug}`" v-bind:key="`${theme.slug}-title`">
           {{ theme.title }}
         </dt>
-        <dt v-else v-bind:class="`h3 ${theme.slug}`" v-bind:key="theme.slug">
+        <dt v-else v-bind:class="`h3 ${theme.slug}`" v-bind:key="`${theme.slug}-title`">
           <nuxt-link v-bind:to="theme.path">{{ theme.title }}</nuxt-link>
         </dt>
-        <dd v-bind:key="theme.slug">
+        <dd v-bind:key="`${theme.slug}-description`">
           {{ theme.body }}
         </dd>
     </template>
@@ -28,6 +28,7 @@ export default {
 
 .theme-list {
   padding-left: 1rem;
+  padding-bottom: 10rem;
   width: 10rem;
   color: var(--ui--text--invert);
   z-index: -1;
@@ -43,7 +44,7 @@ export default {
 .theme-list dd + dt {
   margin-top: 1rem;
 }
-.theme-list dt:not(.active) ~ dd {
+.theme-list dt:not(.active) + dd {
   display: none;
 }
 .theme-list dt::after {

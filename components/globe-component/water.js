@@ -5,9 +5,17 @@ import { GLOBE_RADIUS } from './constants'
 class Water {
   constructor () {
     this.geometry = new THREE.SphereGeometry(GLOBE_RADIUS - 0.02, 32, 32)
-    this.material = new THREE.MeshPhongMaterial({
-      color: 0x000033,
-      opacity: 0.8,
+
+    this.uniforms = {
+      time: { value: 0 }
+    }
+
+    // https://shaderfrog.com/app/view/2113
+
+    this.material = new THREE.ShaderMaterial({
+      uniforms: this.uniforms,
+      vertexShader: require('./glsl/water.vert.glsl'),
+      fragmentShader: require('./glsl/water.frag.glsl'),
       transparent: true
     })
 

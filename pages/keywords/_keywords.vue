@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <bottom-shelf>
     <ul class="list--inline">
       <li v-for="keyword in activeKeywords" v-bind:key="keyword.slug">
         <nuxt-link class="tag tag--removable" v-bind:to="keyword.unsetLink">
@@ -17,10 +17,11 @@
       </li>
     </ul>
     <card-list v-bind:cards="results" />
-  </section>
+  </bottom-shelf>
 </template>
 
 <script>
+import BottomShelf from '~/components/bottom-shelf/BottomShelf'
 import CardList from '~/components/card-list/CardList'
 import loadData from '~/lib/load-data'
 import { unionByProp } from '~/lib/set-operations'
@@ -28,7 +29,7 @@ import { unionByProp } from '~/lib/set-operations'
 export default {
   async asyncData (context) {
     const { params } = context
-    const keywordsFromUrl = params.keywords.split('+')
+    const keywordsFromUrl = (params.keywords) ? params.keywords.split('+') : []
     const { results = [], tags: keywords = [] } = await loadData(context, { keywords: keywordsFromUrl })
 
     return {
@@ -37,6 +38,7 @@ export default {
     }
   },
   components: {
+    BottomShelf,
     CardList
   },
   computed: {

@@ -7,7 +7,7 @@
 
 .slide-up-leave-active,
 .slide-up-enter-active {
-  transition: transform 700ms cubic-bezier(0.18, -0.15, 0.18, 1.25);
+  transition: transform 500ms cubic-bezier(0.1, -0.2, 0.1, 1.2);
 }
 
 .slide-up-enter,

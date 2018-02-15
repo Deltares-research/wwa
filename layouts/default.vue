@@ -1,5 +1,6 @@
 <template>
   <main>
+    <nuxt-link class="home h1" to="/" title="Go home"><span class="sr-only">Return to the homepage</span>World Water<br />Atlas</nuxt-link>
     <globe-component
       class="globe-component"
       v-bind:active-marker="activeMarker"
@@ -54,34 +55,20 @@ export default {
 <style>
 @import '../components/colors/colors.css';
 
-  html {
-    padding: 0;
-    margin: 0;
-  }
+html {
+  padding: 0;
+  margin: 0;
+}
+
+.home,
+.home:hover {
+  color: var(--ui--text--invert);
+  text-decoration: none;
+}
+
 .globe-component {
   position: fixed;
   z-index: -1;
   top:0;
-}
-
-.card-list,
-.card-list-item {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  min-height: 20rem;
-  max-height: 20vh;
-  color: var(--ui--text--invert);
-}
-
-.card-list {
-  box-sizing: border-box;
-  padding-top: 5rem;
-  z-index: -1;
-}
-
-.card-list-item {
-  position: static;
 }
 </style>

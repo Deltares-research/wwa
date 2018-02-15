@@ -153,7 +153,7 @@ export default {
       const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
       const to = {}
       to.theta = lat2theta(newMarker.location.lat)
-      to.phi = lon2phi(newMarker.location.lng)
+      to.phi = lon2phi(newMarker.location.lon)
       to.r = 40 - newMarker.location.zoom
       this.panAndZoom(from, to)
     },

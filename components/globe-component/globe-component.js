@@ -152,6 +152,26 @@ export default {
       if (!(newMarker) || !(newMarker.location)) {
         return
       }
+      this.connections = this.markers.map(d => {
+        console.log(d)
+        if (!d.location || d.location === null) {
+          return
+        }
+
+        return {
+          from: {
+            lat: newMarker.location.lat,
+            lon: newMarker.location.lng
+          },
+          to: {
+            lat: d.location.lat,
+            lon: d.location.lng
+          }
+        }
+      })
+
+      this.addCurves()
+
       // by default use camera position
       // We use the phi, theta notation, as used in
       // https://en.wikipedia.org/wiki/Spherical_coordinate_system
@@ -182,7 +202,6 @@ export default {
       this.controls.enableZoom = newValue
     },
     markers (newMarkers, oldMarkers) {
-      console.log('hello', newMarkers, oldMarkers)
       const globe = this.globe
       const markers = newMarkers.filter(marker => marker.location)
       this.avatar.clear()
@@ -339,6 +358,13 @@ export default {
     },
     addCurves () {
       const paths = []
+
+      if (this.curves) {
+        this.scene.remove(this.curves)
+      }
+
+      this.curves = new THREE.Group()
+
       this.connections.forEach((record) => {
         const from = record.from
         const to = record.to
@@ -390,8 +416,10 @@ export default {
         var curveObject = new THREE.Line(geometry, material)
         // TODO: how do you group all objects together
         paths.push(curve)
-        this.scene.add(curveObject)
+        this.curves.add(curveObject)
       })
+
+      this.scene.add(this.curves)
     },
     /**
      * Render and animate the scene.

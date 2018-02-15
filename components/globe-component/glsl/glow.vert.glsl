@@ -1,7 +1,7 @@
 uniform vec3 viewVector;
 varying float intensity;
 
-float c = 0.6;
+float c = 0.55;
 float p = 7.7;
 
 void main() {

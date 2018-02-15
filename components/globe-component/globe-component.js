@@ -314,10 +314,13 @@ export default {
     addCurves () {
       const material = new MeshLineMaterial({
         lineWidth: 0.05,
-        color: new THREE.Color(1.0, 0.0, 0.0),
+        // water color, but a bit lighter
+        color: new THREE.Color('hsl(217, 73%, 85%)'),
         transparent: true,
         depthTest: true,
-        opacity: 0.7
+        opacity: 0.2,
+        // TODO: or what's the proper way to do lighten?
+        blendEquation: THREE.AddEquation
       })
 
       const curves = new THREE.Object3D()

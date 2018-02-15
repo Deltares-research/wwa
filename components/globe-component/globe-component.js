@@ -29,6 +29,10 @@ export default {
       type: Object,
       required: false
     },
+    activeTheme: {
+      type: String,
+      required: false
+    },
     markers: {
       type: Array,
       required: false
@@ -157,6 +161,13 @@ export default {
       to.r = 40 - newMarker.location.zoom
       this.panAndZoom(from, to)
     },
+    /**
+     * Animates the particles on the globe to the colors associated with the provided theme slug.
+     * @param {String} themeSlug one of the theme slugs: too-little, too-much or too-dirty
+     */
+    activeTheme (slug) {
+      this.particles.activateTheme(slug)
+    },
     enableRotate (newValue, oldValue) {
       if (!(this.controls)) {
         return
@@ -170,6 +181,7 @@ export default {
       this.controls.enableZoom = newValue
     },
     markers (newMarkers, oldMarkers) {
+      console.log('hello', newMarkers, oldMarkers)
       const globe = this.globe
       const markers = newMarkers.filter(marker => marker.location)
       this.avatar.clear()
@@ -210,13 +222,6 @@ export default {
 
       this.mouse.x = ((event.clientX / this.renderer.domElement.clientWidth) * 2) - 1
       this.mouse.y = -((event.clientY / this.renderer.domElement.clientHeight) * 2) + 1
-    },
-    /**
-     * Animates the particles on the globe to the colors associated with the provided theme slug.
-     * @param {String} themeSlug one of the theme slugs: too-little, too-much or too-dirty
-     */
-    activateTheme (themeSlug) {
-      this.particles.activateTheme(themeSlug)
     },
     /**
      * Pan to the active story

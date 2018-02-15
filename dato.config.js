@@ -295,7 +295,7 @@ function getPages (dato, chapterRef) {
         title: chapterRef.title,
         type: chapterRef.chapterType
       }
-      const path = `${chapter.path}/${slug}`
+      const path = `${chapter.path}#${slug}`
       return {
         body,
         book,

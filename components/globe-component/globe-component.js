@@ -12,6 +12,7 @@ import Particles from './particles'
 
 const GLOBE_RADIUS = 5
 const WHITE = 0xffffff
+const tweenDuration = 1500
 const vOffset = 15
 const vOffsetFactor = vOffset / 100
 
@@ -224,7 +225,7 @@ export default {
      */
     panAndZoom (from, to) {
       const tween = new Tween(from)
-        .to(to, 3000)
+        .to(to, tweenDuration)
         .on('update', ({ r, theta, phi }) => {
           const cart = polar2cartesian(r, theta, phi)
           this.camera.position.set(cart.x, cart.y, cart.z)

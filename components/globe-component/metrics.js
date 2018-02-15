@@ -1,7 +1,6 @@
 import {
   schemeYlGnBu,
   schemeYlOrRd,
-  schemeYlGn,
   schemeRdPu,
   schemeOranges
 } from 'd3-scale-chromatic'
@@ -32,7 +31,7 @@ export const metrics = {
     label: 'Seasonal Variability'
   },
   'too-dirty': {
-    colorRange: schemeYlGn[5],
+    colorRange: schemeRdPu[5],
     label: 'Upstream Protected Land'
   }
 }

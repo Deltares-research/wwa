@@ -19,11 +19,13 @@ class Glow {
       side: THREE.BackSide,
       blending: THREE.AdditiveBlending,
       transparent: true,
-      opacity: 0.5
+      opacity: 0.5,
+      depthTest: true,
+      depthWrite: false
     })
 
     this.mesh = new THREE.Mesh(this.geometry, this.material)
-    this.mesh.scale.multiplyScalar(1.35)
+    this.mesh.scale.multiplyScalar(1.25)
   }
 }
 

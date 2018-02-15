@@ -1,33 +1,23 @@
 <template>
-  <div>
-    <div class="list--scroll">
-      <h1>{{title}}</h1>
-      <title-list v-bind:titles="books" v-bind:active="[{ slug }]" v-bind:exclude="true" />
-    </div>
+  <bottom-shelf>
+    <narrative-header v-bind:book="{ title, slug, path}" />
     <card-list v-bind:cards="chapters" />
-  </div>
+  </bottom-shelf>
 </template>
 
 <script>
+import BottomShelf from '~/components/bottom-shelf/BottomShelf'
 import CardList from '~/components/card-list/CardList'
-import TitleList from '~/components/title-list/TitleList'
-import books from '~/static/data/books/index.json'
 import events from '~/components/events/events'
+import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import loadData from '~/lib/load-data'
 
 export default {
-  asyncData (context) {
-    return loadData(context, context.params)
+  async asyncData (context) {
+    const { title, slug, path, chapters } = await loadData(context, context.params)
+    return { title, slug, path, chapters }
   },
-  components: {
-    CardList,
-    TitleList
-  },
-  data () {
-    return {
-      books
-    }
-  },
+  components: { BottomShelf, CardList, NarrativeHeader },
   mounted () {
     const marker = {
       slug: this.slug,
@@ -40,10 +30,4 @@ export default {
   }
 }
 </script>
-<style scoped>
-  h1,
-  .title-list {
-    display: inline-block;
-    vertical-align: baseline;
-  }
-</style>
+

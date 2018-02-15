@@ -54,7 +54,7 @@ import AvatarComponent from '~/components/avatar-component/AvatarComponent'
 import SidebarLinksSection from '~/components/sidebar-links-section/sidebarLinksSection'
 import SvgIcon from '~/components/svg-icon/SvgIcon'
 
-const linkSections = ['influences', 'links', 'keywords']
+const linkSections = ['influences', 'keywords']
 
 export default {
   data () {

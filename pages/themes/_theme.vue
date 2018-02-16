@@ -18,22 +18,22 @@ export default {
   async asyncData (context) {
     const chapters = loadData(context, context.params)
     const themes = loadData(context, { theme: 'index' })
-    const activeSlug = context.params.theme
+
     return {
-      activeSlug,
       chapters: await chapters,
       themes: await themes
     }
+  },
+  data () {
+    return { activeSlug: this.$route.params.theme }
   },
   components: {
     BottomShelf,
     CardList,
     ThemeList
   },
-  data () {
-    return {
-      theme: this.$route.params.theme
-    }
+  mounted () {
+    this.$events.$emit(events.activeThemeChanged, this.activeSlug)
   }
 }
 </script>

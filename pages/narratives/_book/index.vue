@@ -3,7 +3,7 @@
     <theme-list v-bind:themes="themes" v-bind:active-slug="theme.slug" />
     <bottom-shelf>
       <narrative-header v-bind:book="{ title, slug, path}" />
-      <card-list v-bind:cards="chapters" v-bind:book="{ title, slug, path}"/>
+    <card-list v-bind:cards="chapters" />
     </bottom-shelf>
   </div>
 </template>

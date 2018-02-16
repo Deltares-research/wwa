@@ -1,4 +1,5 @@
 uniform float time;
+uniform float pointSize;
 
 attribute vec3 targetPosition;
 attribute vec3 targetColor;
@@ -69,6 +70,6 @@ void main() {
   // vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
 
   // gl_PointSize = 5.0 + rand(vec2(position.x, position.y)) * sin(0.1 * time * (1.0 + 0.5 * value)) * (10.0 / -mvPosition.z);
-  gl_PointSize = 7.0 * (10.0 / -mvPosition.z);
+  gl_PointSize = pointSize * (10.0 / -mvPosition.z);
   gl_Position = projectionMatrix * mvPosition;
 }

@@ -141,7 +141,6 @@ export default {
         return
       }
       this.connections = this.markers.map(d => {
-        console.log(d)
         if (!d.location || d.location === null) {
           return
         }
@@ -149,11 +148,11 @@ export default {
         return {
           from: {
             lat: newMarker.location.lat,
-            lon: newMarker.location.lng
+            lon: newMarker.location.lon
           },
           to: {
             lat: d.location.lat,
-            lon: d.location.lng
+            lon: d.location.lon
           }
         }
       })

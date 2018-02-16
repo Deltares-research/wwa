@@ -46,7 +46,7 @@ class Avatar {
       // const avatar = new THREE.Sprite(material.clone())
 
       // latitude and longitude are mixed up in the data
-      const lon = lon2phi(d.location.lng)
+      const lon = lon2phi(d.location.lon)
       const lat = lat2theta(d.location.lat)
 
       const {x, y, z} = polar2cartesian(SCALE * GLOBE_RADIUS, lat, lon)

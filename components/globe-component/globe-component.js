@@ -23,6 +23,7 @@ export default {
       camera: null,
       scene: null,
       controls: null,
+      connections: [],
       message: ''
     }
   },
@@ -48,20 +49,6 @@ export default {
       type: Boolean,
       required: false,
       default: true
-    },
-    connections: {
-      type: Array,
-      default () {
-        const connections = []
-        for (var i = 0; i < 100; i++) {
-          // Based on this example https://brunodigiuseppe.wordpress.com/2015/02/14/flight-paths-with-threejs/
-          const from = {lat: Math.random() * 180 - 90, lon: Math.random() * 360}
-          const to = {lat: 0, lon: 0}
-          const record = {from, to}
-          connections.push(record)
-        }
-        return connections
-      }
     }
   },
   mounted () {

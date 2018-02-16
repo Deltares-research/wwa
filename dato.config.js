@@ -172,12 +172,14 @@ function getBooks (dato) {
       const chapters = getChapters(dato, book)
         .filter(filterPublished)
         .map(chapter => {
-          const { location, pages, path, slug, title } = chapter
+          const { location, pages, path, slug, title, influences, keywords } = chapter
           const theme = getDominantTheme(pages)
-          return { location, path, slug, title, theme }
+          return { influences, keywords, location, path, slug, title, theme }
         })
       const theme = getDominantTheme(chapters)
-      return { body, chapters, path, slug, title, theme }
+      const influences = collectUniqueTags(chapters, 'influences')
+      const keywords = collectUniqueTags(chapters, 'keywords')
+      return { body, chapters, influences, keywords, path, slug, title, theme }
     })
 }
 
@@ -213,11 +215,16 @@ function getChapters (dato, bookRef) {
       const firstLocationPage = pages.filter(page => page.location)[0]
       const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
       const location = (firstLocationPage) ? firstLocationPage.location : null
+      const influences = collectUniqueTags(pages, 'influences')
+      const keywords = collectUniqueTags(pages, 'keywords')
+      console.log(keywords)
       return {
         book,
-        pageCount: pages.length,
+        influences,
         location,
+        keywords,
         pages,
+        pageCount: pages.length,
         path,
         slug,
         storyteller,
@@ -279,10 +286,10 @@ function getPages (dato, chapterRef) {
         files,
         graphs,
         images,
-        keywords: tagStringToLinkObject(keywords, 'keywords'),
+        keywords: (keywords) ? tagStringToLinkObjects(keywords, 'keywords') : [],
         links,
         location,
-        influences: tagStringToLinkObject(influences, 'influences'),
+        influences: (influences) ? tagStringToLinkObjects(influences, 'influences') : [],
         path,
         slug,
         storyteller: {
@@ -348,6 +355,22 @@ function collectPagesByTagType (pages, tagType) {
 }
 
 /**
+ * Get unique array of tags from items
+ *
+ * @param {object[]} items
+ * @returns {linkObject[]} theme
+ */
+function collectUniqueTags (items, tagType) {
+  return items
+    .map(item => item[tagType])
+    .reduce((all, item) => all.concat(item), [])
+    .filter((item, index, all) => {
+      const slugs = all.map(a => a.slug)
+      return slugs.indexOf(item.slug) === index
+    })
+}
+
+/**
  * filter item based on published flag,
  * or override when UNPUBLISHED is set.
  *
@@ -388,8 +411,8 @@ function getParent (dato, child) {
 /**
  * Get highest occuring theme for array of items
  *
- * @param {Array} items
- * @returns {Object} theme
+ * @param {object[]} items
+ * @returns {linkObject[]} theme
  */
 function getDominantTheme (items) {
   const themes = items
@@ -410,9 +433,9 @@ function getDominantTheme (items) {
  *
  * @param {string} tagString
  * @param {sting} tagType
- * @returns {linkObject}
+ * @returns {linkObject[]}
  */
-function tagStringToLinkObject (tagString, tagType) {
+function tagStringToLinkObjects (tagString, tagType) {
   return (tagString) ? tagString.split(/,\s?/).map(string => {
     const slug = slugify(string).toLowerCase()
     return {

@@ -11,9 +11,9 @@
 <script>
 import BottomShelf from '~/components/bottom-shelf/BottomShelf'
 import CardList from '~/components/card-list/CardList'
-import events from '~/components/events/events'
-import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
+import events from '~/lib/events'
 import loadData from '~/lib/load-data'
+import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import ThemeList from '~/components/theme-list/ThemeList'
 
 export default {

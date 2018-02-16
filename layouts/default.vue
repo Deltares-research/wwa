@@ -13,7 +13,7 @@
 </template>
 <script>
 import GlobeComponent from '~/components/globe-component/GlobeComponent'
-import events from '~/components/events/events'
+import events from '~/lib/events'
 import books from '~/static/data/books/index.json'
 
 const markers = books

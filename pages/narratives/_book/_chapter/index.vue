@@ -11,7 +11,7 @@
 <script>
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import PageComponent from '~/components/page-component/PageComponent'
-import events from '~/components/events/events'
+import events from '~/lib/events'
 import loadData from '~/lib/load-data'
 
 export default {

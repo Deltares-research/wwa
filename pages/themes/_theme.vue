@@ -10,6 +10,7 @@
 <script>
 import BottomShelf from '~/components/bottom-shelf/BottomShelf'
 import CardList from '~/components/card-list/CardList'
+import events from '~/lib/events'
 import loadData from '~/lib/load-data'
 import ThemeList from '~/components/theme-list/ThemeList'
 

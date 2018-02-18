@@ -261,7 +261,7 @@ function getPages (dato, chapterRef) {
       } : null
       const location = (page.location) ? {
         lat: page.location.latitude,
-        lng: page.location.longitude,
+        lon: page.location.longitude,
         zoom: page.zoomlevel
       } : null
       chapterRef = chapterRef || getParent(dato, page)

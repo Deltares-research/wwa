@@ -217,7 +217,6 @@ function getChapters (dato, bookRef) {
       const location = (firstLocationPage) ? firstLocationPage.location : null
       const influences = collectUniqueTags(pages, 'influences')
       const keywords = collectUniqueTags(pages, 'keywords')
-      console.log(keywords)
       return {
         book,
         influences,

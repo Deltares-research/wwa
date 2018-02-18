@@ -51,7 +51,7 @@
 
 <script>
 import AvatarComponent from '~/components/avatar-component/AvatarComponent'
-import SidebarLinksSection from '~/components/sidebar-links-section/sidebarLinksSection'
+import SidebarLinksSection from '~/components/sidebar-links-section/SidebarLinksSection'
 import SvgIcon from '~/components/svg-icon/SvgIcon'
 
 const linkSections = ['influences', 'keywords']

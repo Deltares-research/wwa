@@ -1,5 +1,7 @@
 import * as THREE from 'three'
 
+import get from 'lodash.get'
+
 import { GLOBE_RADIUS } from './constants'
 import { polar2cartesian, lat2theta, lon2phi } from './common'
 
@@ -33,7 +35,7 @@ class Avatar {
   load (markers, finished) {
     this.markers = markers
     this.markers.forEach((d, i) => {
-      const theme = (d.themes && d.themes[0] && d.themes[0].slug) ? d.themes[0].slug : 'undefined'
+      const theme = get(d, 'theme.slug', 'undefined')
       const themeColor = THEME_COLORS[theme]
       const texture = this.textures[theme]
       const material = new THREE.SpriteMaterial({

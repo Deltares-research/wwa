@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { MeshLine, MeshLineMaterial } from 'three.meshline'
 import { Tween, autoPlay, Easing } from 'es6-tween'
 import { cartesian2polar, polar2cartesian, lat2theta, lon2phi } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
@@ -10,7 +11,8 @@ import State from './state'
 import Particles from './particles'
 
 const GLOBE_RADIUS = 5
-const WHITE = new THREE.Color(0xffffff)
+const WHITE = 0xffffff
+const tweenDuration = 1500
 const vOffset = 15
 const vOffsetFactor = vOffset / 100
 
@@ -71,6 +73,8 @@ export default {
 
     this.camera = this.createCamera()
     this.scene = this.createScene()
+
+    this.clock = new THREE.Clock()
 
     this.controls = new OrbitControls(this.camera, this.globeContainerElement)
     this.controls.enablePan = false
@@ -182,6 +186,9 @@ export default {
       const height = this.containerSize[1]
       const renderWidth = this.containerSize[0]
       const renderHeight = this.containerSize[1] * (1 + vOffsetFactor)
+
+      this.particles.handleResize(renderHeight)
+
       // reset the aspect ratio
       this.camera.aspect = renderWidth / renderHeight
       // recompute projection
@@ -207,11 +214,18 @@ export default {
       this.mouse.y = -((event.clientY / this.renderer.domElement.clientHeight) * 2) + 1
     },
     /**
+     * Animates the particles on the globe to the colors associated with the provided theme slug.
+     * @param {String} themeSlug one of the theme slugs: too-little, too-much or too-dirty
+     */
+    activateTheme (themeSlug) {
+      this.particles.activateTheme(themeSlug)
+    },
+    /**
      * Pan to the active story
      */
     panAndZoom (from, to) {
       const tween = new Tween(from)
-        .to(to, 3000)
+        .to(to, tweenDuration)
         .on('update', ({ r, theta, phi }) => {
           const cart = polar2cartesian(r, theta, phi)
           this.camera.position.set(cart.x, cart.y, cart.z)
@@ -254,12 +268,12 @@ export default {
       globe.position.set(0, 0, 0)
 
       const state = new State() // TODO: this should be done differently
-      const particles = new Particles(state)
-      particles.load(() => particles.update())
-      globe.add(particles.mesh)
+      this.particles = new Particles(state)
+      this.particles.load(() => this.particles.update())
+      globe.add(this.particles.mesh)
 
-      const water = new Water()
-      globe.add(water.mesh)
+      this.water = new Water()
+      globe.add(this.water.mesh)
 
       const glow = new Glow(this.camera)
       globe.add(glow.mesh)
@@ -320,7 +334,19 @@ export default {
       return camera
     },
     addCurves () {
-      const paths = []
+      const material = new MeshLineMaterial({
+        lineWidth: 0.05,
+        // water color, but a bit lighter
+        color: new THREE.Color('hsl(217, 73%, 85%)'),
+        transparent: true,
+        depthTest: true,
+        opacity: 0.2,
+        // TODO: or what's the proper way to do lighten?
+        blendEquation: THREE.AddEquation
+      })
+
+      const curves = new THREE.Object3D()
+
       this.connections.forEach((record) => {
         const from = record.from
         const to = record.to
@@ -340,7 +366,7 @@ export default {
         // here we are creating the control points for the first ones.
         from.control = from.xyz.clone()
         to.control = to.xyz.clone()
-        let mid = from.control.clone().add(to.control).multiplyScalar(0.5)
+        let mid = from.control.clone().add(to.control).multiplyScalar(0.3)
         // TODO replace by d3 scale?
         // not sure what this does
         function map (x, inMin, inMax, outMin, outMax) {
@@ -360,20 +386,14 @@ export default {
         let geometry = new THREE.Geometry()
         geometry.vertices = curve.getPoints(50)
 
-        // Use THREE.MeshLine if you need wider line
-        let material = new THREE.LineBasicMaterial({
-          color: 0xff0077,
-          blending: THREE.AdditiveBlending,
-          opacity: 0.8,
-          transparent: true
-        })
+        // https://github.com/spite/THREE.MeshLine
+        const line = new MeshLine()
+        line.setGeometry(geometry)
 
-        // Create the final Object3d to add to the scene
-        var curveObject = new THREE.Line(geometry, material)
-        // TODO: how do you group all objects together
-        paths.push(curve)
-        this.scene.add(curveObject)
+        curves.add(new THREE.Mesh(line.geometry, material))
       })
+
+      this.scene.add(curves)
     },
     /**
      * Render and animate the scene.
@@ -381,6 +401,9 @@ export default {
      */
     animate () {
       requestAnimationFrame(this.animate)
+
+      this.water.uniforms.time.value += (this.clock.getDelta() * 0.1)
+      this.particles.uniforms.time.value += 0.4
 
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)

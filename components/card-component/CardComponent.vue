@@ -17,7 +17,15 @@ export default {
   components: {
     SvgIcon
   },
-  props: [ 'body', 'count', 'delay', 'image', 'path', 'slug', 'theme', 'title', 'video' ],
+  props: {
+    body: String,
+    count: Number,
+    delay: Number,
+    path: String,
+    slug: String,
+    theme: Object,
+    title: String
+  },
   data () {
     return {
       show: false
@@ -41,9 +49,9 @@ export default {
   --padding-h: calc(1rem + 1vw);
   width: 100%;
   padding: var(--padding-v) var(--padding-h);
-  background-color: var(--ui--white);
+  background-color: rgba(255, 255, 255, .2);
   box-sizing: border-box;
-  color: var(--ui--text);
+  color: var(--ui--text--invert);
 }
 .card-component a {
   color: inherit;

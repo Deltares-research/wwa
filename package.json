@@ -25,6 +25,7 @@
     "data:chapters": "cross-env DATO_EXPORT=chapters dato dump",
     "data:keywords": "cross-env DATO_EXPORT=keywords dato dump",
     "data:influences": "cross-env DATO_EXPORT=influences dato dump",
+    "data:static-pages": "cross-env DATO_EXPORT=static_pages dato dump",
     "data:themes": "cross-env DATO_EXPORT=themes dato dump",
     "test": "ava"
   },
@@ -55,6 +56,7 @@
     "orbit-controls-es6": "^1.0.10",
     "slug": "0.9.1",
     "three": "^0.89.0",
+    "three.meshline": "^1.0.3",
     "vue-events": "^3.1.0"
   },
   "devDependencies": {

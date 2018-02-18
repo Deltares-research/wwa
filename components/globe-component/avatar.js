@@ -42,6 +42,7 @@ class Avatar {
       })
 
       const avatar = new THREE.Sprite(material)
+      avatar.scale.set(0.5, 0.5, 0.5)
       // const avatar = new THREE.Sprite(material.clone())
 
       // latitude and longitude are mixed up in the data

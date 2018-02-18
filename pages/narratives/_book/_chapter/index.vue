@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="full-width">
     <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
     <page-component v-for="page in pages" v-bind:key="page.slug"
       v-bind:page="page"
@@ -11,7 +11,7 @@
 <script>
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import PageComponent from '~/components/page-component/PageComponent'
-import events from '~/components/events/events'
+import events from '~/lib/events'
 import loadData from '~/lib/load-data'
 
 export default {
@@ -87,8 +87,16 @@ export default {
 </script>
 
 <style>
+
+.full-width {
+  position: absolute;
+  left:0;
+  right: 0;
+  top:0;
+  bottom: 0;
+}
+
 .narrative-header {
-  max-width: 960px;
   width: 100%;
   margin: auto;
   margin-top: 40vh;

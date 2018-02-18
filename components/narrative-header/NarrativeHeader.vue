@@ -35,8 +35,13 @@ export default {
 @import '../colors/colors.css';
 
 .narrative-header {
+  width: 100%;
+}
+
+.narrative-header__book,
+.narrative-header__chapter {
   max-width: 960px;
-  margin: auto;
+  margin: 1rem auto;
 }
 
 .narrative-header__book {

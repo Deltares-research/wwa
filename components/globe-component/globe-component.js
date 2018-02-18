@@ -23,12 +23,17 @@ export default {
       camera: null,
       scene: null,
       controls: null,
+      connections: [],
       message: ''
     }
   },
   props: {
     activeMarker: {
       type: Object,
+      required: false
+    },
+    activeTheme: {
+      type: String,
       required: false
     },
     markers: {
@@ -44,20 +49,6 @@ export default {
       type: Boolean,
       required: false,
       default: true
-    },
-    connections: {
-      type: Array,
-      default () {
-        const connections = []
-        for (var i = 0; i < 100; i++) {
-          // Based on this example https://brunodigiuseppe.wordpress.com/2015/02/14/flight-paths-with-threejs/
-          const from = {lat: Math.random() * 180 - 90, lon: Math.random() * 360}
-          const to = {lat: 0, lon: 0}
-          const record = {from, to}
-          connections.push(record)
-        }
-        return connections
-      }
     }
   },
   mounted () {
@@ -149,15 +140,41 @@ export default {
       if (!(newMarker) || !(newMarker.location)) {
         return
       }
+      this.connections = this.markers.map(d => {
+        if (!d.location || d.location === null) {
+          return
+        }
+
+        return {
+          from: {
+            lat: newMarker.location.lat,
+            lon: newMarker.location.lon
+          },
+          to: {
+            lat: d.location.lat,
+            lon: d.location.lon
+          }
+        }
+      })
+
+      this.addCurves()
+
       // by default use camera position
       // We use the phi, theta notation, as used in
       // https://en.wikipedia.org/wiki/Spherical_coordinate_system
       const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
       const to = {}
       to.theta = lat2theta(newMarker.location.lat)
-      to.phi = lon2phi(newMarker.location.lng)
+      to.phi = lon2phi(newMarker.location.lon)
       to.r = 40 - newMarker.location.zoom
       this.panAndZoom(from, to)
+    },
+    /**
+     * Animates the particles on the globe to the colors associated with the provided theme slug.
+     * @param {String} themeSlug one of the theme slugs: too-little, too-much or too-dirty
+     */
+    activeTheme (slug) {
+      this.particles.activateTheme(slug)
     },
     enableRotate (newValue, oldValue) {
       if (!(this.controls)) {
@@ -212,13 +229,6 @@ export default {
 
       this.mouse.x = ((event.clientX / this.renderer.domElement.clientWidth) * 2) - 1
       this.mouse.y = -((event.clientY / this.renderer.domElement.clientHeight) * 2) + 1
-    },
-    /**
-     * Animates the particles on the globe to the colors associated with the provided theme slug.
-     * @param {String} themeSlug one of the theme slugs: too-little, too-much or too-dirty
-     */
-    activateTheme (themeSlug) {
-      this.particles.activateTheme(themeSlug)
     },
     /**
      * Pan to the active story
@@ -345,7 +355,11 @@ export default {
         blendEquation: THREE.AddEquation
       })
 
-      const curves = new THREE.Object3D()
+      if (this.curves) {
+        this.scene.remove(this.curves)
+      }
+
+      this.curves = new THREE.Group()
 
       this.connections.forEach((record) => {
         const from = record.from
@@ -390,10 +404,10 @@ export default {
         const line = new MeshLine()
         line.setGeometry(geometry)
 
-        curves.add(new THREE.Mesh(line.geometry, material))
+        this.curves.add(new THREE.Mesh(line.geometry, material))
       })
 
-      this.scene.add(curves)
+      this.scene.add(this.curves)
     },
     /**
      * Render and animate the scene.

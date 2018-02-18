@@ -1,28 +1,39 @@
 <template>
-  <section>
-    <svg-icon v-if="theme" v-bind:icon="theme" />
-    <card-list v-bind:cards="books" />
-  </section>
+  <div>
+    <theme-list v-bind:themes="themes" v-bind:active-slug="activeSlug" />
+    <bottom-shelf>
+      <card-list v-bind:cards="chapters" />
+    </bottom-shelf>
+  </div>
 </template>
 
 <script>
+import BottomShelf from '~/components/bottom-shelf/BottomShelf'
 import CardList from '~/components/card-list/CardList'
-import SvgIcon from '~/components/svg-icon/SvgIcon'
+import events from '~/lib/events'
 import loadData from '~/lib/load-data'
+import ThemeList from '~/components/theme-list/ThemeList'
 
 export default {
   async asyncData (context) {
-    const books = await loadData(context, context.params)
-    return { books }
-  },
-  components: {
-    CardList,
-    SvgIcon
+    const chapters = loadData(context, context.params)
+    const themes = loadData(context, { theme: 'index' })
+
+    return {
+      chapters: await chapters,
+      themes: await themes
+    }
   },
   data () {
-    return {
-      theme: this.$route.params.theme
-    }
+    return { activeSlug: this.$route.params.theme }
+  },
+  components: {
+    BottomShelf,
+    CardList,
+    ThemeList
+  },
+  mounted () {
+    this.$events.$emit(events.activeThemeChanged, this.activeSlug)
   }
 }
 </script>

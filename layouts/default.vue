@@ -4,6 +4,7 @@
     <globe-component
       class="globe-component"
       v-bind:active-marker="activeMarker"
+      v-bind:active-theme="activeTheme"
       v-bind:enable-zoom="enableZoom"
       v-bind:enable-rotate="enableRotate"
       v-bind:markers="markers"
@@ -13,7 +14,7 @@
 </template>
 <script>
 import GlobeComponent from '~/components/globe-component/GlobeComponent'
-import events from '~/components/events/events'
+import events from '~/lib/events'
 import books from '~/static/data/books/index.json'
 
 const markers = books
@@ -24,6 +25,7 @@ export default {
   data () {
     return {
       activeMarker: null,
+      activeTheme: 'too-little',
       baseMarkers: markers,
       enableZoom: true,
       enableRotate: true,
@@ -33,6 +35,9 @@ export default {
   created () {
     this.$events.$on(events.activeFeatureChanged, marker => {
       this.activeMarker = marker
+    })
+    this.$events.$on(events.activeThemeChanged, theme => {
+      this.activeTheme = theme || 'too-much'
     })
     this.$events.$on(events.enableGlobeNavigation, marker => {
       this.enableZoom = true
@@ -59,11 +64,20 @@ html {
   padding: 0;
   margin: 0;
 }
+main {
+  width: 0;
+  height: 0; /* do not obstruct globe */
+  overflow: visible;
+}
 
 .home,
 .home:hover {
+  display: block;
   color: var(--ui--text--invert);
   text-decoration: none;
+  position: relative;
+  z-index: 100;
+  padding: 1rem;
 }
 
 .globe-component {

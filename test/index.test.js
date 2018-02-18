@@ -44,7 +44,7 @@ test('Route / exits and render HTML', async t => {
 test('Route / exits and render HTML with CSS applied', async t => {
   console.log()
   const window = await nuxt.renderAndGetWindow(`http://${server.host}:${server.port}/`)
-  const element = window.document.querySelector('.title')
+  const element = window.document.querySelector('main')
   t.not(element, null)
 })
 

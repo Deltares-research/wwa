@@ -33,9 +33,26 @@ class Avatar {
   load (markers, finished) {
     this.markers = markers
     this.markers.forEach((d, i) => {
-      const theme = (d.themes && d.themes[0] && d.themes[0].slug) ? d.themes[0].slug : 'undefined'
+      let theme = 'undefined'
+      let texture = this.textures['undefined']
+      // could be themes,
+      // could be theme,
+      // could be storyteller
+      if (d.themes && d.themes[0] && d.themes[0].slug) {
+        theme = d.themes[0].slug
+        texture = this.textures[theme]
+      }
+
+      if (d.theme && d.theme.slug) {
+        theme = d.theme.slug
+        texture = this.textures[theme]
+      }
+
+      if (d.storyteller && d.storyteller.avatar && d.storyteller.avatar.img && d.storyteller.name) {
+        console.log(d.storyteller.avatar)
+        texture = (this.textures[d.storyteller.name]) ? this.textures[d.storyteller.name] : this.textures[d.storyteller.name] = new THREE.TextureLoader().load(d.storyteller.avatar.img.imgixHost + d.storyteller.avatar.img.value.path)
+      }
       const themeColor = THEME_COLORS[theme]
-      const texture = this.textures[theme]
       const material = new THREE.SpriteMaterial({
         map: texture,
         color: new THREE.Color(themeColor)
@@ -70,5 +87,4 @@ class Avatar {
     this.markers = []
   }
 }
-
 export default Avatar

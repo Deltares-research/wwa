@@ -43,12 +43,35 @@
   }
 }
 
+@font-face {
+  font-family: "Roboto";
+  src: url("/assets/Roboto-Regular-webfont.woff2") format("woff2"),
+       url("/assets/Roboto-Regular-webfont.woff") format("woff");
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/assets/Roboto-Italic-webfont.woff2") format("woff2"),
+       url("/assets/Roboto-Italic-webfont.woff") format("woff");
+  font-style: italic;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/assets/Roboto-Bold-webfont.woff2") format("woff2"),
+       url("/assets/Roboto-Bold-webfont.woff") format("woff");
+  font-weight: bold;
+  font-display: fallback;
+}
+
 p, .p {
   line-height: var(--line-height);
 }
 
 html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Roboto", Roboto, sans-serif;
   font-size: var(--base-size);
   color: var(--ui--black);
   -ms-text-size-adjust: 100%;

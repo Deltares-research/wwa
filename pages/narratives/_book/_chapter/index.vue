@@ -24,7 +24,7 @@ export default {
     return { activePage: null }
   },
   mounted () {
-    const pageSlug = this.$route.hash.replace(/^#/, '')
+    const pageSlug = this.$route.hash.replace(/^#/, '') || undefined
     this.updateActivePage(pageSlug)
     this.$events.$emit(events.disableGlobeNavigation)
     this.$events.$emit(events.featuresChanged, this.pages)
@@ -76,10 +76,10 @@ export default {
       }
     },
     updateActivePage (pageSlug) {
-      const activePages = this.pages.filter(page => page.slug === pageSlug)
-      this.activePage = (activePages && activePages[0]) ? activePages[0] : null
+      const activePages = (pageSlug) ? this.pages.filter(page => page.slug === pageSlug) : null
+      this.activePage = (activePages && activePages[0]) ? activePages[0] : this.pages[0]
       if (this.activePage) {
-        history.replaceState({}, 'page', `${this.$route.path}#${pageSlug}`)
+        history.replaceState({}, 'page', `${this.$route.path}#${this.activePage.slug}`)
         this.updateActiveFeature()
         this.updateActiveTheme()
       }

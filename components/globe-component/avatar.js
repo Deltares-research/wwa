@@ -36,11 +36,25 @@ class Avatar {
     this.markers = markers
     this.markers.forEach((d, i) => {
       const theme = get(d, 'theme.slug', 'undefined')
-      const themeColor = THEME_COLORS[theme]
-      const texture = this.textures[theme]
+      let markerColor = THEME_COLORS[theme]
+      let texture = this.textures[theme]
+
+      const avatarImg = get(d, 'storyteller.avatar', 'undefined')
+      if (avatarImg && avatarImg.value) {
+        texture = (function (textures) {
+          if (!textures[avatarImg.value.path]) {
+            let texLoader = new THREE.TextureLoader()
+            texLoader.setCrossOrigin('')
+            textures[avatarImg.value.path] = texLoader.load(avatarImg.imgixHost + avatarImg.value.path)
+          }
+          return textures[avatarImg.value.path]
+        }(this.textures))
+        markerColor = 0xffffff
+      }
+
       const material = new THREE.SpriteMaterial({
         map: texture,
-        color: new THREE.Color(themeColor)
+        color: new THREE.Color(markerColor)
       })
 
       const avatar = new THREE.Sprite(material)
@@ -59,7 +73,7 @@ class Avatar {
       avatar.position.z = position.z
 
       avatar.data = d
-      avatar.themeColor = new THREE.Color(themeColor)
+      avatar.themeColor = new THREE.Color(markerColor)
 
       this.mesh.add(avatar)
     })

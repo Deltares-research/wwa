@@ -34,8 +34,22 @@ export default {
 .theme-list {
   padding-left: 1rem;
   padding-bottom: 10rem;
-  width: 10rem;
+  width: 50vw;
+  max-width: 12rem;
   color: var(--ui--text--invert);
+}
+.theme-list ::selection {
+  background-color: var(--ui--black);
+}
+.theme-list::before {
+  content: '';
+  position: fixed;
+  top:0;
+  bottom: 0;
+  left:0;
+  width:50vw;
+  max-width: 14rem;
+  background-image: var(--ui--left-gradient);
   z-index: -1;
 }
 .theme-list a {
@@ -56,8 +70,8 @@ export default {
   content:'';
   display: block;
   height: .25rem;
-  width: 10rem;
-  margin: 0 0 .5rem 0;
+  width: 12rem;
+  margin: .2rem 0 1rem 0;
 }
 .theme-list dt.too-dirty::after {
   background-image: var(--too-dirty--gradient);

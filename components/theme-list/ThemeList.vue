@@ -88,7 +88,7 @@ export default {
   content:'';
   display: block;
   height: .25rem;
-  width: 6rem;
+  width: 5rem;
   margin: .25rem 0 1rem 0;
 }
 .theme-list dt.too-dirty::after {
@@ -101,7 +101,7 @@ export default {
   background-image: var(--too-much--gradient);
 }
 /* sources are at the end and should be oblique */
-.theme-list dd P:last-child:not(:first-child) {
+.theme-list dd p:last-child:not(:first-child) {
   font-style: italic;
 }
 </style>

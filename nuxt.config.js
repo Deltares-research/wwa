@@ -42,7 +42,7 @@ const env = {
 
 if (process.env.NODE_ENV === 'production') {
   // root
-  env.baseUrl = '/'
+  env.baseUrl = process.env.BASE_URL || '/'
 }
 
 // extra options for github pages

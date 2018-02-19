@@ -24,10 +24,10 @@ export default {
     return { activePage: null }
   },
   mounted () {
-    this.scrollToSlug(this.$route.hash.replace(/^#/, ''))
+    const pageSlug = this.$route.hash.replace(/^#/, '')
+    this.updateActivePage(pageSlug)
     this.$events.$emit(events.disableGlobeNavigation)
     this.$events.$emit(events.featuresChanged, this.pages)
-
     if ('IntersectionObserver' in window) {
       this.observeIntersectingChildren()
     }
@@ -56,31 +56,40 @@ export default {
           if (entry.isIntersecting) {
             const pageSlug = entry.target.id
             if (`#${pageSlug}` !== this.$route.hash) {
-              history.replaceState({}, 'page', `${this.$route.path}#${pageSlug}`)
-              this.updateActiveFeature(pageSlug)
+              this.updateActivePage(pageSlug)
             }
             break
           }
         }
       }
     },
-    scrollToSlug (slug) {
-      const activePages = this.pages.filter(page => page.slug === slug)
-      const activeElement = document.getElementById(slug)
+    scrollToSlug (pageSlug) {
+      const activePages = this.pages.filter(page => page.slug === pageSlug)
+      const activeElement = document.getElementById(pageSlug)
       if (activeElement && activePages) {
         const windowHeight = (window.innerHeight || document.clientHeight)
         const top = activeElement.getBoundingClientRect().top || windowHeight
         const y = Math.round(top - (windowHeight / 2)) // match with margin between PageComponents
         window.scroll(0, y)
-        this.updateActiveFeature(slug)
+        this.updateActiveFeature()
+        this.updateActiveTheme()
       }
     },
-    updateActiveFeature (slug) {
-      const activePages = this.pages.filter(page => page.slug === slug)
-      if (activePages) {
-        this.activePage = activePages[0]
-        this.$events.$emit(events.activeFeatureChanged, this.activePage)
+    updateActivePage (pageSlug) {
+      const activePages = this.pages.filter(page => page.slug === pageSlug)
+      this.activePage = (activePages && activePages[0]) ? activePages[0] : null
+      if (this.activePage) {
+        history.replaceState({}, 'page', `${this.$route.path}#${pageSlug}`)
+        this.updateActiveFeature()
+        this.updateActiveTheme()
       }
+    },
+    updateActiveFeature () {
+      this.$events.$emit(events.activeFeatureChanged, this.activePage)
+    },
+    updateActiveTheme () {
+      const { slug } = this.activePage.theme
+      this.$events.$emit(events.activeThemeChanged, slug)
     }
   }
 }

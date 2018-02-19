@@ -74,7 +74,6 @@ export default {
     this.intersections = []
 
     this.createRaycaster()
-    this.addCurves()
     // resize the canvas
     this.handleResize()
     this.animate()
@@ -156,8 +155,6 @@ export default {
           }
         }
       })
-
-      this.addCurves()
 
       // by default use camera position
       // We use the phi, theta notation, as used in
@@ -342,72 +339,6 @@ export default {
       // set aspect ratio
       camera.setViewOffset(renderWidth, renderHeight, 0, height * vOffsetFactor, width, height)
       return camera
-    },
-    addCurves () {
-      const material = new MeshLineMaterial({
-        lineWidth: 0.05,
-        // water color, but a bit lighter
-        color: new THREE.Color('hsl(217, 73%, 85%)'),
-        transparent: true,
-        depthTest: true,
-        opacity: 0.2,
-        // TODO: or what's the proper way to do lighten?
-        blendEquation: THREE.AddEquation
-      })
-
-      if (this.curves) {
-        this.scene.remove(this.curves)
-      }
-
-      this.curves = new THREE.Group()
-
-      this.connections.forEach((record) => {
-        const from = record.from
-        const to = record.to
-        // Convert to radian
-        // inclination theta (latitude), azimuth phi (longitude)
-        from.theta = lat2theta(from.lat)
-        from.phi = lon2phi(from.lon)
-        let cart = polar2cartesian(GLOBE_RADIUS, from.theta, from.phi)
-        from.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
-
-        to.theta = lat2theta(to.lat)
-        to.phi = lon2phi(to.lon)
-        cart = polar2cartesian(GLOBE_RADIUS, to.theta, to.phi)
-        to.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
-
-        let distance = from.xyz.distanceTo(to.xyz)
-        // here we are creating the control points for the first ones.
-        from.control = from.xyz.clone()
-        to.control = to.xyz.clone()
-        let mid = from.control.clone().add(to.control).multiplyScalar(0.3)
-        // TODO replace by d3 scale?
-        // not sure what this does
-        function map (x, inMin, inMax, outMin, outMax) {
-          return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
-        }
-
-        var smoothDist = map(distance, 0, 10, 0, 15 / distance)
-        mid.setLength(GLOBE_RADIUS * smoothDist)
-        from.control.add(mid)
-        to.control.add(mid)
-        from.control.setLength(GLOBE_RADIUS * smoothDist)
-        to.control.setLength(GLOBE_RADIUS * smoothDist)
-
-        // use this curve to calculate the points on the curve
-        let curve = new THREE.CubicBezierCurve3(from.xyz, from.control, to.control, to.xyz)
-
-        let geometry = new THREE.Geometry()
-        geometry.vertices = curve.getPoints(50)
-
-        // https://github.com/spite/THREE.MeshLine
-        const line = new MeshLine()
-        line.setGeometry(geometry)
-
-        this.curves.add(new THREE.Mesh(line.geometry, material))
-      })
-
-      this.scene.add(this.curves)
     },
     /**
      * Render and animate the scene.

@@ -1,10 +1,10 @@
 <template>
     <footer class="narrative-footer">
-      <p v-if="prevchapter" class="narrative-footer__link previous">
-        <nuxt-link  v-bind:to="prevchapter.path" class="h2 previous">
+      <p class="narrative-footer__link previous">
+        <nuxt-link v-if="prevchapter" v-bind:to="prevchapter.path" class="h2 previous">
           <span class="sr-only">Read more</span> {{prevchapter.title}}
         </nuxt-link>
-        <nuxt-link  v-bind:to="nextchapter.path" class="h2 next">
+        <nuxt-link v-if="nextchapter" v-bind:to="nextchapter.path" class="h2 next">
           <span class="sr-only">Read more</span> {{nextchapter.title}}
         </nuxt-link>
       </p>

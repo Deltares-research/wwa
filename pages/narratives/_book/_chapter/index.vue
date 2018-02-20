@@ -18,7 +18,7 @@ import loadData from '~/lib/load-data'
 
 export default {
   async asyncData (context) {
-    const { book, pages, path, slug, title } = await loadData(context, context.params)
+    const { book, pages, path, slug, title, previousChapter, nextChapter } = await loadData(context, context.params)
     const chapter = { path, slug, title, previousChapter, nextChapter }
     return { book, chapter, pages, path, slug, title }
   },

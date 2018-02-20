@@ -5,11 +5,13 @@
       v-bind:page="page"
       v-bind:id="page.slug"
       class="page-component" />
+    <narrative-footer v-bind:prevchapter="chapter.previousChapter" v-bind:nextchapter="chapter.nextChapter" />
   </div>
 </template>
 
 <script>
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
+import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter'
 import PageComponent from '~/components/page-component/PageComponent'
 import events from '~/lib/events'
 import loadData from '~/lib/load-data'
@@ -17,7 +19,7 @@ import loadData from '~/lib/load-data'
 export default {
   async asyncData (context) {
     const { book, pages, path, slug, title } = await loadData(context, context.params)
-    const chapter = { path, slug, title }
+    const chapter = { path, slug, title, previousChapter, nextChapter }
     return { book, chapter, pages, path, slug, title }
   },
   data () {
@@ -34,6 +36,7 @@ export default {
   },
   components: {
     NarrativeHeader,
+    NarrativeFooter,
     PageComponent
   },
   methods: {
@@ -115,6 +118,6 @@ export default {
   margin-top: 0;
 }
 .page-component {
-  margin: 50vh auto; /* Note that these margins should collapse */
+  margin: 50vh auto 0 auto; /* Note that these margins should collapse */
 }
 </style>

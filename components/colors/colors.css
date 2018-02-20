@@ -86,12 +86,14 @@
   /* UI colors */
   --ui--white: #fff;
   --ui--black: #00001e;
+  --ui--black--trans: rgba(0, 0, 30, .75);
   --ui--text: var(--booklet--text);
   --ui--text--light: var(--booklet--text--light);
   --ui--text--invert: var(--ui--white);
   --ui--action: var(--booklet--action);
   --ui--action--light: var(--booklet--action--light);
-  --ui--black-to-transparent: linear-gradient(to top, var(--ui--black), transparent);
+  --ui--bottom-gradient: linear-gradient(to top, var(--ui--black), transparent);
+  --ui--left-gradient: linear-gradient(to right, var(--ui--black),  transparent);
 }
 
 html {

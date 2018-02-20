@@ -4,12 +4,11 @@ node_modules
 # logs
 npm-debug.log
 
-# Nuxt build
+# Nuxt/DatoCMS/build generated files
 .nuxt
-
-# Nuxt/DatoCMS generate
 dist
-data
+/static/data
+/static/assets
 
 # Environment variables
 .env

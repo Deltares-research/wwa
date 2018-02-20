@@ -32,7 +32,7 @@
     "data:influences": "cross-env DATO_EXPORT=influences dato dump",
     "data:static-pages": "cross-env DATO_EXPORT=static_pages dato dump",
     "data:themes": "cross-env DATO_EXPORT=themes dato dump",
-    "pretest": "npm run data:build",
+    "pretest": "npm run build",
     "test": "ava"
   },
   "config": {

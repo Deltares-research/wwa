@@ -11,7 +11,7 @@ import State from './state'
 import Particles from './particles'
 
 // const GLOBE_RADIUS = 5
-const WHITE = 0xffffff
+// const WHITE = 0xffffff
 const tweenDuration = 1500
 const vOffset = 15
 const vOffsetFactor = vOffset / 100

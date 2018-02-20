@@ -91,11 +91,12 @@ class Particles {
   }
 
   load (finished) {
+    // original file still at https://s3-eu-west-1.amazonaws.com/deltares-opendata/wwa/wri/land.csv
     // Load data in format:
     // -89.772727273,-60.0,0.0,0.0,0.0,0.0,0.0,0.0
     // -89.772727273,60.0,0.0,0.0,0.0,0.0,0.0,0.0
     // -89.318181818,-140.0,0.0,0.0,0.0,0.0,0.0,0.0
-    loadData('https://s3-eu-west-1.amazonaws.com/deltares-opendata/wwa/wri/land.csv', (err, result) => {
+    loadData('./globe-themes/globe-theme-data.csv', (err, result) => {
       if (err) {
         console.error('particle data could not be loaded')
       }

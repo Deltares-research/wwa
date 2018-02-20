@@ -213,10 +213,10 @@ function getChapters (dato, bookRef) {
         path: `/themes/${page.theme.slug}`
       } : {}))
       const neighbours = getNeighboursFromArray(chapter, parentBook.chapters)
-        const previousChapter = ((neighbours.previous) ? {
-          path: `${contentBasePath}/${neighbours.previous.slug}`,
-          slug: neighbours.previous.slug,
-          title: neighbours.previous.title } : null)
+      const previousChapter = ((neighbours.previous) ? {
+        path: `${contentBasePath}/${neighbours.previous.slug}`,
+        slug: neighbours.previous.slug,
+        title: neighbours.previous.title } : null)
       const nextChapter = ((neighbours.next) ? {
         path: `${contentBasePath}/${neighbours.next.slug}`,
         slug: neighbours.next.slug,
@@ -425,8 +425,8 @@ function getParent (dato, child) {
  * @returns {previous{}, next{} }
 */
 function getNeighboursFromArray (srcItem, array) {
-  const index = array.findIndex(item => item.id == srcItem.id)
-  return { 'previous': array[index-1], 'next': array[index+1] }
+  const index = array.findIndex(item => item.id === srcItem.id)
+  return { 'previous': array[index - 1], 'next': array[index + 1] }
 }
 
 /**

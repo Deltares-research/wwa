@@ -113,7 +113,14 @@ module.exports = {
     },
     // add postcss plugins
     postcss: postcss,
-    plugins
+    plugins,
+    vendor: [
+      'axios',
+      'd3-jetpack',
+      'd3-scale',
+      'd3-scale-chromatic',
+      'three'
+    ]
   },
   env: env
 }

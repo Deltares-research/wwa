@@ -34,7 +34,9 @@ export default {
   },
   created () {
     this.$events.$on(events.activeFeatureChanged, marker => {
-      this.activeMarker = marker
+      if (marker) {
+        this.activeMarker = marker
+      }
     })
     this.$events.$on(events.activeThemeChanged, theme => {
       this.activeTheme = theme || 'too-much'
@@ -78,6 +80,7 @@ main {
   position: relative;
   z-index: 100;
   padding: 1rem;
+  font-weight: normal;
 }
 
 .globe-component {

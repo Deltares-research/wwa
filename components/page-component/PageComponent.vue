@@ -23,6 +23,7 @@
       v-bind:width="page.video.width"
       v-bind:height="page.video.height">
       </iframe>
+      <story-map v-if="page.mapStyle" :map-style="page.mapStyle"></story-map>
     </section>
 
     <aside class="page-aside">
@@ -42,7 +43,7 @@
         </div>
       </section>
 
-      <SidebarLinksSection v-for="section in linkSections" v-bind:key="section"
+      <sidebar-links-section v-for="section in linkSections" v-bind:key="section"
         v-if="page[section]" v-bind:links="page[section]" v-bind:title="section" />
     </aside>
     </div>
@@ -53,6 +54,7 @@
 import AvatarComponent from '~/components/avatar-component/AvatarComponent'
 import SidebarLinksSection from '~/components/sidebar-links-section/SidebarLinksSection'
 import SvgIcon from '~/components/svg-icon/SvgIcon'
+import StoryMap from '~/components/story-map/StoryMap'
 
 const linkSections = ['influences', 'keywords']
 
@@ -68,7 +70,8 @@ export default {
   components: {
     AvatarComponent,
     SidebarLinksSection,
-    SvgIcon
+    SvgIcon,
+    StoryMap
   }
 }
 </script>

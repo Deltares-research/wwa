@@ -96,7 +96,9 @@ export default {
 </script>
 
 <style>
-
+:root {
+  --target-offset: 80vh
+}
 .full-width {
   position: absolute;
   left:0;
@@ -109,12 +111,10 @@ export default {
   width: 100%;
   margin: auto;
   margin-top: 40vh;
-}
-
-.narrative-header + .page-component {
-  margin-top: 0;
+  margin-bottom: calc(-1 * var(--target-offset));
 }
 .page-component {
-  margin: 50vh auto; /* Note that these margins should collapse */
+  margin: 0 auto;
+  padding-top: var(--target-offset);
 }
 </style>

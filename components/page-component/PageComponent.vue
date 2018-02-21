@@ -37,7 +37,7 @@
       <section v-if="page.theme" class="theme">
         <h3 class="title">Theme</h3>
         <div class="theme-item">
-          <svg-icon v-if="page.theme && page.theme.slug" class="theme-icon" v-bind:icon="page.theme.slug" />
+          <img v-if="page.theme && page.theme.slug" class="theme-icon" v-bind:src="`/assets/${page.theme.slug}.svg`" />
           <span class="theme-caption"> {{ page.theme.title }} </span>
         </div>
       </section>

@@ -1,4 +1,3 @@
-const mapboxgl = require('mapbox-gl')
 export default {
   components: {
   },
@@ -6,9 +5,14 @@ export default {
   },
   mounted () {
     // import mapbox after load (not available during build on nodejs)
-    const mapboxgl = require('mapbox-gl')
-    this.mapboxgl = mapboxgl
     // See: https://github.com/mapbox/mapbox-gl-js/issues/4463
+    // wwa access token
+    mapboxgl.apiToken = 'pk.eyJ1Ijoic2lnZ3lmIiwiYSI6ImNqZGsybjA4dTFvNnMzMnFvNXNkdXpiYXAifQ.cXeF4BQA1dKV6L--GI2Q_A'
+    const map = mapboxgl.Map({
+      container: this.$el.querySelector('#map'),
+      style: this.mapStyle
+    })
+
 
   },
   data () {

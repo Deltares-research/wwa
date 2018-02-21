@@ -5,11 +5,11 @@
    * Don't use the text colors directly,
    * instead take a look at the UI colors at the bottom
    */
-  --booklet--or-bu--0-5: #ffab4c;
+  --booklet--or-bu--0-5: #f3a34c;
   --booklet--or-bu--1-5: #ffc08c;
   --booklet--or-bu--2-5: #ffddc7;
-  --booklet--or-bu--3-5: #809cae;
-  --booklet--or-bu--4-5: #467388;
+  --booklet--or-bu--3-5: #98abba;
+  --booklet--or-bu--4-5: #3f6a7e;
   --booklet--neutral: #dde4eb;
   --booklet--text: var(--booklet--or-bu--4-5);
   --booklet--text--light: var(--booklet--or-bu--3-5);
@@ -22,6 +22,13 @@
   --yl-gn-bu--2-5: rgb(65,182,196);
   --yl-gn-bu--3-5: rgb(44,127,184);
   --yl-gn-bu--4-5: rgb(37,52,148);
+  --yl-gn-bu: linear-gradient(
+    to right,
+    var(--yl-gn-bu--0-5),
+    var(--yl-gn-bu--1-5),
+    var(--yl-gn-bu--2-5),
+    var(--yl-gn-bu--3-5),
+    var(--yl-gn-bu--4-5));
 
   /* Yellow Orange Red */
   --yl-or-rd--0-5: rgb(255,255,178);
@@ -29,6 +36,13 @@
   --yl-or-rd--2-5: rgb(253,141,60);
   --yl-or-rd--3-5: rgb(240,59,32);
   --yl-or-rd--4-5: rgb(189,0,38);
+  --yl-or-rd: linear-gradient(
+    to right,
+    var(--yl-or-rd--0-5),
+    var(--yl-or-rd--1-5),
+    var(--yl-or-rd--2-5),
+    var(--yl-or-rd--3-5),
+    var(--yl-or-rd--4-5));
 
   /* Red Purple */
   --rd-pu--0-5: rgb(254,235,226);
@@ -36,6 +50,13 @@
   --rd-pu--2-5: rgb(247,104,161);
   --rd-pu--3-5: rgb(197,27,138);
   --rd-pu--4-5: rgb(122,1,119);
+  --rd-pu: linear-gradient(
+    to right,
+    var(--rd-pu--0-5),
+    var(--rd-pu--1-5),
+    var(--rd-pu--2-5),
+    var(--rd-pu--3-5),
+    var(--rd-pu--4-5));
 
   /* Oranges */
   --or--0-5:rgb(254,237,222);
@@ -43,14 +64,24 @@
   --or--2-5:rgb(253,141,60);
   --or--3-5:rgb(230,85,13);
   --or--4-5:rgb(166,54,3);
+  --or: linear-gradient(
+    to right,
+    var(--or--0-5),
+    var(--or--1-5),
+    var(--or--2-5),
+    var(--or--3-5),
+    var(--or--4-5));
 
-  /* Them colors */
-  --too-dirty: var(--or--4-5);
-  --too-dirty--light: var(--or--3-5);
+  /* Theme colors */
+  --too-dirty: var(--rd-pu--4-5);
+  --too-dirty--light: var(--rd-pu--3-5);
+  --too-dirty--gradient: var(--rd-pu);
   --too-little: var(--yl-or-rd--2-5);
   --too-little--light: var(--yl-or-rd--1-5);
+  --too-little--gradient: var(--yl-or-rd);
   --too-much: var(--yl-gn-bu--4-5);
   --too-much--light: var(--yl-gn-bu--3-5);
+  --too-much--gradient: var(--yl-gn-bu);
 
   /* UI colors */
   --ui--white: #fff;
@@ -60,91 +91,9 @@
   --ui--text--invert: var(--ui--white);
   --ui--action: var(--booklet--action);
   --ui--action--light: var(--booklet--action--light);
+  --ui--black-to-transparent: linear-gradient(to top, var(--ui--black), transparent);
 }
 
 html {
   background-color: var(--ui--black);
-}
-
-.too-dirty {
-  fill: var(--too-dirty);
-}
-.too-dirty .light {
-  fill: var(--too-dirty--light);
-}
-.too-little {
-  fill: var(--too-little);
-}
-.too-little--light {
-  fill: var(--too-little--light);
-}
-.too-much {
-  fill: var(--too-much);
-}
-.too-much .light {
-  fill: var(--too-much--light);
-}
-
-.yl-gn-bu .q0-5 {
-  fill: var(--yl-gn-bu--0-5);
-}
-.yl-gn-bu .q1-5 {
-  fill: var(--yl-gn-bu--1-5);
-}
-.yl-gn-bu .q2-5 {
-  fill: var(--yl-gn-bu--2-5);
-}
-.yl-gn-bu .q3-5 {
-  fill: var(--yl-gn-bu--3-5);
-}
-.yl-gn-bu .q4-5 {
-  fill: var(--yl-gn-bu--4-5);
-}
-
-.yl-or-rd .q0-5 {
-  fill: var(--yl-or-rd--0-5);
-}
-.yl-or-rd .q1-5 {
-  fill: var(--yl-or-rd--1-5)
-}
-.yl-or-rd .q2-5 {
-  fill: var(--yl-or-rd--2-5)
-}
-.yl-or-rd .q3-5 {
-  fill: var(--yl-or-rd--3-5)
-}
-.yl-or-rd .q4-5 {
-  fill: var(--yl-or-rd--4-5)
-}
-
-.rd-pu .q0-5 {
-  fill: var(--rd-pu--0-5)
-}
-.rd-pu .q1-5 {
-  fill: var(--rd-pu--1-5)
-}
-.rd-pu .q2-5 {
-  fill: var(--rd-pu--2-5)
-}
-.rd-pu .q3-5 {
-  fill: var(--rd-pu--3-5)
-}
-.rd-pu .q4-5 {
-  fill: var(--rd-pu--4-5)
-}
-
-.oranges .q0-5 {
-  fill: var(--or--0-5);
-}
-.oranges .q1-5 {
-  fill: var(--or--1-5);
-}
-.oranges .q2-5 {
-  fill: var(--or--2-5);
-}
-.oranges .q3-5 {
-  fill: var(--or--3-5);
-}
-.oranges .q4-5 {
-  fill: var(--or--4-5);
 }

@@ -1,5 +1,7 @@
 import * as THREE from 'three'
 
+import get from 'lodash.get'
+
 import { GLOBE_RADIUS } from './constants'
 import { polar2cartesian, lat2theta, lon2phi } from './common'
 
@@ -21,7 +23,7 @@ class Avatar {
     this.textures['too-dirty'] = new THREE.TextureLoader().load(base + 'avatars/too-dirty.png')
     this.textures['too-much'] = new THREE.TextureLoader().load(base + 'avatars/too-much.png')
     this.textures['too-little'] = new THREE.TextureLoader().load(base + 'avatars/too-little.png')
-    this.textures['undefined'] = undefined
+    this.textures['undefined'] = new THREE.TextureLoader().load(base + 'avatars/book.png')
     this.mesh = new THREE.Object3D()
   }
 
@@ -33,7 +35,7 @@ class Avatar {
   load (markers, finished) {
     this.markers = markers
     this.markers.forEach((d, i) => {
-      const theme = (d.themes[0] && d.themes[0].slug) ? d.themes[0].slug : 'undefined'
+      const theme = get(d, 'theme.slug', 'undefined')
       const themeColor = THEME_COLORS[theme]
       const texture = this.textures[theme]
       const material = new THREE.SpriteMaterial({
@@ -42,10 +44,11 @@ class Avatar {
       })
 
       const avatar = new THREE.Sprite(material)
+      avatar.scale.set(0.5, 0.5, 0.5)
       // const avatar = new THREE.Sprite(material.clone())
 
       // latitude and longitude are mixed up in the data
-      const lon = lon2phi(d.location.lng)
+      const lon = lon2phi(d.location.lon)
       const lat = lat2theta(d.location.lat)
 
       const {x, y, z} = polar2cartesian(SCALE * GLOBE_RADIUS, lat, lon)
@@ -56,7 +59,7 @@ class Avatar {
       avatar.position.z = position.z
 
       avatar.data = d
-      avatar.data.themeColor = new THREE.Color(themeColor)
+      avatar.themeColor = new THREE.Color(themeColor)
 
       this.mesh.add(avatar)
     })

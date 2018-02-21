@@ -42,13 +42,13 @@ const env = {
 
 if (process.env.NODE_ENV === 'production') {
   // root
-  env.baseUrl = ''
+  env.baseUrl = '/'
 }
 
 // extra options for github pages
 if (process.env.DEPLOY_ENV === 'GH_PAGES') {
   routerBase.router = {
-    base: '/wwa'
+    base: '/wwa/'
   }
   plugins.push(
     new UglifyJSPlugin({

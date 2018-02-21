@@ -1,10 +1,8 @@
 import * as THREE from 'three'
+import { MeshLine, MeshLineMaterial } from 'three.meshline'
 import { Tween, autoPlay, Easing } from 'es6-tween'
 import { cartesian2polar, polar2cartesian, lat2theta, lon2phi } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
-
-// get the markers exported by dato
-import markers from 'static/data/globeMarkers.json'
 
 import Glow from './glow'
 import Water from './water'
@@ -13,7 +11,8 @@ import State from './state'
 import Particles from './particles'
 
 const GLOBE_RADIUS = 5
-const WHITE = new THREE.Color(0xffffff)
+const WHITE = 0xffffff
+const tweenDuration = 1500
 const vOffset = 15
 const vOffsetFactor = vOffset / 100
 
@@ -24,6 +23,7 @@ export default {
       camera: null,
       scene: null,
       controls: null,
+      connections: [],
       message: ''
     }
   },
@@ -32,25 +32,23 @@ export default {
       type: Object,
       required: false
     },
+    activeTheme: {
+      type: String,
+      required: false
+    },
     markers: {
       type: Array,
-      default () {
-        return markers
-      }
+      required: false
     },
-    connections: {
-      type: Array,
-      default () {
-        const connections = []
-        for (var i = 0; i < 100; i++) {
-          // Based on this example https://brunodigiuseppe.wordpress.com/2015/02/14/flight-paths-with-threejs/
-          const from = {lat: Math.random() * 180 - 90, lon: Math.random() * 360}
-          const to = {lat: 0, lon: 0}
-          const record = {from, to}
-          connections.push(record)
-        }
-        return connections
-      }
+    enableRotate: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    enableZoom: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   mounted () {
@@ -67,7 +65,10 @@ export default {
     this.camera = this.createCamera()
     this.scene = this.createScene()
 
+    this.clock = new THREE.Clock()
+
     this.controls = new OrbitControls(this.camera, this.globeContainerElement)
+    this.controls.enablePan = false
 
     this.mouse = new THREE.Vector2()
     this.intersections = []
@@ -139,15 +140,53 @@ export default {
       if (!(newMarker) || !(newMarker.location)) {
         return
       }
+      this.connections = this.markers.map(d => {
+        if (!d.location || d.location === null) {
+          return
+        }
+
+        return {
+          from: {
+            lat: newMarker.location.lat,
+            lon: newMarker.location.lon
+          },
+          to: {
+            lat: d.location.lat,
+            lon: d.location.lon
+          }
+        }
+      })
+
+      this.addCurves()
+
       // by default use camera position
       // We use the phi, theta notation, as used in
       // https://en.wikipedia.org/wiki/Spherical_coordinate_system
       const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
       const to = {}
       to.theta = lat2theta(newMarker.location.lat)
-      to.phi = lon2phi(newMarker.location.lng)
+      to.phi = lon2phi(newMarker.location.lon)
       to.r = 40 - newMarker.location.zoom
       this.panAndZoom(from, to)
+    },
+    /**
+     * Animates the particles on the globe to the colors associated with the provided theme slug.
+     * @param {String} themeSlug one of the theme slugs: too-little, too-much or too-dirty
+     */
+    activeTheme (slug) {
+      this.particles.activateTheme(slug)
+    },
+    enableRotate (newValue, oldValue) {
+      if (!(this.controls)) {
+        return
+      }
+      this.controls.enableRotate = newValue
+    },
+    enableZoom (newValue, oldValue) {
+      if (!(this.controls)) {
+        return
+      }
+      this.controls.enableZoom = newValue
     },
     markers (newMarkers, oldMarkers) {
       const globe = this.globe
@@ -164,6 +203,9 @@ export default {
       const height = this.containerSize[1]
       const renderWidth = this.containerSize[0]
       const renderHeight = this.containerSize[1] * (1 + vOffsetFactor)
+
+      this.particles.handleResize(renderHeight)
+
       // reset the aspect ratio
       this.camera.aspect = renderWidth / renderHeight
       // recompute projection
@@ -193,7 +235,7 @@ export default {
      */
     panAndZoom (from, to) {
       const tween = new Tween(from)
-        .to(to, 3000)
+        .to(to, tweenDuration)
         .on('update', ({ r, theta, phi }) => {
           const cart = polar2cartesian(r, theta, phi)
           this.camera.position.set(cart.x, cart.y, cart.z)
@@ -236,21 +278,24 @@ export default {
       globe.position.set(0, 0, 0)
 
       const state = new State() // TODO: this should be done differently
-      const particles = new Particles(state)
-      particles.load(() => particles.update())
-      globe.add(particles.mesh)
+      this.particles = new Particles(state)
+      this.particles.load(() => this.particles.update())
+      globe.add(this.particles.mesh)
 
-      const water = new Water()
-      globe.add(water.mesh)
+      this.water = new Water()
+      globe.add(this.water.mesh)
 
       const glow = new Glow(this.camera)
       globe.add(glow.mesh)
 
       // get the baseUrl
       const { base = '/' } = this.$router.options
+      // TODO: please leave this console log in the production code until we solve
+      // the missing avatars on the github deployment
+      console.log('using base url for avatars', base)
 
       this.avatar = new Avatar(base)
-      this.avatar.load(markers, avs => globe.add(avs))
+      this.avatar.load(this.markers, avs => globe.add(avs))
 
       scene.add(globe)
 
@@ -299,7 +344,23 @@ export default {
       return camera
     },
     addCurves () {
-      const paths = []
+      const material = new MeshLineMaterial({
+        lineWidth: 0.05,
+        // water color, but a bit lighter
+        color: new THREE.Color('hsl(217, 73%, 85%)'),
+        transparent: true,
+        depthTest: true,
+        opacity: 0.2,
+        // TODO: or what's the proper way to do lighten?
+        blendEquation: THREE.AddEquation
+      })
+
+      if (this.curves) {
+        this.scene.remove(this.curves)
+      }
+
+      this.curves = new THREE.Group()
+
       this.connections.forEach((record) => {
         const from = record.from
         const to = record.to
@@ -319,7 +380,7 @@ export default {
         // here we are creating the control points for the first ones.
         from.control = from.xyz.clone()
         to.control = to.xyz.clone()
-        let mid = from.control.clone().add(to.control).multiplyScalar(0.5)
+        let mid = from.control.clone().add(to.control).multiplyScalar(0.3)
         // TODO replace by d3 scale?
         // not sure what this does
         function map (x, inMin, inMax, outMin, outMax) {
@@ -339,20 +400,14 @@ export default {
         let geometry = new THREE.Geometry()
         geometry.vertices = curve.getPoints(50)
 
-        // Use THREE.MeshLine if you need wider line
-        let material = new THREE.LineBasicMaterial({
-          color: 0xff0077,
-          blending: THREE.AdditiveBlending,
-          opacity: 0.8,
-          transparent: true
-        })
+        // https://github.com/spite/THREE.MeshLine
+        const line = new MeshLine()
+        line.setGeometry(geometry)
 
-        // Create the final Object3d to add to the scene
-        var curveObject = new THREE.Line(geometry, material)
-        // TODO: how do you group all objects together
-        paths.push(curve)
-        this.scene.add(curveObject)
+        this.curves.add(new THREE.Mesh(line.geometry, material))
       })
+
+      this.scene.add(this.curves)
     },
     /**
      * Render and animate the scene.
@@ -361,9 +416,12 @@ export default {
     animate () {
       requestAnimationFrame(this.animate)
 
+      this.water.uniforms.time.value += (this.clock.getDelta() * 0.1)
+      this.particles.uniforms.time.value += 0.4
+
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
-      this.avatar.mesh.children.forEach(function (d) { d.material.color = d.data.themeColor })
+      this.avatar.mesh.children.forEach(function (d) { d.material.color = d.themeColor })
       if (this.intersections.length > 0) {
         this.intersections[0].object.material.color = WHITE
       }

@@ -42,14 +42,14 @@ module.exports = (dato, root, i18n) => {
     case 'chapters':
       generateChapters(dato, root, i18n)
       break
-    case 'globe':
-      generateGlobeMarkers(dato, root, i18n)
-      break
     case 'influences':
       generateByTag(dato, root, i18n, 'influences')
       break
     case 'keywords':
       generateByTag(dato, root, i18n, 'keywords')
+      break
+    case 'static_pages':
+      generateStaticPages(dato, root, i18n)
       break
     case 'themes':
       generateThemes(dato, root, i18n)
@@ -57,9 +57,9 @@ module.exports = (dato, root, i18n) => {
     default:
       generateChapters(dato, root, i18n)
       generateBooks(dato, root, i18n)
-      generateGlobeMarkers(dato, root, i18n)
       generateByTag(dato, root, i18n, 'influences')
       generateByTag(dato, root, i18n, 'keywords')
+      generateStaticPages(dato, root, i18n)
       generateThemes(dato, root, i18n)
   }
 }
@@ -95,25 +95,6 @@ function generateChapters (dato, root, i18n) {
 }
 
 /**
- * Write out JSON file with an array of objects based on pages from DatoCMS
- * Used for the globe visualisation
- *
- * @param {Dato} dato - DatoCMS API
- * @param {Root} root - Project root
- * @param {i18n} i18n
- */
-function generateGlobeMarkers (dato, root, i18n) {
-  const markers = getChapters(dato)
-    .reduce((a, b) => a.concat(b), []) // Flat array of chapters
-    .filter(chapter => chapter.location)
-    .map(chapter => {
-      delete chapter.pages
-      return chapter
-    })
-  root.createDataFile('static/data/globeMarkers.json', 'json', markers)
-}
-
-/**
  * Write out JSON files by tagType
  *
  * @param {Dato} dato - DatoCMS API
@@ -137,6 +118,25 @@ function generateByTag (dato, root, i18n, tagType) {
 }
 
 /**
+ * Write out JSON files for static pages
+ *
+ * @param {Dato} dato - DatoCMS API
+ * @param {Root} root - Project root
+ * @param {i18n} i18n
+ */
+function generateStaticPages (dato, root, i18n) {
+  const staticPages = dato.staticPages
+    .filter(filterPublished)
+    .map(page => {
+      const { body, images, slug, title } = page
+      return { body, images, slug, title }
+    })
+  for (const page of staticPages) {
+    root.createDataFile(`static/data/${page.slug}.json`, 'json', page)
+  }
+}
+
+/**
  * Write out JSON files by theme
  *
  * @param {Dato} dato - DatoCMS API
@@ -144,14 +144,18 @@ function generateByTag (dato, root, i18n, tagType) {
  * @param {i18n} i18n
  */
 function generateThemes (dato, root, i18n) {
-  const books = getBooks(dato)
-  const themes = collectBooksByTheme(books)
-  const dir = 'themes'
-  for (const theme in themes) {
-    const books = themes[theme]
-    root.createDataFile(`static/data/${dir}/${slugify(theme)}.json`, 'json', books)
+  const themes = getThemes(dato)
+  const chapters = getChapters(dato)
+    .filter(chapter => chapter.theme)
+    .map(chapter => {
+      delete chapter.pages
+      return chapter
+    })
+  for (const theme of themes) {
+    const chaptersByTheme = chapters.filter(chapter => chapter.theme.slug === theme.slug)
+    root.createDataFile(`static/data/themes/${theme.slug}.json`, 'json', chaptersByTheme)
   }
-  root.createDataFile(`static/data/${dir}/index.json`, 'json', Object.keys(themes))
+  root.createDataFile(`static/data/themes/index.json`, 'json', themes)
 }
 
 /**
@@ -162,49 +166,20 @@ function generateThemes (dato, root, i18n) {
 function getBooks (dato) {
   return dato.books
     .filter(filterPublished)
-    .map(({ entity }) => {
-      const { body, chapters, slug, title } = entity
+    .map(book => {
+      const { body, slug, title } = book
       const path = `${contentBasePath}/${slug}`
-      const chapterEntities = chapters
+      const chapters = getChapters(dato, book)
         .filter(filterPublished)
-        .map(id => {
-          const { entity } = dato.find(id)
-          const { title, slug, pages, chapterType } = entity
-          const chapterPath = `${path}/${slug}`
-          let location = null
-
-          // No Array.prototype function, so we can break the loop
-          for (const pageId of pages) {
-            const page = dato.find(pageId)
-            if (page && page.location) {
-              location = {
-                lat: page.location.latitude,
-                lng: page.location.longitude,
-                zoom: page.zoomlevel
-              }
-              break
-            }
-          }
-          return {
-            pageCount: pages.length,
-            location,
-            path: chapterPath,
-            slug,
-            title,
-            type: chapterType
-          }
+        .map(chapter => {
+          const { location, pages, path, slug, title, influences, keywords } = chapter
+          const theme = getDominantTheme(pages)
+          return { influences, keywords, location, path, slug, title, theme }
         })
-      const themes = chapters.map(chapter => { return chapter.themes })
-
-      // create book
-      return {
-        body,
-        chapters: chapterEntities,
-        path,
-        slug,
-        themes,
-        title
-      }
+      const theme = getDominantTheme(chapters)
+      const influences = collectUniqueTags(chapters, 'influences')
+      const keywords = collectUniqueTags(chapters, 'keywords')
+      return { body, chapters, influences, keywords, path, slug, title, theme }
     })
 }
 
@@ -220,37 +195,44 @@ function getChapters (dato, bookRef) {
     .filter(filterPublished)
     .map(chapter => {
       const { title, slug, chapterType } = chapter
-      let parentBook = bookRef || getParent(dato, chapter)
-      let book = null
-      let path = null
-      if (parentBook != null) {
-        // if else so that a null result is valid
-        book = {
-          path: `${contentBasePath}/${parentBook.slug}`,
-          slug: parentBook.slug,
-          title: parentBook.title,
-          theme: parentBook.theme
-        }
-        path = `${parentBook.path}/${slug}`
+      const parentBook = bookRef || getParent(dato, chapter)
+      if (!parentBook) {
+        return false
       }
+      const book = {
+        path: `${contentBasePath}/${parentBook.slug}`,
+        slug: parentBook.slug,
+        title: parentBook.title,
+        theme: parentBook.theme
+      }
+      const path = `${book.path}/${slug}`
       const pages = getPages(dato, chapter)
-      const themes = pages.map(page => { return page.theme })
+      const theme = getDominantTheme(pages.map(page => (page.theme) ? {
+        title: page.theme.title,
+        slug: page.theme.slug,
+        path: `/themes/${page.theme.slug}`
+      } : {}))
       const firstLocationPage = pages.filter(page => page.location)[0]
       const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
       const location = (firstLocationPage) ? firstLocationPage.location : null
+      const influences = collectUniqueTags(pages, 'influences')
+      const keywords = collectUniqueTags(pages, 'keywords')
       return {
         book,
-        pageCount: pages.length,
+        influences,
         location,
+        keywords,
         pages,
+        pageCount: pages.length,
         path,
         slug,
         storyteller,
         title,
         type: chapterType,
-        themes
+        theme
       }
     })
+    .filter(Boolean) // Filter falsy chapters (return false)
 }
 
 /**
@@ -272,14 +254,14 @@ function getPages (dato, chapterRef) {
     .filter(filterPublished)
     .map(page => {
       const { body, files, graphs, images, influences, keywords, links, slug, title, video } = page
-      const theme = (page.theme != null) ? {
+      const theme = (page.theme) ? {
         title: page.theme.title,
         slug: page.theme.slug,
         path: `/themes/${page.theme.slug}`
       } : null
       const location = (page.location) ? {
         lat: page.location.latitude,
-        lng: page.location.longitude,
+        lon: page.location.longitude,
         zoom: page.zoomlevel
       } : null
       chapterRef = chapterRef || getParent(dato, page)
@@ -295,7 +277,7 @@ function getPages (dato, chapterRef) {
         title: chapterRef.title,
         type: chapterRef.chapterType
       }
-      const path = `${chapter.path}/${slug}`
+      const path = `${chapter.path}#${slug}`
       return {
         body,
         book,
@@ -303,10 +285,10 @@ function getPages (dato, chapterRef) {
         files,
         graphs,
         images,
-        keywords: tagStringToLinkObject(keywords, 'keywords'),
+        keywords: (keywords) ? tagStringToLinkObjects(keywords, 'keywords') : [],
         links,
         location,
-        influences: tagStringToLinkObject(influences, 'influences'),
+        influences: (influences) ? tagStringToLinkObjects(influences, 'influences') : [],
         path,
         slug,
         storyteller: {
@@ -321,43 +303,18 @@ function getPages (dato, chapterRef) {
 }
 
 /**
- * filter item based on published flag,
- * or override when UNPUBLISHED is set.
- *
- * @param {DatoRecord} item
- * @returns {DatoRecord}
- */
-function filterPublished (item) {
-  if (includeUnpublished) {
-    return true
-  }
-  return true // return item.published eventually
-}
-
-/**
- * Get 'parent' of child when no tree structure is defined
+ * Get Dato Theme entities
  *
  * @param {Dato} dato
- * @param {DatoRecord} child
- * @returns {DatoRecord} parent
- */
-function getParent (dato, child) {
-  const childType = child.itemType.apiKey // get machine-readable entity name
-  let parentType
-  switch (childType) {
-    case 'page':
-      parentType = 'chapter'
-      break
-    case 'chapter':
-      parentType = 'book'
-  }
-
-  const parentsArr = dato[`${parentType}s`].filter(parent => parent[`${childType}s`].some(
-    childFromParent => childFromParent.id === child.id
-  ))
-
-  var parent = parentsArr[0] || null // so that a null result is valid
-  return parent // hacky pluralisation
+ * @returns {Object}
+*/
+function getThemes (dato) {
+  const themes = dato.themes
+  return themes.map(theme => {
+    const { body, slug, title } = theme
+    const path = `/themes/${slug}`
+    return { body, path, slug, title }
+  })
 }
 
 /**
@@ -397,25 +354,77 @@ function collectPagesByTagType (pages, tagType) {
 }
 
 /**
- * collect Book entities in object by theme
+ * Get unique array of tags from items
  *
- * @param {DatoRecord[]} books
- * @returns {object} arrays of Books by theme
+ * @param {object[]} items
+ * @returns {linkObject[]} theme
  */
-function collectBooksByTheme (books) {
-  return books
-    .reduce((themes, book) => {
-      if (book.theme) {
-        themes[book.theme.slug] = themes[book.theme.slug] || {
-          title: book.theme.title,
-          slug: book.theme.slug,
-          path: book.theme.path,
-          entries: []
-        }
-        themes[book.theme.slug].entries.push(book)
+function collectUniqueTags (items, tagType) {
+  return items
+    .map(item => item[tagType])
+    .reduce((all, item) => all.concat(item), [])
+    .filter((item, index, all) => {
+      const slugs = all.map(a => a.slug)
+      return slugs.indexOf(item.slug) === index
+    })
+}
+
+/**
+ * filter item based on published flag,
+ * or override when UNPUBLISHED is set.
+ *
+ * @param {DatoRecord} item
+ * @returns {DatoRecord}
+ */
+function filterPublished (item) {
+  if (includeUnpublished) {
+    return true
+  }
+  return true // return item.published eventually
+}
+
+/**
+ * Get 'parent' of child when no tree structure is defined
+ *
+ * @param {Dato} dato
+ * @param {DatoRecord} child
+ * @returns {DatoRecord|undefined} record or undefined
+ */
+function getParent (dato, child) {
+  const childType = child.itemType.apiKey // get machine-readable entity name
+  let parentType
+  switch (childType) {
+    case 'page':
+      parentType = 'chapter'
+      break
+    case 'chapter':
+      parentType = 'book'
+  }
+
+  const parents = dato[`${parentType}s`].filter(parent => parent[`${childType}s`].some(
+    childFromParent => childFromParent.id === child.id
+  ))
+  return (parents) ? parents[0] : undefined
+}
+
+/**
+ * Get highest occuring theme for array of items
+ *
+ * @param {object[]} items
+ * @returns {linkObject[]} theme
+ */
+function getDominantTheme (items) {
+  const themes = items
+    .filter(item => item.theme) // strip out unset themes
+    .reduce((themes, item) => {
+      if (themes[item.theme.slug]) {
+        themes[item.theme.slug].score++
+      } else {
+        themes[item.theme.slug] = Object.assign(item.theme, { score: 0 })
       }
       return themes
     }, {})
+  return Object.values(themes).sort((a, b) => a.score > b.score)[0]
 }
 
 /**
@@ -423,15 +432,15 @@ function collectBooksByTheme (books) {
  *
  * @param {string} tagString
  * @param {sting} tagType
- * @returns {linkObject}
+ * @returns {linkObject[]}
  */
-function tagStringToLinkObject (tagString, tagType) {
-  return (tagString || 'unfiled').split(/,\s?/).map(string => {
+function tagStringToLinkObjects (tagString, tagType) {
+  return (tagString) ? tagString.split(/,\s?/).map(string => {
     const slug = slugify(string).toLowerCase()
     return {
       title: string.toLowerCase(),
       slug: slug,
       path: `/${tagType}/${slug}`
     }
-  })
+  }) : undefined
 }

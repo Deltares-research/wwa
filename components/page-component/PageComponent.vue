@@ -23,7 +23,7 @@
       v-bind:width="page.video.width"
       v-bind:height="page.video.height">
       </iframe>
-      <story-map v-if="page.mapStyle" :map-style="page.mapStyle"></story-map>
+      <story-map v-if="page.mapboxStyle" :mapbox-style="page.mapboxStyle"></story-map>
     </section>
 
     <aside class="page-aside">

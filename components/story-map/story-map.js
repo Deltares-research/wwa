@@ -1,6 +1,6 @@
 export default {
   props: {
-    mapStyle: {
+    mapboxStyle: {
       type: String,
       default: 'mapbox://styles/siggyf/cjdk0ghmzjp8e2rmtzpqqdxat'
     },

@@ -1,12 +1,14 @@
 .list--inline {
   list-style: none;
   padding: 0;
+  margin-top: 0;
 }
 .list--inline > li {
   display: inline-block;
+  margin-right: .5em;
 }
-.list--inline > li + li {
-  margin-left: 1em;
+.list--inline > li:last-of-type {
+  margin-right: 0;
 }
 .list--scroll {
   white-space: nowrap;

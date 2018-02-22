@@ -5,9 +5,17 @@
   color: var(--ui--text);
   border-radius: 1rem;
   padding: .25rem 1rem .375rem 1rem;
+  margin: .25em 0;
   text-decoration: none;
   position: relative;
   border: none;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+a.tag:hover {
+  background-color: var(--ui--text);
+  color: var(--ui--white);
 }
 
 .tag--removable {
@@ -19,16 +27,15 @@
   font-size: 1.25em;
   position: absolute;
   right: .5em;
-  bottom: 0.25rem;
+  bottom: 0.25em;
 }
 
 .tag--control {
   font-size: 1rem;
   appearance: none;
-  background-color: var(--ui--action);
+  background-color: transparent;
+  color: var(--ui--text--invert);
+  text-transform: none;
 }
 
-.tag:hover {
-  background-color: var(--ui--text--light);
-}
 

@@ -1,10 +1,10 @@
 <template>
-  <picture class="avatar">
+  <figure class="avatar">
     <img v-bind:src="imgSrc">
     <figcaption>
     {{ name }}
     </figcaption>
-  </picture>
+  </figure>
 </template>
 
 <script>
@@ -33,6 +33,7 @@ export default {
   width: 100%;
   display: block;
   min-height: 3rem;
+  margin: 0;
 }
 
 .avatar img {

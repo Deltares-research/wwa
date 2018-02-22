@@ -93,94 +93,161 @@ class Particles {
     this.uniforms.time.value = 0.0
   }
 
+  // load2 (finished) {
+  //   loadData('./globe-themes/too-much.json', (err, result) => {
+  //     if (err) {
+  //       console.error(err)
+  //     }
+
+  //     Object.keys(result[0]).forEach(k => {
+  //       const lat = +Object.keys(result[0])[k]
+
+  //       for (let i = 0; i < result[0][lat].length; i = i + 2) {
+  //         const lon = result[0][lat][i % 2 + 0]
+  //         const val = result[0][lat][i % 2 + 1]
+
+  //         this.data.push({ lat, lon, hfo: val === -1 ? null : val })
+  //       }
+  //     })
+
+  //     // Object.keys(result[0]).forEach((k, i) => {
+  //     //   if (i < 30) {
+  //     //     const lat = +k
+  //     //     const lon = i % 1
+  //     //     const val =
+
+  //     //     console.log(lat, lon)
+  //     //   }
+  //     // })
+  //   })
+
+  //   if (finished) {
+  //     finished()
+  //   }
+  // }
+
   load (finished) {
     // original file still at https://s3-eu-west-1.amazonaws.com/deltares-opendata/wwa/wri/land.csv
     // Load data in format:
     // -89.772727273,-60.0,0.0,0.0,0.0,0.0,0.0,0.0
     // -89.772727273,60.0,0.0,0.0,0.0,0.0,0.0,0.0
     // -89.318181818,-140.0,0.0,0.0,0.0,0.0,0.0,0.0
-    loadData('./globe-themes/globe-theme-data.csv', (err, result) => {
-      if (err) {
-        console.error('particle data could not be loaded')
-      }
-      this.data = result[0]
-        .map(d => ({
-          lat: lat2theta(+d.lat),
-          lon: lon2phi(+d.lon),
-          g: +d.GRAY50MSRW,
-          // bt: +d.BT,
-          // ba: +d.BA,
-          hfo: +d.HFO_s,
-          dro: +d.DRO_s,
-          wri: +d.WRI_s,
-          wsv: +d.WSV_s,
-          sv: +d.SV_s,
-          eco_s: +d.ECO_S_s
-        }))
-        .sort((a, b) => b[this.state.target] - a[this.state.target])
+    // loadData('./globe-themes/globe-theme-data.csv', (err, result) => {
+    //   if (err) {
+    //     console.error('particle data could not be loaded')
+    //   }
+    //   this.data = result[0]
+    //     .map(d => ({
+    //       lat: lat2theta(+d.lat),
+    //       lon: lon2phi(+d.lon),
+    //       g: +d.GRAY50MSRW,
+    //       // bt: +d.BT,
+    //       // ba: +d.BA,
+    //       hfo: +d.HFO_s,
+    //       dro: +d.DRO_s,
+    //       wri: +d.WRI_s,
+    //       wsv: +d.WSV_s,
+    //       sv: +d.SV_s,
+    //       eco_s: +d.ECO_S_s
+    //     }))
+    //     .sort((a, b) => b[this.state.target] - a[this.state.target])
 
-      this.initGeometry()
+    loadData(
+      // './globe-themes/too-much.json',
+      // './globe-themes/too-little.json',
+      './globe-themes/too-dirty.json',
+      (err, result) => {
+        if (err) {
+          console.error(err)
+        }
 
-      Object.keys(metrics).forEach((m) => {
-        metrics[m].positions = new Float32Array(this.data.length * 3)
-        metrics[m].colors = new Float32Array(this.data.length * 3)
-        metrics[m].values = new Float32Array(this.data.length)
-        metrics[m].indices = new Float32Array(this.data.length)
+        result.forEach((res, ri) => {
+          Object.keys(res).forEach((k, j) => {
+            const lat = k
 
-        // initial position
-        if (m === 'init') {
-          this.data.forEach((d, i) => {
-            // TODO: why does it not start with zero?
-            metrics[m].positions[(i * 3) + 1] = 0.04 * ((i % 300) - 150)
-            metrics[m].positions[(i * 3) + 0] = 0.04 * ((Math.floor(i / 300)) - 150)
-            metrics[m].positions[(i * 3) + 2] = 0
+            // TODO: how to merge ??
+            for (let i = 0; i < result[0][lat].length; i = i + 2) {
+              const lon = result[0][lat][i % 2 + 0 + i]
+              let val = result[0][lat][i % 2 + 1 + i]
+              val = val === -1 ? null : val
 
-            metrics[m].colors[(i * 3) + 0] = 0
-            metrics[m].colors[(i * 3) + 1] = 0.5
-            metrics[m].colors[(i * 3) + 2] = 0.8
-
-            metrics[m].values[i] = 5
-            metrics[m].indices[i] = i
+              if (ri === 0) {
+                this.data.push({
+                  lat: lat2theta(+lat),
+                  lon: lon2phi(lon),
+                  eco_s: val
+                })
+              } else if (ri === 1) {
+                this.data[i].dro = val
+              } else if (ri === 2) {
+                this.data[i].eco_s = val
+              }
+            }
           })
-        } else {
-          c.range(metrics[m].colorRange)
+        })
 
-          this.data.forEach((d, i) => {
-            // TODO: this is temporary, until it has been decided what variables to use to illustrate the themes
-            let variable = m
-            if (m === 'too-little') {
-              variable = 'dro'
-            }
-            if (m === 'too-much') {
-              variable = 'hfo'
-            }
-            if (m === 'too-dirty') {
-              variable = 'eco_s'
-            }
+        this.initGeometry()
 
-            const radius = (GLOBE_RADIUS + height(d[variable]))
-            const point = polar2cartesian(radius, d.lat, d.lon)
-            const pos = new THREE.Vector3(point.x, point.y, point.z)
+        Object.keys(metrics).forEach((m) => {
+          metrics[m].positions = new Float32Array(this.data.length * 3)
+          metrics[m].colors = new Float32Array(this.data.length * 3)
+          metrics[m].values = new Float32Array(this.data.length)
+          metrics[m].indices = new Float32Array(this.data.length)
 
-            metrics[m].positions[(i * 3) + 0] = pos.x
-            metrics[m].positions[(i * 3) + 1] = pos.y
-            metrics[m].positions[(i * 3) + 2] = pos.z
+          // initial position
+          if (m === 'init') {
+            this.data.forEach((d, i) => {
+              // TODO: why does it not start with zero?
+              metrics[m].positions[(i * 3) + 1] = 0.04 * ((i % 300) - 150)
+              metrics[m].positions[(i * 3) + 0] = 0.04 * ((Math.floor(i / 300)) - 150)
+              metrics[m].positions[(i * 3) + 2] = 0
 
-            const rgb = d[m] < 0 || d.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(c(d[variable]))
-            metrics[m].colors[(i * 3) + 0] = rgb2unit(rgb.r)
-            metrics[m].colors[(i * 3) + 1] = rgb2unit(rgb.g)
-            metrics[m].colors[(i * 3) + 2] = rgb2unit(rgb.b)
+              metrics[m].colors[(i * 3) + 0] = 0
+              metrics[m].colors[(i * 3) + 1] = 0.5
+              metrics[m].colors[(i * 3) + 2] = 0.8
 
-            metrics[m].values[i] = d[variable]
-            metrics[m].indices[i] = i
-          })
+              metrics[m].values[i] = 5
+              metrics[m].indices[i] = i
+            })
+          } else {
+            c.range(metrics[m].colorRange)
+
+            this.data.forEach((d, i) => {
+              // TODO: this is temporary, until it has been decided what variables to use to illustrate the themes
+              let variable = m
+              if (m === 'too-little') {
+                variable = 'dro'
+              }
+              if (m === 'too-much') {
+                variable = 'hfo'
+              }
+              if (m === 'too-dirty') {
+                variable = 'eco_s'
+              }
+
+              const radius = (GLOBE_RADIUS + height(d[variable]))
+              const point = polar2cartesian(radius, d.lat, d.lon)
+              const pos = new THREE.Vector3(point.x, point.y, point.z)
+
+              metrics[m].positions[(i * 3) + 0] = pos.x
+              metrics[m].positions[(i * 3) + 1] = pos.y
+              metrics[m].positions[(i * 3) + 2] = pos.z
+
+              const rgb = d[m] < 0 || d.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(c(d[variable]))
+              metrics[m].colors[(i * 3) + 0] = rgb2unit(rgb.r)
+              metrics[m].colors[(i * 3) + 1] = rgb2unit(rgb.g)
+              metrics[m].colors[(i * 3) + 2] = rgb2unit(rgb.b)
+
+              metrics[m].values[i] = d[variable]
+              metrics[m].indices[i] = i
+            })
+          }
+        })
+
+        if (finished) {
+          finished()
         }
       })
-
-      if (finished) {
-        finished()
-      }
-    })
   }
 
   initGeometry () {

@@ -279,6 +279,8 @@ export default {
       this.particles.load(() => this.particles.update())
       globe.add(this.particles.mesh)
 
+      // this.particles.load2()
+
       this.water = new Water()
       globe.add(this.water.mesh)
 

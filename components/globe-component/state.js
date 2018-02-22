@@ -1,6 +1,6 @@
 class State {
   constructor () {
-    this.current = 'too-much'
+    this.current = 'too-dirty'
     this.target = 'too-dirty'
   }
 }

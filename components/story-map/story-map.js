@@ -2,7 +2,7 @@ export default {
   props: {
     mapboxStyle: {
       type: String,
-      default: 'mapbox://styles/siggyf/cjdk0ghmzjp8e2rmtzpqqdxat'
+      default: 'mapbox://styles/mapbox/satellite-v9'
     },
     wmsLayer: {
       type: String
@@ -28,7 +28,6 @@ export default {
       container: mapElement,
       style: this.mapboxStyle
     })
-    map.setCenter(this.center)
   },
   data () {
     return {

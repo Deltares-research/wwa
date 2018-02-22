@@ -31,11 +31,13 @@ export default {
 
 .narrative-footer {
   width: 100%;
+  background: linear-gradient(rgba(0,0,38,0.8) 35%, rgba(0,51,102,0));
+  overflow:hidden;
 }
 
 .narrative-footer__link {
   max-width: 940px;
-  margin: 0 auto 2rem auto;
+  margin: 1rem auto 2rem auto;
 }
 
 a.previous {
@@ -49,11 +51,12 @@ a.next {
 }
 
 .narrative-footer__link a {
-  color: var(--ui--text);
+  color: var(--ui--text--light);
   text-decoration: none;
   transition: .2s color;
-  max-width: 480px;
+  max-width: 460px;
   display:inline-block;
+  line-height: 2rem;
 }
 
 .narrative-footer__link a:hover {

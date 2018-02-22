@@ -99,7 +99,7 @@ export default {
 }
 
 .page-body figcaption {
-  color: var(--booklet--text--light);
+  color: var(--ui--text--light);
   width: 100%;
   padding: 5px 0;
 }

@@ -33,7 +33,6 @@ export default {
 @import '../colors/colors.css';
 
 .page-component {
-  position: relative;
   display: flex;
   position: relative;
   flex-direction: row;

@@ -44,7 +44,7 @@ export default {
         // TODO: Pan & Zoom to
       }, {
         // No explicit root, we want the viewport
-        rootMargin: '-40% 0% -40% 0%', // Interested in the in the lower part of the screen
+        rootMargin: '-40% 0% -40% 0%',
         thresholds: [ intersectionRatio ]
       })
       const pageComponentsArray = [].slice.call(this.$el.children)
@@ -97,7 +97,7 @@ export default {
 
 <style>
 :root {
-  --target-offset: 80vh
+  --target-offset: 75vh
 }
 .full-width {
   position: absolute;
@@ -110,7 +110,7 @@ export default {
 .narrative-header {
   width: 100%;
   margin: auto;
-  margin-top: 40vh;
+  margin-top: calc(var(--target-offset));
   margin-bottom: calc(-1 * var(--target-offset));
   position: relative;
   z-index: 1;

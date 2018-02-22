@@ -88,8 +88,10 @@ export default {
       this.$events.$emit(events.activeFeatureChanged, this.activePage)
     },
     updateActiveTheme () {
-      const { slug } = this.activePage.theme
-      this.$events.$emit(events.activeThemeChanged, slug)
+      const { slug = undefined } = this.activePage.theme
+      if (slug) {
+        this.$events.$emit(events.activeThemeChanged, slug)
+      }
     }
   }
 }

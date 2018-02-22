@@ -23,7 +23,6 @@ const routes = books.concat(chapters)
     '/influences/partnership',
     '/about'
   ])
-console.log(routes)
 // TODO: We want to enable these, but they give an error. They end up as null in the final config.
 const postcss = {
   plugins: {

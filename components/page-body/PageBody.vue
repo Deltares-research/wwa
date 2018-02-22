@@ -7,7 +7,7 @@
         <figure v-for="image in images" v-bind:key="image.id">
           <div class="fixed-ratio"
             v-bind:style="`padding-bottom:${Math.round(image.value.height/image.value.width * 10000)/100}%`">
-            <img v-bind:src="`${image.imgixHost}${image.value.path}?w=640`" width="100%"/>
+            <img v-bind:src="`${image.imgixHost}${image.value.path}?w=640&q=65`" width="100%"/>
           </div>
           <figcaption>{{ image.title }}</figcaption>
         </figure>
@@ -17,7 +17,7 @@
         <figure v-for="graph in graphs" v-bind:key="graph.id">
           <div class="fixed-ratio"
             v-bind:style="`padding-bottom:${Math.round(graph.value.height/graph.value.width * 10000)/100}%`">
-            <img v-bind:src="`${graph.imgixHost}${graph.value.path}?w=640`" width="100%"/>
+            <img v-bind:src="`${graph.imgixHost}${graph.value.path}?w=640&q=65`" width="100%"/>
           </div>
           <figcaption>{{ graph.title }}</figcaption>
         </figure>

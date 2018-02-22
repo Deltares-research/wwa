@@ -49,7 +49,7 @@ export default {
       var src = _defaultAvatarSrc
       const avatar = this.storyteller.avatar
       if (avatar && avatar.imgixHost) {
-        src = avatar.imgixHost + avatar.value.path
+        src = `${avatar.imgixHost}${avatar.value.path}?w=50&q=65`
       }
       return src
     }

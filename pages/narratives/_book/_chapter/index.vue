@@ -47,7 +47,7 @@ export default {
         // TODO: Pan & Zoom to
       }, {
         // No explicit root, we want the viewport
-        rootMargin: '-40% 0% -40% 0%', // Interested in the in the lower part of the screen
+        rootMargin: '-40% 0% -40% 0%',
         thresholds: [ intersectionRatio ]
       })
       const pageComponentsArray = [].slice.call(this.$el.children)
@@ -91,14 +91,20 @@ export default {
       this.$events.$emit(events.activeFeatureChanged, this.activePage)
     },
     updateActiveTheme () {
-      const { slug } = this.activePage.theme
-      this.$events.$emit(events.activeThemeChanged, slug)
+      const { slug = undefined } = this.activePage.theme
+      if (slug) {
+        this.$events.$emit(events.activeThemeChanged, slug)
+      }
     }
   }
 }
 </script>
 
 <style>
+
+:root {
+  --target-offset: 75vh
+}
 
 .full-width {
   position: absolute;
@@ -111,13 +117,9 @@ export default {
 .narrative-header {
   width: 100%;
   margin: auto;
-  margin-top: 40vh;
-}
-
-.narrative-header + .page-component {
-  margin-top: 0;
-}
-.page-component {
-  margin: 50vh auto 0 auto; /* Note that these margins should collapse */
+  margin-top: calc(var(--target-offset));
+  margin-bottom: calc(-1 * var(--target-offset));
+  position: relative;
+  z-index: 1;
 }
 </style>

@@ -16,7 +16,7 @@ export default {
   props: {
     prevchapter: {
       type: Object,
-      required: true
+      required: false
     },
     nextchapter: {
       type: Object,

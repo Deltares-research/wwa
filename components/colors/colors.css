@@ -87,6 +87,9 @@
   --ui--white: #fff;
   --ui--black: #00001e;
   --ui--black--trans: rgba(0, 0, 30, .75);
+  --ui--bg: var(--ui--black);
+  --ui--bg--white: var(--ui--white);
+  --ui--bg--light: var(--booklet--neutral);
   --ui--text: var(--booklet--text);
   --ui--text--light: var(--booklet--text--light);
   --ui--text--invert: var(--ui--white);

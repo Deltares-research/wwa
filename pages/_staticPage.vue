@@ -3,7 +3,7 @@
   <article class="static-page">
     <h1>{{title}}</h1>
     <picture v-for="image in images" v-bind:key="image.id">
-      <img v-bind:src="image.imgixHost + image.value.path"/>
+      <img v-bind:src="`${image.imgixHost}${image.value.path}?w=640&q=65`"/>
     </picture>
     <section>
       {{body}}

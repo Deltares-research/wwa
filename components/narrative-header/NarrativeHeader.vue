@@ -58,11 +58,6 @@ export default {
 .narrative-header__book a:hover {
   color: var(--ui--text--invert);
 }
-.narrative-header__book a::before {
-  content: '❮';
-  margin-left: -1.5rem;
-  position: absolute;
-}
 
 .narrative-header__chapter {
   color: var(--ui--text--invert);

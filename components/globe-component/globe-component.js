@@ -11,7 +11,7 @@ import State from './state'
 import Particles from './particles'
 
 // const GLOBE_RADIUS = 5
-const WHITE = 0xffffff
+// const WHITE = 0xffffff
 const tweenDuration = 1500
 const vOffset = 15
 const vOffsetFactor = vOffset / 100
@@ -254,7 +254,7 @@ export default {
       })
 
       renderer.setPixelRatio(window.devicePixelRatio)
-      // renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(window.innerWidth, window.innerHeight)
       renderer.setClearColor(0x00002A)
 
       // append the globe canvas to our mounted element
@@ -418,11 +418,6 @@ export default {
 
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
-      this.avatar.mesh.children.forEach(function (d) { d.material.color = d.themeColor })
-      if (this.intersections.length > 0) {
-        this.intersections[0].object.material.color = WHITE
-      }
-
       this.renderer.render(this.scene, this.camera)
     }
   }

@@ -11,11 +11,12 @@
   --perfect-fifth: 1.500;
   --golden-ratio: 1.618;
   /* Setup */
-  --base-size: 1; /* implied rems */
+  --base-size: .875; /* implied rems */
   --min-viewport: 20; /* implied rems */
   --max-viewport: 60; /* implied rems */
-  --lower-ratio: var(--major-second); /* One of the above scales */
-  --upper-ratio: var(--major-third); /* One of the above scales */
+  --lower-ratio: var(--minor-second); /* One of the above scales */
+  --upper-ratio: var(--minor-third); /* One of the above scales */
+  --line-height: var(--perfect-fifth);
 
   /* Calculated */
   --base-size-units: calc(1rem * var(--base-size));
@@ -25,11 +26,7 @@
   --curr-viewport-min-overshoot: calc(100vw - var(--min-viewport-units));  /* dynamic */
   --curr-viewport-factor: calc(var(--curr-viewport-min-overshoot) / var(--viewport-range));  /* dynamic */
   --ratio-range: calc(var(--upper-ratio) - var(--lower-ratio)); /* static unitless */
-  --line-height: calc(
-    calc(1rem * var(--lower-ratio))
-      +
-    calc(var(--ratio-range) * var(--curr-viewport-factor))
-  );
+
 }
 
 @media screen and (max-width: 20rem) {
@@ -68,16 +65,19 @@
 
 p, .p {
   line-height: var(--line-height);
+  margin-top: 0;
 }
 
 html {
   font-family: "Roboto", Roboto, sans-serif;
-  font-size: var(--base-size);
   color: var(--ui--black);
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+}
+body {
+  font-size: var(--base-size-units);
 }
 
 h1, .h1,
@@ -87,6 +87,8 @@ h4, .h4,
 h5, .h5,
 h6, .h6 {
   font-weight: bold;
+  line-height: var(--upper-ratio);
+  margin-top: 0;
 }
 
 .invert {
@@ -94,21 +96,21 @@ h6, .h6 {
   text-shadow: 0 0 1rem var(--ui--black);
 }
 
-p {
-  line-height: var(--line-height);
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  font-size: var(--base-size);
 }
 
-h1, .h1 {
+h3, .h3,
+/* Style intro text as h3 only when there are no other classes */
+p.intro {
   --min-height: calc(
     var(--base-size)
-    * var(--lower-ratio)
-    * var(--lower-ratio)
     * var(--lower-ratio)
   );
   --max-height: calc(
     var(--base-size)
-    * var(--upper-ratio)
-    * var(--upper-ratio)
     * var(--upper-ratio)
   );
 
@@ -142,13 +144,17 @@ h2, .h2 {
   font-size: var(--height-responsive);
 }
 
-h3, .h3 {
+h1, .h1 {
   --min-height: calc(
     var(--base-size)
+    * var(--lower-ratio)
+    * var(--lower-ratio)
     * var(--lower-ratio)
   );
   --max-height: calc(
     var(--base-size)
+    * var(--upper-ratio)
+    * var(--upper-ratio)
     * var(--upper-ratio)
   );
 
@@ -161,11 +167,6 @@ h3, .h3 {
   font-size: var(--height-responsive);
 }
 
-h4, .h4,
-h5, .h5,
-h6, .h6 {
-  font-size: var(--base-size);
-}
 a:hover,
 a:focus,
 a:active,

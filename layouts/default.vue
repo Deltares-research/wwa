@@ -66,6 +66,7 @@ html {
   padding: 0;
   margin: 0;
 }
+
 main {
   width: 0;
   height: 0; /* do not obstruct globe */

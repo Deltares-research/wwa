@@ -3,23 +3,23 @@
       <h1 class="page-body__title">{{ title }}</h1>
       <section v-if="htmlBody" class="page-body__body" v-html="htmlBody"></section>
 
-      <section v-if="images" class="page-body__images">
+      <section v-if="images.length" class="page-body__images">
         <figure v-for="image in images" v-bind:key="image.id">
           <div class="fixed-ratio"
             v-bind:style="`padding-bottom:${Math.round(image.value.height/image.value.width * 10000)/100}%`">
             <img v-bind:src="`${image.imgixHost}${image.value.path}?w=640&q=65`" width="100%"/>
           </div>
-          <figcaption>{{ image.title }}</figcaption>
+          <figcaption>{{ image.value.title }}</figcaption>
         </figure>
       </section>
 
-      <section v-if="graphs" class="page-body__graphs">
+      <section v-if="graphs.length" class="page-body__graphs">
         <figure v-for="graph in graphs" v-bind:key="graph.id">
           <div class="fixed-ratio"
             v-bind:style="`padding-bottom:${Math.round(graph.value.height/graph.value.width * 10000)/100}%`">
             <img v-bind:src="`${graph.imgixHost}${graph.value.path}?w=640&q=65`" width="100%"/>
           </div>
-          <figcaption>{{ graph.title }}</figcaption>
+          <figcaption>{{ graph.value.title }}</figcaption>
         </figure>
       </section>
 
@@ -86,6 +86,11 @@ export default {
 
 .page-body figure {
   margin: 0;
+  position: relative;
+}
+
+.page-body figure + figure {
+  margin-top: 2rem;
 }
 
 .page-body__title {
@@ -100,6 +105,12 @@ export default {
 }
 .page-body > :last-child {
   margin-bottom: 0;
+}
+
+.page-body figcaption {
+  color: var(--ui--text--light);
+  width: 100%;
+  padding: 5px 0;
 }
 
 .fixed-ratio {

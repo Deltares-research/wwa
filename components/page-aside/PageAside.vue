@@ -1,12 +1,12 @@
 <template>
   <aside class="page-aside">
-    <section v-if="storyteller" class="page-aside__section page-aside__section--storyteller">
+    <section v-if="storyteller" class="clearfix page-aside__section page-aside__section--storyteller">
       <h3 class="page-aside__title">Storyteller</h3>
       <img v-bind:src="avatarSrc">
       <p>{{ storyteller.name }}</p>
     </section>
 
-    <section v-if="theme" class="page-aside__section">
+    <section v-if="theme" class="clearfix page-aside__section">
       <h3 class="page-aside__title">Theme</h3>
       <img v-if="theme && theme.slug" class="theme-icon" v-bind:src="`/assets/${theme.slug}.svg`" />
       <p>{{ theme.title }}</p>
@@ -61,6 +61,12 @@ export default {
 @import '../colors/colors.css';
 @import '../typography/typography.css';
 
+.clearfix:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
 .page-aside {
   position: sticky;
   background-color: var(--ui--bg--light);
@@ -72,7 +78,6 @@ export default {
 
 .page-aside__section {
   margin-bottom: 1rem;
-  overflow: auto;
 }
 
 .page-aside__section--keywords .tag {
@@ -91,6 +96,7 @@ export default {
   height: 3rem;
   vertical-align: top;
   margin-right: .7rem;
+  margin-left: -1px;
 }
 
 .page-aside__section--storyteller img {

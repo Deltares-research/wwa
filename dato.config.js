@@ -216,11 +216,11 @@ function getChapters (dato, bookRef) {
       } : {}))
       const neighbours = getNeighboursFromArray(chapter, parentBook.chapters)
       const previousChapter = (neighbours.previous) ? {
-        path: `${contentBasePath}/${neighbours.previous.slug}`,
+        path: `${contentBasePath}/${parentBook.slug}/${neighbours.previous.slug}`,
         slug: neighbours.previous.slug,
         title: neighbours.previous.title } : null
       const nextChapter = (neighbours.next) ? {
-        path: `${contentBasePath}/${neighbours.next.slug}`,
+        path: `${contentBasePath}/${parentBook.slug}/${neighbours.next.slug}`,
         slug: neighbours.next.slug,
         title: neighbours.next.title } : null
       const firstLocationPage = pages.filter(page => page.location)[0]

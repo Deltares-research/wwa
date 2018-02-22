@@ -33,6 +33,10 @@ export default {
 <style>
 @import '../colors/colors.css';
 
+:root {
+  --target-offset: 75vh
+}
+
 .page-component {
   display: flex;
   position: relative;
@@ -40,5 +44,6 @@ export default {
   margin: 0 auto;
   min-height: 25vh;
   max-width: 60rem;
+  padding-top: var(--target-offset);
 }
 </style>

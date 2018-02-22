@@ -8,7 +8,7 @@ install:
   - echo 'installing npm packages'
   - npm install
 script:
-  - npm run prebuild
+  - npm run build
   - npm run test
   - npm run lint
   - npm run gh-pages:generate

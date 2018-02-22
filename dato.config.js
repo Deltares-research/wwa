@@ -212,6 +212,15 @@ function getChapters (dato, bookRef) {
         slug: page.theme.slug,
         path: `/themes/${page.theme.slug}`
       } : {}))
+      const neighbours = getNeighboursFromArray(chapter, parentBook.chapters)
+      const previousChapter = ((neighbours.previous) ? {
+        path: `${contentBasePath}/${neighbours.previous.slug}`,
+        slug: neighbours.previous.slug,
+        title: neighbours.previous.title } : null)
+      const nextChapter = ((neighbours.next) ? {
+        path: `${contentBasePath}/${neighbours.next.slug}`,
+        slug: neighbours.next.slug,
+        title: neighbours.next.title } : null)
       const firstLocationPage = pages.filter(page => page.location)[0]
       const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
       const location = (firstLocationPage) ? firstLocationPage.location : null
@@ -229,7 +238,9 @@ function getChapters (dato, bookRef) {
         storyteller,
         title,
         type: chapterType,
-        theme
+        theme,
+        nextChapter,
+        previousChapter
       }
     })
     .filter(Boolean) // Filter falsy chapters (return false)
@@ -405,6 +416,17 @@ function getParent (dato, child) {
     childFromParent => childFromParent.id === child.id
   ))
   return (parents) ? parents[0] : undefined
+}
+
+/**
+ * Get neighbours from array
+ *
+ * @param {Item} srcItem, [] array
+ * @returns {previous{}, next{} }
+*/
+function getNeighboursFromArray (srcItem, array) {
+  const index = array.findIndex(item => item.id === srcItem.id)
+  return { 'previous': array[index - 1], 'next': array[index + 1] }
 }
 
 /**

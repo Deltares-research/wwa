@@ -29,6 +29,7 @@ export default {
 </script>
 
 <style>
+@import '../typography/typography.css';
 @import '../colors/colors.css';
 
 .theme-list {
@@ -52,6 +53,9 @@ export default {
   max-width: 16rem;
   background-image: var(--ui--left-gradient);
   z-index: -1;
+}
+.theme-list dd p {
+  font-size: var(--base-size-units);
 }
 .theme-list a {
   text-decoration: none;

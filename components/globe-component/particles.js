@@ -70,7 +70,7 @@ class Particles {
   }
 
   handleResize (smallestHeight) {
-    this.uniforms.pointSize.value = p(smallestHeight) < 1.0 ? 1.0 : p(smallestHeight)
+    this.uniforms.pointSize.value = p(smallestHeight) < 1.0 ? 1.0 : p(smallestHeight) / (2 / window.devicePixelRatio)
   }
 
   activateTheme (theme) {

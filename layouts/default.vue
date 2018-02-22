@@ -34,7 +34,9 @@ export default {
   },
   created () {
     this.$events.$on(events.activeFeatureChanged, marker => {
-      this.activeMarker = marker
+      if (marker) {
+        this.activeMarker = marker
+      }
     })
     this.$events.$on(events.activeThemeChanged, theme => {
       this.activeTheme = theme || 'too-much'
@@ -64,6 +66,7 @@ html {
   padding: 0;
   margin: 0;
 }
+
 main {
   width: 0;
   height: 0; /* do not obstruct globe */
@@ -78,6 +81,7 @@ main {
   position: relative;
   z-index: 100;
   padding: 1rem;
+  font-weight: normal;
 }
 
 .globe-component {

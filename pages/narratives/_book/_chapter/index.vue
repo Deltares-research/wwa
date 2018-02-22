@@ -5,35 +5,38 @@
       v-bind:page="page"
       v-bind:id="page.slug"
       class="page-component" />
+    <narrative-footer v-bind:previousLink="chapter.previousChapter" v-bind:nextLink="chapter.nextChapter" />
   </div>
 </template>
 
 <script>
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
+import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter'
 import PageComponent from '~/components/page-component/PageComponent'
 import events from '~/lib/events'
 import loadData from '~/lib/load-data'
 
 export default {
   async asyncData (context) {
-    const { book, pages, path, slug, title } = await loadData(context, context.params)
-    const chapter = { path, slug, title }
+    const { book, pages, path, slug, title, previousChapter, nextChapter } = await loadData(context, context.params)
+    const chapter = { path, slug, title, previousChapter, nextChapter }
     return { book, chapter, pages, path, slug, title }
   },
   data () {
     return { activePage: null }
   },
   mounted () {
-    this.scrollToSlug(this.$route.hash.replace(/^#/, ''))
+    const pageSlug = this.$route.hash.replace(/^#/, '') || undefined
+    this.updateActivePage(pageSlug)
     this.$events.$emit(events.disableGlobeNavigation)
     this.$events.$emit(events.featuresChanged, this.pages)
-
     if ('IntersectionObserver' in window) {
       this.observeIntersectingChildren()
     }
   },
   components: {
     NarrativeHeader,
+    NarrativeFooter,
     PageComponent
   },
   methods: {
@@ -44,7 +47,7 @@ export default {
         // TODO: Pan & Zoom to
       }, {
         // No explicit root, we want the viewport
-        rootMargin: '-40% 0% -40% 0%', // Interested in the in the lower part of the screen
+        rootMargin: '-40% 0% -40% 0%',
         thresholds: [ intersectionRatio ]
       })
       const pageComponentsArray = [].slice.call(this.$el.children)
@@ -56,30 +59,41 @@ export default {
           if (entry.isIntersecting) {
             const pageSlug = entry.target.id
             if (`#${pageSlug}` !== this.$route.hash) {
-              history.replaceState({}, 'page', `${this.$route.path}#${pageSlug}`)
-              this.updateActiveFeature(pageSlug)
+              this.updateActivePage(pageSlug)
             }
             break
           }
         }
       }
     },
-    scrollToSlug (slug) {
-      const activePages = this.pages.filter(page => page.slug === slug)
-      const activeElement = document.getElementById(slug)
+    scrollToSlug (pageSlug) {
+      const activePages = this.pages.filter(page => page.slug === pageSlug)
+      const activeElement = document.getElementById(pageSlug)
       if (activeElement && activePages) {
         const windowHeight = (window.innerHeight || document.clientHeight)
         const top = activeElement.getBoundingClientRect().top || windowHeight
         const y = Math.round(top - (windowHeight / 2)) // match with margin between PageComponents
         window.scroll(0, y)
-        this.updateActiveFeature(slug)
+        this.updateActiveFeature()
+        this.updateActiveTheme()
       }
     },
-    updateActiveFeature (slug) {
-      const activePages = this.pages.filter(page => page.slug === slug)
-      if (activePages) {
-        this.activePage = activePages[0]
-        this.$events.$emit(events.activeFeatureChanged, this.activePage)
+    updateActivePage (pageSlug) {
+      const activePages = (pageSlug) ? this.pages.filter(page => page.slug === pageSlug) : null
+      this.activePage = (activePages && activePages[0]) ? activePages[0] : this.pages[0]
+      if (this.activePage) {
+        history.replaceState({}, 'page', `${this.$route.path}#${this.activePage.slug}`)
+        this.updateActiveFeature()
+        this.updateActiveTheme()
+      }
+    },
+    updateActiveFeature () {
+      this.$events.$emit(events.activeFeatureChanged, this.activePage)
+    },
+    updateActiveTheme () {
+      const { slug = undefined } = this.activePage.theme
+      if (slug) {
+        this.$events.$emit(events.activeThemeChanged, slug)
       }
     }
   }
@@ -87,6 +101,10 @@ export default {
 </script>
 
 <style>
+
+:root {
+  --target-offset: 75vh
+}
 
 .full-width {
   position: absolute;
@@ -99,13 +117,9 @@ export default {
 .narrative-header {
   width: 100%;
   margin: auto;
-  margin-top: 40vh;
-}
-
-.narrative-header + .page-component {
-  margin-top: 0;
-}
-.page-component {
-  margin: 50vh auto; /* Note that these margins should collapse */
+  margin-top: calc(var(--target-offset));
+  margin-bottom: calc(-1 * var(--target-offset));
+  position: relative;
+  z-index: 1;
 }
 </style>

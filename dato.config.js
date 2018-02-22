@@ -81,15 +81,16 @@ function generateBooks (dato, root, i18n) {
  * Write out Chapter JSONs
  *
  * @param {Dato} dato - DatoCMS API
- * @param {Root} root - Project rootle.log
+ * @param {Root} root - Project root
  * @param {i18n} i18n
  */
 function generateChapters (dato, root, i18n) {
   const chapters = getChapters(dato)
-  for (const chapterId in chapters) {
-    const chapter = chapters[chapterId]
+  for (const chapter of chapters) {
     if (chapter.book != null) { // so that null result will not be written out
       root.createDataFile(`static/data/books/${chapter.book.slug}/chapters/${chapter.slug}/index.json`, 'json', chapter)
+    } else {
+      console.log(`Skipped chapter ${chapter.title}, book is null`)
     }
   }
 }
@@ -197,6 +198,7 @@ function getChapters (dato, bookRef) {
       const { title, slug, chapterType } = chapter
       const parentBook = bookRef || getParent(dato, chapter)
       if (!parentBook) {
+        console.log(`Skipped chapter ${title}, no parent book found`)
         return false
       }
       const book = {
@@ -212,11 +214,21 @@ function getChapters (dato, bookRef) {
         slug: page.theme.slug,
         path: `/themes/${page.theme.slug}`
       } : {}))
+      const neighbours = getNeighboursFromArray(chapter, parentBook.chapters)
+      const previousChapter = (neighbours.previous) ? {
+        path: `${contentBasePath}/${parentBook.slug}/${neighbours.previous.slug}`,
+        slug: neighbours.previous.slug,
+        title: neighbours.previous.title } : null
+      const nextChapter = (neighbours.next) ? {
+        path: `${contentBasePath}/${parentBook.slug}/${neighbours.next.slug}`,
+        slug: neighbours.next.slug,
+        title: neighbours.next.title } : null
       const firstLocationPage = pages.filter(page => page.location)[0]
       const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
       const location = (firstLocationPage) ? firstLocationPage.location : null
       const influences = collectUniqueTags(pages, 'influences')
       const keywords = collectUniqueTags(pages, 'keywords')
+
       return {
         book,
         influences,
@@ -229,7 +241,9 @@ function getChapters (dato, bookRef) {
         storyteller,
         title,
         type: chapterType,
-        theme
+        theme,
+        nextChapter,
+        previousChapter
       }
     })
     .filter(Boolean) // Filter falsy chapters (return false)
@@ -253,7 +267,7 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, influences, keywords, links, slug, title, video } = page
+      const { body, files, graphs, images, influences, keywords, links, slug, title, video, mapboxStyle } = page
       const theme = (page.theme) ? {
         title: page.theme.title,
         slug: page.theme.slug,
@@ -297,7 +311,8 @@ function getPages (dato, chapterRef) {
         },
         theme,
         title,
-        video
+        video,
+        mapboxStyle
       }
     })
 }
@@ -405,6 +420,17 @@ function getParent (dato, child) {
     childFromParent => childFromParent.id === child.id
   ))
   return (parents) ? parents[0] : undefined
+}
+
+/**
+ * Get neighbours from array
+ *
+ * @param {Item} srcItem, [] array
+ * @returns {previous{}, next{} }
+*/
+function getNeighboursFromArray (srcItem, array) {
+  const index = array.findIndex(item => item.id === srcItem.id)
+  return { 'previous': array[index - 1], 'next': array[index + 1] }
 }
 
 /**

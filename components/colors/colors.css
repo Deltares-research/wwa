@@ -5,11 +5,11 @@
    * Don't use the text colors directly,
    * instead take a look at the UI colors at the bottom
    */
-  --booklet--or-bu--0-5: #ffab4c;
+  --booklet--or-bu--0-5: #f3a34c;
   --booklet--or-bu--1-5: #ffc08c;
   --booklet--or-bu--2-5: #ffddc7;
-  --booklet--or-bu--3-5: #809cae;
-  --booklet--or-bu--4-5: #467388;
+  --booklet--or-bu--3-5: #98abba;
+  --booklet--or-bu--4-5: #3f6a7e;
   --booklet--neutral: #dde4eb;
   --booklet--text: var(--booklet--or-bu--4-5);
   --booklet--text--light: var(--booklet--or-bu--3-5);
@@ -86,12 +86,17 @@
   /* UI colors */
   --ui--white: #fff;
   --ui--black: #00001e;
+  --ui--black--trans: rgba(0, 0, 30, .75);
+  --ui--bg: var(--ui--black);
+  --ui--bg--white: var(--ui--white);
+  --ui--bg--light: var(--booklet--neutral);
   --ui--text: var(--booklet--text);
   --ui--text--light: var(--booklet--text--light);
   --ui--text--invert: var(--ui--white);
   --ui--action: var(--booklet--action);
   --ui--action--light: var(--booklet--action--light);
-  --ui--black-to-transparent: linear-gradient(to top, var(--ui--black), transparent);
+  --ui--bottom-gradient: linear-gradient(to top, var(--ui--black), transparent);
+  --ui--left-gradient: linear-gradient(to right, var(--ui--black),  transparent);
 }
 
 html {

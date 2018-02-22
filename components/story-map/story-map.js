@@ -26,7 +26,7 @@ export default {
     const mapElement = this.$el.querySelector('.map')
     const map = new mapboxgl.Map({
       container: mapElement,
-      style: this.mapStyle
+      style: this.mapboxStyle
     })
     map.setCenter(this.center)
   },

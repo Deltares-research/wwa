@@ -74,9 +74,9 @@ class Particles {
   }
 
   activateTheme (theme) {
-    if (!this.colors || !this.targetColors || !this.indices || !this.values || !this.mesh) {
-      return false
-    }
+    // if (!this.colors || !this.targetColors || !this.indices || !this.values || !this.mesh) {
+    //   return false
+    // }
     this.state.current = this.state.target
     this.state.target = theme
 

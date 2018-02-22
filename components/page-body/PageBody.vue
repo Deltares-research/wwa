@@ -23,17 +23,22 @@
         </figure>
       </section>
 
-      <figure v-if="video" class="page-body__video fixed-ratio"
+      <section v-if="video" class="page-body__video fixed-ratio"
         v-bind:style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`">
         <iframe class="page-body__video"
           v-bind:src="`//www.${video.provider}.com/embed/${video.providerUid}`" width="100%" height="100%">
         </iframe>
-      </figure>
+      </section>
+
+      <section v-if="mapboxStyle" class="page-body__map">
+        <story-map v-bind:mapbox-style="mapboxStyle"></story-map>
+      </section>
     </section>
 </template>
 
 <script>
 import marked from 'marked'
+import StoryMap from '~/components/story-map/StoryMap'
 
 const renderer = new marked.Renderer()
 renderer.paragraphCount = 0 // Need to keep track of the number of paragraphs
@@ -49,8 +54,10 @@ export default {
     graphs: Array,
     images: Array,
     title: String,
-    video: Object
+    video: Object,
+    mapboxStyle: String
   },
+  components: { StoryMap },
   computed: {
     htmlBody () {
       return this.customMarked(this.body)
@@ -76,6 +83,7 @@ export default {
   padding: 2rem;
   background-color: var(--ui--bg--white);
 }
+
 .page-body figure {
   margin: 0;
 }
@@ -86,7 +94,8 @@ export default {
 
 .page-body__images,
 .page-body__graphs,
-.page-body__video {
+.page-body__video,
+.page-body__map {
   margin-bottom: 2rem;
 }
 .page-body > :last-child {

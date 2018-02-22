@@ -13,7 +13,7 @@
     </section>
 
     <section class="page-aside__section page-aside__section--influences"
-      v-if="influences">
+      v-if="influences.length">
       <h3 class="page-aside__title">Influences</h3>
       <ul class="list--inline">
         <li v-for="link in influences" v-bind:key="link.slug">
@@ -23,7 +23,7 @@
     </section>
 
     <section class="page-aside__section page-aside__section--keywords"
-      v-if="keywords">
+      v-if="keywords.length">
       <h3 class="page-aside__title">Keywords</h3>
       <ul class="list--inline">
         <li v-for="link in keywords" v-bind:key="link.slug">

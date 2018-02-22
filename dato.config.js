@@ -267,7 +267,7 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, influences, keywords, links, slug, title, video } = page
+      const { body, files, graphs, images, influences, keywords, links, slug, title, video, mapboxStyle } = page
       const theme = (page.theme) ? {
         title: page.theme.title,
         slug: page.theme.slug,
@@ -311,7 +311,8 @@ function getPages (dato, chapterRef) {
         },
         theme,
         title,
-        video
+        video,
+        mapboxStyle
       }
     })
 }

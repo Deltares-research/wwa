@@ -5,7 +5,8 @@
       v-bind:images="page.images"
       v-bind:graphs="page.graphs"
       v-bind:title="page.title"
-      v-bind:video="page.video" />
+      v-bind:video="page.video"
+      v-bind:mapboxStyle="page.mapboxStyle" />
     <page-aside
       v-bind:influences="page.influences"
       v-bind:keywords="page.keywords"

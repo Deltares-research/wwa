@@ -12,19 +12,18 @@ const chapters = books
     })
     return chapters.concat(bookChapters)
   }, [])
-  .map(chapter => require(`./static/data/books/${chapter.book.slug}/chapters/${chapter.slug}/index.json`))
-const pages = chapters.reduce((pages, chapter) => pages.concat(chapter.pages), [])
 // Generate routes
-const routes = books.concat(chapters, pages)
+const routes = books.concat(chapters)
   .map(item => item.path)
   .concat([
-    'influences/people',
-    'influences/planet',
-    'influences/prospertity',
-    'influences/peace',
-    'influences/partnerships'
+    '/influences/people',
+    '/influences/planet',
+    '/influences/prospertity',
+    '/influences/peace',
+    '/influences/partnerships',
+    '/about'
   ])
-
+console.log(routes)
 // TODO: We want to enable these, but they give an error. They end up as null in the final config.
 const postcss = {
   plugins: {
@@ -122,14 +121,13 @@ module.exports = {
     },
     // Create separate css file
     extractCSS: true,
-    // Define dynamic routes to generate for dist,
-    // TODO: make function based on content from Dato
-    generate: {
-      routes: routes
-    },
     // add postcss plugins
-    postcss: postcss,
+    postcss,
     plugins
   },
-  env: env
+  env: env,
+  // Define dynamic routes to generate for dist,
+  generate: {
+    routes
+  }
 }

@@ -1,24 +1,22 @@
 <template>
-    <footer class="narrative-footer">
-      <p class="narrative-footer__link previous">
-        <nuxt-link v-if="prevchapter" v-bind:to="prevchapter.path" class="h2 previous">
-          <span class="sr-only">Read more</span> {{prevchapter.title}}
-        </nuxt-link>
-        <nuxt-link v-if="nextchapter" v-bind:to="nextchapter.path" class="h2 next">
-          <span class="sr-only">Read more</span> {{nextchapter.title}}
-        </nuxt-link>
-      </p>
-    </footer>
+  <nav class="narrative-footer clearfix">
+    <nuxt-link v-if="previousLink" v-bind:to="previousLink.path" class="h2 narrative-footer__link" v-bind:title="previousLink.title">
+      <span class="sr-only">Continue reading about</span> {{ previousLink.title }}
+    </nuxt-link>
+    <nuxt-link v-if="nextLink" v-bind:to="nextLink.path" class="h2 narrative-footer__link narrative-footer__link--next" v-bind:title="nextLink.title">
+      <span class="sr-only">Continue reading about</span> {{ nextLink.title }}
+    </nuxt-link>
+  </nav>
 </template>
 
 <script>
 export default {
   props: {
-    prevchapter: {
+    previousLink: {
       type: Object,
       required: false
     },
-    nextchapter: {
+    nextLink: {
       type: Object,
       required: false
     }
@@ -30,47 +28,47 @@ export default {
 @import '../colors/colors.css';
 
 .narrative-footer {
-  width: 100%;
-  background: linear-gradient(rgba(0,0,38,0.8) 35%, rgba(0,51,102,0));
-  overflow:hidden;
+  margin: 0 auto 8rem;
+  max-width: 60rem;
+  padding-top: 1rem;
 }
 
 .narrative-footer__link {
-  max-width: 940px;
-  margin: 1rem auto 2rem auto;
-}
-
-a.previous {
-  float:left;
-  margin-left: 1.5rem;
-}
-
-a.next {
-  float:right;
-  margin-right: -1rem;
-}
-
-.narrative-footer__link a {
   color: var(--ui--text--light);
+  float: left;
+  max-width: 40%;
+  overflow: hidden;
+  padding-left: 1rem;
+  position: relative;
   text-decoration: none;
-  transition: .2s color;
-  max-width: 460px;
-  display:inline-block;
-  line-height: 2rem;
+  text-overflow: ellipsis;
+  text-shadow: 1px 1px 1px var(--ui--black);
+  transition: 300ms color ease-in-out;
+  white-space: nowrap;
 }
 
-.narrative-footer__link a:hover {
+.narrative-footer__link:hover {
   color: var(--ui--text--invert);
 }
 
-a.previous::before {
+.narrative-footer__link::before {
   content: '❮';
-  margin-left: -1.5rem;
+  left: 0;
+  font-size: .8rem;
   position: absolute;
+  speak: none;
+  top: 8px;
 }
 
-a.next::after {
+.narrative-footer__link--next {
+  float: right;
+  padding-left: 0;
+  padding-right: 1rem;
+}
+
+.narrative-footer__link--next::before {
   content: '❯';
-  margin-right: 1rem;
+  right: 0;
+  left: auto
 }
 </style>

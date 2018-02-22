@@ -5,7 +5,7 @@
       v-bind:page="page"
       v-bind:id="page.slug"
       class="page-component" />
-    <narrative-footer v-bind:prevchapter="chapter.previousChapter" v-bind:nextchapter="chapter.nextChapter" />
+    <narrative-footer v-bind:previousLink="chapter.previousChapter" v-bind:nextLink="chapter.nextChapter" />
   </div>
 </template>
 

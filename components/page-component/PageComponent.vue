@@ -1,5 +1,5 @@
 <template>
-  <article class="page-component" v-bind:class="page.theme.slug">
+  <article class="page-component">
     <page-body
       v-bind:body="page.body"
       v-bind:images="page.images"

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <theme-list v-bind:themes="themes" v-bind:active-slug="theme.slug" />
+    <theme-list v-bind:themes="themes" v-bind:active-slug="(theme && theme.slug) ? theme.slug : null" />
     <bottom-shelf>
       <narrative-header v-bind:book="{ title, slug, path}" />
     <card-list v-bind:cards="chapters" />
@@ -20,7 +20,6 @@ export default {
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const { title, slug, path, chapters, theme } = await loadData(context, context.params)
-    console.log(theme)
     return { title, slug, path, chapters, themes: await themes, theme }
   },
   components: { BottomShelf, CardList, NarrativeHeader, ThemeList },

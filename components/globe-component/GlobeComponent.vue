@@ -9,7 +9,7 @@
 
 </template>
 <script src="./globe-component.js"></script>
-<style>
+<style scoped>
   .globe-container {
     width: 100vw;
     height: 100vh;

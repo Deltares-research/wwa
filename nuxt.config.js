@@ -18,9 +18,9 @@ const routes = books.concat(chapters)
   .concat([
     '/influences/people',
     '/influences/planet',
-    '/influences/prospertity',
+    '/influences/prosperity',
     '/influences/peace',
-    '/influences/partnerships',
+    '/influences/partnership',
     '/about'
   ])
 console.log(routes)

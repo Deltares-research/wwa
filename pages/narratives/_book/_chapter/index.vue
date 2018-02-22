@@ -112,6 +112,8 @@ export default {
   margin: auto;
   margin-top: 40vh;
   margin-bottom: calc(-1 * var(--target-offset));
+  position: relative;
+  z-index: 1;
 }
 .page-component {
   margin: 0 auto;

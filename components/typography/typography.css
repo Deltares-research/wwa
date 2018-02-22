@@ -11,19 +11,67 @@
   --perfect-fifth: 1.500;
   --golden-ratio: 1.618;
   /* Setup */
-  --min-viewport: 480px;
-  --viewport-range: calc(640 - 480);
-  --base-size: 16px;
-  /* --rem-in-px: 16px; */
-  --lower-ratio: var(--minor-third); /* One of the above scales */
-  --upper-ratio: var(--augm-fourth); /* One of the above scales */
+  --base-size: 1; /* implied rems */
+  --min-viewport: 20; /* implied rems */
+  --max-viewport: 60; /* implied rems */
+  --lower-ratio: var(--major-second); /* One of the above scales */
+  --upper-ratio: var(--major-third); /* One of the above scales */
+
   /* Calculated */
-  --ratio-range: calc(var(--upper-ratio) - var(--lower-ratio));
-  --line-height: calc(var(--lower-ratio) + var(--ratio-range) * (100vw - var(--min-viewport)) / var(--viewport-range) );
+  --base-size-units: calc(1rem * var(--base-size));
+  --min-viewport-units: calc(1rem * var(--min-viewport));
+  --max-viewport-units: calc(1rem * var(--max-viewport));
+  --viewport-range: calc(var(--max-viewport) - var(--min-viewport));  /* static unitless */
+  --curr-viewport-min-overshoot: calc(100vw - var(--min-viewport-units));  /* dynamic */
+  --curr-viewport-factor: calc(var(--curr-viewport-min-overshoot) / var(--viewport-range));  /* dynamic */
+  --ratio-range: calc(var(--upper-ratio) - var(--lower-ratio)); /* static unitless */
+  --line-height: calc(
+    calc(1rem * var(--lower-ratio))
+      +
+    calc(var(--ratio-range) * var(--curr-viewport-factor))
+  );
+}
+
+@media screen and (max-width: 20rem) {
+  :root {
+    --curr-viewport-factor: 0rem
+  }
+}
+@media screen and (min-width: 60rem) {
+  :root {
+    --curr-viewport-factor: 1rem
+  }
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/static/assets/Roboto-Regular-webfont.woff2") format("woff2"),
+       url("/static/assets/Roboto-Regular-webfont.woff") format("woff");
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/static/assets/Roboto-Italic-webfont.woff2") format("woff2"),
+       url("/static/assets/Roboto-Italic-webfont.woff") format("woff");
+  font-style: italic;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/static/assets/Roboto-Bold-webfont.woff2") format("woff2"),
+       url("/static/assets/Roboto-Bold-webfont.woff") format("woff");
+  font-weight: bold;
+  font-display: fallback;
+}
+
+p, .p {
+  line-height: var(--line-height);
 }
 
 html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Roboto", Roboto, sans-serif;
   font-size: var(--base-size);
   color: var(--ui--black);
   -ms-text-size-adjust: 100%;
@@ -42,54 +90,85 @@ h6, .h6 {
 }
 
 .invert {
-  color: var(--ui--text-invert);
+  color: var(--ui--text--invert);
   text-shadow: 0 0 1rem var(--ui--black);
 }
-
 
 p {
   line-height: var(--line-height);
 }
+
 h1, .h1 {
-  --min-font: calc(var(--base-size) * var(--lower-ratio) * var(--lower-ratio) * var(--lower-ratio) * var(--lower-ratio));
-  --max-font: calc(var(--base-size) * var(--upper-ratio) * var(--upper-ratio) * var(--upper-ratio) * var(--upper-ratio));
-  --font-range: calc((var(--max-font) - var(--min-font)) * var(--rem-in-px));
-  --font-responsive: calc(var(--min-font) + var(--font-range) * (100vw - var(--min-viewport)) / var(--viewport-range));
-  font-size: var(--min-font);
-  font-size: var(--font-responsive, var(--min-font))
+  --min-height: calc(
+    var(--base-size)
+    * var(--lower-ratio)
+    * var(--lower-ratio)
+    * var(--lower-ratio)
+  );
+  --max-height: calc(
+    var(--base-size)
+    * var(--upper-ratio)
+    * var(--upper-ratio)
+    * var(--upper-ratio)
+  );
+
+  --height-range: calc(var(--max-height) - var(--min-height)); /* static unitless */
+  --height-responsive: calc(
+    calc(1rem * var(--min-height))
+      +
+    calc(var(--height-range) * var(--curr-viewport-factor))
+  );
+  font-size: var(--height-responsive);
 }
 
 h2, .h2 {
-  --min-font: calc(var(--base-size) * var(--lower-ratio) * var(--lower-ratio) * var(--lower-ratio));
-  --max-font: calc(var(--base-size) * var(--upper-ratio) * var(--upper-ratio) * var(--upper-ratio));
-  --font-range: calc((var(--max-font) - var(--min-font)) * var(--rem-in-px));
-  --font-responsive: calc(var(--min-font) + var(--font-range) * (100vw - var(--min-viewport)) / var(--viewport-range));
-  font-size: var(--min-font);
-  font-size: var(--font-responsive, var(--min-font))
+  --min-height: calc(
+    var(--base-size)
+    * var(--lower-ratio)
+    * var(--lower-ratio)
+  );
+  --max-height: calc(
+    var(--base-size)
+    * var(--upper-ratio)
+    * var(--upper-ratio)
+  );
+
+  --height-range: calc(var(--max-height) - var(--min-height)); /* static unitless */
+  --height-responsive: calc(
+    calc(1rem * var(--min-height))
+      +
+    calc(var(--height-range) * var(--curr-viewport-factor))
+  );
+  font-size: var(--height-responsive);
 }
 
 h3, .h3 {
-  --min-font: calc(var(--base-size) * var(--lower-ratio) * var(--lower-ratio));
-  --max-font: calc(var(--base-size) * var(--upper-ratio) * var(--upper-ratio));
-  --font-range: calc((var(--max-font) - var(--min-font)) * var(--rem-in-px));
-  --font-responsive: calc(var(--min-font) + var(--font-range) * (100vw - var(--min-viewport)) / var(--viewport-range));
-  font-size: var(--min-font);
-  font-size: var(--font-responsive, var(--min-font))
+  --min-height: calc(
+    var(--base-size)
+    * var(--lower-ratio)
+  );
+  --max-height: calc(
+    var(--base-size)
+    * var(--upper-ratio)
+  );
+
+  --height-range: calc(var(--max-height) - var(--min-height)); /* static unitless */
+  --height-responsive: calc(
+    calc(1rem * var(--min-height))
+      +
+    calc(var(--height-range) * var(--curr-viewport-factor))
+  );
+  font-size: var(--height-responsive);
 }
 
-h4, .h4 {
-  --min-font: calc(var(--base-size) * var(--lower-ratio));
-  --max-font: calc(var(--base-size) * var(--upper-ratio));
-  --font-range: calc((var(--max-font) - var(--min-font)) * var(--rem-in-px));
-  --font-responsive: calc(var(--min-font) + var(--font-range) * (100vw - var(--min-viewport)) / var(--viewport-range));
-  font-size: var(--min-font);
-  font-size: var(--font-responsive, var(--min-font))
-}
-
-h5, .h5 {
-  font-size: var(--base-size);
-}
-
+h4, .h4,
+h5, .h5,
 h6, .h6 {
   font-size: var(--base-size);
+}
+a:hover,
+a:focus,
+a:active,
+a {
+  color: inherit;
 }

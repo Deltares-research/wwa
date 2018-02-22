@@ -10,11 +10,11 @@ export const metrics = {
     colorRange: ['steelblue'],
     label: 'initial'
   },
-  hfo: {
+  'too-much': {
     colorRange: schemeYlGnBu[5],
     label: 'Flood Occurrence'
   },
-  dro: {
+  'too-little': {
     colorRange: schemeYlOrRd[5],
     label: 'Drought Severity'
   },
@@ -30,7 +30,7 @@ export const metrics = {
     colorRange: schemeOranges[5],
     label: 'Seasonal Variability'
   },
-  eco_s: {
+  'too-dirty': {
     colorRange: schemeRdPu[5],
     label: 'Upstream Protected Land'
   }

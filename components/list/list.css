@@ -4,10 +4,9 @@
 }
 .list--inline > li {
   display: inline-block;
-  margin: 0 0 0 1em;
 }
-.list--inline > li:last-child {
-  margin-right: 0;
+.list--inline > li + li {
+  margin-left: 1em;
 }
 .list--scroll {
   white-space: nowrap;

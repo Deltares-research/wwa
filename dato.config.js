@@ -207,11 +207,7 @@ function getChapters (dato, bookRef) {
       }
       const path = `${book.path}/${slug}`
       const pages = getPages(dato, chapter)
-      const theme = getDominantTheme(pages.map(page => (page.theme) ? {
-        title: page.theme.title,
-        slug: page.theme.slug,
-        path: `/themes/${page.theme.slug}`
-      } : {}))
+      const theme = getDominantTheme(pages)
       const neighbours = getNeighboursFromArray(chapter, parentBook.chapters)
       const previousChapter = ((neighbours.previous) ? {
         path: `${contentBasePath}/${neighbours.previous.slug}`,
@@ -437,6 +433,7 @@ function getNeighboursFromArray (srcItem, array) {
  */
 function getDominantTheme (items) {
   const themes = items
+    .filter(item => item)
     .filter(item => item.theme) // strip out unset themes
     .reduce((themes, item) => {
       if (themes[item.theme.slug]) {
@@ -446,6 +443,7 @@ function getDominantTheme (items) {
       }
       return themes
     }, {})
+
   return Object.values(themes).sort((a, b) => a.score > b.score)[0]
 }
 

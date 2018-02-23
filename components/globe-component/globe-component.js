@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { Tween, autoPlay, Easing } from 'es6-tween'
 import { cartesian2polar, polar2cartesian, lat2theta, lon2phi } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
+import { mapState } from 'vuex'
 
 import Glow from './glow'
 import Water from './water'
@@ -25,30 +26,6 @@ export default {
       controls: null,
       connections: [],
       message: ''
-    }
-  },
-  props: {
-    activeMarker: {
-      type: Object,
-      required: false
-    },
-    activeTheme: {
-      type: String,
-      required: false
-    },
-    markers: {
-      type: Array,
-      required: false
-    },
-    enableRotate: {
-      type: Boolean,
-      required: false,
-      default: true
-    },
-    enableZoom: {
-      type: Boolean,
-      required: false,
-      default: true
     }
   },
   mounted () {
@@ -99,6 +76,13 @@ export default {
     )
   },
   computed: {
+    // Get state from store
+    ...mapState({
+      markers: state => state.globe.features,
+      theme: state => state.globe.theme,
+      activeMarker: state => state.globe.activeFeature,
+      enableInteraction: state => state.globe.enableInteraction
+    }),
     containerSize: {
       get () {
         // lookup the size of the globe card element
@@ -170,8 +154,8 @@ export default {
      * Animates the particles on the globe to the colors associated with the provided theme slug.
      * @param {String} themeSlug one of the theme slugs: too-little, too-much or too-dirty
      */
-    activeTheme (slug) {
-      this.particles.activateTheme(slug)
+    theme (themeSlug) {
+      this.particles.replaceTheme(themeSlug)
     },
     enableInteraction (newValue, oldValue) {
       if (!(this.controls)) {
@@ -282,10 +266,6 @@ export default {
 
       // get the baseUrl
       const { base = '/' } = this.$router.options
-      // TODO: please leave this console log in the production code until we solve
-      // the missing avatars on the github deployment
-      console.log('using base url for avatars', base)
-
       this.avatar = new Avatar(base)
       this.avatar.load(this.markers, avs => globe.add(avs))
 
@@ -335,6 +315,7 @@ export default {
       camera.setViewOffset(renderWidth, renderHeight, 0, height * vOffsetFactor, width, height)
       return camera
     },
+
     /**
      * Render and animate the scene.
      * @return {[type]} [description]

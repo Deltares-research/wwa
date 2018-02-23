@@ -32,6 +32,8 @@ export default {
     const keywordsFromUrl = (params.keywords) ? params.keywords.split('+') : []
     const { results = [], tags: keywords = [] } = await loadData(context, { keywords: keywordsFromUrl })
 
+    context.store.commit('globe/replaceFeatures', results)
+
     return {
       keywords,
       results

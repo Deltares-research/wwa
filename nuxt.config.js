@@ -106,13 +106,8 @@ module.exports = {
     },
     // Create separate css file
     extractCSS: true,
-    // Define dynamic routes to generate for dist,
-    // TODO: make function based on content from Dato
-    generate: {
-      routes: routes
-    },
     // add postcss plugins
-    postcss: postcss,
+    postcss,
     plugins,
     vendor: [
       'axios',
@@ -122,5 +117,9 @@ module.exports = {
       'three'
     ]
   },
-  env: env
+  // Define dynamic routes to generate for dist,
+  generate: {
+    routes
+  },
+  env
 }

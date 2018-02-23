@@ -11,23 +11,24 @@
 <script>
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import PageComponent from '~/components/page-component/PageComponent'
-import events from '~/lib/events'
 import loadData from '~/lib/load-data'
 
 export default {
   async asyncData (context) {
     const { book, pages, path, slug, title } = await loadData(context, context.params)
     const chapter = { path, slug, title }
+
+    context.store.commit('globe/replaceFeatures', pages)
+    context.store.commit('globe/disableInteraction')
+
     return { book, chapter, pages, path, slug, title }
   },
   data () {
     return { activePage: null }
   },
   mounted () {
-    const pageSlug = this.$route.hash.replace(/^#/, '') || undefined
+    const pageSlug = this.$route.hash.replace(/^#/, '')
     this.updateActivePage(pageSlug)
-    this.$events.$emit(events.disableGlobeNavigation)
-    this.$events.$emit(events.featuresChanged, this.pages)
     if ('IntersectionObserver' in window) {
       this.observeIntersectingChildren()
     }
@@ -85,11 +86,13 @@ export default {
       }
     },
     updateActiveFeature () {
-      this.$events.$emit(events.activeFeatureChanged, this.activePage)
+      this.$store.commit('globe/activateFeature', this.activePage)
     },
     updateActiveTheme () {
-      const { slug } = this.activePage.theme
-      this.$events.$emit(events.activeThemeChanged, slug)
+      const theme = this.activePage.theme
+      if (theme) {
+        this.$store.commit('globe/replaceTheme', theme)
+      }
     }
   }
 }

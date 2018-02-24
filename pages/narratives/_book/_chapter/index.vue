@@ -94,7 +94,7 @@ export default {
     updateActiveTheme () {
       const theme = this.activePage.theme
       if (theme) {
-        this.$store.commit('globe/replaceTheme', theme)
+        this.$store.commit('globe/replaceTheme', theme.slug)
       }
     }
   }

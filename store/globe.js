@@ -21,7 +21,7 @@ export const mutations = {
   disableInteraction (state) {
     state.enableInteraction = false
   },
-  enableInterction (state) {
+  enableInteraction (state) {
     state.enableInteraction = true
   }
 }

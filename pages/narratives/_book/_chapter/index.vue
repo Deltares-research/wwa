@@ -76,7 +76,6 @@ export default {
         const y = Math.round(top - (windowHeight / 2)) // match with margin between PageComponents
         window.scroll(0, y)
         this.updateActiveFeature()
-        this.updateActiveTheme()
       }
     },
     updateActivePage (pageSlug) {
@@ -85,17 +84,10 @@ export default {
       if (this.activePage) {
         history.replaceState({}, 'page', `${this.$route.path}#${this.activePage.slug}`)
         this.updateActiveFeature()
-        this.updateActiveTheme()
       }
     },
     updateActiveFeature () {
       this.$store.commit('globe/activateFeature', this.activePage)
-    },
-    updateActiveTheme () {
-      const theme = this.activePage.theme
-      if (theme) {
-        this.$store.commit('globe/replaceTheme', theme.slug)
-      }
     }
   }
 }

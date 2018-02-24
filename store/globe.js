@@ -7,7 +7,11 @@ export const state = () => ({
 
 export const mutations = {
   activateFeature (state, feature) {
-    state.activeFeature = feature
+    const { theme, location, slug, path } = feature
+    state.activeFeature = { location, slug, path, theme }
+    if (theme && theme.slug) {
+      state.replaceTheme = theme.slug
+    }
   },
   deactivateFeature (state, feature) {
     state.activeFeature = undefined

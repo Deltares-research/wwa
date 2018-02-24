@@ -55,11 +55,18 @@ $ surge -p dist -d name-wwa-version.surge.sh
 
 ```
 
-
-
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
 See also the relevant docs
 - [Standard](https://standardjs.com/) the style guide for javascript
 - [Ava](https://github.com/avajs/ava) the test runner
 - [Github pages](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/) github deployment (already setup)
 - [Surge](http://surge.sh/) front-end publishing
+
+# Adding geographical data
+You can add geographical data by using the following approach
+
+- Prepare a dataset ([geojson](https://tools.ietf.org/html/rfc7946), [kml](https://developers.google.com/kml/documentation/kmlreference), [shape file](http://www.gdal.org/drv_shapefile.html), or pre-rendered [tiff](http://www.gdal.org/frmt_gtiff.html) file in RGBA)
+- Upload it to mapbox and do some [styling](https://mapbox.com/studio/styles/)
+- You get back a mapbox://style/url
+- Add the mapbox://style/url to your story
+- Click publish

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <theme-list v-bind:themes="themes" v-bind:active-slug="theme.slug" />
+    <theme-list v-bind:themes="themes" v-bind:active-slug="(theme && theme.slug) ? theme.slug : null" />
     <bottom-shelf>
       <narrative-header v-bind:book="{ title, slug, path}" />
     <card-list v-bind:cards="chapters" />

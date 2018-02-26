@@ -8,7 +8,7 @@
 
     <section v-if="theme" class="clearfix page-aside__section">
       <h3 class="page-aside__title">Theme</h3>
-      <img v-if="theme && theme.slug" class="theme-icon" v-bind:src="`/assets/${theme.slug}.svg`" />
+      <img v-if="theme && theme.slug" class="theme-icon" v-bind:src="themeSrc" />
       <p>{{ theme.title }}</p>
     </section>
 
@@ -52,6 +52,9 @@ export default {
         src = `${avatar.imgixHost}${avatar.value.path}?w=50&q=65`
       }
       return src
+    },
+    themeSrc: function () {
+      return `${this.$router.options.base}assets/${this.theme.slug}.svg`
     }
   }
 }

@@ -25,7 +25,7 @@
 
       <section v-if="video" class="page-body__video fixed-ratio"
         v-bind:style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`">
-        <iframe class="page-body__video"
+        <iframe class="page-body__video" allowfullscreen="allowfullscreen"
           v-bind:src="`//www.${video.provider}.com/embed/${video.providerUid}`" width="100%" height="100%">
         </iframe>
       </section>

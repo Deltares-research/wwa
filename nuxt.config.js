@@ -57,6 +57,11 @@ const plugins = [
   })
 ]
 
+const env = {
+  // Allow to choose a baseurl (should only be used during generate)
+  baseUrl: process.env.BASE_URL || 'http://localhost:9920'
+}
+
 // extra options for github pages
 if (process.env.DEPLOY_ENV === 'GH_PAGES') {
   routerBase.router = {

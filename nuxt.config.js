@@ -9,7 +9,7 @@ const chapters = books
     const bookChapters = book.chapters.map(chapter => {
       chapter.book = { slug: book.slug }
       return chapter
-})
+    })
     return chapters.concat(bookChapters)
   }, [])
 // Generate routes

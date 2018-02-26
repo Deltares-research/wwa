@@ -59,7 +59,7 @@ if (process.env.BASE_URL) {
 } else if (process.env.DEPLOY_ENV) {
   env.baseUrl = gitHost
 } else {
-  env.baseUrl = defaultLocalhost
+  env.baseUrl = defaultHost
 }
 
 // extra options for github pages

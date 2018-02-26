@@ -127,31 +127,30 @@ class Particles {
 
         // window.setTimeout(10)
 
-        // Object.keys(metrics).forEach((m) => {
-        const m = this.state.current
-        c.range(metrics[m].colorRange)
+        Object.keys(metrics).forEach((m) => {
+          c.range(metrics[m].colorRange)
 
-        const radius = GLOBE_RADIUS + height(particle[metrics[m].variable])
-        const point = polar2cartesian(radius, particle.lat, particle.lon)
-        const pos = new THREE.Vector3(point.x, point.y, point.z)
+          const radius = GLOBE_RADIUS + height(particle[metrics[m].variable])
+          const point = polar2cartesian(radius, particle.lat, particle.lon)
+          const pos = new THREE.Vector3(point.x, point.y, point.z)
 
-        metrics[m].positions[(i * 3) + 0] = pos.x
-        metrics[m].positions[(i * 3) + 1] = pos.y
-        metrics[m].positions[(i * 3) + 2] = pos.z
+          metrics[m].positions[(i * 3) + 0] = pos.x
+          metrics[m].positions[(i * 3) + 1] = pos.y
+          metrics[m].positions[(i * 3) + 2] = pos.z
 
-        const rgb = particle[metrics[m].variable] < 0 || particle.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(c(particle[metrics[m].variable]))
-        metrics[m].colors[(i * 3) + 0] = rgb2unit(rgb.r)
-        metrics[m].colors[(i * 3) + 1] = rgb2unit(rgb.g)
-        metrics[m].colors[(i * 3) + 2] = rgb2unit(rgb.b)
+          const rgb = particle[metrics[m].variable] < 0 || particle.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(c(particle[metrics[m].variable]))
+          metrics[m].colors[(i * 3) + 0] = rgb2unit(rgb.r)
+          metrics[m].colors[(i * 3) + 1] = rgb2unit(rgb.g)
+          metrics[m].colors[(i * 3) + 2] = rgb2unit(rgb.b)
 
-        const colors = this.geometry.attributes.color.array
-        colors[(i * 3) + 0] = rgb2unit(rgb.r)
-        colors[(i * 3) + 1] = rgb2unit(rgb.g)
-        colors[(i * 3) + 2] = rgb2unit(rgb.b)
+          const colors = this.geometry.attributes.color.array
+          colors[(i * 3) + 0] = rgb2unit(rgb.r)
+          colors[(i * 3) + 1] = rgb2unit(rgb.g)
+          colors[(i * 3) + 2] = rgb2unit(rgb.b)
 
-        metrics[m].values[i] = particle[metrics[m].variable]
-        metrics[m].indices[i] = i
-        // })
+          metrics[m].values[i] = particle[metrics[m].variable]
+          metrics[m].indices[i] = i
+        })
 
         i++
       })

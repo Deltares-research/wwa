@@ -33,7 +33,7 @@ export default {
 @import '../colors/colors.css';
 
 .theme-list {
-  margin: 5vh 0;
+  margin: 10rem 0;
   padding-left: 1rem;
   padding-bottom: 1rem;
   width: 50vw;

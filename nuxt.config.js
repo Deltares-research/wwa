@@ -10,7 +10,6 @@ if (process.env.BASE_URL) {
   env.baseUrl = 'http://localhost:9920'
 }
 
-
 // load data to define routes
 const books = require('./static/data/books/index.json')
 const chapters = books

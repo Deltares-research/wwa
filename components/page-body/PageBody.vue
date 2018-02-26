@@ -5,20 +5,24 @@
 
       <section v-if="images.length" class="page-body__images">
         <figure v-for="image in images" v-bind:key="image.id">
-          <div class="fixed-ratio"
-            v-bind:style="`padding-bottom:${Math.round(image.value.height/image.value.width * 10000)/100}%`">
-            <img v-bind:src="`${image.imgixHost}${image.value.path}?w=640&q=65`" width="100%"/>
-          </div>
+          <lazy-image
+            v-bind:src="`${image.imgixHost}${image.value.path}?w=640&q=65`"
+            v-bind:srcWidth="image.value.width"
+            v-bind:srcHeight="image.value.height"
+            v-bind:alt="image.value.alt"
+            width=100% />
           <figcaption>{{ image.value.title }}</figcaption>
         </figure>
       </section>
 
       <section v-if="graphs.length" class="page-body__graphs">
         <figure v-for="graph in graphs" v-bind:key="graph.id">
-          <div class="fixed-ratio"
-            v-bind:style="`padding-bottom:${Math.round(graph.value.height/graph.value.width * 10000)/100}%`">
-            <img v-bind:src="`${graph.imgixHost}${graph.value.path}?w=640&q=65`" width="100%"/>
-          </div>
+           <lazy-image
+            v-bind:src="`${graph.imgixHost}${graph.value.path}?w=640&q=65`"
+            v-bind:srcWidth="graph.value.width"
+            v-bind:srcHeight="graph.value.height"
+            v-bind:alt="graph.value.alt"
+            width=100% />
           <figcaption>{{ graph.value.title }}</figcaption>
         </figure>
       </section>
@@ -37,6 +41,7 @@
 </template>
 
 <script>
+import LazyImage from '~/components/lazy-image/LazyImage'
 import marked from 'marked'
 import StoryMap from '~/components/story-map/StoryMap'
 
@@ -57,7 +62,7 @@ export default {
     video: Object,
     mapboxStyle: String
   },
-  components: { StoryMap },
+  components: { LazyImage, StoryMap },
   computed: {
     htmlBody () {
       return this.customMarked(this.body)
@@ -111,14 +116,5 @@ export default {
   color: var(--ui--text--light);
   width: 100%;
   padding: 5px 0;
-}
-
-.fixed-ratio {
-  padding: 0;
-  position: relative;
-  background-color: var(--ui--text--light);
-}
-.fixed-ratio > * {
-  position: absolute;
 }
 </style>

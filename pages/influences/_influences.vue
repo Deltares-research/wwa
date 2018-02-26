@@ -20,6 +20,9 @@ export default {
     // Build active influences objects from url
     const activeInfluences = allInfluences
       .filter(tag => influencesFromUrl.some(active => active === tag.slug))
+
+    context.store.commit('globe/replaceFeatures', results)
+
     return {
       influences: allInfluences,
       activeInfluences,

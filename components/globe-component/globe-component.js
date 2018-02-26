@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { Tween, autoPlay, Easing } from 'es6-tween'
 import { cartesian2polar, polar2cartesian, lat2theta, lon2phi } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
+import { mapState } from 'vuex'
 
 import Glow from './glow'
 import Water from './water'
@@ -25,30 +26,6 @@ export default {
       controls: null,
       connections: [],
       message: ''
-    }
-  },
-  props: {
-    activeMarker: {
-      type: Object,
-      required: false
-    },
-    activeTheme: {
-      type: String,
-      required: false
-    },
-    markers: {
-      type: Array,
-      required: false
-    },
-    enableRotate: {
-      type: Boolean,
-      required: false,
-      default: true
-    },
-    enableZoom: {
-      type: Boolean,
-      required: false,
-      default: true
     }
   },
   mounted () {
@@ -99,6 +76,13 @@ export default {
     )
   },
   computed: {
+    // Get state from store
+    ...mapState({
+      markers: state => state.globe.features,
+      theme: state => state.globe.theme,
+      activeMarker: state => state.globe.activeFeature,
+      enableInteraction: state => state.globe.enableInteraction
+    }),
     containerSize: {
       get () {
         // lookup the size of the globe card element
@@ -170,19 +154,14 @@ export default {
      * Animates the particles on the globe to the colors associated with the provided theme slug.
      * @param {String} themeSlug one of the theme slugs: too-little, too-much or too-dirty
      */
-    activeTheme (slug) {
-      this.particles.activateTheme(slug)
+    theme (themeSlug) {
+      this.particles.replaceTheme(themeSlug)
     },
-    enableRotate (newValue, oldValue) {
+    enableInteraction (newValue, oldValue) {
       if (!(this.controls)) {
         return
       }
       this.controls.enableRotate = newValue
-    },
-    enableZoom (newValue, oldValue) {
-      if (!(this.controls)) {
-        return
-      }
       this.controls.enableZoom = newValue
     },
     markers (newMarkers, oldMarkers) {
@@ -287,10 +266,6 @@ export default {
 
       // get the baseUrl
       const { base = '/' } = this.$router.options
-      // TODO: please leave this console log in the production code until we solve
-      // the missing avatars on the github deployment
-      console.log('using base url for avatars', base)
-
       this.avatar = new Avatar(base)
       this.avatar.load(this.markers, avs => globe.add(avs))
 
@@ -340,72 +315,7 @@ export default {
       camera.setViewOffset(renderWidth, renderHeight, 0, height * vOffsetFactor, width, height)
       return camera
     },
-    // addCurves () {
-    //   const material = new MeshLineMaterial({
-    //     lineWidth: 0.05,
-    //     // water color, but a bit lighter
-    //     color: new THREE.Color('hsl(217, 73%, 85%)'),
-    //     transparent: true,
-    //     depthTest: true,
-    //     opacity: 0.2,
-    //     // TODO: or what's the proper way to do lighten?
-    //     blendEquation: THREE.AddEquation
-    //   })
 
-    //   if (this.curves) {
-    //     this.scene.remove(this.curves)
-    //   }
-
-    //   this.curves = new THREE.Group()
-
-    //   this.connections.forEach((record) => {
-    //     const from = record.from
-    //     const to = record.to
-    //     // Convert to radian
-    //     // inclination theta (latitude), azimuth phi (longitude)
-    //     from.theta = lat2theta(from.lat)
-    //     from.phi = lon2phi(from.lon)
-    //     let cart = polar2cartesian(GLOBE_RADIUS, from.theta, from.phi)
-    //     from.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
-
-    //     to.theta = lat2theta(to.lat)
-    //     to.phi = lon2phi(to.lon)
-    //     cart = polar2cartesian(GLOBE_RADIUS, to.theta, to.phi)
-    //     to.xyz = new THREE.Vector3(cart.x, cart.y, cart.z)
-
-    //     let distance = from.xyz.distanceTo(to.xyz)
-    //     // here we are creating the control points for the first ones.
-    //     from.control = from.xyz.clone()
-    //     to.control = to.xyz.clone()
-    //     let mid = from.control.clone().add(to.control).multiplyScalar(0.3)
-    //     // TODO replace by d3 scale?
-    //     // not sure what this does
-    //     function map (x, inMin, inMax, outMin, outMax) {
-    //       return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
-    //     }
-
-    //     var smoothDist = map(distance, 0, 10, 0, 15 / distance)
-    //     mid.setLength(GLOBE_RADIUS * smoothDist)
-    //     from.control.add(mid)
-    //     to.control.add(mid)
-    //     from.control.setLength(GLOBE_RADIUS * smoothDist)
-    //     to.control.setLength(GLOBE_RADIUS * smoothDist)
-
-    //     // use this curve to calculate the points on the curve
-    //     let curve = new THREE.CubicBezierCurve3(from.xyz, from.control, to.control, to.xyz)
-
-    //     let geometry = new THREE.Geometry()
-    //     geometry.vertices = curve.getPoints(50)
-
-    //     // https://github.com/spite/THREE.MeshLine
-    //     const line = new MeshLine()
-    //     line.setGeometry(geometry)
-
-    //     this.curves.add(new THREE.Mesh(line.geometry, material))
-    //   })
-
-    //   this.scene.add(this.curves)
-    // },
     /**
      * Render and animate the scene.
      * @return {[type]} [description]

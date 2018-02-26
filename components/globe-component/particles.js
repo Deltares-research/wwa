@@ -73,7 +73,7 @@ class Particles {
     this.uniforms.pointSize.value = p(smallestHeight) < 1.0 ? 1.0 : p(smallestHeight) / (2 / window.devicePixelRatio)
   }
 
-  activateTheme (theme) {
+  replaceTheme (theme) {
     if (!this.colors || !this.targetColors || !this.indices || !this.values || !this.mesh) {
       return false
     }

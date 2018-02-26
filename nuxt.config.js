@@ -119,9 +119,16 @@ module.exports = {
     extractCSS: true,
     // add postcss plugins
     postcss,
-    plugins
+    plugins,
+    vendor: [
+      'axios',
+      'd3-jetpack',
+      'd3-scale',
+      'd3-scale-chromatic',
+      'three'
+    ]
   },
-  env: env,
+  env,
   // Define dynamic routes to generate for dist,
   generate: {
     routes

@@ -1,11 +1,13 @@
 import * as THREE from 'three'
-import { loadData } from 'd3-jetpack'
+// import { loadData } from 'd3-jetpack'
 import { scaleLinear } from 'd3-scale'
 import { range } from 'd3-array'
 import { color } from 'd3-color'
 import { lat2theta, lon2phi, polar2cartesian } from './common'
 import { metrics } from './metrics'
-import { GLOBE_RADIUS } from './constants'
+import { GLOBE_RADIUS, MAX_PARTICLES } from './constants'
+import request from 'request'
+import { createStream } from 'csv-stream'
 
 /** Scale to convert RGB 0-255 range to 0-1 range */
 const rgb2unit = scaleLinear()
@@ -32,6 +34,7 @@ const c = scaleLinear()
 class Particles {
   constructor (state) {
     this.state = state
+
     this.data = []
 
     this.uniforms = {
@@ -48,6 +51,7 @@ class Particles {
     })
 
     this.geometry = new THREE.BufferGeometry()
+    this.geometry.setDrawRange(0, 0) // range of the buffer array to draw. Will be increased when the stream loads particle data
     this.mesh = new THREE.Points(this.geometry, this.material)
   }
 
@@ -93,181 +97,140 @@ class Particles {
     this.uniforms.time.value = 0.0
   }
 
-  // load2 (finished) {
-  //   loadData('./globe-themes/too-much.json', (err, result) => {
-  //     if (err) {
-  //       console.error(err)
-  //     }
-
-  //     Object.keys(result[0]).forEach(k => {
-  //       const lat = +Object.keys(result[0])[k]
-
-  //       for (let i = 0; i < result[0][lat].length; i = i + 2) {
-  //         const lon = result[0][lat][i % 2 + 0]
-  //         const val = result[0][lat][i % 2 + 1]
-
-  //         this.data.push({ lat, lon, hfo: val === -1 ? null : val })
-  //       }
-  //     })
-
-  //     // Object.keys(result[0]).forEach((k, i) => {
-  //     //   if (i < 30) {
-  //     //     const lat = +k
-  //     //     const lon = i % 1
-  //     //     const val =
-
-  //     //     console.log(lat, lon)
-  //     //   }
-  //     // })
-  //   })
-
-  //   if (finished) {
-  //     finished()
-  //   }
-  // }
-
   load (finished) {
-    // original file still at https://s3-eu-west-1.amazonaws.com/deltares-opendata/wwa/wri/land.csv
-    // Load data in format:
-    // -89.772727273,-60.0,0.0,0.0,0.0,0.0,0.0,0.0
-    // -89.772727273,60.0,0.0,0.0,0.0,0.0,0.0,0.0
-    // -89.318181818,-140.0,0.0,0.0,0.0,0.0,0.0,0.0
-    // loadData('./globe-themes/globe-theme-data.csv', (err, result) => {
-    //   if (err) {
-    //     console.error('particle data could not be loaded')
-    //   }
-    //   this.data = result[0]
-    //     .map(d => ({
-    //       lat: lat2theta(+d.lat),
-    //       lon: lon2phi(+d.lon),
-    //       g: +d.GRAY50MSRW,
-    //       // bt: +d.BT,
-    //       // ba: +d.BA,
-    //       hfo: +d.HFO_s,
-    //       dro: +d.DRO_s,
-    //       wri: +d.WRI_s,
-    //       wsv: +d.WSV_s,
-    //       sv: +d.SV_s,
-    //       eco_s: +d.ECO_S_s
-    //     }))
-    //     .sort((a, b) => b[this.state.target] - a[this.state.target])
+    this.initGeometry()
 
-    loadData(
-      // './globe-themes/too-much.json',
-      // './globe-themes/too-little.json',
-      './globe-themes/too-dirty.json',
-      (err, result) => {
-        if (err) {
-          console.error(err)
-        }
+    let i = 0
+    console.time('load')
+    const csvStream = createStream()
+    request('http://localhost:9920/globe-themes/globe-data.csv')
+      .pipe(csvStream)
+      .on('error', err => console.error('Stream error', err))
+      .on('data', d => {
+        const particle = {}
+        particle.lat = lat2theta(+d.lat)
+        particle.lon = lon2phi(+d.lon)
 
-        result.forEach((res, ri) => {
-          Object.keys(res).forEach((k, j) => {
-            const lat = k
+        particle.hfo = +d.HFO_s || null
+        particle.dro = +d.DRO_s || null
+        particle.eco_s = +d.ECO_S_s || null
 
-            // TODO: how to merge ??
-            for (let i = 0; i < result[0][lat].length; i = i + 2) {
-              const lon = result[0][lat][i % 2 + 0 + i]
-              let val = result[0][lat][i % 2 + 1 + i]
-              val = val === -1 ? null : val
+        this.geometry.attributes.position.set(metrics[this.state.current].positions)
+        this.geometry.attributes.color.set(metrics[this.state.current].colors)
 
-              if (ri === 0) {
-                this.data.push({
-                  lat: lat2theta(+lat),
-                  lon: lon2phi(lon),
-                  eco_s: val
-                })
-              } else if (ri === 1) {
-                this.data[i].dro = val
-              } else if (ri === 2) {
-                this.data[i].eco_s = val
-              }
-            }
-          })
-        })
+        this.geometry.attributes.position.needsUpdate = true
+        this.geometry.attributes.color.needsUpdate = true
+        this.geometry.setDrawRange(0, i + 1)
 
-        this.initGeometry()
+        this.data.push(particle)
 
-        Object.keys(metrics).forEach((m) => {
-          metrics[m].positions = new Float32Array(this.data.length * 3)
-          metrics[m].colors = new Float32Array(this.data.length * 3)
-          metrics[m].values = new Float32Array(this.data.length)
-          metrics[m].indices = new Float32Array(this.data.length)
+        // window.setTimeout(10)
 
-          // initial position
-          if (m === 'init') {
-            this.data.forEach((d, i) => {
-              // TODO: why does it not start with zero?
-              metrics[m].positions[(i * 3) + 1] = 0.04 * ((i % 300) - 150)
-              metrics[m].positions[(i * 3) + 0] = 0.04 * ((Math.floor(i / 300)) - 150)
-              metrics[m].positions[(i * 3) + 2] = 0
+        // Object.keys(metrics).forEach((m) => {
+        const m = this.state.current
+        c.range(metrics[m].colorRange)
 
-              metrics[m].colors[(i * 3) + 0] = 0
-              metrics[m].colors[(i * 3) + 1] = 0.5
-              metrics[m].colors[(i * 3) + 2] = 0.8
+        const radius = GLOBE_RADIUS + height(particle[metrics[m].variable])
+        const point = polar2cartesian(radius, particle.lat, particle.lon)
+        const pos = new THREE.Vector3(point.x, point.y, point.z)
 
-              metrics[m].values[i] = 5
-              metrics[m].indices[i] = i
-            })
-          } else {
-            c.range(metrics[m].colorRange)
+        metrics[m].positions[(i * 3) + 0] = pos.x
+        metrics[m].positions[(i * 3) + 1] = pos.y
+        metrics[m].positions[(i * 3) + 2] = pos.z
 
-            this.data.forEach((d, i) => {
-              // TODO: this is temporary, until it has been decided what variables to use to illustrate the themes
-              let variable = m
-              if (m === 'too-little') {
-                variable = 'dro'
-              }
-              if (m === 'too-much') {
-                variable = 'hfo'
-              }
-              if (m === 'too-dirty') {
-                variable = 'eco_s'
-              }
+        const rgb = particle[metrics[m].variable] < 0 || particle.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(c(particle[metrics[m].variable]))
+        metrics[m].colors[(i * 3) + 0] = rgb2unit(rgb.r)
+        metrics[m].colors[(i * 3) + 1] = rgb2unit(rgb.g)
+        metrics[m].colors[(i * 3) + 2] = rgb2unit(rgb.b)
 
-              const radius = (GLOBE_RADIUS + height(d[variable]))
-              const point = polar2cartesian(radius, d.lat, d.lon)
-              const pos = new THREE.Vector3(point.x, point.y, point.z)
+        const colors = this.geometry.attributes.color.array
+        colors[(i * 3) + 0] = rgb2unit(rgb.r)
+        colors[(i * 3) + 1] = rgb2unit(rgb.g)
+        colors[(i * 3) + 2] = rgb2unit(rgb.b)
 
-              metrics[m].positions[(i * 3) + 0] = pos.x
-              metrics[m].positions[(i * 3) + 1] = pos.y
-              metrics[m].positions[(i * 3) + 2] = pos.z
+        metrics[m].values[i] = particle[metrics[m].variable]
+        metrics[m].indices[i] = i
+        // })
 
-              const rgb = d[m] < 0 || d.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(c(d[variable]))
-              metrics[m].colors[(i * 3) + 0] = rgb2unit(rgb.r)
-              metrics[m].colors[(i * 3) + 1] = rgb2unit(rgb.g)
-              metrics[m].colors[(i * 3) + 2] = rgb2unit(rgb.b)
-
-              metrics[m].values[i] = d[variable]
-              metrics[m].indices[i] = i
-            })
-          }
-        })
-
+        i++
+      })
+      .on('end', () => {
         if (finished) {
           finished()
         }
+        console.timeEnd('load')
       })
+      .on('error', e => console.error('failure loading globe data', e))
   }
 
+  // createGeometry () {
+  //   this.initGeometry()
+
+  //   Object.keys(metrics).forEach((m) => {
+  //     metrics[m].positions = new Float32Array(this.data.length * 3)
+  //     metrics[m].colors = new Float32Array(this.data.length * 3)
+  //     metrics[m].values = new Float32Array(this.data.length)
+  //     metrics[m].indices = new Float32Array(this.data.length)
+
+  //     c.range(metrics[m].colorRange)
+
+  //     this.data.forEach((d, i) => {
+  //       // TODO: this is temporary, until it has been decided what variables to use to illustrate the themes
+  //       let variable = m
+  //       if (m === 'too-little') {
+  //         variable = 'dro'
+  //       }
+  //       if (m === 'too-much') {
+  //         variable = 'hfo'
+  //       }
+  //       if (m === 'too-dirty') {
+  //         variable = 'eco_s'
+  //       }
+
+  //       const radius = (GLOBE_RADIUS + height(d[variable]))
+  //       const point = polar2cartesian(radius, d.lat, d.lon)
+  //       const pos = new THREE.Vector3(point.x, point.y, point.z)
+
+  //       metrics[m].positions[(i * 3) + 0] = pos.x
+  //       metrics[m].positions[(i * 3) + 1] = pos.y
+  //       metrics[m].positions[(i * 3) + 2] = pos.z
+
+  //       const rgb = d[m] < 0 || d.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(c(d[variable]))
+  //       metrics[m].colors[(i * 3) + 0] = rgb2unit(rgb.r)
+  //       metrics[m].colors[(i * 3) + 1] = rgb2unit(rgb.g)
+  //       metrics[m].colors[(i * 3) + 2] = rgb2unit(rgb.b)
+
+  //       metrics[m].values[i] = d[variable]
+  //       metrics[m].indices[i] = i
+  //     })
+  //   })
+  // }
+
   initGeometry () {
-    const positions = new Float32Array(this.data.length * 3)
+    const positions = new Float32Array(MAX_PARTICLES * 3)
     this.geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3))
 
-    const targetPositions = new Float32Array(this.data.length * 3)
+    const targetPositions = new Float32Array(MAX_PARTICLES * 3)
     this.geometry.addAttribute('targetPosition', new THREE.BufferAttribute(targetPositions, 3))
 
-    this.colors = new Float32Array(this.data.length * 3)
+    this.colors = new Float32Array(MAX_PARTICLES * 3)
     this.geometry.addAttribute('color', new THREE.BufferAttribute(this.colors, 3))
 
-    this.targetColors = new Float32Array(this.data.length * 3)
+    this.targetColors = new Float32Array(MAX_PARTICLES * 3)
     this.geometry.addAttribute('targetColor', new THREE.BufferAttribute(this.targetColors, 3))
 
-    this.values = new Float32Array(this.data.length)
+    this.values = new Float32Array(MAX_PARTICLES)
     this.geometry.addAttribute('value', new THREE.BufferAttribute(this.values, 1))
 
-    this.indices = new Float32Array(this.data.length)
+    this.indices = new Float32Array(MAX_PARTICLES)
     this.geometry.addAttribute('ix', new THREE.BufferAttribute(this.indices, 1))
+
+    Object.keys(metrics).forEach((m) => {
+      metrics[m].positions = new Float32Array(MAX_PARTICLES * 3)
+      metrics[m].colors = new Float32Array(MAX_PARTICLES * 3)
+      metrics[m].values = new Float32Array(MAX_PARTICLES)
+      metrics[m].indices = new Float32Array(MAX_PARTICLES)
+    })
   }
 }
 

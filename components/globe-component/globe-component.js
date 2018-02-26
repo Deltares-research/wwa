@@ -267,17 +267,18 @@ export default {
      * @returns {Scene} Scene with a sphere
      */
     createScene () {
-      // minimal scene (TODO: append real globe)
       const scene = new THREE.Scene()
 
       const globe = new THREE.Object3D()
       this.globe = globe
       globe.position.set(0, 0, 0)
+      scene.add(globe)
 
       const state = new State() // TODO: this should be done differently
       this.particles = new Particles(state)
-      this.particles.load(() => this.particles.update())
       globe.add(this.particles.mesh)
+      // this.particles.load()
+      this.particles.load(() => this.particles.update())
 
       // this.particles.load2()
 
@@ -295,8 +296,6 @@ export default {
 
       this.avatar = new Avatar(base)
       this.avatar.load(this.markers, avs => globe.add(avs))
-
-      scene.add(globe)
 
       const light = new THREE.AmbientLight(0xffffff)
       scene.add(light)

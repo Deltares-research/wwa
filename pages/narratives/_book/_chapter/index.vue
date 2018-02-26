@@ -108,16 +108,14 @@ export default {
 
 .full-width {
   position: absolute;
+  top: var(--target-offset);
   left:0;
   right: 0;
-  top:0;
-  bottom: 0;
 }
 
 .narrative-header {
   width: 100%;
   margin: auto;
-  margin-top: calc(var(--target-offset));
   margin-bottom: calc(-1 * var(--target-offset));
   position: relative;
   z-index: 1;

@@ -1,7 +1,10 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+
+const defaultHost = 'http://localhost:9920'
+const gitHost = 'https://deltares.github.io/wwa'
+
 // load data to define routes
 const books = require('./static/data/books/index.json')
 const chapters = books
@@ -49,14 +52,14 @@ const plugins = [
   })
 ]
 
-const env = {
-  // TODO make this a bit more flexible (also allow surge deployment)
-  baseUrl: 'http://localhost:9920'
-}
-
-if (process.env.NODE_ENV === 'production') {
-  // root
-  env.baseUrl = process.env.BASE_URL || '/'
+const env = {}
+// Flexible deployment on other servers.
+if (process.env.BASE_URL) {
+  env.baseUrl = process.env.BASE_URL
+} else if (process.env.DEPLOY_ENV) {
+  env.baseUrl = gitHost
+} else {
+  env.baseUrl = defaultLocalhost
 }
 
 // extra options for github pages
@@ -75,8 +78,6 @@ if (process.env.DEPLOY_ENV === 'GH_PAGES') {
       to: 'dist/.nojekyll'
     }], {})
   )
-  // use the deployment url
-  env.baseUrl = 'https://deltares.github.io' + '/wwa'
 }
 
 module.exports = {

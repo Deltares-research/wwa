@@ -50,13 +50,8 @@ const plugins = [
 ]
 
 const env = {
-  // TODO make this a bit more flexible (also allow surge deployment)
-  baseUrl: 'http://localhost:9920'
-}
-
-if (process.env.NODE_ENV === 'production') {
-  // root
-  env.baseUrl = process.env.BASE_URL || '/'
+  // Allow to choose a baseurl (should only be used during generate)
+  baseUrl: process.env.BASE_URL || 'http://localhost:9920'
 }
 
 // extra options for github pages
@@ -75,8 +70,6 @@ if (process.env.DEPLOY_ENV === 'GH_PAGES') {
       to: 'dist/.nojekyll'
     }], {})
   )
-  // use the deployment url
-  env.baseUrl = 'https://deltares.github.io' + '/wwa'
 }
 
 module.exports = {

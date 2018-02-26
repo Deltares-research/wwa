@@ -6,12 +6,13 @@ import { resolve } from 'path'
 // Nuxt defaults, but override them with package.json config when set
 let server = {
   host: 'localhost',
+  // don't use same port as dev server
   port: 3000
 }
 server.host = require('../package.json').config.nuxt.host || 'localhost'
 server.port = parseInt(require('../package.json').config.nuxt.port, 10) || 3000
-// Increment port by one
-// server.port++
+// Increment port by one  (don't use same port as dev server)
+server.port++
 
 // We keep a reference to Nuxt so we can close
 // the server at the end of the test

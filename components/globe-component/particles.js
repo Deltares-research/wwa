@@ -120,6 +120,7 @@ class Particles {
 
         this.geometry.attributes.position.needsUpdate = true
         this.geometry.attributes.color.needsUpdate = true
+
         this.geometry.setDrawRange(0, i + 1)
 
         this.data.push(particle)

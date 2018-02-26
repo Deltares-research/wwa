@@ -2,8 +2,14 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-const defaultHost = 'http://localhost:9920'
-const gitHost = 'https://deltares.github.io/wwa'
+// env settings
+const env = {}
+if (process.env.BASE_URL) {
+  env.baseUrl = process.env.BASE_URL
+} else {
+  env.baseUrl = 'http://localhost:9920'
+}
+
 
 // load data to define routes
 const books = require('./static/data/books/index.json')
@@ -51,16 +57,6 @@ const plugins = [
     openAnalyzer: false
   })
 ]
-
-const env = {}
-// Flexible deployment on other servers.
-if (process.env.BASE_URL) {
-  env.baseUrl = process.env.BASE_URL
-} else if (process.env.DEPLOY_ENV) {
-  env.baseUrl = gitHost
-} else {
-  env.baseUrl = defaultHost
-}
 
 // extra options for github pages
 if (process.env.DEPLOY_ENV === 'GH_PAGES') {

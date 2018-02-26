@@ -74,14 +74,15 @@ main {
 }
 
 .home,
-.home:hover {
+.home:hover,
+.home:active,
+.home:focus {
   display: block;
   color: var(--ui--text--invert);
   text-decoration: none;
   position: relative;
   z-index: 100;
   padding: 1rem;
-  font-weight: normal;
 }
 
 .globe-component {

@@ -8,8 +8,8 @@ install:
   - echo 'installing npm packages'
   - npm install
 script:
-  # start a dev server so we can generate pages
-  - npm run dev&; PID=$!
+  # start a dev server in the background so we can generate pages, and remember the process id
+  - npm run dev &  PID=$!
   # while the dev server is starting we do the rest of the work
   - npm run build
   - npm run test

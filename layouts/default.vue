@@ -10,14 +10,15 @@
       v-bind:markers="markers"
     />
     <nuxt/>
-    <link-list v-bind:links='staticPages'></link-list>
+    <nav class="link-menu">
+      <nuxt-link class="about" to="/about" title="About page"><span class="sr-only">Got to about page</span>About</nuxt-link>
+    </nav>
   </main>
 </template>
 <script>
 import GlobeComponent from '~/components/globe-component/GlobeComponent'
 import events from '~/lib/events'
 import books from '~/static/data/books/index.json'
-import LinkList from '~/components/link-list/LinkList'
 
 const markers = books
   .reduce((a, b) => a.concat(b.chapters), []) // flatten array
@@ -61,8 +62,7 @@ export default {
     })
   },
   components: {
-    GlobeComponent,
-    LinkList
+    GlobeComponent
   }
 }
 </script>
@@ -99,9 +99,24 @@ main {
   top:0;
 }
 
-.link-list {
+.link-menu {
   position: absolute;
   right:0;
   top:0;
+  padding: 1rem 1rem 0 0;
 }
+
+.link-menu a {
+  text-decoration: none;
+  font-size: var(--base-size-units);
+  opacity: .6;
+  transition: .5s opacity;
+  color: var(--ui--text--invert);
+}
+
+.link-menu a:hover {
+  opacity: 1;
+  color: var(--ui--text--invert);
+}
+
 </style>

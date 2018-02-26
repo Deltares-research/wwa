@@ -4,14 +4,7 @@
       <nuxt-link class="home h1" to="/" title="Go home"><span class="sr-only">Return to the homepage</span>World<br />Water<br />Atlas</nuxt-link>
       <nuxt-link class="about h3" to="/about">About</nuxt-link>
     </nav>
-    <globe-component
-      class="globe-component"
-      v-bind:active-marker="activeMarker"
-      v-bind:active-theme="activeTheme"
-      v-bind:enable-zoom="enableZoom"
-      v-bind:enable-rotate="enableRotate"
-      v-bind:markers="markers"
-    />
+    <globe-component class="globe-component" />
     <nuxt/>
 
   </main>

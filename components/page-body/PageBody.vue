@@ -30,15 +30,12 @@
         </iframe>
       </section>
 
-      <section v-if="mapboxStyle" class="page-body__map">
-        <story-map v-bind:mapbox-style="mapboxStyle"></story-map>
-      </section>
+
     </section>
 </template>
 
 <script>
 import marked from 'marked'
-import StoryMap from '~/components/story-map/StoryMap'
 
 const renderer = new marked.Renderer()
 renderer.paragraphCount = 0 // Need to keep track of the number of paragraphs
@@ -57,7 +54,6 @@ export default {
     video: Object,
     mapboxStyle: String
   },
-  components: { StoryMap },
   computed: {
     htmlBody () {
       return this.customMarked(this.body)

@@ -1,7 +1,15 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+
+// env settings
+const env = {}
+if (process.env.BASE_URL) {
+  env.baseUrl = process.env.BASE_URL
+} else {
+  env.baseUrl = 'http://localhost:9920'
+}
+
 // load data to define routes
 const books = require('./static/data/books/index.json')
 const chapters = books
@@ -86,12 +94,8 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'World Water Atlas' },
       { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' }
     ],
-    script: [
-      { src: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js' }
-    ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css', rel: 'stylesheet' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
 

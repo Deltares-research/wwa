@@ -54,8 +54,7 @@ export default {
       const activePages = this.pages.filter(page => page.slug === pageSlug)
       const activeElement = document.getElementById(pageSlug)
       if (activeElement && activePages) {
-        const windowHeight = (window.innerHeight || document.clientHeight)
-        const top = activeElement.getBoundingClientRect().top || windowHeight
+        const top = activeElement.getBoundingClientRect().top || 0
         window.scroll(0, top)
         this.updateActiveFeature()
       }

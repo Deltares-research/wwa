@@ -1,6 +1,11 @@
 <template>
   <nav class="scroll-indicator">
     <ul>
+      <li class="to-top">
+      <nuxt-link v-on:click.prevent="toTop()" to="#top">
+          <span class="scroll-indicator__label sr-only">Back to top</span>
+        </nuxt-link>
+      </li>
       <li v-for="page in pages" v-bind:key="page.slug"
         v-bind:class="`${(activePage && page.slug === activePage.slug) ? 'active' : ''}`">
         <nuxt-link v-bind:to="`#${page.slug}`">
@@ -20,6 +25,11 @@ export default {
       validator (pages) {
         return pages.every(page => (page.slug && page.title))
       }
+    }
+  },
+  methods: {
+    toTop () {
+      window.scrollTo(0, 0)
     }
   }
 }
@@ -69,6 +79,15 @@ export default {
   border-radius: .5rem;
   margin-right: .75rem;
   background-color: var(--ui--white);
+}
+.scroll-indicator .to-top a::before {
+  background-color: transparent;
+  content: '▲';
+  font-size: 1rem;
+  text-align:center;
+  position: relative;
+  top: -.125rem;
+  left: -.25rem;
 }
 .scroll-indicator li:hover .scroll-indicator__label {
   width: 100vw;

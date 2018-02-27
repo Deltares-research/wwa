@@ -1,5 +1,5 @@
 <template>
-  <div class="full-width">
+  <div class="chapter full-width">
     <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
     <page-component v-for="page in pages" v-bind:key="page.slug"
       v-bind:page="page"
@@ -106,7 +106,7 @@ export default {
   right: 0;
 }
 
-.narrative-header {
+.chapter .narrative-header {
   width: 100%;
   margin: auto;
   margin-bottom: calc(-1 * var(--target-offset));

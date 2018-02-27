@@ -87,7 +87,8 @@ module.exports = {
       { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' }
     ],
     script: [
-      { src: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js' }
+      { src: 'https://cdn.polyfill.io/v2/polyfill.min.js?features=IntersectionObserver' },
+      { src: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js', defer: true }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },

@@ -8,15 +8,11 @@ install:
   - echo 'installing npm packages'
   - npm install
 script:
-  # start a dev server in the background so we can generate pages, and remember the process id
-  - npm run dev & PID=$!
   # while the dev server is starting we do the rest of the work
   - npm run build
   - npm run test
   - npm run lint
   - npm run gh-pages:generate
-  # kill the dev server
-  - kill -9 $PID
 # staging environment in datocms
 notifications:
   webhooks:

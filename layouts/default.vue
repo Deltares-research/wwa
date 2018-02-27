@@ -4,16 +4,18 @@
       <nuxt-link class="home h1" to="/" title="Go home"><span class="sr-only">Return to the homepage</span>World<br />Water<br />Atlas</nuxt-link>
       <nuxt-link class="about h3" to="/about">About</nuxt-link>
     </nav>
-    <globe-component class="globe-component" />
+    <globe-component v-bind:is="GlobeComponent" class="globe-component" />
     <nuxt/>
 
   </main>
 </template>
 <script>
-import GlobeComponent from '~/components/globe-component/GlobeComponent'
-
 export default {
-  components: { GlobeComponent }
+  beforeCreate () {
+    this.GlobeComponent = () => ({
+      component: import('~/components/globe-component/GlobeComponent.vue')
+    })
+  }
 }
 </script>
 

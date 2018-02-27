@@ -45,6 +45,7 @@ main {
   right: 0;
   top: 0;
   color: var(--ui--text--invert);
+  z-index: 1;
 }
 .link-menu a:not(.home) {
   float: right;

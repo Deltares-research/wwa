@@ -13,7 +13,7 @@
 export default {
   beforeCreate () {
     this.GlobeComponent = () => ({
-      component: import('~/components/globe-component/GlobeComponent.vue')
+      component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue')
     })
   }
 }

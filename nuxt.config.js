@@ -87,12 +87,10 @@ module.exports = {
       { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' }
     ],
     script: [
-      { src: 'https://cdn.polyfill.io/v2/polyfill.min.js?features=IntersectionObserver' },
-      { src: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js', defer: true }
+      { src: 'https://cdn.polyfill.io/v2/polyfill.min.js?features=IntersectionObserver' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css', rel: 'stylesheet' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
 
@@ -123,10 +121,8 @@ module.exports = {
     plugins,
     vendor: [
       'axios',
-      'd3-jetpack',
-      'd3-scale',
-      'd3-scale-chromatic',
-      'three'
+      'marked',
+      'vue-clazy-load'
     ]
   },
   env,

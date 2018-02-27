@@ -197,7 +197,7 @@ export default {
       if (this.intersections.length > 0) {
         const { data } = this.intersections[0].object
         const { base = '/' } = this.$router.options.base
-        const pathWithoutleadingSlash = data.path.replace(/^\//g, '');
+        const pathWithoutleadingSlash = data.path.replace(/^\//g, '')
         const path = `${base}${pathWithoutleadingSlash}`
         this.$router.push(path)
       }

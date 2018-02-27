@@ -11,6 +11,7 @@
       v-bind:influences="page.influences"
       v-bind:keywords="page.keywords"
       v-bind:storyteller="page.storyteller"
+      v-bind:partner="page.partner"
       v-bind:theme="page.theme" />
   </article>
 </template>

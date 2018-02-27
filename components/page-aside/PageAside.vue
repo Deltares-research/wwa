@@ -6,6 +6,12 @@
       <p>{{ storyteller.name }}</p>
     </section>
 
+    <section v-if="partner && partner.name" class="clearfix page-aside__section page-aside__section--partner">
+      <h3 class="page-aside__title">Partner</h3>
+      <img v-bind:src="partnerSrc">
+      <p>{{ partner.name }}</p>
+    </section>
+
     <section v-if="theme" class="clearfix page-aside__section">
       <h3 class="page-aside__title">Theme</h3>
       <img v-if="theme && theme.slug" class="theme-icon" v-bind:src="themeSrc" />
@@ -42,6 +48,7 @@ export default {
     influences: Array,
     keywords: Array,
     storyteller: Object,
+    partner: Object,
     theme: Object
   },
   computed: {
@@ -50,6 +57,14 @@ export default {
       const avatar = this.storyteller.avatar
       if (avatar && avatar.imgixHost) {
         src = `${avatar.imgixHost}${avatar.value.path}?w=50&q=65`
+      }
+      return src
+    },
+    partnerSrc: function () {
+      var src = _defaultAvatarSrc
+      const partner = this.partner.logo
+      if (partner && partner.imgixHost) {
+        src = `${partner.imgixHost}${partner.value.path}?w=50&q=65`
       }
       return src
     },

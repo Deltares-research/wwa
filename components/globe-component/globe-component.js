@@ -196,8 +196,10 @@ export default {
     handleClick (event) {
       if (this.intersections.length > 0) {
         const { data } = this.intersections[0].object
-        // navigate to path
-        this.$router.push(data.path)
+        const { base = '/' } = this.$router.options.base
+        const pathWithoutleadingSlash = data.path.replace(/^\//g, '');
+        const path = `${base}${pathWithoutleadingSlash}`
+        this.$router.push(path)
       }
     },
     handleMouseMove (event) {

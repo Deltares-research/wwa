@@ -86,8 +86,11 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'World Water Atlas' },
       { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' }
     ],
+    script: [
+      { src: 'https://cdn.polyfill.io/v2/polyfill.min.js?features=IntersectionObserver' }
+    ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
 

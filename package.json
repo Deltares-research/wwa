@@ -63,6 +63,7 @@
     "three.meshline": "^1.0.3",
     "vue-clazy-load": "0.3.0",
     "vue-events": "^3.1.0"
+    "vue-observe-visibility": "0.3.1"
   },
   "devDependencies": {
     "autoprefixer": "7.2.5",

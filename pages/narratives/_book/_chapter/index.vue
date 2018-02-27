@@ -1,19 +1,30 @@
 <template>
-  <div class="full-width">
-    <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
-    <page-component v-for="page in pages" v-bind:key="page.slug"
-      v-bind:page="page"
-      v-bind:id="page.slug"
-      class="page-component" />
-    <narrative-footer v-bind:previousLink="chapter.previousChapter" v-bind:nextLink="chapter.nextChapter" />
+  <div>
+    <scroll-indicator v-bind:pages="pages" v-bind:activePage="activePage" />
+    <div class="full-width">
+      <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
+      <page-component v-for="page in pages" v-bind:key="page.slug"
+        v-bind:page="page"
+        v-bind:id="page.slug"
+        v-observe-visibility="visibilityChanged"
+        class="page-component" />
+      <narrative-footer
+        v-bind:previousLink="chapter.previousChapter"
+        v-bind:nextLink="chapter.nextChapter" />
+    </div>
   </div>
 </template>
 
 <script>
-import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter'
+import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import PageComponent from '~/components/page-component/PageComponent'
+import ScrollIndicator from '~/components/scroll-indicator/ScrollIndicator'
+import Vue from 'vue'
 import loadData from '~/lib/load-data'
+import { ObserveVisibility } from 'vue-observe-visibility'
+
+Vue.directive('observe-visibility', ObserveVisibility)
 
 export default {
   async asyncData (context) {
@@ -31,50 +42,21 @@ export default {
   mounted () {
     const pageSlug = this.$route.hash.replace(/^#/, '')
     this.updateActivePage(pageSlug)
-    if ('IntersectionObserver' in window) {
-      this.observeIntersectingChildren()
-    }
   },
   components: {
-    NarrativeHeader,
     NarrativeFooter,
-    PageComponent
+    NarrativeHeader,
+    PageComponent,
+    ScrollIndicator
   },
   methods: {
-    observeIntersectingChildren () {
-      const intersectionRatio = 0.001
-      const observer = new IntersectionObserver(entries => {
-        trackVisibility(entries)
-        // TODO: Pan & Zoom to
-      }, {
-        // No explicit root, we want the viewport
-        rootMargin: '-40% 0% -40% 0%',
-        thresholds: [ intersectionRatio ]
-      })
-      const pageComponentsArray = [].slice.call(this.$el.children)
-      pageComponentsArray.forEach(el => observer.observe(el))
-
-      const trackVisibility = entries => {
-        // No Array.prototype function, so we can break the loop
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const pageSlug = entry.target.id
-            if (`#${pageSlug}` !== this.$route.hash) {
-              this.updateActivePage(pageSlug)
-            }
-            break
-          }
-        }
-      }
-    },
     scrollToSlug (pageSlug) {
       const activePages = this.pages.filter(page => page.slug === pageSlug)
       const activeElement = document.getElementById(pageSlug)
       if (activeElement && activePages) {
         const windowHeight = (window.innerHeight || document.clientHeight)
         const top = activeElement.getBoundingClientRect().top || windowHeight
-        const y = Math.round(top - (windowHeight / 2)) // match with margin between PageComponents
-        window.scroll(0, y)
+        window.scroll(0, top)
         this.updateActiveFeature()
       }
     },
@@ -88,6 +70,18 @@ export default {
     },
     updateActiveFeature () {
       this.$store.commit('globe/activateFeature', this.activePage)
+    },
+    visibilityChanged (isVisible, entry) {
+      if (isVisible) {
+        this.updateActivePage(entry.target.id)
+      }
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      if ((to.path === from.path) && (to.hash !== from.hash)) {
+        this.scrollToSlug(to.hash.replace(/^#/, ''))
+      }
     }
   }
 }

@@ -232,6 +232,7 @@ function getChapters (dato, bookRef) {
         location,
         keywords,
         pages,
+        partner,
         pageCount: pages.length,
         path,
         slug,
@@ -289,7 +290,7 @@ function getPages (dato, chapterRef) {
         type: chapterRef.chapterType
       }
       const path = `${chapter.path}#${slug}`
-      const partner = (page.partnerName && page.partnerName != page.storyteller) ? { logo: page.partnerLogo, name: page.partnerName } : null
+      const partner = (page.partnerName && page.partnerName !== page.storyteller) ? { logo: page.partnerLogo, name: page.partnerName } : null
       return {
         body,
         book,

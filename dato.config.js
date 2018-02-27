@@ -221,7 +221,6 @@ function getChapters (dato, bookRef) {
         title: neighbours.next.title } : null
       const firstLocationPage = pages.filter(page => page.location)[0]
       const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
-      const partner = (firstLocationPage) ? firstLocationPage.partner : null
       const location = (firstLocationPage) ? firstLocationPage.location : null
       const influences = collectUniqueTags(pages, 'influences')
       const keywords = collectUniqueTags(pages, 'keywords')
@@ -290,7 +289,6 @@ function getPages (dato, chapterRef) {
         type: chapterRef.chapterType
       }
       const path = `${chapter.path}#${slug}`
-      const partner = (page.partnerName && page.partnerName !== page.storyteller) ? { logo: page.partnerLogo, name: page.partnerName } : null
       return {
         body,
         book,
@@ -308,7 +306,10 @@ function getPages (dato, chapterRef) {
           avatar: page.storytellerAvatar,
           name: page.storyteller
         },
-        partner,
+        partner: {
+          logo: page.partnerLogo,
+          name: page.partnerName
+        },
         theme,
         title,
         video,

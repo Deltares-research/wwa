@@ -61,12 +61,11 @@ export default {
       return src
     },
     partnerSrc: function () {
-      var src = _defaultAvatarSrc
       const partner = this.partner.logo
       if (partner && partner.imgixHost) {
-        src = `${partner.imgixHost}${partner.value.path}?w=50&q=65`
+        return `${partner.imgixHost}${partner.value.path}?w=50&q=65`
       }
-      return src
+      return null
     },
     themeSrc: function () {
       return `${this.$router.options.base}assets/${this.theme.slug}.svg`
@@ -119,6 +118,14 @@ export default {
 
 .page-aside__section--storyteller img {
   border-radius: 100%;
+}
+
+.page-aside__section--partner img {
+  border-radius: 100%;
+  max-width: 3rem;
+  max-height: 3rem;
+  height:auto;
+  width:auto;
 }
 
 .page-aside img + p {

@@ -121,10 +121,8 @@ module.exports = {
     plugins,
     vendor: [
       'axios',
-      'd3-jetpack',
-      'd3-scale',
-      'd3-scale-chromatic',
-      'three'
+      'marked',
+      'vue-clazy-load'
     ]
   },
   env,

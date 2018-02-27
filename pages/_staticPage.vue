@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import events from '~/lib/events'
 import loadData from '~/lib/load-data'
 import marked from 'marked'
 
@@ -26,6 +25,8 @@ renderer.paragraph = function (content) {
 export default {
   async asyncData (context) {
     const { title, body, images } = await loadData(context, context.params)
+    context.store.commit('globe/disableInteraction')
+
     return { title, body, images }
   },
   computed: {
@@ -45,6 +46,7 @@ export default {
       }
       return formatted
     }
+
   }
 }
 </script>

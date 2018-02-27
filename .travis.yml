@@ -8,6 +8,7 @@ install:
   - echo 'installing npm packages'
   - npm install
 script:
+  # while the dev server is starting we do the rest of the work
   - npm run build
   - npm run test
   - npm run lint

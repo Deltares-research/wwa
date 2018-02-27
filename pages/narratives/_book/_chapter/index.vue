@@ -1,5 +1,5 @@
 <template>
-  <div class="full-width">
+  <div class="chapter full-width">
     <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
     <page-component v-for="page in pages" v-bind:key="page.slug"
       v-bind:page="page"
@@ -13,23 +13,24 @@
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter'
 import PageComponent from '~/components/page-component/PageComponent'
-import events from '~/lib/events'
 import loadData from '~/lib/load-data'
 
 export default {
   async asyncData (context) {
     const { book, pages, path, slug, title, previousChapter, nextChapter } = await loadData(context, context.params)
     const chapter = { path, slug, title, previousChapter, nextChapter }
+
+    context.store.commit('globe/replaceFeatures', pages)
+    context.store.commit('globe/disableInteraction')
+
     return { book, chapter, pages, path, slug, title }
   },
   data () {
     return { activePage: null }
   },
   mounted () {
-    const pageSlug = this.$route.hash.replace(/^#/, '') || undefined
+    const pageSlug = this.$route.hash.replace(/^#/, '')
     this.updateActivePage(pageSlug)
-    this.$events.$emit(events.disableGlobeNavigation)
-    this.$events.$emit(events.featuresChanged, this.pages)
     if ('IntersectionObserver' in window) {
       this.observeIntersectingChildren()
     }
@@ -75,7 +76,6 @@ export default {
         const y = Math.round(top - (windowHeight / 2)) // match with margin between PageComponents
         window.scroll(0, y)
         this.updateActiveFeature()
-        this.updateActiveTheme()
       }
     },
     updateActivePage (pageSlug) {
@@ -84,17 +84,10 @@ export default {
       if (this.activePage) {
         history.replaceState({}, 'page', `${this.$route.path}#${this.activePage.slug}`)
         this.updateActiveFeature()
-        this.updateActiveTheme()
       }
     },
     updateActiveFeature () {
-      this.$events.$emit(events.activeFeatureChanged, this.activePage)
-    },
-    updateActiveTheme () {
-      const { slug = undefined } = this.activePage.theme
-      if (slug) {
-        this.$events.$emit(events.activeThemeChanged, slug)
-      }
+      this.$store.commit('globe/activateFeature', this.activePage)
     }
   }
 }
@@ -113,7 +106,7 @@ export default {
   right: 0;
 }
 
-.narrative-header {
+.chapter .narrative-header {
   width: 100%;
   margin: auto;
   margin-bottom: calc(-1 * var(--target-offset));

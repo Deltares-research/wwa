@@ -3,11 +3,13 @@
     <scroll-indicator v-bind:pages="pages" v-bind:activePage="activePage" />
   <div class="chapter full-width">
       <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
-      <page-component v-for="page in pages" v-bind:key="page.slug"
-        v-bind:page="page"
-        v-bind:id="page.slug"
-        v-observe-visibility="visibilityChanged"
-        class="page-component" />
+          <page-component
+            v-for="page in pages"
+            v-bind:key="page.slug"
+            v-bind:page="page"
+            v-bind:id="page.slug"
+            data-page-component
+            class="page-component" />
       <narrative-footer
         v-bind:previousLink="chapter.previousChapter"
         v-bind:nextLink="chapter.nextChapter" />
@@ -20,11 +22,7 @@ import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter'
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import PageComponent from '~/components/page-component/PageComponent'
 import ScrollIndicator from '~/components/scroll-indicator/ScrollIndicator'
-import Vue from 'vue'
 import loadData from '~/lib/load-data'
-import { ObserveVisibility } from 'vue-observe-visibility'
-
-Vue.directive('observe-visibility', ObserveVisibility)
 
 export default {
   async asyncData (context) {
@@ -42,6 +40,9 @@ export default {
   mounted () {
     const pageSlug = this.$route.hash.replace(/^#/, '')
     this.updateActivePage(pageSlug)
+    if ('IntersectionObserver' in window) {
+      this.observeIntersectingChildren()
+    }
   },
   components: {
     NarrativeFooter,
@@ -50,6 +51,32 @@ export default {
     ScrollIndicator
   },
   methods: {
+    observeIntersectingChildren () {
+      const intersectionRatio = 0.01
+      const observer = new IntersectionObserver(entries => {
+        trackVisibility(entries)
+        // TODO: Pan & Zoom to
+      }, {
+        // No explicit root, we want the viewport
+        rootMargin: '-80% 0% -20% 0%',
+        thresholds: [ intersectionRatio ]
+      })
+      const pageComponentsArray = [].slice.call(this.$el.querySelectorAll('[data-page-component]'))
+      pageComponentsArray.forEach(el => observer.observe(el))
+      console.log(pageComponentsArray)
+      const trackVisibility = entries => {
+        // No Array.prototype function, so we can break the loop
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const pageSlug = entry.target.id
+            if (`#${pageSlug}` !== this.$route.hash) {
+              this.updateActivePage(pageSlug)
+            }
+            break
+          }
+        }
+      }
+    },
     scrollToSlug (pageSlug) {
       const activeElement = document.getElementById(pageSlug)
       if (activeElement) {
@@ -60,6 +87,7 @@ export default {
     updateActivePage (pageSlug) {
       const activePages = (pageSlug) ? this.pages.filter(page => page.slug === pageSlug) : null
       this.activePage = (activePages && activePages[0]) ? activePages[0] : this.pages[0]
+      console.log(this.activePage.title)
       if (this.activePage) {
         history.replaceState({}, 'page', `${this.$route.path}#${this.activePage.slug}`)
         this.updateActiveFeature()

@@ -195,7 +195,7 @@ export default {
     },
     handleClick (event) {
       if (this.intersections.length > 0) {
-        const { data } = this.intersections[0].object
+        const { data = { path: '#' } } = this.intersections[0].object
         // navigate to path
         this.$router.push(data.path)
       }

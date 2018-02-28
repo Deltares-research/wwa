@@ -52,14 +52,13 @@ export default {
   },
   methods: {
     observeIntersectingChildren () {
-      const intersectionRatio = 0.01
       const observer = new IntersectionObserver(entries => {
         trackVisibility(entries)
         // TODO: Pan & Zoom to
       }, {
         // No explicit root, we want the viewport
-        rootMargin: '-80% 0% -20% 0%',
-        thresholds: [ intersectionRatio ]
+        rootMargin: '-70% 0% -20% 0%',
+        thresholds: 0
       })
       const pageComponentsArray = [].slice.call(this.$el.querySelectorAll('[data-page-component]'))
       pageComponentsArray.forEach(el => observer.observe(el))
@@ -68,10 +67,7 @@ export default {
         for (const entry of entries) {
           if (entry.isIntersecting) {
             const pageSlug = entry.target.id
-            if (`#${pageSlug}` !== this.$route.hash) {
-              this.updateActivePage(pageSlug)
-            }
-            break
+            this.updateActivePage(pageSlug)
           }
         }
       }
@@ -86,7 +82,6 @@ export default {
     updateActivePage (pageSlug) {
       const activePages = (pageSlug) ? this.pages.filter(page => page.slug === pageSlug) : null
       this.activePage = (activePages && activePages[0]) ? activePages[0] : this.pages[0]
-      console.log(this.activePage.title)
       if (this.activePage) {
         history.replaceState({}, 'page', `${this.$route.path}#${this.activePage.slug}`)
         this.updateActiveFeature()

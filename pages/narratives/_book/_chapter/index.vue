@@ -51,12 +51,10 @@ export default {
   },
   methods: {
     scrollToSlug (pageSlug) {
-      const activePages = this.pages.filter(page => page.slug === pageSlug)
       const activeElement = document.getElementById(pageSlug)
-      if (activeElement && activePages) {
-        const top = activeElement.getBoundingClientRect().top || 0
-        window.scroll(0, top)
-        this.updateActiveFeature()
+      if (activeElement) {
+        activeElement.scrollIntoView()
+        this.updateActiveFeature(pageSlug)
       }
     },
     updateActivePage (pageSlug) {

@@ -2,7 +2,7 @@
   <nav class="scroll-indicator">
     <ul>
       <li class="to-top">
-      <nuxt-link v-on:click.prevent="toTop()" to="#top">
+      <nuxt-link to="#top">
           <span class="scroll-indicator__label sr-only">Back to top</span>
         </nuxt-link>
       </li>
@@ -27,9 +27,11 @@ export default {
       }
     }
   },
-  methods: {
-    toTop () {
-      window.scrollTo(0, 0)
+  watch: {
+    '$route' (to, from) {
+      if ((to.path === from.path) && (to.hash === '#top')) {
+        window.scrollTo(0, 0)
+      }
     }
   }
 }

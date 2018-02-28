@@ -63,7 +63,6 @@ export default {
       })
       const pageComponentsArray = [].slice.call(this.$el.querySelectorAll('[data-page-component]'))
       pageComponentsArray.forEach(el => observer.observe(el))
-      console.log(pageComponentsArray)
       const trackVisibility = entries => {
         // No Array.prototype function, so we can break the loop
         for (const entry of entries) {

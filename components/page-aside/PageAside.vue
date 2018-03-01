@@ -2,9 +2,9 @@
   <aside class="page-aside">
     <section v-if="storyteller" class="clearfix page-aside__section page-aside__section--storyteller">
       <h3 class="page-aside__title">Storyteller</h3>
-      <div class="page-aside__avatar-container">
+      <span class="page-aside__avatar-container">
         <img v-bind:src="avatarSrc" v-bind:width="avatarSize.w" v-bind:height="avatarSize.h">
-      </div>
+      </span>
       <p>{{ storyteller.name }}</p>
     </section>
 

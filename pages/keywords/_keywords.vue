@@ -37,9 +37,6 @@ export default {
       results
     }
   },
-  created () {
-    this.$store.commit('replaceFeatures', this.results)
-  },
   components: {
     BottomShelf,
     CardList
@@ -62,6 +59,9 @@ export default {
         .reduce((acc, result) => unionByProp(acc, result.keywords, 'slug'), [])
         .filter(keyword => this.activeKeywords.every(active => active.slug !== keyword.slug))
     }
+  },
+  mounted () {
+    this.$store.commit('replaceFeatures', this.results)
   },
   methods: {
     updatePath (event) {

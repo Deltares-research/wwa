@@ -17,7 +17,7 @@ export default {
 
     return { books, markers, themes: await themes }
   },
-  created () {
+  mounted () {
     this.$store.commit('replaceFeatures', this.markers)
     this.$store.commit('enableInteraction')
   },

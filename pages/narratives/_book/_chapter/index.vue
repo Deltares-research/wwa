@@ -34,11 +34,9 @@ export default {
   data () {
     return { activePage: null }
   },
-  created () {
+  mounted () {
     this.$store.commit('replaceFeatures', this.pages)
     this.$store.commit('disableInteraction')
-  },
-  mounted () {
     const pageSlug = this.$route.hash.replace(/^#/, '')
     this.updateActivePage(pageSlug)
     if ('IntersectionObserver' in window) {

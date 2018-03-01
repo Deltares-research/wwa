@@ -22,7 +22,7 @@ export default {
 
     return { title, slug, path, chapters, themes: await themes, theme }
   },
-  created () {
+  mounted () {
     this.$store.commit('replaceFeatures', this.chapters)
     this.$store.commit('replaceTheme', this.theme.slug)
   },

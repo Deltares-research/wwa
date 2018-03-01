@@ -26,7 +26,7 @@ export default {
   data () {
     return { activeSlug: this.$route.params.theme }
   },
-  created () {
+  mounted () {
     this.$store.commit('replaceFeatures', this.chapters)
     this.$store.commit('replaceTheme', this.$route.params.theme)
   },

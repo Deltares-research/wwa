@@ -27,7 +27,7 @@ export default {
       results
     }
   },
-  created () {
+  mounted () {
     this.$store.commit('replaceFeatures', this.results)
   },
   components: {

@@ -34,7 +34,7 @@ export default {
   components: {
     lazyImage
   },
-  created () {
+  mounted () {
     this.$store.commit('disableInteraction')
   }
 }

@@ -2,13 +2,15 @@
   <aside class="page-aside">
     <section v-if="storyteller" class="clearfix page-aside__section page-aside__section--storyteller">
       <h3 class="page-aside__title">Storyteller</h3>
-      <img v-bind:src="avatarSrc">
+      <span class="page-aside__avatar-container">
+        <img v-bind:src="avatarSrc" v-bind:width="avatarSize.w" v-bind:height="avatarSize.h">
+      </span>
       <p>{{ storyteller.name }}</p>
     </section>
 
     <section v-if="partner && partner.name" class="clearfix page-aside__section page-aside__section--partner">
       <h3 class="page-aside__title">Partner</h3>
-      <img v-bind:src="partnerSrc">
+      <img v-bind:src="partnerSrc" v-bind:width="logoSize.w" v-bind:height="logoSize.h">
       <p>{{ partner.name }}</p>
     </section>
 
@@ -42,6 +44,23 @@
 
 <script>
 import _defaultAvatarSrc from './assets/Portrait_Placeholder.png'
+const sizeLimit = 4 * 20
+const imgScale = function (imgObj) {
+  const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height)
+  return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) }
+}
+const avatarResize = function (imgObj) {
+  const size =
+  if( ratio > 1) {
+    $height = 500 / ratio;
+    $width = 500;
+  }
+  else {
+    $width = 500 * ratio;
+    $height = 500;
+  }
+  return { h: Math.round(wh.h * offset), w: Math.round(wh.w * offset) }
+}
 
 export default {
   props: {
@@ -69,6 +88,12 @@ export default {
     },
     themeSrc: function () {
       return `${this.$router.options.base}assets/${this.theme.slug}.svg`
+    },
+    avatarSize: function () {
+      return imgScale(this.storyteller.avatar)
+    },
+    logoSize: function () {
+      return avatarResize(this.partner.logo)
     }
   }
 }
@@ -109,23 +134,23 @@ export default {
 
 .page-aside img {
   float: left;
-  width: 3rem;
-  height: 3rem;
   vertical-align: top;
   margin-right: .7rem;
   margin-left: -1px;
 }
 
-.page-aside__section--storyteller img {
-  border-radius: 100%;
+.page-aside__avatar-container img{
+  margin:auto
 }
 
-.page-aside__section--partner img {
+.page-aside__avatar-container {
+  text-align: center;
+  width: 4rem;
+  height: 4rem;
   border-radius: 100%;
-  max-width: 3rem;
-  max-height: 3rem;
-  height:auto;
-  width:auto;
+  margin: 0 .7rem 0 -1px;
+  display:flex;
+  overflow:hidden;
 }
 
 .page-aside img + p {

@@ -10,7 +10,7 @@ export const mutations = {
     const { theme, location, slug, path } = feature
     state.activeFeature = { location, slug, path, theme }
     if (theme && theme.slug) {
-      state.replaceTheme = theme.slug
+      state.theme = theme.slug
     }
   },
   deactivateFeature (state, feature) {

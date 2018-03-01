@@ -4,9 +4,6 @@
     <img v-bind:src="src" v-bind:alt="alt" slot="image" width="100%" />
     <div slot="placeholder">
       <p class="placeholder">{{alt}}</p>
-    <noscript>
-      <img v-bind:src="src" v-bind:alt="alt" width="100%" />
-    </noscript>
     </div>
   </clazy-load>
 </template>

@@ -17,8 +17,6 @@ export default {
   async asyncData (context) {
     const chapters = loadData(context, context.params)
     const themes = loadData(context, { theme: 'index' })
-    context.store.commit('globe/replaceTheme', context.route.params.theme)
-    context.store.commit('globe/replaceFeatures', await chapters)
 
     return {
       chapters: await chapters,
@@ -27,6 +25,10 @@ export default {
   },
   data () {
     return { activeSlug: this.$route.params.theme }
+  },
+  created () {
+    this.$store.commit('replaceFeatures', this.chapters)
+    this.$store.commit('replaceTheme', this.$route.params.theme)
   },
   components: {
     BottomShelf,

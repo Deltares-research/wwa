@@ -23,7 +23,6 @@ import renderMarkedContent from '~/lib/custom-marked'
 export default {
   async asyncData (context) {
     const { title, body, images } = await loadData(context, context.params)
-    context.store.commit('globe/disableInteraction')
 
     return { title, body, images }
   },
@@ -34,6 +33,9 @@ export default {
   },
   components: {
     lazyImage
+  },
+  created () {
+    this.$store.commit('disableInteraction')
   }
 }
 </script>

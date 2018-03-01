@@ -78,15 +78,7 @@ export default {
     },
     updateActivePage (pageSlug) {
       const activePages = (pageSlug) ? this.pages.filter(page => page.slug === pageSlug) : null
-      const path = this.$route.path.replace(/^\//, '') // remove leading slash to maintain router base
       this.activePage = (activePages && activePages[0]) ? activePages[0] : this.pages[0]
-      if (this.activePage) {
-        history.replaceState({}, 'page', `${path}#${this.activePage.slug}`)
-        this.updateActiveFeature()
-      }
-    },
-    updateActiveFeature () {
-      this.$store.commit('globe/activateFeature', this.activePage)
     },
     visibilityChanged (isVisible, entry) {
       if (isVisible) {

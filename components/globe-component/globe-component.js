@@ -271,7 +271,6 @@ export default {
       globe.position.set(0, 0, 0)
 
       this.particles = new Particles({current: this.theme, target: this.theme})
-      console.log(this.theme)
       this.particles.load(() => this.particles.update())
       globe.add(this.particles.mesh)
 

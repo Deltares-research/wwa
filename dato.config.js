@@ -81,15 +81,16 @@ function generateBooks (dato, root, i18n) {
  * Write out Chapter JSONs
  *
  * @param {Dato} dato - DatoCMS API
- * @param {Root} root - Project rootle.log
+ * @param {Root} root - Project root
  * @param {i18n} i18n
  */
 function generateChapters (dato, root, i18n) {
   const chapters = getChapters(dato)
-  for (const chapterId in chapters) {
-    const chapter = chapters[chapterId]
+  for (const chapter of chapters) {
     if (chapter.book != null) { // so that null result will not be written out
       root.createDataFile(`static/data/books/${chapter.book.slug}/chapters/${chapter.slug}/index.json`, 'json', chapter)
+    } else {
+      console.log(`Skipped chapter ${chapter.title}, book is null`)
     }
   }
 }
@@ -197,6 +198,7 @@ function getChapters (dato, bookRef) {
       const { title, slug, chapterType } = chapter
       const parentBook = bookRef || getParent(dato, chapter)
       if (!parentBook) {
+        console.log(`Skipped chapter ${title}, no parent book found`)
         return false
       }
       const book = {
@@ -207,25 +209,22 @@ function getChapters (dato, bookRef) {
       }
       const path = `${book.path}/${slug}`
       const pages = getPages(dato, chapter)
-      const theme = getDominantTheme(pages.map(page => (page.theme) ? {
-        title: page.theme.title,
-        slug: page.theme.slug,
-        path: `/themes/${page.theme.slug}`
-      } : {}))
+      const theme = getDominantTheme(pages)
       const neighbours = getNeighboursFromArray(chapter, parentBook.chapters)
-      const previousChapter = ((neighbours.previous) ? {
-        path: `${contentBasePath}/${neighbours.previous.slug}`,
+      const previousChapter = (neighbours.previous) ? {
+        path: `${contentBasePath}/${parentBook.slug}/${neighbours.previous.slug}`,
         slug: neighbours.previous.slug,
-        title: neighbours.previous.title } : null)
-      const nextChapter = ((neighbours.next) ? {
-        path: `${contentBasePath}/${neighbours.next.slug}`,
+        title: neighbours.previous.title } : null
+      const nextChapter = (neighbours.next) ? {
+        path: `${contentBasePath}/${parentBook.slug}/${neighbours.next.slug}`,
         slug: neighbours.next.slug,
-        title: neighbours.next.title } : null)
+        title: neighbours.next.title } : null
       const firstLocationPage = pages.filter(page => page.location)[0]
       const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
       const location = (firstLocationPage) ? firstLocationPage.location : null
       const influences = collectUniqueTags(pages, 'influences')
       const keywords = collectUniqueTags(pages, 'keywords')
+
       return {
         book,
         influences,
@@ -264,7 +263,7 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, influences, keywords, links, slug, title, video } = page
+      const { body, files, graphs, images, influences, keywords, links, slug, title, video, mapboxStyle } = page
       const theme = (page.theme) ? {
         title: page.theme.title,
         slug: page.theme.slug,
@@ -308,7 +307,8 @@ function getPages (dato, chapterRef) {
         },
         theme,
         title,
-        video
+        video,
+        mapboxStyle
       }
     })
 }
@@ -437,6 +437,7 @@ function getNeighboursFromArray (srcItem, array) {
  */
 function getDominantTheme (items) {
   const themes = items
+    .filter(item => item)
     .filter(item => item.theme) // strip out unset themes
     .reduce((themes, item) => {
       if (themes[item.theme.slug]) {
@@ -446,6 +447,7 @@ function getDominantTheme (items) {
       }
       return themes
     }, {})
+
   return Object.values(themes).sort((a, b) => a.score > b.score)[0]
 }
 

@@ -3,7 +3,7 @@
   <article class="static-page">
     <h1>{{title}}</h1>
     <picture v-for="image in images" v-bind:key="image.id">
-      <img v-bind:src="image.imgixHost + image.value.path"/>
+      <img v-bind:src="`${image.imgixHost}${image.value.path}?w=640&q=65`"/>
     </picture>
     <section>
       {{body}}
@@ -12,16 +12,14 @@
 </template>
 
 <script>
-import events from '~/lib/events'
 import loadData from '~/lib/load-data'
 
 export default {
   async asyncData (context) {
     const { title, body, images } = await loadData(context, context.params)
+    context.store.commit('globe/disableInteraction')
+
     return { title, body, images }
-  },
-  mounted () {
-    this.$events.$emit(events.disableGlobeNavigation)
   }
 }
 </script>

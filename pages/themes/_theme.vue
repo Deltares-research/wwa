@@ -10,7 +10,6 @@
 <script>
 import BottomShelf from '~/components/bottom-shelf/BottomShelf'
 import CardList from '~/components/card-list/CardList'
-import events from '~/lib/events'
 import loadData from '~/lib/load-data'
 import ThemeList from '~/components/theme-list/ThemeList'
 
@@ -18,6 +17,8 @@ export default {
   async asyncData (context) {
     const chapters = loadData(context, context.params)
     const themes = loadData(context, { theme: 'index' })
+    context.store.commit('globe/replaceTheme', context.route.params.theme)
+    context.store.commit('globe/replaceFeatures', await chapters)
 
     return {
       chapters: await chapters,
@@ -31,9 +32,6 @@ export default {
     BottomShelf,
     CardList,
     ThemeList
-  },
-  mounted () {
-    this.$events.$emit(events.activeThemeChanged, this.activeSlug)
   }
 }
 </script>

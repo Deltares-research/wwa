@@ -1,11 +1,12 @@
 <template>
-  <article class="page-component" v-bind:class="page.theme.slug">
+  <article class="page-component">
     <page-body
       v-bind:body="page.body"
       v-bind:images="page.images"
       v-bind:graphs="page.graphs"
       v-bind:title="page.title"
-      v-bind:video="page.video" />
+      v-bind:video="page.video"
+      v-bind:mapboxStyle="page.mapboxStyle" />
     <page-aside
       v-bind:influences="page.influences"
       v-bind:keywords="page.keywords"
@@ -32,6 +33,10 @@ export default {
 <style>
 @import '../colors/colors.css';
 
+:root {
+  --target-offset: 75vh
+}
+
 .page-component {
   display: flex;
   position: relative;
@@ -39,5 +44,6 @@ export default {
   margin: 0 auto;
   min-height: 25vh;
   max-width: 60rem;
+  padding-top: var(--target-offset);
 }
 </style>

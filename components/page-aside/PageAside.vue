@@ -8,12 +8,12 @@
 
     <section v-if="theme" class="clearfix page-aside__section">
       <h3 class="page-aside__title">Theme</h3>
-      <img v-if="theme && theme.slug" class="theme-icon" v-bind:src="`/assets/${theme.slug}.svg`" />
+      <img v-if="theme && theme.slug" class="theme-icon" v-bind:src="themeSrc" />
       <p>{{ theme.title }}</p>
     </section>
 
     <section class="page-aside__section page-aside__section--influences"
-      v-if="influences">
+      v-if="influences.length">
       <h3 class="page-aside__title">Influences</h3>
       <ul class="list--inline">
         <li v-for="link in influences" v-bind:key="link.slug">
@@ -23,7 +23,7 @@
     </section>
 
     <section class="page-aside__section page-aside__section--keywords"
-      v-if="keywords">
+      v-if="keywords.length">
       <h3 class="page-aside__title">Keywords</h3>
       <ul class="list--inline">
         <li v-for="link in keywords" v-bind:key="link.slug">
@@ -49,9 +49,12 @@ export default {
       var src = _defaultAvatarSrc
       const avatar = this.storyteller.avatar
       if (avatar && avatar.imgixHost) {
-        src = avatar.imgixHost + avatar.value.path
+        src = `${avatar.imgixHost}${avatar.value.path}?w=50&q=65`
       }
       return src
+    },
+    themeSrc: function () {
+      return `${this.$router.options.base}assets/${this.theme.slug}.svg`
     }
   }
 }

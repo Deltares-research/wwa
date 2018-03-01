@@ -2,11 +2,6 @@ import * as THREE from 'three'
 
 import get from 'lodash.get'
 
-import { GLOBE_RADIUS } from './constants'
-import { polar2cartesian, lat2theta, lon2phi } from './common'
-
-const SCALE = 1.1
-
 class Avatar {
   constructor (base) {
     this.textures = {}
@@ -15,6 +10,16 @@ class Avatar {
     this.textures['too-little'] = new THREE.TextureLoader().load(base + 'assets/too-little.svg')
     this.textures['mask'] = new THREE.TextureLoader().load(base + 'assets/too-little.svg')
     this.mesh = new THREE.Object3D()
+  }
+
+  /**
+   * Updates the distance from the globe based on the camera z position
+   * @param {int} cameraZ camera Z position
+   */
+  updateDistanceFromGlobe (cameraZ) {
+    [this.mesh.children[0]].forEach(avatar => {
+      console.log(avatar.position.z)
+    })
   }
 
   /**
@@ -57,22 +62,11 @@ class Avatar {
       //   map = (themeSlug) ? this.textures[themeSlug] : null
       // }
 
-      const lon = lon2phi(marker.location.lon)
-      const lat = lat2theta(marker.location.lat)
-
-      const {x, y, z} = polar2cartesian(SCALE * GLOBE_RADIUS, lat, lon)
-      const position = new THREE.Vector3(x, y, z)
-
       const geometry = new THREE.Geometry()
       const material = new THREE.PointsMaterial({ ...materialOptions, map })
       const avatar = new THREE.Points(geometry, material)
 
-      const vector = new THREE.Vector3()
-      vector.x = position.x
-      vector.y = position.y
-      vector.z = position.z
-
-      geometry.vertices.push(vector)
+      geometry.vertices.push(new THREE.Vector3())
 
       avatar.data = marker
       this.mesh.add(avatar)

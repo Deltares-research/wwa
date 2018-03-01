@@ -5,6 +5,7 @@ import { cartesian2polar, polar2cartesian, lat2theta, lon2phi } from './common.j
 import { OrbitControls } from './orbit-controls.js'
 import { mapState } from 'vuex'
 
+import { GLOBE_RADIUS } from './constants'
 import Glow from './glow'
 import Water from './water'
 import Avatar from './avatar'
@@ -115,8 +116,16 @@ export default {
         return el
       },
       cache: false
+    },
+    cameraZ: {
+      get () {
+        if (!this.camera) {
+          return 0
+        }
+        return this.camera.position.z
+      },
+      cache: false
     }
-
   },
   watch: {
     activeMarker (newMarker, oldMarker) {
@@ -149,6 +158,19 @@ export default {
       to.phi = lon2phi(newMarker.location.lon)
       to.r = 40 - newMarker.location.zoom
       this.panAndZoom(from, to)
+    },
+    cameraZ (newValue) {
+      this.avatar.mesh.children.forEach(child => {
+        const lon = lon2phi(child.data.location.lon)
+        const lat = lat2theta(child.data.location.lat)
+
+        const { x, y, z } = polar2cartesian(GLOBE_RADIUS + 0.1 + (-0.01 * newValue), lat, lon)
+        child.position.x = x
+        child.position.y = y
+        child.position.z = z
+
+        child.geometry.verticesNeedUpdate = true
+      })
     },
     /**
      * Animates the particles on the globe to the colors associated with the provided theme slug.
@@ -276,6 +298,13 @@ export default {
 
       const dirLight = new THREE.DirectionalLight(0xffaa66, 4.2)
       dirLight.position.set(15, 13, 15)
+
+      // const that = this
+
+      // this.controls.addEventListener('change', function () {
+      //   console.log(this.object.position.z)
+      //   that.avatar.updateDistanceFromGlobe(this.object.position.z)
+      // }, false)
 
       return scene
     },

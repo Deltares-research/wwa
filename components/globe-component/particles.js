@@ -47,7 +47,6 @@ class Particles {
   }
 
   update () {
-    console.time('update')
     this.geometry.attributes.position.set(metrics[this.state.current].positions)
     this.geometry.attributes.targetPosition.set(metrics[this.state.target].positions)
     this.geometry.attributes.color.set(metrics[this.state.current].colors)
@@ -63,7 +62,6 @@ class Particles {
     this.geometry.attributes.targetColor.needsUpdate = true
 
     this.uniforms.time.value = 0
-    console.timeEnd('update')
   }
 
   handleResize (smallestHeight) {
@@ -98,7 +96,6 @@ class Particles {
         console.error(`error loading globe-data.csv: ${error}`)
       }
 
-      console.time('load')
       result[0].forEach((d, i) => {
         const particle = {}
         particle.lat = lat2theta(+d.lat)
@@ -141,8 +138,6 @@ class Particles {
 
       this.geometry.attributes.position.needsUpdate = true
       this.geometry.attributes.color.needsUpdate = true
-
-      console.timeEnd('load')
 
       if (finished) {
         finished()

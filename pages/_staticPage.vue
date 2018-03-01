@@ -18,7 +18,7 @@
 <script>
 import loadData from '~/lib/load-data'
 import lazyImage from '~/components/lazy-image/LazyImage.vue'
-import { renderMarkedContent } from '~/lib/custom-marked'
+import renderMarkedContent from '~/lib/custom-marked'
 
 export default {
   async asyncData (context) {

@@ -43,7 +43,7 @@
 <script>
 import LazyImage from '~/components/lazy-image/LazyImage'
 import StoryMap from '~/components/story-map/StoryMap'
-import { renderMarkedContent } from '~/lib/custom-marked'
+import renderMarkedContent from '~/lib/custom-marked'
 
 export default {
   props: {

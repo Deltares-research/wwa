@@ -231,7 +231,6 @@ function getChapters (dato, bookRef) {
         location,
         keywords,
         pages,
-        partner,
         pageCount: pages.length,
         path,
         slug,

@@ -154,8 +154,3 @@ export default {
   padding-top: .7rem;
 }
 </style>
-
-
-
-
-

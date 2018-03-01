@@ -42,16 +42,8 @@
 
 <script>
 import LazyImage from '~/components/lazy-image/LazyImage'
-import marked from 'marked'
 import StoryMap from '~/components/story-map/StoryMap'
-
-const renderer = new marked.Renderer()
-renderer.paragraphCount = 0 // Need to keep track of the number of paragraphs
-renderer.paragraph = function (content) {
-  const i = this.paragraphCount || 0
-  this.paragraphCount++
-  return `<p ${(!i) ? 'class="intro"' : ''}>${content}</p>`
-}
+import { renderMarkedContent } from '~/lib/custom-marked'
 
 export default {
   props: {
@@ -65,17 +57,7 @@ export default {
   components: { LazyImage, StoryMap },
   computed: {
     htmlBody () {
-      return this.customMarked(this.body)
-    }
-  },
-  methods: {
-    customMarked (content) {
-      let formatted
-      if (content) {
-        renderer.paragraphCount = 0
-        formatted = marked(content, { renderer })
-      }
-      return formatted
+      return renderMarkedContent(this.body)
     }
   }
 }

@@ -2,11 +2,16 @@
 <template>
   <article class="static-page">
     <h1>{{title}}</h1>
-    <picture v-for="image in images" v-bind:key="image.id">
-      <lazy-image v-bind:src="`${image.imgixHost}${image.value.path}?w=640&q=65`" v-bind:alt="image.value.alt"/>
-    </picture>
     <section v-html="htmlBody">
     </section>
+    <picture v-for="image in images" v-bind:key="image.id">
+      <lazy-image
+      v-bind:srcWidth="image.value.width"
+      v-bind:srcHeight="image.value.height"
+      v-bind:src="`${image.imgixHost}${image.value.path}?w=640&q=65`"
+      v-bind:alt="image.value.alt"
+      width=100% />
+    </picture>
   </article>
 </template>
 
@@ -37,7 +42,7 @@ export default {
 
   .static-page {
     position: absolute;
-    bottom: 0;
+    top: 75vh;
     width: 100%;
     padding: 4rem;
     background-color: var(--ui--white);

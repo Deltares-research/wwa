@@ -1,20 +1,15 @@
 <template>
   <article class="card-component">
     <nuxt-link v-bind:to="path">
-      <h1>{{title}} {{count || ''}}</h1>
-      <svg-icon v-if="theme && theme.slug" v-bind:icon="theme.slug" />
+      <h1>{{title}}</h1>
       <p>{{body}}</p>
     </nuxt-link>
   </article>
 </template>
 
 <script>
-import SvgIcon from '~/components/svg-icon/SvgIcon'
 
 export default {
-  components: {
-    SvgIcon
-  },
   props: {
     body: String,
     count: Number,

@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter'
+import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import PageComponent from '~/components/page-component/PageComponent'
 import loadData from '~/lib/load-data'
 
@@ -20,13 +20,14 @@ export default {
     const { book, pages, path, slug, title, previousChapter, nextChapter } = await loadData(context, context.params)
     const chapter = { path, slug, title, previousChapter, nextChapter }
 
-    context.store.commit('globe/replaceFeatures', pages)
-    context.store.commit('globe/disableInteraction')
-
     return { book, chapter, pages, path, slug, title }
   },
   data () {
     return { activePage: null }
+  },
+  created () {
+    this.$store.commit('replaceFeatures', this.pages)
+    this.$store.commit('disableInteraction')
   },
   mounted () {
     const pageSlug = this.$route.hash.replace(/^#/, '')
@@ -36,58 +37,50 @@ export default {
     }
   },
   components: {
-    NarrativeHeader,
     NarrativeFooter,
+    NarrativeHeader,
     PageComponent
   },
   methods: {
     observeIntersectingChildren () {
-      const intersectionRatio = 0.001
-      const observer = new IntersectionObserver(entries => {
-        trackVisibility(entries)
-        // TODO: Pan & Zoom to
-      }, {
-        // No explicit root, we want the viewport
-        rootMargin: '-40% 0% -40% 0%',
-        thresholds: [ intersectionRatio ]
-      })
-      const pageComponentsArray = [].slice.call(this.$el.children)
-      pageComponentsArray.forEach(el => observer.observe(el))
-
-      const trackVisibility = entries => {
+      const trackVisibility = (entries) => {
         // No Array.prototype function, so we can break the loop
-        for (const entry of entries) {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             const pageSlug = entry.target.id
-            if (`#${pageSlug}` !== this.$route.hash) {
-              this.updateActivePage(pageSlug)
-            }
-            break
+            this.updateActivePage(pageSlug)
           }
-        }
+        })
       }
+      const observer = new IntersectionObserver(trackVisibility, {
+        // No explicit root, we want the viewport
+        rootMargin: '-70% 0% -20% 0%',
+        thresholds: 0
+      })
+      const pageComponentsArray = [].slice.call(this.$el.querySelectorAll('[data-page-component]'))
+      pageComponentsArray.forEach(el => observer.observe(el))
     },
     scrollToSlug (pageSlug) {
-      const activePages = this.pages.filter(page => page.slug === pageSlug)
       const activeElement = document.getElementById(pageSlug)
-      if (activeElement && activePages) {
-        const windowHeight = (window.innerHeight || document.clientHeight)
-        const top = activeElement.getBoundingClientRect().top || windowHeight
-        const y = Math.round(top - (windowHeight / 2)) // match with margin between PageComponents
-        window.scroll(0, y)
-        this.updateActiveFeature()
+      if (activeElement) {
+        activeElement.scrollIntoView()
       }
     },
     updateActivePage (pageSlug) {
       const activePages = (pageSlug) ? this.pages.filter(page => page.slug === pageSlug) : null
       this.activePage = (activePages && activePages[0]) ? activePages[0] : this.pages[0]
-      if (this.activePage) {
-        history.replaceState({}, 'page', `${this.$route.path}#${this.activePage.slug}`)
-        this.updateActiveFeature()
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      if ((to.path === from.path) && (to.hash !== from.hash)) {
+        this.scrollToSlug(to.hash.replace(/^#/, ''))
       }
     },
-    updateActiveFeature () {
-      this.$store.commit('globe/activateFeature', this.activePage)
+    activePage (activePage) {
+      const path = this.$route.path.replace(/^\//, '') // remove leading slash to maintain router base
+      history.replaceState({}, 'page', `${path}#${this.activePage.slug}`)
+      this.$store.commit('activateFeature', activePage)
     }
   }
 }

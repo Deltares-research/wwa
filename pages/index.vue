@@ -15,10 +15,11 @@ export default {
       .reduce((a, b) => a.concat(b.chapters), []) // flatten array
       .filter(marker => marker.location)
 
-    context.store.commit('globe/enableInteraction')
-    context.store.commit('globe/replaceFeatures', markers)
-
-    return { themes: await themes, books }
+    return { books, markers, themes: await themes }
+  },
+  created () {
+    this.$store.commit('replaceFeatures', this.markers)
+    this.$store.commit('enableInteraction')
   },
   components: { ThemeList }
 }

@@ -117,12 +117,12 @@ export default {
       },
       cache: false
     },
-    cameraZ: {
+    cameraGlobeDistance: {
       get () {
         if (!this.camera) {
           return 0
         }
-        return this.camera.position.z
+        return this.camera.position.distanceTo(this.globe.position)
       },
       cache: false
     }
@@ -159,12 +159,12 @@ export default {
       to.r = 40 - newMarker.location.zoom
       this.panAndZoom(from, to)
     },
-    cameraZ (newValue) {
+    cameraGlobeDistance (newValue) {
       this.avatar.mesh.children.forEach(child => {
         const lon = lon2phi(child.data.location.lon)
         const lat = lat2theta(child.data.location.lat)
 
-        const { x, y, z } = polar2cartesian(GLOBE_RADIUS + 0.1 + (-0.01 * newValue), lat, lon)
+        const { x, y, z } = polar2cartesian(GLOBE_RADIUS + (0.01 * newValue), lat, lon)
         child.position.x = x
         child.position.y = y
         child.position.z = z

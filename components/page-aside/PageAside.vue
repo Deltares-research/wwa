@@ -2,9 +2,9 @@
   <aside class="page-aside">
     <section v-if="storyteller" class="clearfix page-aside__section page-aside__section--storyteller">
       <h3 class="page-aside__title">Storyteller</h3>
-      <span class="page-aside__avatar-container">
+      <div class="page-aside__avatar-container">
         <img v-bind:src="avatarSrc" v-bind:width="avatarSize.w" v-bind:height="avatarSize.h">
-      </span>
+      </div>
       <p>{{ storyteller.name }}</p>
     </section>
 
@@ -44,22 +44,18 @@
 
 <script>
 import _defaultAvatarSrc from './assets/Portrait_Placeholder.png'
+
 const sizeLimit = 4 * 20
 const imgScale = function (imgObj) {
   const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height)
   return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) }
 }
 const avatarResize = function (imgObj) {
-  const size =
-  if( ratio > 1) {
-    $height = 500 / ratio;
-    $width = 500;
+  if (!imgObj || !imgObj.value.height) {
+    return { w: sizeLimit, h: sizeLimit }
   }
-  else {
-    $width = 500 * ratio;
-    $height = 500;
-  }
-  return { h: Math.round(wh.h * offset), w: Math.round(wh.w * offset) }
+  const offset = sizeLimit / imgObj.value.height
+  return { w: Math.round(imgObj.value.width * offset), h: sizeLimit }
 }
 
 export default {
@@ -90,10 +86,10 @@ export default {
       return `${this.$router.options.base}assets/${this.theme.slug}.svg`
     },
     avatarSize: function () {
-      return imgScale(this.storyteller.avatar)
+      return avatarResize(this.storyteller.avatar)
     },
     logoSize: function () {
-      return avatarResize(this.partner.logo)
+      return imgScale(this.partner.logo)
     }
   }
 }
@@ -149,8 +145,8 @@ export default {
   height: 4rem;
   border-radius: 100%;
   margin: 0 .7rem 0 -1px;
-  display:flex;
-  overflow:hidden;
+  display: inline-block;
+  overflow: hidden;
 }
 
 .page-aside img + p {

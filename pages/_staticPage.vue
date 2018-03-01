@@ -3,7 +3,7 @@
   <article class="static-page">
     <h1>{{title}}</h1>
     <picture v-for="image in images" v-bind:key="image.id">
-      <img v-bind:src="`${image.imgixHost}${image.value.path}?w=640&q=65`"/>
+      <lazy-image v-bind:src="`${image.imgixHost}${image.value.path}?w=640&q=65`" v-bind:alt="image.value.alt"/>
     </picture>
     <section v-html="htmlBody">
     </section>
@@ -12,15 +12,8 @@
 
 <script>
 import loadData from '~/lib/load-data'
-import marked from 'marked'
-
-const renderer = new marked.Renderer()
-renderer.paragraphCount = 0 // Need to keep track of the number of paragraphs
-renderer.paragraph = function (content) {
-  const i = this.paragraphCount || 0
-  this.paragraphCount++
-  return `<p ${(!i) ? 'class="intro"' : ''}>${content}</p>`
-}
+import lazyImage from '~/components/lazy-image/LazyImage.vue'
+import { renderMarkedContent } from '~/lib/custom-marked'
 
 export default {
   async asyncData (context) {
@@ -31,22 +24,11 @@ export default {
   },
   computed: {
     htmlBody () {
-      return this.customMarked(this.body)
+      return renderMarkedContent(this.body)
     }
   },
-  mounted () {
-    this.$events.$emit(events.disableGlobeNavigation)
-  },
-  methods: {
-    customMarked (content) {
-      let formatted
-      if (content) {
-        renderer.paragraphCount = 0
-        formatted = marked(content, { renderer })
-      }
-      return formatted
-    }
-
+  components: {
+    lazyImage
   }
 }
 </script>

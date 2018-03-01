@@ -19,3 +19,11 @@
 .slideUp-enter-active:nth-child(2) { transition-delay: 300ms }
 .slideUp-enter-active:nth-child(3) { transition-delay: 600ms }
 .slideUp-enter-active:nth-child(4) { transition-delay: 900ms }
+
+
+.page-enter-active, .page-leave-active {
+  transition: opacity .5s
+}
+.page-enter, .page-leave-active {
+  opacity: 0
+}

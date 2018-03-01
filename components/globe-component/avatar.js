@@ -24,6 +24,15 @@ class Avatar {
    */
   load (markers, finished) {
     this.markers = markers
+
+    const materialOptions = {
+      color: 0xffffff,
+      sizeAttenuation: false,
+      size: 50.0,
+      transparent: true,
+      depthWrite: false
+    }
+
     this.markers.forEach(marker => {
       if (!marker.location) {
         return false
@@ -31,7 +40,7 @@ class Avatar {
       const themeSlug = get(marker, 'theme.slug', undefined)
       // const avatarImgPath = get(marker, 'storyteller.avatar.value.path', null)
       // const avatarImgHost = get(marker, 'storyteller.avatar.imgixHost')
-      const color = 0xffffff
+
       let map = (themeSlug) ? this.textures[themeSlug] : null
 
       // // if an avatar is defined, use it
@@ -48,22 +57,24 @@ class Avatar {
       //   map = (themeSlug) ? this.textures[themeSlug] : null
       // }
 
-      const material = new THREE.SpriteMaterial({ map, color })
-      const avatar = new THREE.Sprite(material)
-      avatar.scale.set(1 / SCALE, 1 / SCALE, 1 / SCALE)
-
       const lon = lon2phi(marker.location.lon)
       const lat = lat2theta(marker.location.lat)
 
       const {x, y, z} = polar2cartesian(SCALE * GLOBE_RADIUS, lat, lon)
       const position = new THREE.Vector3(x, y, z)
 
-      avatar.position.x = position.x
-      avatar.position.y = position.y
-      avatar.position.z = position.z
+      const geometry = new THREE.Geometry()
+      const material = new THREE.PointsMaterial({ ...materialOptions, map })
+      const avatar = new THREE.Points(geometry, material)
+
+      const vector = new THREE.Vector3()
+      vector.x = position.x
+      vector.y = position.y
+      vector.z = position.z
+
+      geometry.vertices.push(vector)
 
       avatar.data = marker
-
       this.mesh.add(avatar)
     })
 

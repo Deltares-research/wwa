@@ -4,6 +4,7 @@
     <li v-for="(card, index) in cards" v-bind:key="card.slug" class="card-list__item">
       <card-component
         v-bind:delay="index * 100"
+        v-bind:subtitle="(card.book) ? card.book.title : undefined"
         v-bind:title="card.title"
         v-bind:slug="card.slug"
         v-bind:path="card.path"

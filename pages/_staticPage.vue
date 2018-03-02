@@ -21,6 +21,7 @@ import lazyImage from '~/components/lazy-image/LazyImage.vue'
 import renderMarkedContent from '~/lib/custom-marked'
 
 export default {
+  layout: 'static-page',
   async asyncData (context) {
     const { title, body, images } = await loadData(context, context.params)
 
@@ -39,15 +40,13 @@ export default {
   }
 }
 </script>
-<style>
-  @import '../components/colors/colors.css';
 
-  .static-page {
-    position: absolute;
-    top: 75vh;
-    width: 100%;
-    padding: 4rem;
-    background-color: var(--ui--white);
-    box-sizing: border-box;
-  }
+<style>
+.static-page {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 960px;
+  margin: auto;
+  padding: 10rem 1rem;
+}
 </style>

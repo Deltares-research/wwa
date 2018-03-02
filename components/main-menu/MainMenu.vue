@@ -1,8 +1,16 @@
 <template>
    <nav v-bind:class="`main-menu main-menu--${variant}`">
-      <nuxt-link class="main-menu__item main-menu__item--home h1" to="/" title="Go home"><span class="sr-only">Return to the homepage</span>World<br />Water<br />Atlas</nuxt-link>
-      <nuxt-link class="main-menu__item main-menu__item--about h3" to="/about">About</nuxt-link>
-      <nuxt-link class="main-menu__item main-menu__item--submit h3" to="/submit-a-story-to-world-water-atlas">Submit a story</nuxt-link>
+      <nuxt-link class="main-menu__item main-menu__item--home h1" to="/" title="Go home">
+        <span class="sr-only">Return to the homepage</span>World<br />Water<br />Atlas
+      </nuxt-link>
+      <nuxt-link v-bind:class="`main-menu__item main-menu__item--about h3 ${(variant === 'dark') ? 'invert' : ''}`"
+        to="/about">
+        About
+      </nuxt-link>
+      <nuxt-link v-bind:class="`main-menu__item main-menu__item--submit h3 ${(variant === 'dark') ? 'invert' : ''}`"
+        to="/submit-a-story">
+        Submit a story
+      </nuxt-link>
     </nav>
 </template>
 
@@ -26,7 +34,7 @@ export default {
 @import '../colors/colors.css';
 
 .main-menu {
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
   top: 0;
@@ -45,7 +53,6 @@ export default {
   display: inline-block;
   margin: 0 .5rem;
   padding: .5rem;
-  opacity: .6;
   transition: .5s opacity;
   font-weight: normal;
   text-decoration: none;
@@ -61,7 +68,7 @@ export default {
 .main-menu .main-menu__item--home {
   text-decoration: none;
   font-weight: normal;
-  position: absolute;
+  position: fixed;
   text-align: left;
   left:0;
   top: 0;
@@ -74,8 +81,7 @@ export default {
 }
 
 .main-menu__item--submit {
-  border: 1px solid var(--ui--white);
-  border-radius: 4px;
+  outline: 1px solid var(--ui--white);
 }
 .main-menu__item--submit::before {
   content: '+ '

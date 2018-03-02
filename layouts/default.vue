@@ -1,7 +1,9 @@
 <template>
   <main>
     <main-menu variant="dark" />
-    <globe-component v-bind:is="GlobeComponent" class="globe-component" />
+    <transition name="fadeIn" mode="out-in">
+      <globe-component v-bind:is="GlobeComponent" class="globe-component" />
+    </transition>
     <nuxt/>
 
   </main>
@@ -21,6 +23,7 @@ export default {
 
 <style>
 @import '../components/colors/colors.css';
+@import '../components/animations/animations.css';
 
 html {
   padding: 0;

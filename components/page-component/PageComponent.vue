@@ -33,17 +33,22 @@ export default {
 <style>
 @import '../colors/colors.css';
 
-:root {
-  --target-offset: 75vh
-}
-
 .page-component {
   display: flex;
   position: relative;
-  flex-direction: row;
-  margin: 0 auto;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
   min-height: 25vh;
   max-width: 60rem;
-  padding-top: var(--target-offset);
 }
+
+@media screen and (min-width: 720px) {
+  .page-component {
+    flex-direction: row;
+      padding-left: 2rem;
+      padding-right: 2rem;
+  }
+}
+
 </style>

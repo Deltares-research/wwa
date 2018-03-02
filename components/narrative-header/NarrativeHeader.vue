@@ -41,6 +41,8 @@ export default {
 .narrative-header__book,
 .narrative-header__chapter {
   max-width: 960px;
+  padding-left: 2rem;
+  padding-right: 2rem;
   margin: 1rem auto;
 }
 

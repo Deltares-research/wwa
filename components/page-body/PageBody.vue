@@ -69,6 +69,7 @@ export default {
 .page-body {
   padding: 2rem;
   background-color: var(--ui--bg--white);
+  flex: 0 1 100%;
 }
 
 .page-body figure {

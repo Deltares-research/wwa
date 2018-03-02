@@ -102,7 +102,7 @@ export default {
 <style>
 
 :root {
-  --target-offset: 75vh
+  --target-offset: 50vh
 }
 
 .full-width {
@@ -110,13 +110,18 @@ export default {
   top: var(--target-offset);
   left:0;
   right: 0;
+  z-index: 0;
 }
 
 .chapter .narrative-header {
   width: 100%;
   margin: auto;
-  margin-bottom: calc(-1 * var(--target-offset));
   position: relative;
-  z-index: 1;
+  margin-bottom: calc(-1 * var(--target-offset));
 }
+
+.page-component {
+  padding-top: var(--target-offset);
+}
+
 </style>

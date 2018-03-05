@@ -1,18 +1,18 @@
 <template>
   <div>
     <scroll-indicator v-bind:pages="pages" v-bind:activePage="activePage" />
-  <div class="chapter full-width">
-    <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
-          <page-component
-            v-for="page in pages"
-            v-bind:key="page.slug"
-      v-bind:page="page"
-      v-bind:id="page.slug"
-            data-page-component
-      class="page-component" />
-      <narrative-footer
-        v-bind:previousLink="chapter.previousChapter"
-        v-bind:nextLink="chapter.nextChapter" />
+    <div class="chapter full-width">
+      <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
+            <page-component
+              v-for="page in pages"
+              v-bind:key="page.slug"
+        v-bind:page="page"
+        v-bind:id="page.slug"
+              data-page-component
+        class="page-component" />
+        <narrative-footer
+          v-bind:previousLink="chapter.previousChapter"
+          v-bind:nextLink="chapter.nextChapter" />
     </div>
   </div>
 </template>

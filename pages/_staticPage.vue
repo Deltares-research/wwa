@@ -60,15 +60,4 @@ export default {
   .static-page__video {
     margin-bottom: 2rem;
   }
-
-  .fixed-ratio {
-    padding: 0;
-    position: relative;
-    color: var(--ui--text--light);
-    background-color: var(--ui--bg--light);
-  }
-
-  .fixed-ratio > * {
-    position: absolute;
-  }
 </style>

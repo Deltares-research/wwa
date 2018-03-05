@@ -33,6 +33,23 @@
       <section v-if="mapboxStyle" class="page-body__map">
         <story-map v-bind:mapbox-style="mapboxStyle"></story-map>
       </section>
+
+      <section class="clearfix page-body__footer">
+        <ul class="pag-body__links">
+          <li v-for="link in links" v-bind:key="link.slug">
+            <nuxt-link v-bind:to="link.path">{{ link.title }}</nuxt-link>
+          </li>
+        </ul>
+
+        <p v-if="partner && partner.name" >
+           Created in partnership with:
+           <span class="clearfix page-body__partner">
+            <img v-if="partner && partner.logo.imgixHost" v-bind:src="`${partner.logo.imgixHost}${partner.logo.value.path}?w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`" v-bind:width="scaleMaxToSize(partner.logo, sizeLimit).w" v-bind:height="scaleMaxToSize(partner.logo, sizeLimit).h">
+            {{ partner.name }}
+          </span>
+        </p>
+      </section>
+
     </section>
 </template>
 
@@ -55,7 +72,12 @@ export default {
     images: Array,
     title: String,
     video: Object,
-    mapboxStyle: String
+    mapboxStyle: String,
+    partner: Object,
+    sizeLimit: {
+      type: Number,
+      default: 4 * 16
+    }
   },
   components: { StoryMap },
   computed: {
@@ -71,6 +93,13 @@ export default {
         formatted = marked(content, { renderer })
       }
       return formatted
+    },
+    scaleMaxToSize: function (imgObj, sizeLimit) {
+      if (!imgObj.value.width) {
+        return { h: Math.round(sizeLimit), w: Math.round(sizeLimit) }
+      }
+      const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height)
+      return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) }
     }
   }
 }
@@ -111,6 +140,24 @@ export default {
   color: var(--ui--text--light);
   width: 100%;
   padding: 5px 0;
+}
+
+.page-body__footer {
+  color: var(--ui--text--light);
+  width: 100%;
+  padding: 5px 0;
+}
+
+.page-body__partner {
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  font-style: italic;
+}
+
+.page-body__partner img {
+  margin: 0 4px;
+  vertical-align: middle;
 }
 
 .fixed-ratio {

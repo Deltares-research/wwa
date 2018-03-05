@@ -6,12 +6,12 @@
       v-bind:graphs="page.graphs"
       v-bind:title="page.title"
       v-bind:video="page.video"
-      v-bind:mapboxStyle="page.mapboxStyle" />
+      v-bind:mapboxStyle="page.mapboxStyle"
+      v-bind:partner="page.partner" />
     <page-aside
       v-bind:influences="page.influences"
       v-bind:keywords="page.keywords"
       v-bind:storyteller="page.storyteller"
-      v-bind:partner="page.partner"
       v-bind:theme="page.theme" />
   </article>
 </template>

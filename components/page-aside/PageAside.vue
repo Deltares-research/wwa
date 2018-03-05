@@ -1,22 +1,16 @@
 <template>
   <aside class="page-aside">
-    <section v-if="storyteller" class="clearfix page-aside__section page-aside__section--storyteller">
+    <section v-if="storyteller && storyteller.name" class="clearfix page-aside__section page-aside__section--storyteller">
       <h3 class="page-aside__title">Storyteller</h3>
-      <span class="page-aside__avatar-container">
-        <img v-bind:src="avatarSrc" v-bind:width="avatarSize.w" v-bind:height="avatarSize.h">
+      <span v-if="storyteller.avatar && storyteller.avatar.imgixHost" class="page-aside__avatar-container">
+        <img v-bind:src="`${storyteller.avatar.imgixHost}${storyteller.avatar.value.path}?w=scaleMinToSize(storyteller.avatar, sizeLimit).w&q=65`" v-bind:width="scaleMinToSize(storyteller.avatar, sizeLimit).w" v-bind:height="scaleMinToSize(storyteller.avatar, sizeLimit).h">
       </span>
       <p>{{ storyteller.name }}</p>
     </section>
 
-    <section v-if="partner && partner.name" class="clearfix page-aside__section page-aside__section--partner">
-      <h3 class="page-aside__title">Partner</h3>
-      <img v-if="partnerSrc" v-bind:src="partnerSrc" v-bind:width="logoSize.w" v-bind:height="logoSize.h">
-      <p>{{ partner.name }}</p>
-    </section>
-
-    <section v-if="theme" class="clearfix page-aside__section">
+   <section v-if="theme" class="clearfix page-aside__section">
       <h3 class="page-aside__title">Theme</h3>
-      <img v-if="theme && theme.slug" class="theme-icon" v-bind:src="themeSrc" />
+      <img v-if="theme && theme.slug" class="theme-icon" v-bind:src="`/assets/${this.theme.slug}.svg`" />
       <p>{{ theme.title }}</p>
     </section>
 
@@ -43,8 +37,6 @@
 </template>
 
 <script>
-import _defaultAvatarSrc from './assets/Portrait_Placeholder.png'
-
 export default {
   props: {
     influences: Array,
@@ -54,47 +46,14 @@ export default {
     theme: Object,
     sizeLimit: {
       type: Number,
-      default: 3 * 22
-    }
-  },
-  computed: {
-    avatarSrc: function () {
-      var src = _defaultAvatarSrc
-      const avatar = this.storyteller.avatar
-      if (avatar && avatar.imgixHost) {
-        src = `${avatar.imgixHost}${avatar.value.path}?w=50&q=65`
-      }
-      return src
-    },
-    partnerSrc: function () {
-      const partner = this.partner.logo
-      if (partner && partner.imgixHost) {
-        return `${partner.imgixHost}${partner.value.path}?w=50&q=65`
-      }
-      return null
-    },
-    themeSrc: function () {
-      return `${this.$router.options.base}assets/${this.theme.slug}.svg`
-    },
-    avatarSize: function () {
-      if (!this.storyteller.avatar || !this.storyteller.avatar.value.height) {
-        return { w: this.sizeLimit, h: this.sizeLimit }
-      }
-      return this.scaleMinToSize(this.storyteller.avatar, this.sizeLimit)
-    },
-    logoSize: function () {
-      if (!this.partner.logo || !this.partner.logo.value.height) {
-        return { w: this.sizeLimit, h: this.sizeLimit }
-      }
-      return this.scaleMaxToSize(this.partner.logo, this.sizeLimit)
+      default: 4 * 16
     }
   },
   methods: {
-    scaleMaxToSize: function (imgObj, sizeLimit) {
-      const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height)
-      return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) }
-    },
     scaleMinToSize: function (imgObj, sizeLimit) {
+      if (!imgObj.value.width) {
+        return { h: Math.round(sizeLimit), w: Math.round(sizeLimit) }
+      }
       if (imgObj.value.height > imgObj.value.width) {
         const offset = sizeLimit / imgObj.value.width
         return { w: sizeLimit, h: Math.round(imgObj.value.height * offset) }

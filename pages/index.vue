@@ -20,6 +20,7 @@ export default {
   mounted () {
     this.$store.commit('replaceFeatures', this.markers)
     this.$store.commit('enableInteraction')
+    this.$store.commit('enableGlobeAutoRotation', true)
   },
   components: { ThemeList }
 }

@@ -7,7 +7,8 @@ const store = () => {
       activeFeature: null,
       features: [],
       globeInteraction: true,
-      theme: 'too-much'
+      theme: 'too-much',
+      globeAutoRotation: true
     },
     mutations: {
       activateFeature (state, feature) {
@@ -28,6 +29,9 @@ const store = () => {
       },
       enableInteraction (state) {
         state.globeInteraction = true
+      },
+      enableGlobeAutoRotation (state, value) {
+        state.globeAutoRotation = value
       }
     }
   })

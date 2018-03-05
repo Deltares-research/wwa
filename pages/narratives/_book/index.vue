@@ -25,6 +25,7 @@ export default {
   mounted () {
     this.$store.commit('replaceFeatures', this.chapters)
     this.$store.commit('replaceTheme', this.theme.slug)
+    this.$store.commit('enableGlobeAutoRotation', false)
   },
   components: { BottomShelf, CardList, NarrativeHeader, ThemeList }
 }

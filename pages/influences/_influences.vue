@@ -20,11 +20,15 @@ export default {
     // Build active influences objects from url
     const activeInfluences = allInfluences
       .filter(tag => influencesFromUrl.some(active => active === tag.slug))
+
     return {
       influences: allInfluences,
       activeInfluences,
       results
     }
+  },
+  mounted () {
+    this.$store.commit('replaceFeatures', this.results)
   },
   components: {
     BottomShelf,

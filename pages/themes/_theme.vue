@@ -10,7 +10,6 @@
 <script>
 import BottomShelf from '~/components/bottom-shelf/BottomShelf'
 import CardList from '~/components/card-list/CardList'
-import events from '~/lib/events'
 import loadData from '~/lib/load-data'
 import ThemeList from '~/components/theme-list/ThemeList'
 
@@ -27,13 +26,14 @@ export default {
   data () {
     return { activeSlug: this.$route.params.theme }
   },
+  mounted () {
+    this.$store.commit('replaceFeatures', this.chapters)
+    this.$store.commit('replaceTheme', this.$route.params.theme)
+  },
   components: {
     BottomShelf,
     CardList,
     ThemeList
-  },
-  mounted () {
-    this.$events.$emit(events.activeThemeChanged, this.activeSlug)
   }
 }
 </script>

@@ -73,12 +73,12 @@ class Particles {
     this.uniforms.pointSize.value = p(smallestHeight) < 1.0 ? 1.0 : p(smallestHeight) / (2 / window.devicePixelRatio)
   }
 
-  activateTheme (theme) {
+  replaceTheme (slug) {
     if (!this.colors || !this.targetColors || !this.indices || !this.values || !this.mesh) {
       return false
     }
     this.state.current = this.state.target
-    this.state.target = theme
+    this.state.target = slug
 
     this.colors.set(metrics[this.state.current].colors)
     this.targetColors.set(metrics[this.state.target].colors)

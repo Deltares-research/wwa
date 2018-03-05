@@ -60,6 +60,9 @@ export default {
         .filter(keyword => this.activeKeywords.every(active => active.slug !== keyword.slug))
     }
   },
+  mounted () {
+    this.$store.commit('replaceFeatures', this.results)
+  },
   methods: {
     updatePath (event) {
       const keywordSlug = event.target.value

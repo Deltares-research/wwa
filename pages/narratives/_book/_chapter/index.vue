@@ -1,100 +1,99 @@
 <template>
-  <div class="full-width">
+  <div>
+    <scroll-indicator v-bind:pages="pages" v-bind:activePage="activePage" />
+  <div class="chapter full-width">
     <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
-    <page-component v-for="page in pages" v-bind:key="page.slug"
+          <page-component
+            v-for="page in pages"
+            v-bind:key="page.slug"
       v-bind:page="page"
       v-bind:id="page.slug"
+            data-page-component
       class="page-component" />
-    <narrative-footer v-bind:previousLink="chapter.previousChapter" v-bind:nextLink="chapter.nextChapter" />
+      <narrative-footer
+        v-bind:previousLink="chapter.previousChapter"
+        v-bind:nextLink="chapter.nextChapter" />
+    </div>
   </div>
 </template>
 
 <script>
-import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter'
+import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import PageComponent from '~/components/page-component/PageComponent'
-import events from '~/lib/events'
+import ScrollIndicator from '~/components/scroll-indicator/ScrollIndicator'
 import loadData from '~/lib/load-data'
 
 export default {
   async asyncData (context) {
     const { book, pages, path, slug, title, previousChapter, nextChapter } = await loadData(context, context.params)
     const chapter = { path, slug, title, previousChapter, nextChapter }
+
     return { book, chapter, pages, path, slug, title }
   },
   data () {
     return { activePage: null }
   },
   mounted () {
-    const pageSlug = this.$route.hash.replace(/^#/, '') || undefined
+    this.$store.commit('replaceFeatures', this.pages)
+    this.$store.commit('disableInteraction')
+    const pageSlug = this.$route.hash.replace(/^#/, '')
     this.updateActivePage(pageSlug)
-    this.$events.$emit(events.disableGlobeNavigation)
-    this.$events.$emit(events.featuresChanged, this.pages)
     if ('IntersectionObserver' in window) {
       this.observeIntersectingChildren()
     }
   },
   components: {
-    NarrativeHeader,
     NarrativeFooter,
-    PageComponent
+    NarrativeHeader,
+    PageComponent,
+    ScrollIndicator
   },
   methods: {
     observeIntersectingChildren () {
-      const intersectionRatio = 0.001
-      const observer = new IntersectionObserver(entries => {
-        trackVisibility(entries)
-        // TODO: Pan & Zoom to
-      }, {
-        // No explicit root, we want the viewport
-        rootMargin: '-40% 0% -40% 0%',
-        thresholds: [ intersectionRatio ]
-      })
-      const pageComponentsArray = [].slice.call(this.$el.children)
-      pageComponentsArray.forEach(el => observer.observe(el))
-
-      const trackVisibility = entries => {
+      const trackVisibility = (entries) => {
         // No Array.prototype function, so we can break the loop
-        for (const entry of entries) {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             const pageSlug = entry.target.id
-            if (`#${pageSlug}` !== this.$route.hash) {
-              this.updateActivePage(pageSlug)
-            }
-            break
+            this.updateActivePage(pageSlug)
           }
-        }
+        })
       }
+      const observer = new IntersectionObserver(trackVisibility, {
+        // No explicit root, we want the viewport
+        rootMargin: '-70% 0% -20% 0%',
+        thresholds: 0
+      })
+      const pageComponentsArray = [].slice.call(this.$el.querySelectorAll('[data-page-component]'))
+      pageComponentsArray.forEach(el => observer.observe(el))
     },
     scrollToSlug (pageSlug) {
-      const activePages = this.pages.filter(page => page.slug === pageSlug)
       const activeElement = document.getElementById(pageSlug)
-      if (activeElement && activePages) {
-        const windowHeight = (window.innerHeight || document.clientHeight)
-        const top = activeElement.getBoundingClientRect().top || windowHeight
-        const y = Math.round(top - (windowHeight / 2)) // match with margin between PageComponents
-        window.scroll(0, y)
-        this.updateActiveFeature()
-        this.updateActiveTheme()
+      if (activeElement) {
+        activeElement.scrollIntoView()
       }
     },
     updateActivePage (pageSlug) {
       const activePages = (pageSlug) ? this.pages.filter(page => page.slug === pageSlug) : null
       this.activePage = (activePages && activePages[0]) ? activePages[0] : this.pages[0]
-      if (this.activePage) {
-        history.replaceState({}, 'page', `${this.$route.path}#${this.activePage.slug}`)
-        this.updateActiveFeature()
-        this.updateActiveTheme()
+    },
+    visibilityChanged (isVisible, entry) {
+      if (isVisible) {
+        this.updateActivePage(entry.target.id)
+      }
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      if ((to.path === from.path) && (to.hash !== from.hash)) {
+        this.scrollToSlug(to.hash.replace(/^#/, ''))
       }
     },
-    updateActiveFeature () {
-      this.$events.$emit(events.activeFeatureChanged, this.activePage)
-    },
-    updateActiveTheme () {
-      const { slug = undefined } = this.activePage.theme
-      if (slug) {
-        this.$events.$emit(events.activeThemeChanged, slug)
-      }
+    activePage (activePage) {
+      const path = this.$route.path.replace(/^\//, '') // remove leading slash to maintain router base
+      history.replaceState({}, 'page', `${path}#${this.activePage.slug}`)
+      this.$store.commit('activateFeature', activePage)
     }
   }
 }
@@ -108,16 +107,14 @@ export default {
 
 .full-width {
   position: absolute;
+  top: var(--target-offset);
   left:0;
   right: 0;
-  top:0;
-  bottom: 0;
 }
 
-.narrative-header {
+.chapter .narrative-header {
   width: 100%;
   margin: auto;
-  margin-top: calc(var(--target-offset));
   margin-bottom: calc(-1 * var(--target-offset));
   position: relative;
   z-index: 1;

@@ -50,13 +50,8 @@ const plugins = [
 ]
 
 const env = {
-  // TODO make this a bit more flexible (also allow surge deployment)
-  baseUrl: 'http://localhost:9920'
-}
-
-if (process.env.NODE_ENV === 'production') {
-  // root
-  env.baseUrl = '/'
+  // Allow to choose a baseurl (should only be used during generate)
+  baseUrl: process.env.BASE_URL || 'http://localhost:9920'
 }
 
 // extra options for github pages
@@ -75,8 +70,6 @@ if (process.env.DEPLOY_ENV === 'GH_PAGES') {
       to: 'dist/.nojekyll'
     }], {})
   )
-  // use the deployment url
-  env.baseUrl = 'https://deltares.github.io' + '/wwa'
 }
 
 module.exports = {
@@ -94,11 +87,10 @@ module.exports = {
       { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' }
     ],
     script: [
-      { src: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js' }
+      { src: 'https://cdn.polyfill.io/v2/polyfill.min.js?features=IntersectionObserver' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css', rel: 'stylesheet' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
 
@@ -126,9 +118,14 @@ module.exports = {
     extractCSS: true,
     // add postcss plugins
     postcss,
-    plugins
+    plugins,
+    vendor: [
+      'axios',
+      'marked',
+      'vue-clazy-load'
+    ]
   },
-  env: env,
+  env,
   // Define dynamic routes to generate for dist,
   generate: {
     routes

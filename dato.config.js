@@ -129,8 +129,8 @@ function generateStaticPages (dato, root, i18n) {
   const staticPages = dato.staticPages
     .filter(filterPublished)
     .map(page => {
-      const { body, images, slug, title } = page
-      return { body, images, slug, title }
+      const { body, images, slug, title, video } = page
+      return { body, images, slug, title, video }
     })
   for (const page of staticPages) {
     root.createDataFile(`static/data/${page.slug}.json`, 'json', page)

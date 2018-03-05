@@ -21,13 +21,14 @@ export default {
     const activeInfluences = allInfluences
       .filter(tag => influencesFromUrl.some(active => active === tag.slug))
 
-    context.store.commit('globe/replaceFeatures', results)
-
     return {
       influences: allInfluences,
       activeInfluences,
       results
     }
+  },
+  mounted () {
+    this.$store.commit('replaceFeatures', this.results)
   },
   components: {
     BottomShelf,

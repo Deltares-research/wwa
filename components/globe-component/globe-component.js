@@ -8,7 +8,6 @@ import { mapState } from 'vuex'
 import Glow from './glow'
 import Water from './water'
 import Avatar from './avatar'
-import State from './state'
 import Particles from './particles'
 
 // const GLOBE_RADIUS = 5
@@ -32,8 +31,6 @@ export default {
     try {
       this.renderer = this.createRenderer()
     } catch (err) {
-      const fallbackElement = this.$el.querySelector('.fallback')
-      fallbackElement.classList.remove('hidden')
       return
     }
 
@@ -74,14 +71,36 @@ export default {
       this.handleClick,
       false
     )
+
+    this.activateFeature(this.activeFeature)
+    if (this.activateFeature && this.activateFeature.theme) {
+      this.theme = this.activateFeature.theme.slug || this.theme
+    }
+    this.replaceTheme(this.theme)
+  },
+  watch: {
+    activeFeature (val) {
+      this.activateFeature(val)
+      if (val.theme && val.theme.slug) {
+        this.replaceTheme(val.theme.slug)
+      }
+    },
+    features (val) {
+      this.replaceFeatures(val)
+    },
+    globeInteraction (val) {
+      this.enableInteraction(val)
+    },
+    theme (val, old) {
+      this.replaceTheme(val, old)
+    }
   },
   computed: {
-    // Get state from store
     ...mapState({
-      markers: state => state.globe.features,
-      theme: state => state.globe.theme,
-      activeMarker: state => state.globe.activeFeature,
-      enableInteraction: state => state.globe.enableInteraction
+      activeFeature: state => state.activeFeature,
+      features: state => state.features,
+      globeInteraction: state => state.interaction,
+      theme: state => state.theme
     }),
     containerSize: {
       get () {
@@ -118,20 +137,20 @@ export default {
     }
 
   },
-  watch: {
-    activeMarker (newMarker, oldMarker) {
-      if (!(newMarker) || !(newMarker.location)) {
+  methods: {
+    activateFeature (feature) {
+      if (!(feature) || !(feature.location)) {
         return
       }
-      this.connections = this.markers.map(d => {
+      this.connections = this.features.map(d => {
         if (!d.location || d.location === null) {
           return
         }
 
         return {
           from: {
-            lat: newMarker.location.lat,
-            lon: newMarker.location.lon
+            lat: feature.location.lat,
+            lon: feature.location.lon
           },
           to: {
             lat: d.location.lat,
@@ -145,33 +164,31 @@ export default {
       // https://en.wikipedia.org/wiki/Spherical_coordinate_system
       const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
       const to = {}
-      to.theta = lat2theta(newMarker.location.lat)
-      to.phi = lon2phi(newMarker.location.lon)
-      to.r = 40 - newMarker.location.zoom
+      to.theta = lat2theta(feature.location.lat)
+      to.phi = lon2phi(feature.location.lon)
+      to.r = 40 - feature.location.zoom
       this.panAndZoom(from, to)
     },
     /**
      * Animates the particles on the globe to the colors associated with the provided theme slug.
-     * @param {String} themeSlug one of the theme slugs: too-little, too-much or too-dirty
+     * @param {String} slug one of the theme slugs: too-little, too-much or too-dirty
      */
-    theme (themeSlug) {
-      this.particles.replaceTheme(themeSlug)
+    replaceTheme (slug) {
+      this.particles.replaceTheme(slug)
     },
-    enableInteraction (newValue, oldValue) {
+    enableInteraction (val) {
       if (!(this.controls)) {
         return
       }
-      this.controls.enableRotate = newValue
-      this.controls.enableZoom = newValue
+      this.controls.enableRotate = val
+      this.controls.enableZoom = val
     },
-    markers (newMarkers, oldMarkers) {
+    replaceFeatures (features) {
       const globe = this.globe
-      const markers = newMarkers.filter(marker => marker.location)
+      const filteredFeatures = features.filter(feature => feature.location)
       this.avatar.clear()
-      this.avatar.load(markers, avs => globe.add(avs))
-    }
-  },
-  methods: {
+      this.avatar.load(filteredFeatures, avs => globe.add(avs))
+    },
     handleResize () {
       // We're getting the containerSize here because the size
       // of the canvas itself is not changing on screen resize
@@ -195,7 +212,7 @@ export default {
     },
     handleClick (event) {
       if (this.intersections.length > 0) {
-        const { data } = this.intersections[0].object
+        const { data = { path: '#' } } = this.intersections[0].object
         // navigate to path
         this.$router.push(data.path)
       }
@@ -253,8 +270,7 @@ export default {
       this.globe = globe
       globe.position.set(0, 0, 0)
 
-      const state = new State() // TODO: this should be done differently
-      this.particles = new Particles(state)
+      this.particles = new Particles({current: this.theme, target: this.theme})
       this.particles.load(() => this.particles.update())
       globe.add(this.particles.mesh)
 
@@ -267,7 +283,7 @@ export default {
       // get the baseUrl
       const { base = '/' } = this.$router.options
       this.avatar = new Avatar(base)
-      this.avatar.load(this.markers, avs => globe.add(avs))
+      this.avatar.load(this.features, avs => globe.add(avs))
 
       scene.add(globe)
 

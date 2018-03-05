@@ -1,41 +1,40 @@
 <template>
   <div>
-    <div data-story-map class="map"></div>
+    <div data-story-map class="story-map"></div>
   </div>
 </template>
 
-
 <script>
+const apiKey = 'pk.eyJ1Ijoic2lnZ3lmIiwiYSI6ImNqZGsybjA4dTFvNnMzMnFvNXNkdXpiYXAifQ.cXeF4BQA1dKV6L--GI2Q_A'
+
 export default {
+  head: {
+    script: [
+      { src: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js', defer: true }
+    ],
+    link: [
+      { href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css', rel: 'stylesheet' }
+    ]
+  },
   props: {
     mapboxStyle: {
       type: String,
       default: 'mapbox://styles/mapbox/satellite-v9'
     },
-    wmsLayer: {
-      type: String
-    },
-    center: {
-      type: Array
-    },
-    zoom: {
-      type: Number
-    }
-  },
-  components: {
-  },
-  created () {
+    wmsLayer: String,
+    center: Array,
+    zoom: Number
   },
   mounted () {
-    // import mapbox after load (not available during build on nodejs)
-    // See: https://github.com/mapbox/mapbox-gl-js/issues/4463
-    // wwa access token
-    mapboxgl.accessToken = 'pk.eyJ1Ijoic2lnZ3lmIiwiYSI6ImNqZGsybjA4dTFvNnMzMnFvNXNkdXpiYXAifQ.cXeF4BQA1dKV6L--GI2Q_A'
+    if (!mapboxgl) { return }
+    mapboxgl.accessToken = apiKey
     const mapElement = this.$el.querySelector('[data-story-map]')
     const map = new mapboxgl.Map({
       container: mapElement,
       style: this.mapboxStyle
     })
+    map.scrollZoom.disable()
+    map.addControl(new mapboxgl.NavigationControl())
     return map
   }
 }
@@ -43,9 +42,9 @@ export default {
 
 <style>
 
-.map {
+.story-map {
   width: 100%;
-  /* TODO: smarter height */
-  height: 200px;
+  height: 306px;
 }
+
 </style>

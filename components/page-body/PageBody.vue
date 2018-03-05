@@ -76,7 +76,7 @@ export default {
     partner: Object,
     sizeLimit: {
       type: Number,
-      default: 4 * 16
+      default: 3 * 16
     }
   },
   components: { StoryMap },
@@ -146,6 +146,7 @@ export default {
   color: var(--ui--text--light);
   width: 100%;
   padding: 5px 0;
+  text-align:center;
 }
 
 .page-body__partner {

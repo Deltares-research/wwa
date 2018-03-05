@@ -20,10 +20,11 @@ export default {
     const themes = loadData(context, { theme: 'index' })
     const { title, slug, path, chapters, theme } = await loadData(context, context.params)
 
-    context.store.commit('globe/replaceFeatures', chapters)
-    context.store.commit('globe/replaceTheme', theme.slug)
-
     return { title, slug, path, chapters, themes: await themes, theme }
+  },
+  mounted () {
+    this.$store.commit('replaceFeatures', this.chapters)
+    this.$store.commit('replaceTheme', this.theme.slug)
   },
   components: { BottomShelf, CardList, NarrativeHeader, ThemeList }
 }

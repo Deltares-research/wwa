@@ -32,8 +32,6 @@ export default {
     const keywordsFromUrl = (params.keywords) ? params.keywords.split('+') : []
     const { results = [], tags: keywords = [] } = await loadData(context, { keywords: keywordsFromUrl })
 
-    context.store.commit('globe/replaceFeatures', results)
-
     return {
       keywords,
       results
@@ -61,6 +59,9 @@ export default {
         .reduce((acc, result) => unionByProp(acc, result.keywords, 'slug'), [])
         .filter(keyword => this.activeKeywords.every(active => active.slug !== keyword.slug))
     }
+  },
+  mounted () {
+    this.$store.commit('replaceFeatures', this.results)
   },
   methods: {
     updatePath (event) {

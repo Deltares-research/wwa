@@ -34,6 +34,7 @@ export default {
       style: this.mapboxStyle
     })
     map.scrollZoom.disable()
+    map.addControl(new mapboxgl.NavigationControl())
     return map
   }
 }
@@ -43,6 +44,7 @@ export default {
 
 .story-map {
   width: 100%;
-  height: 200px;
+  height: 306px;
 }
+
 </style>

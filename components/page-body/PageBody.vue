@@ -35,19 +35,20 @@
       </section>
 
       <section class="clearfix page-body__footer">
-        <ul class="pag-body__links">
-          <li v-for="link in links" v-bind:key="link.slug">
-            <nuxt-link v-bind:to="link.path">{{ link.title }}</nuxt-link>
+        <ul v-if="links" class="page-body__links">
+          <li v-for="link in links">
+            <a target="_blank" v-bind:href="link.path">{{ link.title }}</a>
           </li>
         </ul>
-
-        <p v-if="partner && partner.name" >
-           Created in partnership with:
-           <span class="clearfix page-body__partner">
-            <img v-if="partner && partner.logo.imgixHost" v-bind:src="`${partner.logo.imgixHost}${partner.logo.value.path}?w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`" v-bind:width="scaleMaxToSize(partner.logo, sizeLimit).w" v-bind:height="scaleMaxToSize(partner.logo, sizeLimit).h">
-            {{ partner.name }}
-          </span>
-        </p>
+        <div class="page-body__footer--partner">
+          <p v-if="partner && partner.name">
+             Created in partnership with:
+             <span class="clearfix page-body__partner">
+              <img v-if="partner && partner.logo.imgixHost" v-bind:src="`${partner.logo.imgixHost}${partner.logo.value.path}?w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`" v-bind:width="scaleMaxToSize(partner.logo, sizeLimit).w" v-bind:height="scaleMaxToSize(partner.logo, sizeLimit).h">
+              {{ partner.name }}
+            </span>
+          </p>
+        </div>
       </section>
 
     </section>
@@ -68,6 +69,7 @@ renderer.paragraph = function (content) {
 export default {
   props: {
     body: String,
+    links: Array,
     graphs: Array,
     images: Array,
     title: String,
@@ -146,6 +148,18 @@ export default {
   color: var(--ui--text--light);
   width: 100%;
   padding: 5px 0;
+
+}
+
+.page-body__links {
+  list-style:none;
+  padding:0;
+}
+.page-body__links li {
+  margin-bottom: 1rem;
+}
+
+.page-body__footer--partner {
   text-align:center;
 }
 

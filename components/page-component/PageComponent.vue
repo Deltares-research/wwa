@@ -7,6 +7,7 @@
       v-bind:title="page.title"
       v-bind:video="page.video"
       v-bind:mapboxStyle="page.mapboxStyle"
+      v-bind:links="page.links"
       v-bind:partner="page.partner" />
     <page-aside
       v-bind:influences="page.influences"

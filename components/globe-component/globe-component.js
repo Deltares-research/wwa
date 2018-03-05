@@ -43,6 +43,8 @@ export default {
 
     this.controls = new OrbitControls(this.camera, this.globeContainerElement)
     this.controls.enablePan = false
+    this.controls.minDistance = 6
+    this.controls.maxDistance = 50
 
     this.mouse = new THREE.Vector2()
     this.intersections = []
@@ -338,6 +340,10 @@ export default {
      */
     animate () {
       requestAnimationFrame(this.animate)
+
+      this.particles.mesh.rotation.z += 0.001
+      this.avatar.mesh.rotation.z += 0.001
+      this.water.mesh.rotation.z += 0.001
 
       this.water.uniforms.time.value += (this.clock.getDelta() * 0.1)
       this.particles.uniforms.time.value += 0.4

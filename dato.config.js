@@ -290,9 +290,9 @@ function getPages (dato, chapterRef) {
       const path = `${chapter.path}#${slug}`
       const links = (page.links) ? page.links.split('\n')
         .map(link => {
-           const title = (link.match(/\[(.*?)\]/)) ? link.match(/\[(.*?)\]/)[1] : null
-           const path = (link.match(/\((.*)\)/)) ? link.match(/\((.*)\)/)[1] : null
-           return {
+          const title = (link.match(/\[(.*?)\]/)) ? link.match(/\[(.*?)\]/)[1] : null
+          const path = (link.match(/\((.*)\)/)) ? link.match(/\((.*)\)/)[1] : null
+          return {
             title: title,
             path: path
           }

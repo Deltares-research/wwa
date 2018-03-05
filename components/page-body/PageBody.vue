@@ -44,7 +44,7 @@
           <p v-if="partner && partner.name">
              Created in partnership with:
              <span class="clearfix page-body__partner">
-              <img v-if="partner && partner.logo.imgixHost" v-bind:src="`${partner.logo.imgixHost}${partner.logo.value.path}?w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`" v-bind:width="scaleMaxToSize(partner.logo, sizeLimit).w" v-bind:height="scaleMaxToSize(partner.logo, sizeLimit).h">
+              <img v-if="partner.logo && partner.logo.imgixHost" v-bind:src="`${partner.logo.imgixHost}${partner.logo.value.path}?w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`" v-bind:width="scaleMaxToSize(partner.logo, sizeLimit).w" v-bind:height="scaleMaxToSize(partner.logo, sizeLimit).h">
               {{ partner.name }}
             </span>
           </p>

@@ -10,7 +10,7 @@
 
     <section v-if="partner && partner.name" class="clearfix page-aside__section page-aside__section--partner">
       <h3 class="page-aside__title">Partner</h3>
-      <img v-bind:src="partnerSrc" v-bind:width="logoSize.w" v-bind:height="logoSize.h">
+      <img v-if="partnerSrc" v-bind:src="partnerSrc" v-bind:width="logoSize.w" v-bind:height="logoSize.h">
       <p>{{ partner.name }}</p>
     </section>
 
@@ -45,26 +45,17 @@
 <script>
 import _defaultAvatarSrc from './assets/Portrait_Placeholder.png'
 
-const sizeLimit = 4 * 20
-const imgScale = function (imgObj) {
-  const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height)
-  return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) }
-}
-const avatarResize = function (imgObj) {
-  if (!imgObj || !imgObj.value.height) {
-    return { w: sizeLimit, h: sizeLimit }
-  }
-  const offset = sizeLimit / imgObj.value.height
-  return { w: Math.round(imgObj.value.width * offset), h: sizeLimit }
-}
-
 export default {
   props: {
     influences: Array,
     keywords: Array,
     storyteller: Object,
     partner: Object,
-    theme: Object
+    theme: Object,
+    sizeLimit: {
+      type: Number,
+      default: 3 * 22
+    }
   },
   computed: {
     avatarSrc: function () {
@@ -86,10 +77,31 @@ export default {
       return `${this.$router.options.base}assets/${this.theme.slug}.svg`
     },
     avatarSize: function () {
-      return avatarResize(this.storyteller.avatar)
+      if (!this.storyteller.avatar || !this.storyteller.avatar.value.height) {
+        return { w: this.sizeLimit, h: this.sizeLimit }
+      }
+      return this.scaleMinToSize(this.storyteller.avatar, this.sizeLimit)
     },
     logoSize: function () {
-      return imgScale(this.partner.logo)
+      if (!this.partner.logo || !this.partner.logo.value.height) {
+        return { w: this.sizeLimit, h: this.sizeLimit }
+      }
+      return this.scaleMaxToSize(this.partner.logo, this.sizeLimit)
+    }
+  },
+  methods: {
+    scaleMaxToSize: function (imgObj, sizeLimit) {
+      const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height)
+      return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) }
+    },
+    scaleMinToSize: function (imgObj, sizeLimit) {
+      if (imgObj.value.height > imgObj.value.width) {
+        const offset = sizeLimit / imgObj.value.width
+        return { w: sizeLimit, h: Math.round(imgObj.value.height * offset) }
+      } else {
+        const offset = sizeLimit / imgObj.value.height
+        return { w: Math.round(imgObj.value.width * offset), h: sizeLimit }
+      }
     }
   }
 }

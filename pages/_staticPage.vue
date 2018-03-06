@@ -25,7 +25,7 @@
 <script>
 import loadData from '~/lib/load-data'
 import lazyImage from '~/components/lazy-image/LazyImage'
-import renderMarkedContent from '~/lib/custom-marked'
+import marked from '~/lib/custom-marked'
 
 export default {
   layout: 'static-page',
@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     htmlBody () {
-      return renderMarkedContent(this.body)
+      return marked(this.body)
     }
   },
   components: {
@@ -52,6 +52,11 @@ export default {
 
 .static-page {
   box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  max-width: 960px;
+  margin: auto;
+  padding: 10rem 1rem;
 }
 
 .static-page__video {

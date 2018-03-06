@@ -22,7 +22,8 @@ const c = scaleLinear()
   .domain(range(6))
 
 class Particles {
-  constructor (state) {
+  constructor (base, state) {
+    this.base = base
     this.state = state
 
     this.data = []
@@ -88,8 +89,8 @@ class Particles {
 
   load (finished) {
     this.initGeometry()
-
-    loadData('/globe-themes/globe-data.csv', (error, result) => {
+    console.log(this.base)
+    loadData(`${this.base}globe-themes/globe-data.csv`, (error, result) => {
       if (error) {
         console.error(`error loading globe-data.csv: ${error}`)
       }

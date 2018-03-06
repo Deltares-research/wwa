@@ -89,7 +89,6 @@ class Particles {
 
   load (finished) {
     this.initGeometry()
-    console.log(this.base)
     loadData(`${this.base}globe-themes/globe-data.csv`, (error, result) => {
       if (error) {
         console.error(`error loading globe-data.csv: ${error}`)

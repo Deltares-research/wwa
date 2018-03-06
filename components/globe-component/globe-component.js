@@ -188,7 +188,7 @@ export default {
       const filteredFeatures = features.filter(feature => feature.location)
       this.avatar.clear()
       this.avatar.load(filteredFeatures, avs => globe.add(avs))
-  },
+    },
     handleResize () {
       // We're getting the containerSize here because the size
       // of the canvas itself is not changing on screen resize
@@ -273,10 +273,6 @@ export default {
       this.particles = new Particles({current: this.theme, target: this.theme})
       this.particles.load(() => this.particles.update())
       globe.add(this.particles.mesh)
-      // this.particles.load()
-      this.particles.load(() => this.particles.update())
-
-      // this.particles.load2()
 
       this.water = new Water()
       globe.add(this.water.mesh)

@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="layout layout--globe">
     <main-menu variant="dark" />
     <transition name="fadeIn" mode="out-in">
       <globe-component v-bind:is="GlobeComponent" class="globe-component" />
@@ -30,9 +30,9 @@ html {
   margin: 0;
 }
 
-main {
+.layout {
   width: 0;
-  height: 0; /* do not obstruct globe */
+  height: 0; /* minimise obstruction of globe */
   overflow: visible;
 }
 

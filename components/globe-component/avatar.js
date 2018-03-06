@@ -10,10 +10,9 @@ const SCALE = 1.1
 class Avatar {
   constructor (base) {
     this.textures = {}
-    this.textures['too-dirty'] = new THREE.TextureLoader().load(base + 'assets/too-dirty.svg')
-    this.textures['too-much'] = new THREE.TextureLoader().load(base + 'assets/too-much.svg')
-    this.textures['too-little'] = new THREE.TextureLoader().load(base + 'assets/too-little.svg')
-    this.textures['mask'] = new THREE.TextureLoader().load(base + 'assets/too-little.svg')
+    this.textures['too-dirty'] = new THREE.TextureLoader().load(base + 'assets/too-dirty.png')
+    this.textures['too-much'] = new THREE.TextureLoader().load(base + 'assets/too-much.png')
+    this.textures['too-little'] = new THREE.TextureLoader().load(base + 'assets/too-little.png')
     this.mesh = new THREE.Object3D()
   }
 

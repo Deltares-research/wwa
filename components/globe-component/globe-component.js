@@ -263,6 +263,7 @@ export default {
      * @returns {Scene} Scene with a sphere
      */
     createScene () {
+      const { base = '/' } = this.$router.options
       const scene = new THREE.Scene()
 
       const globe = new THREE.Object3D()
@@ -270,7 +271,7 @@ export default {
       globe.position.set(0, 0, 0)
       scene.add(globe)
 
-      this.particles = new Particles({current: this.theme, target: this.theme})
+      this.particles = new Particles(base, {current: this.theme, target: this.theme})
       this.particles.load(() => this.particles.update())
       globe.add(this.particles.mesh)
 
@@ -281,7 +282,6 @@ export default {
       globe.add(glow.mesh)
 
       // get the baseUrl
-      const { base = '/' } = this.$router.options
       this.avatar = new Avatar(base)
       this.avatar.load(this.features, avs => globe.add(avs))
 

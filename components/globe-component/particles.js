@@ -6,8 +6,6 @@ import { color } from 'd3-color'
 import { lat2theta, lon2phi, polar2cartesian } from './common'
 import { metrics } from './metrics'
 import { GLOBE_RADIUS, MAX_PARTICLES } from './constants'
-// import request from 'request'
-// import { createStream } from 'csv-stream'
 
 /** Scale to convert RGB 0-255 range to 0-1 range */
 const rgb2unit = scaleLinear()

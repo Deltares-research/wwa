@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="layout layout--globe">
     <nav class="link-menu">
       <nuxt-link class="link-menu__item link-menu__item--home h1" to="/" title="Go home"><span class="sr-only">Return to the homepage</span>World<br />Water<br />Atlas</nuxt-link>
       <nuxt-link class="link-menu__item link-menu__item--about h3" to="/about">About</nuxt-link>
@@ -28,9 +28,9 @@ html {
   margin: 0;
 }
 
-main {
+.layout {
   width: 0;
-  height: 0; /* do not obstruct globe */
+  height: 0; /* minimise obstruction of globe */
   overflow: visible;
 }
 

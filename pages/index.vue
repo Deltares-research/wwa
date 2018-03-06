@@ -36,10 +36,23 @@ export default {
   position: absolute;
   top: 5rem;
   margin-top: 5vw;
-  width: 25vw;
+  width: 20vw;
   min-width: 10rem;
   max-width: 15rem;
   padding: 1rem;
+}
+
+.tagline::before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 10rem;
+  background-image: var(--ui--left-gradient);
+  overflow: visible;
+  z-index: -1;
 }
 
 .tagline [href*='too-dirty'],

@@ -1,8 +1,8 @@
 <template>
   <article class="card-component">
     <nuxt-link v-bind:to="path">
-      <h1>{{title}}</h1>
-      <p>{{body}}</p>
+      <p class="subtitle h3">{{ subtitle }}</p>
+      <h2>{{title}}</h2>
     </nuxt-link>
   </article>
 </template>
@@ -16,6 +16,7 @@ export default {
     delay: Number,
     path: String,
     slug: String,
+    subtitle: String,
     theme: Object,
     title: String
   }
@@ -27,20 +28,39 @@ export default {
 
 /* end card show animation */
 .card-component {
-  --padding-v: calc(.5rem + .5vw);
-  --padding-h: calc(1rem + 1vw);
   width: 100%;
-  padding: var(--padding-v) var(--padding-h);
-  background-color: rgba(255, 255, 255, .2);
+  padding: 4rem 1rem 0;
   box-sizing: border-box;
   color: var(--ui--text--invert);
+}
+
+.card-component:hover {
+  transform: translate(0, -.5rem);
+  transition: transform .25s;
+}
+
+.card-component::after {
+  content: '';
+  display: block;
+  height: 5rem;
+  background-color: var(--ui--white);
+  border-right: 2rem solid var(--ui--bg--light);
+}
+
+.card-component .subtitle {
+  text-transform: uppercase;
+  color: var(--ui--text--light);
+  margin: 0;
 }
 .card-component a {
   color: inherit;
   text-decoration: none;
 }
-.card-component h1,
+.card-component h2,
 .card-component p {
   width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

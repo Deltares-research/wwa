@@ -10,7 +10,7 @@
 
    <section v-if="theme" class="clearfix page-aside__section">
       <h3 class="page-aside__title">Theme</h3>
-      <img v-if="theme && theme.slug" class="theme-icon" v-bind:src="`assets/${theme.slug}.png`" />
+      <img v-if="theme && theme.slug" class="theme-icon" v-bind:src="`assets/${theme.slug}.png`" width="48" height="48" />
       <p>{{ theme.title }}</p>
     </section>
 

@@ -14,7 +14,8 @@ html {
 
 .layout--static-page {
   width: 100vw;
-  height: 100vh; /* take over screen */
+  height: auto; /* take over screen */
+  min-height: 100vh;
   background-color: var(--ui--white);
 }
 

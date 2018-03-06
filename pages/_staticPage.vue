@@ -53,7 +53,7 @@ export default {
 .static-page {
   box-sizing: border-box;
   width: 100%;
-  min-height: 100vh;
+  height: auto;
   max-width: 960px;
   margin: auto;
   padding: 10rem 1rem;

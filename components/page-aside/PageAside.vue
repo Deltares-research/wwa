@@ -19,7 +19,7 @@
       <h3 class="page-aside__title">Influences</h3>
       <ul class="list--inline">
         <li v-for="link in influences" v-bind:key="link.slug">
-          <nuxt-link v-bind:to="link.path">{{ link.title }}</nuxt-link>
+          <nuxt-link v-bind:to="link.path" v-bind:class="`tag tag--influence tag--${link.slug}`">{{ link.title }}</nuxt-link>
         </li>
       </ul>
     </section>
@@ -87,10 +87,6 @@ export default {
 
 .page-aside__section {
   margin-bottom: 1rem;
-}
-
-.page-aside__section--keywords .tag {
-  font-size: .75rem
 }
 
 .page-aside__title {

@@ -21,25 +21,4 @@ export default {
 }
 </script>
 
-<style>
-@import '../components/colors/colors.css';
-@import '../components/animations/animations.css';
-
-html {
-  padding: 0;
-  margin: 0;
-}
-
-.layout {
-  width: 0;
-  height: 0; /* minimise obstruction of globe */
-  overflow: visible;
-}
-
-.globe-component {
-  position: fixed;
-  z-index: -10;
-  top:0;
-}
-
-</style>
+<style src="./base.css"></style>

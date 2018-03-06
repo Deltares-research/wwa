@@ -1,0 +1,25 @@
+@import '../components/colors/colors.css';
+@import '../components/animations/animations.css';
+
+html {
+  padding: 0;
+  margin: 0;
+}
+
+.layout {
+  width: 0;
+  height: 0; /* minimise obstruction of globe */
+  overflow: visible;
+}
+
+.layout--static-page {
+  width: 100vw;
+  height: 100vh; /* take over screen */
+  background-color: var(--ui--white);
+}
+
+.globe-component {
+  position: fixed;
+  z-index: -10;
+  top:0;
+}

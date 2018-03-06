@@ -36,9 +36,7 @@ export default {
   position: absolute;
   top: 5rem;
   margin-top: 5vw;
-  width: 20vw;
-  min-width: 10rem;
-  max-width: 15rem;
+  width: 10rem;
   padding: 1rem;
 }
 

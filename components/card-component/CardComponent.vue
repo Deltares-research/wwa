@@ -13,7 +13,6 @@ export default {
   props: {
     body: String,
     count: Number,
-    delay: Number,
     path: String,
     slug: String,
     subtitle: String,
@@ -26,12 +25,11 @@ export default {
 <style>
 @import '../colors/colors.css';
 
-/* end card show animation */
 .card-component {
   width: 100%;
   padding: 4rem 1rem 0;
   box-sizing: border-box;
-  color: var(--ui--text--invert);
+  color: var(--ui--text);
 }
 
 .card-component:hover {

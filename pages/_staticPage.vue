@@ -25,16 +25,18 @@
 <script>
 import loadData from '~/lib/load-data'
 import lazyImage from '~/components/lazy-image/LazyImage'
-import renderMarkedContent from '~/lib/custom-marked'
+import marked from '~/lib/custom-marked'
 
 export default {
+  layout: 'static-page',
   async asyncData (context) {
     const { title, body, images, video } = await loadData(context, context.params)
+
     return { title, body, images, video }
   },
   computed: {
     htmlBody () {
-      return renderMarkedContent(this.body)
+      return marked(this.body)
     }
   },
   components: {
@@ -48,16 +50,16 @@ export default {
 <style>
   @import '../components/colors/colors.css';
 
-  .static-page {
-    position: absolute;
-    top: 75vh;
-    width: 100%;
-    padding: 4rem;
-    background-color: var(--ui--white);
-    box-sizing: border-box;
-  }
+.static-page {
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  max-width: 960px;
+  margin: auto;
+  padding: 10rem 1rem;
+}
 
-  .static-page__video {
-    margin-bottom: 2rem;
-  }
+.static-page__video {
+  margin-bottom: 2rem;
+}
 </style>

@@ -68,21 +68,21 @@ export default {
 
 <style>
 @import '../colors/colors.css';
+@import '../tag/tag.css';
 @import '../typography/typography.css';
 
-.clearfix:after {
+.clearfix::after {
 	content: "";
 	display: table;
 	clear: both;
 }
 
 .page-aside {
-  position: sticky;
+  box-sizing: border-box;
   background-color: var(--ui--bg--light);
-  max-width: 20rem;
-  width: 30%;
-  flex: 1 0 30%;
-  padding: 2rem;
+  width: 100%;
+  flex: 0 2 100%;
+  padding: 1rem;
 }
 
 .page-aside__section {

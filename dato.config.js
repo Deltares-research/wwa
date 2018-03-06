@@ -263,7 +263,7 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, influences, keywords, links, slug, title, video, mapboxStyle } = page
+      const { body, files, graphs, images, influences, keywords, slug, title, video, mapboxStyle } = page
       const theme = (page.theme) ? {
         title: page.theme.title,
         slug: page.theme.slug,
@@ -288,6 +288,15 @@ function getPages (dato, chapterRef) {
         type: chapterRef.chapterType
       }
       const path = `${chapter.path}#${slug}`
+      const links = (page.links) ? page.links.split('\n')
+        .map(link => {
+          const title = (link.match(/\[(.*?)\]/)) ? link.match(/\[(.*?)\]/)[1] : null
+          const path = (link.match(/\((.*)\)/)) ? link.match(/\((.*)\)/)[1] : null
+          return {
+            title: title,
+            path: path
+          }
+        }) : null
       return {
         body,
         book,
@@ -304,6 +313,10 @@ function getPages (dato, chapterRef) {
         storyteller: {
           avatar: page.storytellerAvatar,
           name: page.storyteller
+        },
+        partner: {
+          logo: page.partnerLogo,
+          name: page.partnerName
         },
         theme,
         title,

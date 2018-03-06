@@ -1,12 +1,14 @@
 <template>
   <aside class="page-aside">
-    <section v-if="storyteller" class="clearfix page-aside__section page-aside__section--storyteller">
+    <section v-if="storyteller && storyteller.name" class="clearfix page-aside__section page-aside__section--storyteller">
       <h3 class="page-aside__title">Storyteller</h3>
-      <img v-bind:src="avatarSrc">
+      <span v-if="storyteller.avatar && storyteller.avatar.imgixHost" class="page-aside__avatar-container">
+        <img v-bind:src="`${storyteller.avatar.imgixHost}${storyteller.avatar.value.path}?w=scaleMinToSize(storyteller.avatar, sizeLimit).w&q=65`" v-bind:width="scaleMinToSize(storyteller.avatar, sizeLimit).w" v-bind:height="scaleMinToSize(storyteller.avatar, sizeLimit).h">
+      </span>
       <p>{{ storyteller.name }}</p>
     </section>
 
-    <section v-if="theme" class="clearfix page-aside__section">
+   <section v-if="theme" class="clearfix page-aside__section">
       <h3 class="page-aside__title">Theme</h3>
       <img v-if="theme && theme.slug" class="theme-icon" v-bind:src="`assets/${theme.slug}.png`" />
       <p>{{ theme.title }}</p>
@@ -35,23 +37,30 @@
 </template>
 
 <script>
-import _defaultAvatarSrc from './assets/Portrait_Placeholder.png'
-
 export default {
   props: {
     influences: Array,
     keywords: Array,
     storyteller: Object,
-    theme: Object
+    partner: Object,
+    theme: Object,
+    sizeLimit: {
+      type: Number,
+      default: 4 * 16
+    }
   },
-  computed: {
-    avatarSrc: function () {
-      var src = _defaultAvatarSrc
-      const avatar = this.storyteller.avatar
-      if (avatar && avatar.imgixHost) {
-        src = `${avatar.imgixHost}${avatar.value.path}?w=50&q=65`
+  methods: {
+    scaleMinToSize: function (imgObj, sizeLimit) {
+      if (!imgObj.value.width) {
+        return { h: Math.round(sizeLimit), w: Math.round(sizeLimit) }
       }
-      return src
+      if (imgObj.value.height > imgObj.value.width) {
+        const offset = sizeLimit / imgObj.value.width
+        return { w: sizeLimit, h: Math.round(imgObj.value.height * offset) }
+      } else {
+        const offset = sizeLimit / imgObj.value.height
+        return { w: Math.round(imgObj.value.width * offset), h: sizeLimit }
+      }
     }
   }
 }
@@ -92,15 +101,23 @@ export default {
 
 .page-aside img {
   float: left;
-  width: 3rem;
-  height: 3rem;
   vertical-align: top;
   margin-right: .7rem;
   margin-left: -1px;
 }
 
-.page-aside__section--storyteller img {
+.page-aside__avatar-container img{
+  margin:auto
+}
+
+.page-aside__avatar-container {
+  text-align: center;
+  width: 4rem;
+  height: 4rem;
   border-radius: 100%;
+  margin: 0 .7rem 0 -1px;
+  display: inline-block;
+  overflow: hidden;
 }
 
 .page-aside img + p {
@@ -108,8 +125,3 @@ export default {
   padding-top: .7rem;
 }
 </style>
-
-
-
-
-

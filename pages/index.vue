@@ -4,7 +4,7 @@
 
 <script>
 import loadData from '~/lib/load-data'
-import marked from 'marked'
+import marked from '~/lib/custom-marked'
 import home from '~/static/data/home.json'
 
 export default {

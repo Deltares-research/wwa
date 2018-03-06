@@ -35,6 +35,9 @@ const exportScope = process.env.DATO_EXPORT
 const contentBasePath = '/narratives'
 
 module.exports = (dato, root, i18n) => {
+  const { body } = dato.home
+  root.createDataFile(`static/data/home.json`, 'json', { body })
+
   switch (exportScope) {
     case 'books':
       generateBooks(dato, root, i18n)

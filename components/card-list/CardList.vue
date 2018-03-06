@@ -1,21 +1,20 @@
 <template>
-  <div>
-  <transition-group  v-if="cards" class="card-list" name="slideUp" tag="ul" appear disappear :duration="3000">
-    <li v-for="(card, index) in cards" v-bind:key="card.slug" class="card-list__item">
-      <card-component
-        v-bind:delay="index * 100"
-        v-bind:subtitle="(card.book) ? card.book.title : undefined"
-        v-bind:title="card.title"
-        v-bind:subtitle="(card.book && card.book.title) ? card.book.title : subtitle"
-        v-bind:slug="card.slug"
-        v-bind:path="card.path"
-        v-bind:body="card.body"
-        v-bind:theme="card.theme"
-        v-bind:count="card.pageCount"
-      />
-    </li>
-  </transition-group>
-  <button class="card-list__scroll-button"><span class="sr-only">Scroll to next</span></button>
+  <div class="card-list">
+    <transition-group v-if="cards" class="card-list" name="slideUp" tag="ul" appear disappear :duration="3000">
+      <li v-for="(card, index) in cards" v-bind:key="card.slug" class="card-list__item">
+        <card-component
+          v-bind:delay="index * 100"
+          v-bind:subtitle="(card.book) ? card.book.title : subtitle"
+          v-bind:title="card.title"
+          v-bind:slug="card.slug"
+          v-bind:path="card.path"
+          v-bind:body="card.body"
+          v-bind:theme="card.theme"
+          v-bind:count="card.pageCount"
+        />
+      </li>
+    </transition-group>
+  <button class="card-list__scroll-button" v-on:click="scroll()"><span class="sr-only">Scroll to next</span>‣</button>
   </div>
 
 </template>
@@ -35,6 +34,12 @@ export default {
         return ''
       }
     }
+  },
+  methods: {
+    scroll () {
+      const width = document.width || document.body.clientWidth
+      this.$el.querySelector('ul').scrollLeft = width
+    }
   }
 }
 </script>
@@ -43,6 +48,19 @@ export default {
 @import '../animations/animations.css';
 
 .card-list {
+  position: relative;
+  width: 100%;
+}
+.card-list::after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3rem;
+}
+.card-list ul {
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
@@ -52,8 +70,7 @@ export default {
   display: flex;
   flex: 0 1 auto;
 }
-
-.card-list__item {
+.card-list li {
   position: static;
   display: inline-flex;
   flex: 0 0 22rem;
@@ -71,13 +88,15 @@ export default {
 }
 
 .card-list__scroll-button {
-  position: fixed;
-  bottom: 2rem;
+  position: absolute;
+  top: 4rem;
   right: 1rem;
   background-color: var(--ui--white);
   width: 2rem;
   height: 2rem;
   border-radius: 1rem;
+  box-shadow: 2rem 2rem 4rem 4rem var(--ui--black--trans);
+  z-index: 1;
 }
 
 </style>

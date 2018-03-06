@@ -18,6 +18,7 @@
   position: fixed;
   left: 0;
   right: 0;
+  background-image: linear-gradient(to top, var(--ui--black) 2rem, transparent);
   bottom: -4rem; /* hack to maintain illusion of cutting off pages in cards */
 }
 </style>

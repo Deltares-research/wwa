@@ -45,9 +45,8 @@ export default {
     this.controls.minDistance = 6
     this.controls.maxDistance = 50
 
-    const that = this
-    this.controls.addEventListener('change', function () {
-      that.$store.commit('enableGlobeAutoRotation', false)
+    this.controls.addEventListener('change', () => {
+      this.$store.commit('disableGlobeAutoRotation')
     })
 
     this.mouse = new THREE.Vector2()

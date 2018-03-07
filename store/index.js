@@ -30,8 +30,11 @@ const store = () => {
       enableInteraction (state) {
         state.globeInteraction = true
       },
-      enableGlobeAutoRotation (state, value) {
-        state.globeAutoRotation = value
+      disableGlobeAutoRotation (state) {
+        state.globeAutoRotation = false
+      },
+      enableGlobeAutoRotation (state) {
+        state.globeAutoRotation = true
       }
     }
   })

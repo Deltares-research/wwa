@@ -29,6 +29,7 @@ export default {
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.results)
+    this.$store.commit('enableGlobeAutoRotation')
   },
   components: {
     BottomShelf,

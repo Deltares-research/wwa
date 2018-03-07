@@ -1,6 +1,7 @@
 <template>
   <article class="card-component">
     <nuxt-link v-bind:to="path">
+      <p class="subtitle h2">{{ subtitle }}</p>
       <h1>{{title}}</h1>
       <p>{{body}}</p>
     </nuxt-link>
@@ -13,9 +14,9 @@ export default {
   props: {
     body: String,
     count: Number,
-    delay: Number,
     path: String,
     slug: String,
+    subtitle: String,
     theme: Object,
     title: String
   }
@@ -25,15 +26,15 @@ export default {
 <style>
 @import '../colors/colors.css';
 
-/* end card show animation */
 .card-component {
-  --padding-v: calc(.5rem + .5vw);
-  --padding-h: calc(1rem + 1vw);
   width: 100%;
-  padding: var(--padding-v) var(--padding-h);
-  background-color: rgba(255, 255, 255, .2);
+  padding: 2rem;
+  background-color: var(--ui--bg--light);
   box-sizing: border-box;
-  color: var(--ui--text--invert);
+  color: var(--ui--text);
+}
+.card-component .subtitle {
+  text-transform: uppercase;
 }
 .card-component a {
   color: inherit;

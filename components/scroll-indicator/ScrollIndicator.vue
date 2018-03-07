@@ -8,7 +8,7 @@
       </li>
       <li v-for="page in pages" v-bind:key="page.slug"
         v-bind:class="`${(activePage && page.slug === activePage.slug) ? 'active' : ''}`">
-        <nuxt-link v-bind:to="`#${page.slug}`">
+        <nuxt-link v-bind:to="`#${page.slug}`" v-bind:title="page.title">
           <span class="scroll-indicator__label sr-only">{{ page.title }}</span></nuxt-link>
       </li>
     </ul>
@@ -39,20 +39,26 @@ export default {
 
 <style>
 @import '../colors/colors.css';
+@import '../typography/typography.css';
 
 .scroll-indicator {
-  position: fixed;
-  top: 10%;
-  bottom: 10%;
-  right: 1rem;
-  display: flex;
-  align-items: center;
-  z-index: 100;
+  display: none;
 }
+
+@media screen and (min-width: 720px) {
+  .scroll-indicator {
+    display: flex;
+    position: fixed;
+    top: 10%;
+    bottom: 10%;
+    right: 0;
+    align-items: center;
+    z-index: 100;
+  }
+}
+
 .scroll-indicator ul {
   width: 2rem;
-  border-radius: 1rem;
-  background-color: var(--ui--black--trans);
   text-align: right;
   margin: 0;
   padding: 0;
@@ -91,15 +97,4 @@ export default {
   top: -.125rem;
   left: -.25rem;
 }
-.scroll-indicator li:hover .scroll-indicator__label {
-  width: 100vw;
-  position: absolute;
-  right: 2.5rem;
-  height: auto;
-  visibility: visible;
-  overflow: visible;
-  clip: unset;
-}
-
-
 </style>

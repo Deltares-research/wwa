@@ -1,18 +1,18 @@
 <template>
   <div>
     <scroll-indicator v-bind:pages="pages" v-bind:activePage="activePage" />
-  <div class="chapter full-width">
-    <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
-          <page-component
-            v-for="page in pages"
-            v-bind:key="page.slug"
-      v-bind:page="page"
-      v-bind:id="page.slug"
-            data-page-component
-      class="page-component" />
-      <narrative-footer
-        v-bind:previousLink="chapter.previousChapter"
-        v-bind:nextLink="chapter.nextChapter" />
+    <div class="chapter full-width">
+      <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
+            <page-component
+              v-for="page in pages"
+              v-bind:key="page.slug"
+        v-bind:page="page"
+        v-bind:id="page.slug"
+              data-page-component
+        class="page-component" />
+        <narrative-footer
+          v-bind:previousLink="chapter.previousChapter"
+          v-bind:nextLink="chapter.nextChapter" />
     </div>
   </div>
 </template>
@@ -103,7 +103,7 @@ export default {
 <style>
 
 :root {
-  --target-offset: 75vh
+  --target-offset: 50vh
 }
 
 .full-width {
@@ -111,13 +111,20 @@ export default {
   top: var(--target-offset);
   left:0;
   right: 0;
+  z-index: 0;
 }
 
 .chapter .narrative-header {
   width: 100%;
+  max-width: calc(60rem + 2 * 2rem);
   margin: auto;
-  margin-bottom: calc(-1 * var(--target-offset));
   position: relative;
+  margin-bottom: calc(-1 * var(--target-offset));
   z-index: 1;
 }
+
+.page-component {
+  padding-top: var(--target-offset);
+}
+
 </style>

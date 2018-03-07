@@ -1,11 +1,14 @@
 <template>
   <div class="card-list">
-    <transition-group v-if="cards" class="card-list" name="slideUp" tag="ul" appear disappear :duration="3000">
+    <header class="card-list__header" v-show="$slots.header">
+      <slot name="header"></slot>
+    </header>
+    <transition-group v-if="cards" class="card-list__list" name="slideUp" tag="ul" appear disappear :duration="3000">
       <li v-for="card in cards"
         v-bind:key="card.slug"
         v-bind:id="card.slug"
-        data-list-item
-        class="card-list__item">
+        class="card-list__item"
+        data-list-item>
         <card-component
           v-bind:subtitle="(card.book) ? card.book.title : subtitle"
           v-bind:title="card.title"
@@ -99,7 +102,7 @@ export default {
   bottom: 0;
   width: 3rem;
 }
-.card-list ul {
+.card-list__list {
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
@@ -109,7 +112,7 @@ export default {
   display: flex;
   flex: 0 1 auto;
 }
-.card-list li {
+.card-list__item {
   position: static;
   display: inline-flex;
   flex: 0 0 22rem;
@@ -119,7 +122,10 @@ export default {
   vertical-align: top;
   white-space: normal;
 }
-.card-list li:last-child {
+.card-list__item:first-child {
+  margin-left: 1rem;
+}
+.card-list__item:last-child {
   margin-right: 1rem;
 }
 
@@ -130,6 +136,9 @@ export default {
   }
 }
 
+.card-list__header {
+  padding-left: 2rem;
+}
 .card-list__scroll-button {
   border: none;
   position: absolute;

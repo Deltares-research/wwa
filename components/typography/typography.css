@@ -55,6 +55,14 @@
   font-display: fallback;
 }
 
+@font-face {
+  font-family: "Roboto";
+  src: url("/static/assets/Roboto-Italic-webfont.woff2") format("woff2"),
+       url("/static/assets/Roboto-Italic-webfont.woff") format("woff");
+  font-style: italic;
+  font-display: fallback;
+}
+
 p, .p {
   line-height: var(--line-height);
   margin-top: 0;

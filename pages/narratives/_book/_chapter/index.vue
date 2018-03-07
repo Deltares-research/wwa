@@ -91,7 +91,7 @@ export default {
       }
     },
     activePage (activePage) {
-      const path = this.$route.path.replace(/^\//, '') // remove leading slash to maintain router base
+      const path = this.$route.path.replace(/^\/\//, '/') // remove leading slash to maintain router base
       history.replaceState({}, 'page', `${path}#${this.activePage.slug}`)
       this.$store.commit('activateFeature', activePage)
     }

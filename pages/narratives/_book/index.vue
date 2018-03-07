@@ -1,7 +1,8 @@
 <template>
   <div>
     <bottom-shelf>
-      <card-list v-bind:cards="chapters" v-bind:subtitle="title" />
+      <narrative-header v-bind:book="{ title, slug, path}" />
+      <card-list v-bind:cards="chapters" bind:subtitle="title" />
     </bottom-shelf>
   </div>
 </template>
@@ -10,6 +11,7 @@
 import BottomShelf from '~/components/bottom-shelf/BottomShelf'
 import CardList from '~/components/card-list/CardList'
 import loadData from '~/lib/load-data'
+import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 
 export default {
   async asyncData (context) {
@@ -22,7 +24,7 @@ export default {
     this.$store.commit('replaceFeatures', this.chapters)
     this.$store.commit('replaceTheme', this.theme.slug)
   },
-  components: { BottomShelf, CardList }
+  components: { BottomShelf, CardList, NarrativeHeader }
 }
 </script>
 

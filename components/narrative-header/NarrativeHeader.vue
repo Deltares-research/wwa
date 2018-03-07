@@ -35,15 +35,14 @@ export default {
 @import '../colors/colors.css';
 
 .narrative-header {
-  width: 100%;
+  padding-bottom: 1rem;
 }
 
 .narrative-header__book,
 .narrative-header__chapter {
-  max-width: 960px;
   padding-left: 2rem;
   padding-right: 2rem;
-  margin: 1rem auto;
+  margin: 0 auto;
 }
 
 .narrative-header__book {
@@ -55,7 +54,7 @@ export default {
 .narrative-header__book a {
   color: inherit;
   text-decoration: none;
-  transition: .2s color;
+  transition: .25s color;
 }
 .narrative-header__book a:hover {
   color: var(--ui--text--invert);

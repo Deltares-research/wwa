@@ -1,6 +1,15 @@
 <template>
   <bottom-shelf>
-    <title-list v-bind:titles="influences" v-bind:active="activeInfluences" />
+    <h1><span class="sr-only">Influences</span></h1>
+      <ul class="list--inline influences-filter">
+        <li v-for="link in influences" v-bind:key="link.slug">
+          <nuxt-link
+            v-bind:class="`tag tag--influence tag--${link.slug} ${(activeInfluences.some(a => a.slug === link.slug)) ? 'active' : ''}`"
+            v-bind:to="link.path">
+            {{ link.title }}
+          </nuxt-link>
+        </li>
+      </ul>
     <card-list v-bind:cards="results" />
   </bottom-shelf>
 </template>
@@ -8,7 +17,6 @@
 <script>
 import BottomShelf from '~/components/bottom-shelf/BottomShelf'
 import CardList from '~/components/card-list/CardList'
-import TitleList from '~/components/title-list/TitleList'
 import loadData from '~/lib/load-data'
 import allInfluences from '~/static/data/influences/index.json'
 
@@ -32,8 +40,24 @@ export default {
   },
   components: {
     BottomShelf,
-    CardList,
-    TitleList
+    CardList
   }
 }
 </script>
+
+<style>
+@import "../../components/tag/tag.css";
+
+.influences-filter .tag {
+  transition: opacity .25s;
+}
+.influences-filter .tag:not(.active) {
+  opacity: .5;
+}
+.influences-filter .tag:hover {
+  opacity: 1;
+}
+
+
+</style>
+

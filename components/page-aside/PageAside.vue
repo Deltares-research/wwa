@@ -3,7 +3,10 @@
     <section v-if="storyteller && storyteller.name" class="clearfix page-aside__section page-aside__section--storyteller">
       <h3 class="page-aside__title">Storyteller</h3>
       <span v-if="storyteller.avatar && storyteller.avatar.imgixHost" class="page-aside__avatar-container">
-        <img v-bind:src="`${storyteller.avatar.imgixHost}${storyteller.avatar.value.path}?w=scaleMinToSize(storyteller.avatar, sizeLimit).w&q=65`" v-bind:width="scaleMinToSize(storyteller.avatar, sizeLimit).w" v-bind:height="scaleMinToSize(storyteller.avatar, sizeLimit).h">
+        <img
+          v-bind:src="`${storyteller.avatar.imgixHost}${storyteller.avatar.value.path}?w=${this.scaleMinToSize(storyteller.avatar, sizeLimit).w}&q=65`"
+          v-bind:width="scaleMinToSize(storyteller.avatar, sizeLimit).w"
+          v-bind:height="scaleMinToSize(storyteller.avatar, sizeLimit).h">
       </span>
       <p>{{ storyteller.name }}</p>
     </section>
@@ -19,7 +22,7 @@
       <h3 class="page-aside__title">Influences</h3>
       <ul class="list--inline">
         <li v-for="link in influences" v-bind:key="link.slug">
-          <nuxt-link v-bind:to="link.path">{{ link.title }}</nuxt-link>
+          <nuxt-link v-bind:to="link.path" v-bind:class="`tag tag--influence tag--${link.slug}`">{{ link.title }}</nuxt-link>
         </li>
       </ul>
     </section>
@@ -89,14 +92,14 @@ export default {
   margin-bottom: 1rem;
 }
 
-.page-aside__section--keywords .tag {
-  font-size: .75rem
-}
-
 .page-aside__title {
   text-transform: uppercase;
   color: var(--ui--text);
   margin-bottom: var(--base-size-units);
+}
+
+.page-aside .tag {
+  font-size: .875rem;
 }
 
 .page-aside img {
@@ -107,7 +110,7 @@ export default {
 }
 
 .page-aside__avatar-container img{
-  margin:auto
+  margin: auto
 }
 
 .page-aside__avatar-container {

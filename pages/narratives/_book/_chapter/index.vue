@@ -115,9 +115,11 @@ export default {
 
 .chapter .narrative-header {
   width: 100%;
+  max-width: calc(60rem + 2 * 2rem);
   margin: auto;
   position: relative;
   margin-bottom: calc(-1 * var(--target-offset));
+  z-index: 1;
 }
 
 .page-component {

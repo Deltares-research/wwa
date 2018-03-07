@@ -33,7 +33,6 @@ export default {
     } catch (err) {
       return
     }
-
     // this.stats = new Stats()
 
     this.camera = this.createCamera()
@@ -43,6 +42,12 @@ export default {
 
     this.controls = new OrbitControls(this.camera, this.globeContainerElement)
     this.controls.enablePan = false
+    this.controls.minDistance = 6
+    this.controls.maxDistance = 50
+
+    this.controls.addEventListener('change', () => {
+      this.$store.commit('disableGlobeAutoRotation')
+    })
 
     this.mouse = new THREE.Vector2()
     this.intersections = []
@@ -84,6 +89,8 @@ export default {
       if (val.theme && val.theme.slug) {
         this.replaceTheme(val.theme.slug)
       }
+
+      this.disableGlobeAutoRotation()
     },
     features (val) {
       this.replaceFeatures(val)
@@ -93,6 +100,7 @@ export default {
     },
     theme (val, old) {
       this.replaceTheme(val, old)
+      // this.disableGlobeAutoRotation()
     }
   },
   computed: {
@@ -100,7 +108,8 @@ export default {
       activeFeature: state => state.activeFeature,
       features: state => state.features,
       globeInteraction: state => state.interaction,
-      theme: state => state.theme
+      theme: state => state.theme,
+      globeAutoRotation: state => state.globeAutoRotation
     }),
     containerSize: {
       get () {
@@ -293,6 +302,9 @@ export default {
 
       return scene
     },
+    disableGlobeAutoRotation () {
+      this.globeAutoRotate = false
+    },
     /**
      * Creates a raycaster for detecting mouseover over avatars
      * @return {THEE.Raycaster} a THREE Raycaster
@@ -336,6 +348,15 @@ export default {
      */
     animate () {
       requestAnimationFrame(this.animate)
+
+      if (this.globeAutoRotation) {
+        const { r, theta, phi } = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
+        const point = polar2cartesian(r, theta, phi + 0.001)
+        this.camera.position.x = point.x
+        this.camera.position.y = point.y
+        this.camera.position.z = point.z
+        this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+      }
 
       this.water.uniforms.time.value += (this.clock.getDelta() * 0.1)
       this.particles.uniforms.time.value += 0.4

@@ -37,6 +37,7 @@ export default {
   mounted () {
     this.$store.commit('replaceFeatures', this.pages)
     this.$store.commit('disableInteraction')
+    this.$store.commit('disableGlobeAutoRotation')
     const pageSlug = this.$route.hash.replace(/^#/, '')
     this.updateActivePage(pageSlug)
     if ('IntersectionObserver' in window) {

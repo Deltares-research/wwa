@@ -3,7 +3,10 @@
     <section v-if="storyteller && storyteller.name" class="clearfix page-aside__section page-aside__section--storyteller">
       <h3 class="page-aside__title">Storyteller</h3>
       <span v-if="storyteller.avatar && storyteller.avatar.imgixHost" class="page-aside__avatar-container">
-        <img v-bind:src="`${storyteller.avatar.imgixHost}${storyteller.avatar.value.path}?w=scaleMinToSize(storyteller.avatar, sizeLimit).w&q=65`" v-bind:width="scaleMinToSize(storyteller.avatar, sizeLimit).w" v-bind:height="scaleMinToSize(storyteller.avatar, sizeLimit).h">
+        <img
+          v-bind:src="`${storyteller.avatar.imgixHost}${storyteller.avatar.value.path}?w=${this.scaleMinToSize(storyteller.avatar, sizeLimit).w}&q=65`"
+          v-bind:width="scaleMinToSize(storyteller.avatar, sizeLimit).w"
+          v-bind:height="scaleMinToSize(storyteller.avatar, sizeLimit).h">
       </span>
       <p>{{ storyteller.name }}</p>
     </section>
@@ -95,6 +98,10 @@ export default {
   margin-bottom: var(--base-size-units);
 }
 
+.page-aside .tag {
+  font-size: .875rem;
+}
+
 .page-aside img {
   float: left;
   vertical-align: top;
@@ -103,7 +110,7 @@ export default {
 }
 
 .page-aside__avatar-container img{
-  margin:auto
+  margin: auto
 }
 
 .page-aside__avatar-container {

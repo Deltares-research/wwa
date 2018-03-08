@@ -3,16 +3,17 @@
     <scroll-indicator v-bind:pages="pages" v-bind:activePage="activePage" />
     <div class="chapter full-width">
       <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
-            <page-component
-              v-for="page in pages"
-              v-bind:key="page.slug"
-        v-bind:page="page"
-        v-bind:id="page.slug"
-              data-page-component
-        class="page-component" />
+        <page-component
+          data-page-component
+          v-for="page in pages"
+          v-bind:key="page.slug"
+          v-bind:page="page"
+          v-bind:id="page.slug"
+        />
         <narrative-footer
           v-bind:previousLink="chapter.previousChapter"
-          v-bind:nextLink="chapter.nextChapter" />
+          v-bind:nextLink="chapter.nextChapter"
+        />
     </div>
   </div>
 </template>
@@ -28,11 +29,13 @@ export default {
   async asyncData (context) {
     const { book, pages, path, slug, title, previousChapter, nextChapter } = await loadData(context, context.params)
     const chapter = { path, slug, title, previousChapter, nextChapter }
-
     return { book, chapter, pages, path, slug, title }
   },
   data () {
-    return { activePage: null }
+    return {
+      activePage: null,
+      scrollIntoViewSupport: false
+    }
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.pages)
@@ -53,7 +56,6 @@ export default {
   methods: {
     observeIntersectingChildren () {
       const trackVisibility = (entries) => {
-        // No Array.prototype function, so we can break the loop
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const pageSlug = entry.target.id
@@ -92,7 +94,7 @@ export default {
       }
     },
     activePage (activePage) {
-      const path = this.$route.path.replace(/^\//, '') // remove leading slash to maintain router base
+      const path = this.$route.path.replace(/^\/\//, '/') // remove leading slash to maintain router base
       history.replaceState({}, 'page', `${path}#${this.activePage.slug}`)
       this.$store.commit('activateFeature', activePage)
     }

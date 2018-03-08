@@ -1,16 +1,19 @@
 <template>
   <bottom-shelf>
-    <h1><span class="sr-only">Influences</span></h1>
-      <ul class="list--inline influences-filter">
-        <li v-for="link in influences" v-bind:key="link.slug">
-          <nuxt-link
-            v-bind:class="`tag tag--influence tag--${link.slug} ${(activeInfluences.some(a => a.slug === link.slug)) ? 'active' : ''}`"
-            v-bind:to="link.path">
-            {{ link.title }}
-          </nuxt-link>
-        </li>
-      </ul>
-    <card-list v-bind:cards="results" />
+    <card-list v-bind:cards="results">
+      <template slot="header">
+        <h1><span class="sr-only">Influences</span></h1>
+        <ul class="list--inline influences-filter">
+          <li v-for="link in influences" v-bind:key="link.slug">
+            <nuxt-link
+              v-bind:class="`tag tag--influence tag--${link.slug} ${(activeInfluences.some(a => a.slug === link.slug)) ? 'active' : ''}`"
+              v-bind:to="link.path">
+              {{ link.title }}
+            </nuxt-link>
+          </li>
+        </ul>
+      </template>
+    </card-list>
   </bottom-shelf>
 </template>
 

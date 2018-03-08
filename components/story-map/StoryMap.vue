@@ -8,14 +8,6 @@
 const apiKey = 'pk.eyJ1Ijoic2lnZ3lmIiwiYSI6ImNqZGsybjA4dTFvNnMzMnFvNXNkdXpiYXAifQ.cXeF4BQA1dKV6L--GI2Q_A'
 
 export default {
-  head: {
-    script: [
-      { src: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js', defer: true }
-    ],
-    link: [
-      { href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css', rel: 'stylesheet' }
-    ]
-  },
   props: {
     mapboxStyle: {
       type: String,

@@ -29,7 +29,7 @@ import { unionByProp } from '~/lib/set-operations'
 export default {
   async asyncData (context) {
     const { params } = context
-    const keywordsFromUrl = (params.keywords) ? params.keywords.split('+') : []
+    const keywordsFromUrl = [].concat(params.keywords.split('+'))
     const { results = [], tags: keywords = [] } = await loadData(context, { keywords: keywordsFromUrl })
 
     return {

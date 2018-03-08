@@ -46,10 +46,10 @@ module.exports = (dato, root, i18n) => {
       generateChapters(dato, root, i18n)
       break
     case 'influences':
-      generateByTag(dato, root, i18n, 'influences')
+      generateByInfluence(dato, root, i18n)
       break
     case 'keywords':
-      generateByTag(dato, root, i18n, 'keywords')
+      generateByKeyword(dato, root, i18n)
       break
     case 'static_pages':
       generateStaticPages(dato, root, i18n)
@@ -60,8 +60,8 @@ module.exports = (dato, root, i18n) => {
     default:
       generateChapters(dato, root, i18n)
       generateBooks(dato, root, i18n)
-      generateByTag(dato, root, i18n, 'influences')
-      generateByTag(dato, root, i18n, 'keywords')
+      generateByInfluence(dato, root, i18n)
+      generateByKeyword(dato, root, i18n)
       generateStaticPages(dato, root, i18n)
       generateThemes(dato, root, i18n)
   }
@@ -99,16 +99,41 @@ function generateChapters (dato, root, i18n) {
 }
 
 /**
+ * Write out JSON files by influence tag
+ *
+ * @param {Dato} dato - DatoCMS API
+ * @param {Root} root - Project root
+ * @param {i18n} i18n
+ */
+function generateByInfluence (dato, root, i18n) {
+  const influences = getInfluences(dato)
+  const chapters = getChapters(dato)
+    .filter(chapter => chapter.influences)
+    .map(chapter => {
+      delete chapter.pages
+      delete chapter.keywords
+      return chapter
+    })
+
+  for (const influence of influences) {
+    const chaptersByInfluences = chapters
+      .filter(chapter => chapter.influences)
+      .filter(chapter => chapter.influences.some(chapterInfluence => chapterInfluence.slug === influence.slug))
+    root.createDataFile(`static/data/influences/${influence.slug}.json`, 'json', { ...influence, entries: chaptersByInfluences })
+  }
+  root.createDataFile('static/data/influences/index.json', 'json', influences)
+}
+/**
  * Write out JSON files by tagType
  *
  * @param {Dato} dato - DatoCMS API
  * @param {Root} root - Project root
  * @param {i18n} i18n
- * @param {string} tagType
  */
-function generateByTag (dato, root, i18n, tagType) {
+function generateByKeyword (dato, root, i18n) {
+  const tagType = 'keyword'
   const pages = getPages(dato)
-  const tags = collectPagesByTagType(pages, tagType)
+  const tags = collectPagesByKeyword(pages, tagType)
   const dir = tagType
   const index = []
   for (const tag in tags) {
@@ -116,30 +141,10 @@ function generateByTag (dato, root, i18n, tagType) {
     const tagObj = Object.assign({}, tags[tag])
     delete tagObj.entries // not needed in index
     index.push(tagObj)
-    root.createDataFile(`static/data/${dir}/${slugify(tag)}.json`, 'json', pages)
+    root.createDataFile(`static/data/${dir}/${tagObj.slug}.json`, 'json', pages)
   }
   root.createDataFile(`static/data/${dir}/index.json`, 'json', index.filter(i => i.slug !== 'unfiled'))
 }
-
-/**
- * Write out JSON files for static pages
- *
- * @param {Dato} dato - DatoCMS API
- * @param {Root} root - Project root
- * @param {i18n} i18n
- */
-function generateStaticPages (dato, root, i18n) {
-  const staticPages = dato.staticPages
-    .filter(filterPublished)
-    .map(page => {
-      const { body, images, slug, title, video } = page
-      return { body, images, slug, title, video }
-    })
-  for (const page of staticPages) {
-    root.createDataFile(`static/data/${page.slug}.json`, 'json', page)
-  }
-}
-
 /**
  * Write out JSON files by theme
  *
@@ -163,6 +168,26 @@ function generateThemes (dato, root, i18n) {
   }
   root.createDataFile(`static/data/themes/index.json`, 'json', themes)
 }
+
+/**
+ * Write out JSON files for static pages
+ *
+ * @param {Dato} dato - DatoCMS API
+ * @param {Root} root - Project root
+ * @param {i18n} i18n
+ */
+function generateStaticPages (dato, root, i18n) {
+  const staticPages = dato.staticPages
+    .filter(filterPublished)
+    .map(page => {
+      const { body, images, slug, title, video } = page
+      return { body, images, slug, title, video }
+    })
+  for (const page of staticPages) {
+    root.createDataFile(`static/data/${page.slug}.json`, 'json', page)
+  }
+}
+
 
 /**
  * Get Dato Book entities
@@ -332,6 +357,21 @@ function getPages (dato, chapterRef) {
 }
 
 /**
+ * Get Dato Influence entities
+ *
+ * @param {Dato} dato
+ * @returns {Object}
+*/
+function getInfluences (dato) {
+  const influences = dato.influences
+  return influences.map(influence => {
+    const { body, slug, title } = influence
+    const path = `/influences/${slug}`
+    return { body, path, slug, title }
+  })
+}
+
+/**
  * Get Dato Theme entities
  *
  * @param {Dato} dato
@@ -347,18 +387,17 @@ function getThemes (dato) {
 }
 
 /**
- * collect Page entities in object by tag
+ * collect Chapter entities in object by keyword
  *
  * @param {DatoRecord[]} pages
- * @param {string} tagType type of tag to use
  * @returns {object} arrays of Pages by tag
  */
-function collectPagesByTagType (pages, tagType) {
+function collectPagesByKeyword (pages) {
   return pages
     .map(page => {
       const { book, chapter, keywords, location, influences, path, slug, storyteller, theme, title } = page
       return {
-        tags: page[tagType],
+        tags: page.keywords,
         page: { book, chapter, keywords, location, influences, path, slug, storyteller, theme, title }
       }
     })

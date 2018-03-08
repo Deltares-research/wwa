@@ -27,7 +27,7 @@ export default {
 
 .card-component {
   width: 100%;
-  padding: 2rem 1rem 0;
+  padding: 1.5rem 1rem 0;
   box-sizing: border-box;
   color: var(--ui--white);
 }

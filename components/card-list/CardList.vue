@@ -69,6 +69,7 @@ export default {
   margin: 0;
   display: flex;
   flex: 0 1 auto;
+  height: 10.5rem;
 }
 
 .card-list__item {

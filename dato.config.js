@@ -302,18 +302,18 @@ function getPages (dato, chapterRef) {
         lon: page.location.longitude,
         zoom: page.zoomlevel
       } : null
-      chapterRef = chapterRef || getParent(dato, page)
-      const bookRef = getParent(dato, chapterRef) || {}
-      const book = (bookRef) ? {
-        path: `${contentBasePath}/${bookRef.slug}`,
-        slug: bookRef.slug,
-        title: bookRef.title
+      const parentChapter = chapterRef || getParent(dato, page)
+      const parentBook = getParent(dato, parentChapter) || {}
+      const book = (parentBook) ? {
+        path: `${contentBasePath}/${parentBook.slug}`,
+        slug: parentBook.slug,
+        title: parentBook.title
       } : {}
       const chapter = {
         path: `${book.path}/${chapterRef.slug}`,
-        slug: chapterRef.slug,
-        title: chapterRef.title,
-        type: chapterRef.chapterType
+        slug: parentChapter.slug,
+        title: parentChapter.title,
+        type: parentChapter.chapterType
       }
       const path = `${chapter.path}#${slug}`
       const links = (page.links) ? page.links.split('\n')

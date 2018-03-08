@@ -19,9 +19,8 @@ class Water {
     //   transparent: true
     // })
 
-    this.material = new THREE.MeshBasicMaterial({
+    this.material = new THREE.MeshPhongMaterial({
       color: 0x003355,
-      // map: new THREE.TextureLoader().load('assets/water-blue-ocean.jpg'),
       transparent: true,
       opacity: 0.9
     })

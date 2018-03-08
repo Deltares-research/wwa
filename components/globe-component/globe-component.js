@@ -16,6 +16,7 @@ import Particles from './particles'
 const tweenDuration = 1500
 const vOffset = 15
 const vOffsetFactor = vOffset / 100
+const center = new THREE.Vector3(0, 0, 0)
 
 export default {
   data () {
@@ -25,7 +26,8 @@ export default {
       scene: null,
       controls: null,
       connections: [],
-      message: ''
+      message: '',
+      cameraDistance: 0
     }
   },
   mounted () {
@@ -48,6 +50,7 @@ export default {
 
     this.controls.addEventListener('change', () => {
       this.$store.commit('disableGlobeAutoRotation')
+      this.cameraDistance = this.camera.position.distanceTo(center)
     })
 
     this.mouse = new THREE.Vector2()
@@ -102,6 +105,9 @@ export default {
     theme (val, old) {
       this.replaceTheme(val, old)
       // this.disableGlobeAutoRotation()
+    },
+    cameraDistance (val) {
+      this.updateAvatarPositions(val)
     }
   },
   computed: {
@@ -144,15 +150,6 @@ export default {
         return el
       },
       cache: false
-    },
-    cameraGlobeDistance: {
-      get () {
-        if (!this.camera) {
-          return 0
-        }
-        return this.camera.position.distanceTo(this.globe.position)
-      },
-      cache: false
     }
   },
   methods: {
@@ -187,7 +184,7 @@ export default {
       to.r = 40 - feature.location.zoom
       this.panAndZoom(from, to)
     },
-    cameraGlobeDistance (newValue) {
+    updateAvatarPositions (newValue) {
       this.avatar.mesh.children.forEach(child => {
         const lon = lon2phi(child.data.location.lon)
         const lat = lat2theta(child.data.location.lat)

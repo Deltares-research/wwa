@@ -6,7 +6,9 @@
       v-bind:graphs="page.graphs"
       v-bind:title="page.title"
       v-bind:video="page.video"
-      v-bind:mapboxStyle="page.mapboxStyle" />
+      v-bind:mapboxStyle="page.mapboxStyle"
+      v-bind:links="page.links"
+      v-bind:partner="page.partner" />
     <page-aside
       v-bind:influences="page.influences"
       v-bind:keywords="page.keywords"
@@ -33,17 +35,22 @@ export default {
 <style>
 @import '../colors/colors.css';
 
-:root {
-  --target-offset: 75vh
-}
-
 .page-component {
   display: flex;
   position: relative;
-  flex-direction: row;
-  margin: 0 auto;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
   min-height: 25vh;
   max-width: 60rem;
-  padding-top: var(--target-offset);
 }
+
+@media screen and (min-width: 720px) {
+  .page-component {
+    flex-direction: row;
+      padding-left: 2rem;
+      padding-right: 2rem;
+  }
+}
+
 </style>

@@ -34,12 +34,6 @@ export default {
   margin: 0;
 }
 .lazy-image .placeholder {
-  margin: auto;
-  text-align: center;
-  top: 0;
-  left: 0;
-  right: 0;
-  position: absolute;
   padding: 1rem;
 }
 .fixed-ratio {

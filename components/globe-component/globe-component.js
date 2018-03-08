@@ -6,6 +6,7 @@ import { OrbitControls } from './orbit-controls.js'
 import { mapState } from 'vuex'
 import { scaleLinear } from 'd3-scale'
 
+import { GLOBE_RADIUS } from './constants'
 import Glow from './glow'
 import Water from './water'
 import Avatar from './avatar'
@@ -16,6 +17,7 @@ import Particles from './particles'
 const tweenDuration = 1500
 const vOffset = 15
 const vOffsetFactor = vOffset / 100
+const center = new THREE.Vector3(0, 0, 0)
 
 export default {
   data () {
@@ -25,7 +27,8 @@ export default {
       scene: null,
       controls: null,
       connections: [],
-      message: ''
+      message: '',
+      cameraDistance: 40
     }
   },
   mounted () {
@@ -34,11 +37,12 @@ export default {
     } catch (err) {
       return
     }
-
     // this.stats = new Stats()
 
     this.camera = this.createCamera()
     this.scene = this.createScene()
+
+    this.updateAvatarPositions(this.cameraDistance)
 
     this.clock = new THREE.Clock()
 
@@ -51,7 +55,9 @@ export default {
 
     const that = this
     this.controls.addEventListener('change', () => {
-      that.controls.rotateSpeed = rotateSpeed(that.camera.position.distanceTo(new THREE.Vector3(0, 0, 0)))
+      this.$store.commit('disableGlobeAutoRotation')
+      this.cameraDistance = this.camera.position.distanceTo(center)
+      this.controls.rotateSpeed = rotateSpeed(that.camera.position.distanceTo(new THREE.Vector3(0, 0, 0)))
     })
 
     rotateSpeed
@@ -98,6 +104,8 @@ export default {
       if (val.theme && val.theme.slug) {
         this.replaceTheme(val.theme.slug)
       }
+
+      this.disableGlobeAutoRotation()
     },
     features (val) {
       this.replaceFeatures(val)
@@ -107,6 +115,10 @@ export default {
     },
     theme (val, old) {
       this.replaceTheme(val, old)
+      // this.disableGlobeAutoRotation()
+    },
+    cameraDistance (val) {
+      this.updateAvatarPositions(val)
     }
   },
   computed: {
@@ -114,7 +126,8 @@ export default {
       activeFeature: state => state.activeFeature,
       features: state => state.features,
       globeInteraction: state => state.interaction,
-      theme: state => state.theme
+      theme: state => state.theme,
+      globeAutoRotation: state => state.globeAutoRotation
     }),
     containerSize: {
       get () {
@@ -149,7 +162,6 @@ export default {
       },
       cache: false
     }
-
   },
   methods: {
     activateFeature (feature) {
@@ -182,6 +194,19 @@ export default {
       to.phi = lon2phi(feature.location.lon)
       to.r = 40 - feature.location.zoom
       this.panAndZoom(from, to)
+    },
+    updateAvatarPositions (newValue) {
+      this.avatar.mesh.children.forEach(child => {
+        const lon = lon2phi(child.data.location.lon)
+        const lat = lat2theta(child.data.location.lat)
+
+        const { x, y, z } = polar2cartesian(GLOBE_RADIUS + (0.01 * newValue), lat, lon)
+        child.position.x = x
+        child.position.y = y
+        child.position.z = z
+
+        child.geometry.verticesNeedUpdate = true
+      })
     },
     /**
      * Animates the particles on the globe to the colors associated with the provided theme slug.
@@ -246,7 +271,7 @@ export default {
         .on('update', ({ r, theta, phi }) => {
           const cart = polar2cartesian(r, theta, phi)
           this.camera.position.set(cart.x, cart.y, cart.z)
-          this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+          this.camera.lookAt(center)
         })
         .easing(Easing.Cubic.InOut)
 
@@ -277,14 +302,15 @@ export default {
      * @returns {Scene} Scene with a sphere
      */
     createScene () {
-      // minimal scene (TODO: append real globe)
+      const { base = '/' } = this.$router.options
       const scene = new THREE.Scene()
 
       const globe = new THREE.Object3D()
       this.globe = globe
       globe.position.set(0, 0, 0)
+      scene.add(globe)
 
-      this.particles = new Particles({current: this.theme, target: this.theme})
+      this.particles = new Particles(base, {current: this.theme, target: this.theme})
       this.particles.load(() => this.particles.update())
       globe.add(this.particles.mesh)
 
@@ -295,11 +321,8 @@ export default {
       globe.add(glow.mesh)
 
       // get the baseUrl
-      const { base = '/' } = this.$router.options
       this.avatar = new Avatar(base)
       this.avatar.load(this.features, avs => globe.add(avs))
-
-      scene.add(globe)
 
       const light = new THREE.AmbientLight(0xffffff)
       scene.add(light)
@@ -308,6 +331,9 @@ export default {
       dirLight.position.set(15, 13, 15)
 
       return scene
+    },
+    disableGlobeAutoRotation () {
+      this.globeAutoRotate = false
     },
     /**
      * Creates a raycaster for detecting mouseover over avatars
@@ -352,6 +378,15 @@ export default {
      */
     animate () {
       requestAnimationFrame(this.animate)
+
+      if (this.globeAutoRotation) {
+        const { r, theta, phi } = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
+        const point = polar2cartesian(r, theta, phi + 0.001)
+        this.camera.position.x = point.x
+        this.camera.position.y = point.y
+        this.camera.position.z = point.z
+        this.camera.lookAt(center)
+      }
 
       this.water.uniforms.time.value += (this.clock.getDelta() * 0.1)
       this.particles.uniforms.time.value += 0.4

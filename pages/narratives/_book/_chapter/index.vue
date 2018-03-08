@@ -3,16 +3,17 @@
     <scroll-indicator v-bind:pages="pages" v-bind:activePage="activePage" />
     <div class="chapter full-width">
       <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
-            <page-component
-              v-for="page in pages"
-              v-bind:key="page.slug"
-        v-bind:page="page"
-        v-bind:id="page.slug"
-              data-page-component
-        class="page-component" />
+        <page-component
+          data-page-component
+          v-for="page in pages"
+          v-bind:key="page.slug"
+          v-bind:page="page"
+          v-bind:id="page.slug"
+        />
         <narrative-footer
           v-bind:previousLink="chapter.previousChapter"
-          v-bind:nextLink="chapter.nextChapter" />
+          v-bind:nextLink="chapter.nextChapter"
+        />
     </div>
   </div>
 </template>
@@ -28,15 +29,18 @@ export default {
   async asyncData (context) {
     const { book, pages, path, slug, title, previousChapter, nextChapter } = await loadData(context, context.params)
     const chapter = { path, slug, title, previousChapter, nextChapter }
-
     return { book, chapter, pages, path, slug, title }
   },
   data () {
-    return { activePage: null }
+    return {
+      activePage: null,
+      scrollIntoViewSupport: false
+    }
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.pages)
     this.$store.commit('disableInteraction')
+    this.$store.commit('disableGlobeAutoRotation')
     const pageSlug = this.$route.hash.replace(/^#/, '')
     this.updateActivePage(pageSlug)
     if ('IntersectionObserver' in window) {
@@ -52,7 +56,6 @@ export default {
   methods: {
     observeIntersectingChildren () {
       const trackVisibility = (entries) => {
-        // No Array.prototype function, so we can break the loop
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const pageSlug = entry.target.id
@@ -91,7 +94,7 @@ export default {
       }
     },
     activePage (activePage) {
-      const path = this.$route.path.replace(/^\//, '') // remove leading slash to maintain router base
+      const path = this.$route.path.replace(/^\/\//, '/') // remove leading slash to maintain router base
       history.replaceState({}, 'page', `${path}#${this.activePage.slug}`)
       this.$store.commit('activateFeature', activePage)
     }
@@ -102,7 +105,7 @@ export default {
 <style>
 
 :root {
-  --target-offset: 75vh
+  --target-offset: 50vh
 }
 
 .full-width {
@@ -110,13 +113,20 @@ export default {
   top: var(--target-offset);
   left:0;
   right: 0;
+  z-index: 0;
 }
 
 .chapter .narrative-header {
   width: 100%;
+  max-width: calc(60rem + 2 * 2rem);
   margin: auto;
-  margin-bottom: calc(-1 * var(--target-offset));
   position: relative;
+  margin-bottom: calc(-1 * var(--target-offset));
   z-index: 1;
 }
+
+.page-component {
+  padding-top: var(--target-offset);
+}
+
 </style>

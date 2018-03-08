@@ -1,10 +1,10 @@
 <template>
   <dl class="theme-list">
     <template v-for="(theme, index) in themes">
-        <dt v-if="(theme.slug === activeSlug)" v-bind:class="`h3 active invert ${theme.slug}`" v-bind:key="`${theme.slug}-title`">
+        <dt v-if="(theme.slug === activeSlug)" v-bind:class="`h2 active invert ${theme.slug}`" v-bind:key="`${theme.slug}-title`">
           {{ theme.title }}
         </dt>
-        <dt v-else v-bind:class="`h3 invert ${theme.slug}`" v-bind:key="`${theme.slug}-title`">
+        <dt v-else v-bind:class="`h2 invert ${theme.slug}`" v-bind:key="`${theme.slug}-title`">
           <nuxt-link v-bind:to="theme.path">{{ theme.title }}</nuxt-link>
         </dt>
         <dd class="invert" v-bind:key="`${theme.slug}-description`" v-html="formattedBodies[index]"></dd>

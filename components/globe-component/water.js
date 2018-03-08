@@ -4,7 +4,7 @@ import { GLOBE_RADIUS } from './constants'
 
 class Water {
   constructor () {
-    this.geometry = new THREE.SphereGeometry(GLOBE_RADIUS - 0.02, 32, 32)
+    this.geometry = new THREE.SphereGeometry(GLOBE_RADIUS - 0.02, 32, 64)
 
     this.uniforms = {
       time: { value: 0 }

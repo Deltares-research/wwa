@@ -41,10 +41,12 @@
   content: '';
   display: inline-block;
   width: 1.25em;
+  margin-left: -.375em;
+  margin-right: .25em;
   height: 1em;
-  vertical-align: text-top;
+  vertical-align: middle;
   background-repeat: no-repeat;
-  background-position: left center;
+  background-position: center center;
   background-size: auto auto;
 
 }

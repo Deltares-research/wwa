@@ -4,7 +4,9 @@ import { Tween, autoPlay, Easing } from 'es6-tween'
 import { cartesian2polar, polar2cartesian, lat2theta, lon2phi } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
 import { mapState } from 'vuex'
+import { scaleLinear } from 'd3-scale'
 
+import { GLOBE_RADIUS } from './constants'
 import Glow from './glow'
 import Water from './water'
 import Avatar from './avatar'
@@ -15,6 +17,7 @@ import Particles from './particles'
 const tweenDuration = 1500
 const vOffset = 15
 const vOffsetFactor = vOffset / 100
+const center = new THREE.Vector3(0, 0, 0)
 
 export default {
   data () {
@@ -24,7 +27,8 @@ export default {
       scene: null,
       controls: null,
       connections: [],
-      message: ''
+      message: '',
+      cameraDistance: 40
     }
   },
   mounted () {
@@ -38,16 +42,27 @@ export default {
     this.camera = this.createCamera()
     this.scene = this.createScene()
 
+    this.updateAvatarPositions(this.cameraDistance)
+
     this.clock = new THREE.Clock()
+
+    const rotateSpeed = scaleLinear()
 
     this.controls = new OrbitControls(this.camera, this.globeContainerElement)
     this.controls.enablePan = false
     this.controls.minDistance = 6
     this.controls.maxDistance = 50
 
+    const that = this
     this.controls.addEventListener('change', () => {
       this.$store.commit('disableGlobeAutoRotation')
+      this.cameraDistance = this.camera.position.distanceTo(center)
+      this.controls.rotateSpeed = rotateSpeed(that.camera.position.distanceTo(new THREE.Vector3(0, 0, 0)))
     })
+
+    rotateSpeed
+      .domain([this.camera.position.distanceTo(new THREE.Vector3(0, 0, 0)), this.controls.minDistance])
+      .range([1, this.controls.minDistance / (2 * this.camera.position.distanceTo(new THREE.Vector3(0, 0, 0)))])
 
     this.mouse = new THREE.Vector2()
     this.intersections = []
@@ -101,6 +116,9 @@ export default {
     theme (val, old) {
       this.replaceTheme(val, old)
       // this.disableGlobeAutoRotation()
+    },
+    cameraDistance (val) {
+      this.updateAvatarPositions(val)
     }
   },
   computed: {
@@ -144,7 +162,6 @@ export default {
       },
       cache: false
     }
-
   },
   methods: {
     activateFeature (feature) {
@@ -177,6 +194,19 @@ export default {
       to.phi = lon2phi(feature.location.lon)
       to.r = 40 - feature.location.zoom
       this.panAndZoom(from, to)
+    },
+    updateAvatarPositions (newValue) {
+      this.avatar.mesh.children.forEach(child => {
+        const lon = lon2phi(child.data.location.lon)
+        const lat = lat2theta(child.data.location.lat)
+
+        const { x, y, z } = polar2cartesian(GLOBE_RADIUS + (0.01 * newValue), lat, lon)
+        child.position.x = x
+        child.position.y = y
+        child.position.z = z
+
+        child.geometry.verticesNeedUpdate = true
+      })
     },
     /**
      * Animates the particles on the globe to the colors associated with the provided theme slug.
@@ -241,7 +271,7 @@ export default {
         .on('update', ({ r, theta, phi }) => {
           const cart = polar2cartesian(r, theta, phi)
           this.camera.position.set(cart.x, cart.y, cart.z)
-          this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+          this.camera.lookAt(center)
         })
         .easing(Easing.Cubic.InOut)
 
@@ -355,7 +385,7 @@ export default {
         this.camera.position.x = point.x
         this.camera.position.y = point.y
         this.camera.position.z = point.z
-        this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+        this.camera.lookAt(center)
       }
 
       this.water.uniforms.time.value += (this.clock.getDelta() * 0.1)

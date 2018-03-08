@@ -4,6 +4,7 @@ import { Tween, autoPlay, Easing } from 'es6-tween'
 import { cartesian2polar, polar2cartesian, lat2theta, lon2phi } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
 import { mapState } from 'vuex'
+import { scaleLinear } from 'd3-scale'
 
 import { GLOBE_RADIUS } from './constants'
 import Glow from './glow'
@@ -45,15 +46,23 @@ export default {
 
     this.clock = new THREE.Clock()
 
+    const rotateSpeed = scaleLinear()
+
     this.controls = new OrbitControls(this.camera, this.globeContainerElement)
     this.controls.enablePan = false
     this.controls.minDistance = 6
     this.controls.maxDistance = 50
 
+    const that = this
     this.controls.addEventListener('change', () => {
       this.$store.commit('disableGlobeAutoRotation')
       this.cameraDistance = this.camera.position.distanceTo(center)
+      this.controls.rotateSpeed = rotateSpeed(that.camera.position.distanceTo(new THREE.Vector3(0, 0, 0)))
     })
+
+    rotateSpeed
+      .domain([this.camera.position.distanceTo(new THREE.Vector3(0, 0, 0)), this.controls.minDistance])
+      .range([1, this.controls.minDistance / (2 * this.camera.position.distanceTo(new THREE.Vector3(0, 0, 0)))])
 
     this.mouse = new THREE.Vector2()
     this.intersections = []

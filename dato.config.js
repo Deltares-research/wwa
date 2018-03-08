@@ -131,19 +131,17 @@ function generateByInfluence (dato, root, i18n) {
  * @param {i18n} i18n
  */
 function generateByKeyword (dato, root, i18n) {
-  const tagType = 'keyword'
   const pages = getPages(dato)
-  const tags = collectPagesByKeyword(pages, tagType)
-  const dir = tagType
+  const tags = collectPagesByKeyword(pages)
   const index = []
   for (const tag in tags) {
     const pages = tags[tag]
     const tagObj = Object.assign({}, tags[tag])
     delete tagObj.entries // not needed in index
     index.push(tagObj)
-    root.createDataFile(`static/data/${dir}/${tagObj.slug}.json`, 'json', pages)
+    root.createDataFile(`static/data/keywords/${tagObj.slug}.json`, 'json', pages)
   }
-  root.createDataFile(`static/data/${dir}/index.json`, 'json', index.filter(i => i.slug !== 'unfiled'))
+  root.createDataFile(`static/data/keywords/index.json`, 'json', index.filter(i => i.slug !== 'unfiled'))
 }
 /**
  * Write out JSON files by theme
@@ -187,7 +185,6 @@ function generateStaticPages (dato, root, i18n) {
     root.createDataFile(`static/data/${page.slug}.json`, 'json', page)
   }
 }
-
 
 /**
  * Get Dato Book entities

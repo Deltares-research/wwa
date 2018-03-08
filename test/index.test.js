@@ -1,6 +1,6 @@
 import test from 'ava'
 import { Nuxt, Builder } from 'nuxt'
-import { Canvas } from 'canvas'
+// import { Canvas } from 'canvas'
 import { resolve } from 'path'
 
 // Nuxt defaults, but override them with package.json config when set

@@ -37,45 +37,60 @@
       <section v-if="mapboxStyle" class="page-body__map">
         <story-map v-bind:mapbox-style="mapboxStyle"></story-map>
       </section>
+
+      <section class="clearfix page-body__footer">
+        <ul v-if="links" class="page-body__links">
+          <li v-for="link in links">
+            <a target="_blank" v-bind:href="link.path">{{ link.title }}</a>
+          </li>
+        </ul>
+        <div class="page-body__footer--partner">
+          <p v-if="partner && partner.name">
+             Created in partnership with:
+             <span class="clearfix page-body__partner">
+              <img v-if="partner.logo && partner.logo.imgixHost" v-bind:src="`${partner.logo.imgixHost}${partner.logo.value.path}?w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`" v-bind:width="scaleMaxToSize(partner.logo, sizeLimit).w" v-bind:height="scaleMaxToSize(partner.logo, sizeLimit).h">
+              {{ partner.name }}
+            </span>
+          </p>
+        </div>
+      </section>
+
     </section>
 </template>
 
 <script>
 import LazyImage from '~/components/lazy-image/LazyImage'
-import marked from 'marked'
 import StoryMap from '~/components/story-map/StoryMap'
-
-const renderer = new marked.Renderer()
-renderer.paragraphCount = 0 // Need to keep track of the number of paragraphs
-renderer.paragraph = function (content) {
-  const i = this.paragraphCount || 0
-  this.paragraphCount++
-  return `<p ${(!i) ? 'class="intro"' : ''}>${content}</p>`
-}
+import renderMarkedContent from '~/lib/custom-marked'
 
 export default {
   props: {
     body: String,
+    links: Array,
     graphs: Array,
     images: Array,
     title: String,
     video: Object,
-    mapboxStyle: String
+    mapboxStyle: String,
+    partner: Object,
+    sizeLimit: {
+      type: Number,
+      default: 3 * 16
+    }
   },
   components: { LazyImage, StoryMap },
   computed: {
     htmlBody () {
-      return this.customMarked(this.body)
+      return renderMarkedContent(this.body)
     }
   },
   methods: {
-    customMarked (content) {
-      let formatted
-      if (content) {
-        renderer.paragraphCount = 0
-        formatted = marked(content, { renderer })
+    scaleMaxToSize: function (imgObj, sizeLimit) {
+      if (!imgObj.value.width) {
+        return { h: Math.round(sizeLimit), w: Math.round(sizeLimit) }
       }
-      return formatted
+      const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height)
+      return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) }
     }
   }
 }
@@ -87,6 +102,7 @@ export default {
 .page-body {
   padding: 2rem;
   background-color: var(--ui--bg--white);
+  flex: 0 1 100%;
 }
 
 .page-body figure {
@@ -116,5 +132,45 @@ export default {
   color: var(--ui--text--light);
   width: 100%;
   padding: 5px 0;
+}
+
+.page-body__footer {
+  color: var(--ui--text--light);
+  width: 100%;
+  padding: 5px 0;
+}
+
+.page-body__links {
+  list-style:none;
+  padding:0;
+}
+.page-body__links li {
+  margin-bottom: 1rem;
+}
+
+.page-body__footer--partner {
+  text-align:center;
+}
+
+.page-body__partner {
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  font-style: italic;
+}
+
+.page-body__partner img {
+  margin: 0 4px;
+  vertical-align: middle;
+}
+
+.fixed-ratio {
+  padding: 0;
+  position: relative;
+  background-color: var(--ui--text--light);
+}
+
+.fixed-ratio > * {
+  position: absolute;
 }
 </style>

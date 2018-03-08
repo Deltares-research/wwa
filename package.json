@@ -30,6 +30,9 @@
     "data:influences": "cross-env DATO_EXPORT=influences dato dump",
     "data:static-pages": "cross-env DATO_EXPORT=static_pages dato dump",
     "data:themes": "cross-env DATO_EXPORT=themes dato dump",
+    "serve": "npm-run-all serve:generate serve:serve",
+    "serve:generate": "npm run generate",
+    "serve:serve": "http-server ./dist -p 9920",
     "test": "ava"
   },
   "config": {
@@ -82,6 +85,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "gh-pages": "^1.1.0",
+    "http-server": "0.11.1",
     "imports-loader": "^0.7.1",
     "jsdom": "11.5.1",
     "json-stringify-safe": "5.0.1",

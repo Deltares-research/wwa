@@ -1,57 +1,40 @@
 <template>
-  <transition name="slide-up">
-    <article class="card-component" v-if="show">
-      <nuxt-link v-bind:to="path">
-        <h1>{{title}} {{count || ''}}</h1>
-        <svg-icon v-if="theme && theme.slug" v-bind:icon="theme.slug" />
-        <p>{{body}}</p>
-      </nuxt-link>
-    </article>
-  </transition>
+  <article class="card-component">
+    <nuxt-link v-bind:to="path">
+      <p class="subtitle h2">{{ subtitle }}</p>
+      <h1>{{title}}</h1>
+      <p>{{body}}</p>
+    </nuxt-link>
+  </article>
 </template>
 
 <script>
-import SvgIcon from '~/components/svg-icon/SvgIcon'
 
 export default {
-  components: {
-    SvgIcon
-  },
   props: {
     body: String,
     count: Number,
-    delay: Number,
     path: String,
     slug: String,
+    subtitle: String,
     theme: Object,
     title: String
-  },
-  data () {
-    return {
-      show: false
-    }
-  },
-  mounted () {
-    setTimeout(() => {
-      this.show = true
-    }, this.delay)
   }
 }
 </script>
 
 <style>
 @import '../colors/colors.css';
-@import '../animations/animations.css';
 
-/* end card show animation */
 .card-component {
-  --padding-v: calc(.5rem + .5vw);
-  --padding-h: calc(1rem + 1vw);
   width: 100%;
-  padding: var(--padding-v) var(--padding-h);
-  background-color: rgba(255, 255, 255, .2);
+  padding: 2rem;
+  background-color: var(--ui--bg--light);
   box-sizing: border-box;
-  color: var(--ui--text--invert);
+  color: var(--ui--text);
+}
+.card-component .subtitle {
+  text-transform: uppercase;
 }
 .card-component a {
   color: inherit;

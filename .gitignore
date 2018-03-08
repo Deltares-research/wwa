@@ -25,4 +25,4 @@ external
 build
 
 # local jupyter notebook saving checkpoints
-/data-prep/.ipynb_checkpoints
+data-prep/.ipynb_checkpoints

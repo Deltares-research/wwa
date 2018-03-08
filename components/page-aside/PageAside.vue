@@ -1,14 +1,19 @@
 <template>
   <aside class="page-aside">
-    <section v-if="storyteller" class="clearfix page-aside__section page-aside__section--storyteller">
+    <section v-if="storyteller && storyteller.name" class="clearfix page-aside__section page-aside__section--storyteller">
       <h3 class="page-aside__title">Storyteller</h3>
-      <img v-bind:src="avatarSrc">
+      <span v-if="storyteller.avatar && storyteller.avatar.imgixHost" class="page-aside__avatar-container">
+        <img
+          v-bind:src="`${storyteller.avatar.imgixHost}${storyteller.avatar.value.path}?w=${this.scaleMinToSize(storyteller.avatar, sizeLimit).w}&q=65`"
+          v-bind:width="scaleMinToSize(storyteller.avatar, sizeLimit).w"
+          v-bind:height="scaleMinToSize(storyteller.avatar, sizeLimit).h">
+      </span>
       <p>{{ storyteller.name }}</p>
     </section>
 
-    <section v-if="theme" class="clearfix page-aside__section">
+   <section v-if="theme" class="clearfix page-aside__section">
       <h3 class="page-aside__title">Theme</h3>
-      <img v-if="theme && theme.slug" class="theme-icon" v-bind:src="themeSrc" />
+      <img v-if="theme && theme.slug" class="theme-icon" v-bind:src="`assets/${theme.slug}.png`" width="48" height="48" />
       <p>{{ theme.title }}</p>
     </section>
 
@@ -17,7 +22,7 @@
       <h3 class="page-aside__title">Influences</h3>
       <ul class="list--inline">
         <li v-for="link in influences" v-bind:key="link.slug">
-          <nuxt-link v-bind:to="link.path">{{ link.title }}</nuxt-link>
+          <nuxt-link v-bind:to="link.path" v-bind:class="`tag tag--influence tag--${link.slug}`">{{ link.title }}</nuxt-link>
         </li>
       </ul>
     </section>
@@ -35,26 +40,30 @@
 </template>
 
 <script>
-import _defaultAvatarSrc from './assets/Portrait_Placeholder.png'
-
 export default {
   props: {
     influences: Array,
     keywords: Array,
     storyteller: Object,
-    theme: Object
+    partner: Object,
+    theme: Object,
+    sizeLimit: {
+      type: Number,
+      default: 4 * 16
+    }
   },
-  computed: {
-    avatarSrc: function () {
-      var src = _defaultAvatarSrc
-      const avatar = this.storyteller.avatar
-      if (avatar && avatar.imgixHost) {
-        src = `${avatar.imgixHost}${avatar.value.path}?w=50&q=65`
+  methods: {
+    scaleMinToSize: function (imgObj, sizeLimit) {
+      if (!imgObj.value.width) {
+        return { h: Math.round(sizeLimit), w: Math.round(sizeLimit) }
       }
-      return src
-    },
-    themeSrc: function () {
-      return `${this.$router.options.base}assets/${this.theme.slug}.svg`
+      if (imgObj.value.height > imgObj.value.width) {
+        const offset = sizeLimit / imgObj.value.width
+        return { w: sizeLimit, h: Math.round(imgObj.value.height * offset) }
+      } else {
+        const offset = sizeLimit / imgObj.value.height
+        return { w: Math.round(imgObj.value.width * offset), h: sizeLimit }
+      }
     }
   }
 }
@@ -62,29 +71,25 @@ export default {
 
 <style>
 @import '../colors/colors.css';
+@import '../tag/tag.css';
 @import '../typography/typography.css';
 
-.clearfix:after {
+.clearfix::after {
 	content: "";
 	display: table;
 	clear: both;
 }
 
 .page-aside {
-  position: sticky;
+  box-sizing: border-box;
   background-color: var(--ui--bg--light);
-  max-width: 20rem;
-  width: 30%;
-  flex: 1 0 30%;
-  padding: 2rem;
+  width: 100%;
+  flex: 0 2 100%;
+  padding: 1rem;
 }
 
 .page-aside__section {
   margin-bottom: 1rem;
-}
-
-.page-aside__section--keywords .tag {
-  font-size: .75rem
 }
 
 .page-aside__title {
@@ -93,17 +98,29 @@ export default {
   margin-bottom: var(--base-size-units);
 }
 
+.page-aside .tag {
+  font-size: .875rem;
+}
+
 .page-aside img {
   float: left;
-  width: 3rem;
-  height: 3rem;
   vertical-align: top;
   margin-right: .7rem;
   margin-left: -1px;
 }
 
-.page-aside__section--storyteller img {
+.page-aside__avatar-container img{
+  margin: auto
+}
+
+.page-aside__avatar-container {
+  text-align: center;
+  width: 4rem;
+  height: 4rem;
   border-radius: 100%;
+  margin: 0 .7rem 0 -1px;
+  display: inline-block;
+  overflow: hidden;
 }
 
 .page-aside img + p {
@@ -111,8 +128,3 @@ export default {
   padding-top: .7rem;
 }
 </style>
-
-
-
-
-

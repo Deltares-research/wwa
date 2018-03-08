@@ -5,20 +5,12 @@ import { range } from 'd3-array'
 import { color } from 'd3-color'
 import { lat2theta, lon2phi, polar2cartesian } from './common'
 import { metrics } from './metrics'
-import { GLOBE_RADIUS } from './constants'
+import { GLOBE_RADIUS, MAX_PARTICLES } from './constants'
 
 /** Scale to convert RGB 0-255 range to 0-1 range */
 const rgb2unit = scaleLinear()
   .domain([0, 255])
   .range([0, 1])
-
-  /** Scale for particle height offset */
-const height = scaleLinear()
-  .domain([0, 5])
-  .range([0, 0])
-  // .range([0, 0.03])
-  // .range([0, 0.18])
-  .clamp(true)
 
 /** Scale for particle size */
 const p = scaleLinear()
@@ -30,8 +22,10 @@ const c = scaleLinear()
   .domain(range(6))
 
 class Particles {
-  constructor (state) {
+  constructor (base, state) {
+    this.base = base
     this.state = state
+
     this.data = []
 
     this.uniforms = {
@@ -73,12 +67,12 @@ class Particles {
     this.uniforms.pointSize.value = p(smallestHeight) < 1.0 ? 1.0 : p(smallestHeight) / (2 / window.devicePixelRatio)
   }
 
-  replaceTheme (theme) {
+  replaceTheme (slug) {
     if (!this.colors || !this.targetColors || !this.indices || !this.values || !this.mesh) {
       return false
     }
     this.state.current = this.state.target
-    this.state.target = theme
+    this.state.target = slug
 
     this.colors.set(metrics[this.state.current].colors)
     this.targetColors.set(metrics[this.state.target].colors)
@@ -94,88 +88,54 @@ class Particles {
   }
 
   load (finished) {
-    // original file still at https://s3-eu-west-1.amazonaws.com/deltares-opendata/wwa/wri/land.csv
-    // Load data in format:
-    // -89.772727273,-60.0,0.0,0.0,0.0,0.0,0.0,0.0
-    // -89.772727273,60.0,0.0,0.0,0.0,0.0,0.0,0.0
-    // -89.318181818,-140.0,0.0,0.0,0.0,0.0,0.0,0.0
-    loadData('./globe-themes/globe-theme-data.csv', (err, result) => {
-      if (err) {
-        console.error('particle data could not be loaded')
+    this.initGeometry()
+    loadData(`${this.base}globe-themes/globe-data.csv`, (error, result) => {
+      if (error) {
+        console.error(`error loading globe-data.csv: ${error}`)
       }
-      this.data = result[0]
-        .map(d => ({
-          lat: lat2theta(+d.lat),
-          lon: lon2phi(+d.lon),
-          g: +d.GRAY50MSRW,
-          // bt: +d.BT,
-          // ba: +d.BA,
-          hfo: +d.HFO_s,
-          dro: +d.DRO_s,
-          wri: +d.WRI_s,
-          wsv: +d.WSV_s,
-          sv: +d.SV_s,
-          eco_s: +d.ECO_S_s
-        }))
-        .sort((a, b) => b[this.state.target] - a[this.state.target])
 
-      this.initGeometry()
+      result[0].forEach((d, i) => {
+        const particle = {}
+        particle.lat = lat2theta(+d.lat)
+        particle.lon = lon2phi(+d.lon)
 
-      Object.keys(metrics).forEach((m) => {
-        metrics[m].positions = new Float32Array(this.data.length * 3)
-        metrics[m].colors = new Float32Array(this.data.length * 3)
-        metrics[m].values = new Float32Array(this.data.length)
-        metrics[m].indices = new Float32Array(this.data.length)
+        particle.hfo = +d.HFO_s || null
+        particle.dro = +d.DRO_s || null
+        particle.eco_s = +d.ECO_S_s || null
 
-        // initial position
-        if (m === 'init') {
-          this.data.forEach((d, i) => {
-            // TODO: why does it not start with zero?
-            metrics[m].positions[(i * 3) + 1] = 0.04 * ((i % 300) - 150)
-            metrics[m].positions[(i * 3) + 0] = 0.04 * ((Math.floor(i / 300)) - 150)
-            metrics[m].positions[(i * 3) + 2] = 0
+        this.data.push(particle)
 
-            metrics[m].colors[(i * 3) + 0] = 0
-            metrics[m].colors[(i * 3) + 1] = 0.5
-            metrics[m].colors[(i * 3) + 2] = 0.8
-
-            metrics[m].values[i] = 5
-            metrics[m].indices[i] = i
-          })
-        } else {
+        Object.keys(metrics).forEach((m) => {
           c.range(metrics[m].colorRange)
 
-          this.data.forEach((d, i) => {
-            // TODO: this is temporary, until it has been decided what variables to use to illustrate the themes
-            let variable = m
-            if (m === 'too-little') {
-              variable = 'dro'
-            }
-            if (m === 'too-much') {
-              variable = 'hfo'
-            }
-            if (m === 'too-dirty') {
-              variable = 'eco_s'
-            }
+          const radius = GLOBE_RADIUS
+          const point = polar2cartesian(radius, particle.lat, particle.lon)
+          const pos = new THREE.Vector3(point.x, point.y, point.z)
 
-            const radius = (GLOBE_RADIUS + height(d[variable]))
-            const point = polar2cartesian(radius, d.lat, d.lon)
-            const pos = new THREE.Vector3(point.x, point.y, point.z)
+          metrics[m].positions[(i * 3) + 0] = pos.x
+          metrics[m].positions[(i * 3) + 1] = pos.y
+          metrics[m].positions[(i * 3) + 2] = pos.z
 
-            metrics[m].positions[(i * 3) + 0] = pos.x
-            metrics[m].positions[(i * 3) + 1] = pos.y
-            metrics[m].positions[(i * 3) + 2] = pos.z
+          const rgb = particle[metrics[m].variable] < 0 || particle.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(c(particle[metrics[m].variable]))
+          metrics[m].colors[(i * 3) + 0] = rgb2unit(rgb.r)
+          metrics[m].colors[(i * 3) + 1] = rgb2unit(rgb.g)
+          metrics[m].colors[(i * 3) + 2] = rgb2unit(rgb.b)
 
-            const rgb = d[m] < 0 || d.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(c(d[variable]))
-            metrics[m].colors[(i * 3) + 0] = rgb2unit(rgb.r)
-            metrics[m].colors[(i * 3) + 1] = rgb2unit(rgb.g)
-            metrics[m].colors[(i * 3) + 2] = rgb2unit(rgb.b)
+          const colors = this.geometry.attributes.color.array
+          colors[(i * 3) + 0] = rgb2unit(rgb.r)
+          colors[(i * 3) + 1] = rgb2unit(rgb.g)
+          colors[(i * 3) + 2] = rgb2unit(rgb.b)
 
-            metrics[m].values[i] = d[variable]
-            metrics[m].indices[i] = i
-          })
-        }
+          metrics[m].values[i] = particle[metrics[m].variable]
+          metrics[m].indices[i] = i
+        })
       })
+
+      this.geometry.attributes.position.set(metrics[this.state.current].positions)
+      this.geometry.attributes.color.set(metrics[this.state.current].colors)
+
+      this.geometry.attributes.position.needsUpdate = true
+      this.geometry.attributes.color.needsUpdate = true
 
       if (finished) {
         finished()
@@ -184,23 +144,30 @@ class Particles {
   }
 
   initGeometry () {
-    const positions = new Float32Array(this.data.length * 3)
+    const positions = new Float32Array(MAX_PARTICLES * 3)
     this.geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3))
 
-    const targetPositions = new Float32Array(this.data.length * 3)
+    const targetPositions = new Float32Array(MAX_PARTICLES * 3)
     this.geometry.addAttribute('targetPosition', new THREE.BufferAttribute(targetPositions, 3))
 
-    this.colors = new Float32Array(this.data.length * 3)
+    this.colors = new Float32Array(MAX_PARTICLES * 3)
     this.geometry.addAttribute('color', new THREE.BufferAttribute(this.colors, 3))
 
-    this.targetColors = new Float32Array(this.data.length * 3)
+    this.targetColors = new Float32Array(MAX_PARTICLES * 3)
     this.geometry.addAttribute('targetColor', new THREE.BufferAttribute(this.targetColors, 3))
 
-    this.values = new Float32Array(this.data.length)
+    this.values = new Float32Array(MAX_PARTICLES)
     this.geometry.addAttribute('value', new THREE.BufferAttribute(this.values, 1))
 
-    this.indices = new Float32Array(this.data.length)
+    this.indices = new Float32Array(MAX_PARTICLES)
     this.geometry.addAttribute('ix', new THREE.BufferAttribute(this.indices, 1))
+
+    Object.keys(metrics).forEach((m) => {
+      metrics[m].positions = new Float32Array(MAX_PARTICLES * 3)
+      metrics[m].colors = new Float32Array(MAX_PARTICLES * 3)
+      metrics[m].values = new Float32Array(MAX_PARTICLES)
+      metrics[m].indices = new Float32Array(MAX_PARTICLES)
+    })
   }
 }
 

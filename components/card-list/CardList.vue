@@ -1,8 +1,10 @@
 <template>
   <ul v-if="cards" class="card-list">
+    <transition-group name="slideUp" appear disappear :duration="3000">
     <li v-for="(card, index) in cards" v-bind:key="card.slug" class="card-list__item">
       <card-component
         v-bind:delay="index * 100"
+        v-bind:subtitle="(card.book) ? card.book.title : undefined"
         v-bind:title="card.title"
         v-bind:slug="card.slug"
         v-bind:path="card.path"
@@ -11,6 +13,7 @@
         v-bind:count="card.pageCount"
       />
     </li>
+    </transition-group>
   </ul>
 </template>
 <script>
@@ -27,6 +30,7 @@ export default {
 </script>
 <style>
 @import '../colors/colors.css';
+@import '../animations/animations.css';
 
 .card-list {
   overflow-x: auto;

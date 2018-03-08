@@ -14,7 +14,7 @@
   --base-size: .875; /* implied rems */
   --min-viewport: 20; /* implied rems */
   --max-viewport: 60; /* implied rems */
-  --lower-ratio: var(--minor-second); /* One of the above scales */
+  --lower-ratio: var(--major-second); /* One of the above scales */
   --upper-ratio: var(--minor-third); /* One of the above scales */
   --line-height: var(--perfect-fifth);
 
@@ -44,15 +44,7 @@
   font-family: "Roboto";
   src: url("/static/assets/Roboto-Regular-webfont.woff2") format("woff2"),
        url("/static/assets/Roboto-Regular-webfont.woff") format("woff");
-  font-display: fallback;
-}
-
-@font-face {
-  font-family: "Roboto";
-  src: url("/static/assets/Roboto-Italic-webfont.woff2") format("woff2"),
-       url("/static/assets/Roboto-Italic-webfont.woff") format("woff");
-  font-style: italic;
-  font-display: fallback;
+  font-display: swap;
 }
 
 @font-face {
@@ -60,7 +52,15 @@
   src: url("/static/assets/Roboto-Bold-webfont.woff2") format("woff2"),
        url("/static/assets/Roboto-Bold-webfont.woff") format("woff");
   font-weight: bold;
-  font-display: fallback;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/static/assets/Roboto-Italic-webfont.woff2") format("woff2"),
+       url("/static/assets/Roboto-Italic-webfont.woff") format("woff");
+  font-style: italic;
+  font-display: swap;
 }
 
 p, .p {
@@ -93,7 +93,7 @@ h6, .h6 {
 
 .invert {
   color: var(--ui--text--invert);
-  text-shadow: 0 0 1rem var(--ui--black);
+  text-shadow: 0 0 2rem var(--ui--black);
 }
 
 h4, .h4,
@@ -120,7 +120,9 @@ p.intro {
       +
     calc(var(--height-range) * var(--curr-viewport-factor))
   );
+  font-size: 1.125rem;
   font-size: var(--height-responsive);
+  font-weight: bold;
 }
 
 h2, .h2 {
@@ -141,6 +143,7 @@ h2, .h2 {
       +
     calc(var(--height-range) * var(--curr-viewport-factor))
   );
+  font-size: 1.25rem;
   font-size: var(--height-responsive);
 }
 
@@ -164,6 +167,7 @@ h1, .h1 {
       +
     calc(var(--height-range) * var(--curr-viewport-factor))
   );
+  font-size: 1.5rem;
   font-size: var(--height-responsive);
 }
 

@@ -9,7 +9,6 @@ import { GLOBE_RADIUS } from './constants'
 import Glow from './glow'
 import Water from './water'
 import Avatar from './avatar'
-import State from './state'
 import Particles from './particles'
 
 // const GLOBE_RADIUS = 5
@@ -33,11 +32,8 @@ export default {
     try {
       this.renderer = this.createRenderer()
     } catch (err) {
-      const fallbackElement = this.$el.querySelector('.fallback')
-      fallbackElement.classList.remove('hidden')
       return
     }
-
     // this.stats = new Stats()
 
     this.camera = this.createCamera()
@@ -47,6 +43,12 @@ export default {
 
     this.controls = new OrbitControls(this.camera, this.globeContainerElement)
     this.controls.enablePan = false
+    this.controls.minDistance = 6
+    this.controls.maxDistance = 50
+
+    this.controls.addEventListener('change', () => {
+      this.$store.commit('disableGlobeAutoRotation')
+    })
 
     this.mouse = new THREE.Vector2()
     this.intersections = []
@@ -75,14 +77,40 @@ export default {
       this.handleClick,
       false
     )
+
+    this.activateFeature(this.activeFeature)
+    if (this.activateFeature && this.activateFeature.theme) {
+      this.theme = this.activateFeature.theme.slug || this.theme
+    }
+    this.replaceTheme(this.theme)
+  },
+  watch: {
+    activeFeature (val) {
+      this.activateFeature(val)
+      if (val.theme && val.theme.slug) {
+        this.replaceTheme(val.theme.slug)
+      }
+
+      this.disableGlobeAutoRotation()
+    },
+    features (val) {
+      this.replaceFeatures(val)
+    },
+    globeInteraction (val) {
+      this.enableInteraction(val)
+    },
+    theme (val, old) {
+      this.replaceTheme(val, old)
+      // this.disableGlobeAutoRotation()
+    }
   },
   computed: {
-    // Get state from store
     ...mapState({
-      markers: state => state.globe.features,
-      theme: state => state.globe.theme,
-      activeMarker: state => state.globe.activeFeature,
-      enableInteraction: state => state.globe.enableInteraction
+      activeFeature: state => state.activeFeature,
+      features: state => state.features,
+      globeInteraction: state => state.interaction,
+      theme: state => state.theme,
+      globeAutoRotation: state => state.globeAutoRotation
     }),
     containerSize: {
       get () {
@@ -127,20 +155,20 @@ export default {
       cache: false
     }
   },
-  watch: {
-    activeMarker (newMarker, oldMarker) {
-      if (!(newMarker) || !(newMarker.location)) {
+  methods: {
+    activateFeature (feature) {
+      if (!(feature) || !(feature.location)) {
         return
       }
-      this.connections = this.markers.map(d => {
+      this.connections = this.features.map(d => {
         if (!d.location || d.location === null) {
           return
         }
 
         return {
           from: {
-            lat: newMarker.location.lat,
-            lon: newMarker.location.lon
+            lat: feature.location.lat,
+            lon: feature.location.lon
           },
           to: {
             lat: d.location.lat,
@@ -154,9 +182,9 @@ export default {
       // https://en.wikipedia.org/wiki/Spherical_coordinate_system
       const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
       const to = {}
-      to.theta = lat2theta(newMarker.location.lat)
-      to.phi = lon2phi(newMarker.location.lon)
-      to.r = 40 - newMarker.location.zoom
+      to.theta = lat2theta(feature.location.lat)
+      to.phi = lon2phi(feature.location.lon)
+      to.r = 40 - feature.location.zoom
       this.panAndZoom(from, to)
     },
     cameraGlobeDistance (newValue) {
@@ -174,26 +202,24 @@ export default {
     },
     /**
      * Animates the particles on the globe to the colors associated with the provided theme slug.
-     * @param {String} themeSlug one of the theme slugs: too-little, too-much or too-dirty
+     * @param {String} slug one of the theme slugs: too-little, too-much or too-dirty
      */
-    theme (themeSlug) {
-      this.particles.replaceTheme(themeSlug)
+    replaceTheme (slug) {
+      this.particles.replaceTheme(slug)
     },
-    enableInteraction (newValue, oldValue) {
+    enableInteraction (val) {
       if (!(this.controls)) {
         return
       }
-      this.controls.enableRotate = newValue
-      this.controls.enableZoom = newValue
+      this.controls.enableRotate = val
+      this.controls.enableZoom = val
     },
-    markers (newMarkers, oldMarkers) {
+    replaceFeatures (features) {
       const globe = this.globe
-      const markers = newMarkers.filter(marker => marker.location)
+      const filteredFeatures = features.filter(feature => feature.location)
       this.avatar.clear()
-      this.avatar.load(markers, avs => globe.add(avs))
-    }
-  },
-  methods: {
+      this.avatar.load(filteredFeatures, avs => globe.add(avs))
+    },
     handleResize () {
       // We're getting the containerSize here because the size
       // of the canvas itself is not changing on screen resize
@@ -268,15 +294,15 @@ export default {
      * @returns {Scene} Scene with a sphere
      */
     createScene () {
-      // minimal scene (TODO: append real globe)
+      const { base = '/' } = this.$router.options
       const scene = new THREE.Scene()
 
       const globe = new THREE.Object3D()
       this.globe = globe
       globe.position.set(0, 0, 0)
+      scene.add(globe)
 
-      const state = new State() // TODO: this should be done differently
-      this.particles = new Particles(state)
+      this.particles = new Particles(base, {current: this.theme, target: this.theme})
       this.particles.load(() => this.particles.update())
       globe.add(this.particles.mesh)
 
@@ -287,11 +313,8 @@ export default {
       globe.add(glow.mesh)
 
       // get the baseUrl
-      const { base = '/' } = this.$router.options
       this.avatar = new Avatar(base)
-      this.avatar.load(this.markers, avs => globe.add(avs))
-
-      scene.add(globe)
+      this.avatar.load(this.features, avs => globe.add(avs))
 
       const light = new THREE.AmbientLight(0xffffff)
       scene.add(light)
@@ -300,6 +323,9 @@ export default {
       dirLight.position.set(15, 13, 15)
 
       return scene
+    },
+    disableGlobeAutoRotation () {
+      this.globeAutoRotate = false
     },
     /**
      * Creates a raycaster for detecting mouseover over avatars
@@ -344,6 +370,15 @@ export default {
      */
     animate () {
       requestAnimationFrame(this.animate)
+
+      if (this.globeAutoRotation) {
+        const { r, theta, phi } = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
+        const point = polar2cartesian(r, theta, phi + 0.001)
+        this.camera.position.x = point.x
+        this.camera.position.y = point.y
+        this.camera.position.z = point.z
+        this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+      }
 
       this.water.uniforms.time.value += (this.clock.getDelta() * 0.1)
       this.particles.uniforms.time.value += 0.4

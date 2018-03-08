@@ -3,7 +3,7 @@
     <header class="card-list__header" v-show="$slots.header">
       <slot name="header"></slot>
     </header>
-    <transition-group v-if="cards" class="card-list__list" name="slideUp" tag="ul" appear disappear :duration="3000">
+    <transition-group v-if="cards" class="card-list__list" name="slideUp" tag="ul" appear disappear v-bind:duration="animationDuration">
       <li v-for="card in cards"
         v-bind:key="card.slug"
         v-bind:id="card.slug"
@@ -31,7 +31,8 @@ import CardComponent from '~/components/card-component/CardComponent'
 export default {
   data () {
     return {
-      nextListItem: undefined
+      nextListItem: false,
+      animationDuration: 3000
     }
   },
   props: {
@@ -40,44 +41,6 @@ export default {
       type: String,
       default () {
         return ''
-      }
-    }
-  },
-  mounted () {
-    if ('IntersectionObserver' in window && 'scrollIntoView' in document.body) {
-      this.observeIntersectingChildren()
-    }
-  },
-  methods: {
-    observeIntersectingChildren () {
-      const trackVisibility = (entries) => {
-        const lastListItemEntry = entries[entries.length - 1]
-        let nextListItem = this.nextListItem
-        if (lastListItemEntry.intersectionRatio === 1) {
-          nextListItem = false
-        } else {
-          entries.forEach((entry, index) => {
-            if (entry.intersectionRatio <= 1 && entry.intersectionRatio > 0) {
-              // lastVisibleElement = entry.target
-              nextListItem = entry.target
-            }
-          })
-        }
-        this.nextListItem = nextListItem
-      }
-      console.log()
-      const observer = new IntersectionObserver(trackVisibility, {
-        root: this.$el, // root element is card-list
-        rootMargin: '0% 0% 0% 0%',
-        thresholds: 1
-      })
-      const cardComponentsArray = [].slice.call(this.$el.querySelectorAll('[data-list-item]'))
-      cardComponentsArray.forEach(el => observer.observe(el))
-    },
-    scrollToNext () {
-      if (this.nextListItem) {
-        const left = this.nextListItem.offsetLeft
-        this.nextListItem.parentElement.scrollLeft = left
       }
     }
   },
@@ -97,10 +60,12 @@ export default {
   content: '';
   display: block;
   position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 3rem;
+  right: -6rem;
+  top: 4rem;
+  width: 8rem;
+  height: 8rem;
+  background: linear-gradient(to top, #00001e 2rem, transparent);
+  transform: rotate(-70deg);
 }
 .card-list__list {
   overflow-x: auto;
@@ -112,6 +77,7 @@ export default {
   display: flex;
   flex: 0 1 auto;
 }
+
 .card-list__item {
   position: static;
   display: inline-flex;
@@ -122,9 +88,11 @@ export default {
   vertical-align: top;
   white-space: normal;
 }
+
 .card-list__item:first-child {
   margin-left: 1rem;
 }
+
 .card-list__item:last-child {
   margin-right: 1rem;
 }
@@ -138,20 +106,5 @@ export default {
 
 .card-list__header {
   padding-left: 2rem;
-}
-.card-list__scroll-button {
-  border: none;
-  position: absolute;
-  top: 4rem;
-  right: 1rem;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 1rem;
-  background-color: var(--ui--black--trans);
-  box-shadow: 2rem 2rem 4rem 4rem var(--ui--black--trans);
-  z-index: 1;
-  font-size: 2rem;
-  text-align: center;
-  line-height: .25rem;
 }
 </style>

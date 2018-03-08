@@ -27,7 +27,7 @@ export default {
       controls: null,
       connections: [],
       message: '',
-      cameraDistance: 0
+      cameraDistance: 40
     }
   },
   mounted () {
@@ -40,6 +40,8 @@ export default {
 
     this.camera = this.createCamera()
     this.scene = this.createScene()
+
+    this.updateAvatarPositions(this.cameraDistance)
 
     this.clock = new THREE.Clock()
 

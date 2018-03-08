@@ -43,12 +43,12 @@ test('Route / exits and render HTML', async t => {
 
 // Disable test for now
 // Example of testing via DOM checking
-test('Route / exits and render HTML with CSS applied', async t => {
-  // const window = await nuxt.renderAndGetWindow(`http://${server.host}:${server.port}/`)
-  // console.log(window.document.querySelector('main'))
-  // const element = window.document.querySelector('main')
-  // t.not(element, null)
-})
+// test('Route / exits and render HTML with CSS applied', async t => {
+//   const window = await nuxt.renderAndGetWindow(`http://${server.host}:${server.port}/`)
+//   console.log(window.document.querySelector('main'))
+//   const element = window.document.querySelector('main')
+//   t.not(element, null)
+// })
 
 // Disable test for now
 // Example of testing via DOM checking

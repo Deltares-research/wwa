@@ -124,7 +124,7 @@ function generateByInfluence (dato, root, i18n) {
   root.createDataFile('static/data/influences/index.json', 'json', influences)
 }
 /**
- * Write out JSON files by tagType
+ * Write out JSON files by keyword
  *
  * @param {Dato} dato - DatoCMS API
  * @param {Root} root - Project root
@@ -182,10 +182,11 @@ function generateStaticPages (dato, root, i18n) {
       return { body, images, slug, title, video }
     })
   for (const page of staticPages) {
-    root.createDataFile(`static/data/${page.slug}.json`, 'json', page)
+    root.createDataFile(`static/data/static-pages/${page.slug}.json`, 'json', page)
   }
+  const staticPageIndex = staticPages.map(page => ({ path: `/${page.slug}` }))
+  root.createDataFile('static/data/static-pages/index.json', 'json', staticPageIndex)
 }
-
 /**
  * Get Dato Book entities
  *

@@ -26,7 +26,7 @@ import allInfluences from '~/static/data/influences/index.json'
 export default {
   async asyncData (context) {
     const { params } = context
-    const influencesFromUrl = [].concat(params.influences.split('+'))
+    const influencesFromUrl = (params.influences) ? [].concat(params.influences.split('+')) : []
     const { results = [] } = (influencesFromUrl) ? await loadData(context, { influences: influencesFromUrl }) : {}
     // Build active influences objects from url
     const activeInfluences = allInfluences

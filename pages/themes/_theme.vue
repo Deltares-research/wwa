@@ -1,8 +1,8 @@
 <template>
   <div>
-    <theme-list v-bind:themes="themes" v-bind:active-slug="activeSlug" />
+    <theme-list v-bind:themes="themes" v-bind:active-slug="slug" />
     <bottom-shelf>
-      <card-list v-bind:cards="chapters" />
+      <card-list v-bind:cards="entries" />
     </bottom-shelf>
   </div>
 </template>
@@ -15,19 +15,16 @@ import ThemeList from '~/components/theme-list/ThemeList'
 
 export default {
   async asyncData (context) {
-    const chapters = loadData(context, context.params)
     const themes = loadData(context, { theme: 'index' })
-
+    const { slug, entries } = await loadData(context, context.params)
     return {
-      chapters: await chapters,
+      slug,
+      entries,
       themes: await themes
     }
   },
-  data () {
-    return { activeSlug: this.$route.params.theme }
-  },
   mounted () {
-    this.$store.commit('replaceFeatures', this.chapters)
+    this.$store.commit('replaceFeatures', this.entries)
     this.$store.commit('replaceTheme', this.$route.params.theme)
     this.$store.commit('enableGlobeAutoRotation')
   },

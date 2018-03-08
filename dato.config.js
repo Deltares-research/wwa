@@ -153,11 +153,13 @@ function generateThemes (dato, root, i18n) {
     .filter(chapter => chapter.theme)
     .map(chapter => {
       delete chapter.pages
+      delete chapter.keywords
+      delete chapter.influences
       return chapter
     })
   for (const theme of themes) {
     const chaptersByTheme = chapters.filter(chapter => chapter.theme.slug === theme.slug)
-    root.createDataFile(`static/data/themes/${theme.slug}.json`, 'json', chaptersByTheme)
+    root.createDataFile(`static/data/themes/${theme.slug}.json`, 'json', { ...theme, entries: chaptersByTheme })
   }
   root.createDataFile(`static/data/themes/index.json`, 'json', themes)
 }

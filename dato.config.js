@@ -466,7 +466,7 @@ function getDominantTheme (items) {
       return themes
     }, {})
 
-  return Object.values(themes).sort((a, b) => a.score > b.score)[0]
+  return Object.values(themes).sort((a, b) => a.score < b.score)[0]
 }
 
 /**

@@ -260,7 +260,7 @@ export default {
         .on('update', ({ r, theta, phi }) => {
           const cart = polar2cartesian(r, theta, phi)
           this.camera.position.set(cart.x, cart.y, cart.z)
-          this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+          this.camera.lookAt(center)
         })
         .easing(Easing.Cubic.InOut)
 
@@ -374,7 +374,7 @@ export default {
         this.camera.position.x = point.x
         this.camera.position.y = point.y
         this.camera.position.z = point.z
-        this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+        this.camera.lookAt(center)
       }
 
       this.water.uniforms.time.value += (this.clock.getDelta() * 0.1)

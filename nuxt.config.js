@@ -95,7 +95,7 @@ module.exports = {
 
     ],
     link: [
-      { href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css', rel: 'stylesheet' }
+      { href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css', rel: 'stylesheet' },
       { rel: 'apple-touch-icon', sizes:'57x57', href:'/apple-icon-57x57.png'},
       { rel: 'apple-touch-icon', sizes:'60x60', href:'/apple-icon-60x60.png'},
       { rel: 'apple-touch-icon', sizes:'72x72', href:'/apple-icon-72x72.png'},

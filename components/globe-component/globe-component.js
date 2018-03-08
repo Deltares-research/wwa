@@ -118,7 +118,7 @@ export default {
       // this.disableGlobeAutoRotation()
     },
     cameraDistance (val) {
-      this.updateAvatarPositions(val)
+      this.updateAvatarPositions()
     }
   },
   computed: {
@@ -195,12 +195,14 @@ export default {
       to.r = 40 - feature.location.zoom
       this.panAndZoom(from, to)
     },
-    updateAvatarPositions (newValue) {
+    updateAvatarPositions () {
+      const dist = this.camera.position.distanceTo(center)
+
       this.avatar.mesh.children.forEach(child => {
         const lon = lon2phi(child.data.location.lon)
         const lat = lat2theta(child.data.location.lat)
 
-        const { x, y, z } = polar2cartesian(GLOBE_RADIUS + (0.01 * newValue), lat, lon)
+        const { x, y, z } = polar2cartesian(GLOBE_RADIUS + (0.01 * dist), lat, lon)
         child.position.x = x
         child.position.y = y
         child.position.z = z
@@ -227,6 +229,7 @@ export default {
       const filteredFeatures = features.filter(feature => feature.location)
       this.avatar.clear()
       this.avatar.load(filteredFeatures, avs => globe.add(avs))
+      this.updateAvatarPositions()
     },
     handleResize () {
       // We're getting the containerSize here because the size

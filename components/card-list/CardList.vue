@@ -1,38 +1,66 @@
 <template>
-  <ul v-if="cards" class="card-list">
-    <transition-group name="slideUp" appear disappear :duration="3000">
-    <li v-for="(card, index) in cards" v-bind:key="card.slug" class="card-list__item">
-      <card-component
-        v-bind:delay="index * 100"
-        v-bind:subtitle="(card.book) ? card.book.title : undefined"
-        v-bind:title="card.title"
-        v-bind:slug="card.slug"
-        v-bind:path="card.path"
-        v-bind:body="card.body"
-        v-bind:theme="card.theme"
-        v-bind:count="card.pageCount"
-      />
-    </li>
+  <div class="card-list">
+    <header class="card-list__header" v-show="$slots.header">
+      <slot name="header"></slot>
+    </header>
+    <transition-group v-if="cards" class="card-list__list" name="slideUp" tag="ul" appear disappear v-bind:duration="animationDuration">
+      <li v-for="card in cards"
+        v-bind:key="card.slug"
+        v-bind:id="card.slug"
+        class="card-list__item"
+        data-list-item>
+        <card-component
+          v-bind:subtitle="(card.book) ? card.book.title : subtitle"
+          v-bind:title="card.title"
+          v-bind:slug="card.slug"
+          v-bind:path="card.path"
+        />
+      </li>
     </transition-group>
-  </ul>
+  </div>
+
 </template>
+
 <script>
 import CardComponent from '~/components/card-component/CardComponent'
 
 export default {
-  components: {
-    CardComponent
+  data () {
+    return { animationDuration: 3000 }
   },
   props: {
-    cards: Array
-  }
+    cards: Array,
+    subtitle: {
+      type: String,
+      default () {
+        return ''
+      }
+    }
+  },
+  components: { CardComponent }
 }
 </script>
+
 <style>
 @import '../colors/colors.css';
 @import '../animations/animations.css';
 
 .card-list {
+  position: relative;
+  width: 100%;
+}
+.card-list::after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: -6rem;
+  top: 4rem;
+  width: 8rem;
+  height: 8rem;
+  background: linear-gradient(to top, #00001e 2rem, transparent);
+  transform: rotate(-70deg);
+}
+.card-list__list {
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
@@ -40,21 +68,36 @@ export default {
   padding-right: 0;
   margin: 0;
   display: flex;
+  flex: 0 1 auto;
 }
 
 .card-list__item {
   position: static;
   display: inline-flex;
-  height: 20rem;
-  margin: 2vw 1vw -10rem 1vw;
+  flex: 0 0 22rem;
+  width: 22rem;
+  margin: 0;
+  padding: 0;
   vertical-align: top;
   white-space: normal;
 }
 
-/* media min-width is based on li max-width * 100vw / li width */
-@media screen and (min-width: 560px) {
-  .card-list-item:first-child {
-    margin-left: 24vw;
+.card-list__item:first-child {
+  margin-left: 1rem;
+}
+
+.card-list__item:last-child {
+  margin-right: 1rem;
+}
+
+@media screen and (min-width: 72rem) {
+  .card-list__item {
+    flex: 0 0 30vw;
+    width: 30vw;
   }
+}
+
+.card-list__header {
+  padding-left: 2rem;
 }
 </style>

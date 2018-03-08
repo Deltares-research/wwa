@@ -13,16 +13,6 @@ class Avatar {
   }
 
   /**
-   * Updates the distance from the globe based on the camera z position
-   * @param {int} cameraZ camera Z position
-   */
-  updateDistanceFromGlobe (cameraZ) {
-    [this.mesh.children[0]].forEach(avatar => {
-      console.log(avatar.position.z)
-    })
-  }
-
-  /**
    * load avatar data and create avatar objects
    * @param  {function} finished callback function, called when done
    * @return {[type]}          [description]

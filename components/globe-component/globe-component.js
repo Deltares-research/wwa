@@ -299,13 +299,6 @@ export default {
       const dirLight = new THREE.DirectionalLight(0xffaa66, 4.2)
       dirLight.position.set(15, 13, 15)
 
-      // const that = this
-
-      // this.controls.addEventListener('change', function () {
-      //   console.log(this.object.position.z)
-      //   that.avatar.updateDistanceFromGlobe(this.object.position.z)
-      // }, false)
-
       return scene
     },
     /**

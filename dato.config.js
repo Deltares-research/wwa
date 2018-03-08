@@ -291,7 +291,12 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, influences, keywords, slug, title, video, mapboxStyle } = page
+      const { body, files, graphs, images, keywords, slug, title, video, mapboxStyle } = page
+      const influences = (page.influence) ? page.influence.map(tag => ({
+        title: tag.title,
+        slug: tag.slug,
+        path: `/influences/${tag.slug}`
+      })) : []
       const theme = (page.theme) ? {
         title: page.theme.title,
         slug: page.theme.slug,
@@ -335,7 +340,7 @@ function getPages (dato, chapterRef) {
         keywords: (keywords) ? tagStringToLinkObjects(keywords, 'keywords') : [],
         links,
         location,
-        influences: (influences) ? tagStringToLinkObjects(influences, 'influences') : [],
+        influences,
         path,
         slug,
         storyteller: {

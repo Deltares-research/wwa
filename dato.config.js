@@ -315,7 +315,7 @@ function getPages (dato, chapterRef) {
         title: parentBook.title
       } : {}
       const chapter = {
-        path: `${book.path}/${chapterRef.slug}`,
+        path: `${book.path}/${parentChapter.slug}`,
         slug: parentChapter.slug,
         title: parentChapter.title,
         type: parentChapter.chapterType

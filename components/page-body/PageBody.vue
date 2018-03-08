@@ -26,11 +26,14 @@
           <figcaption>{{ graph.value.title }}</figcaption>
         </figure>
       </section>
-
       <section v-if="video" class="page-body__video fixed-ratio"
         v-bind:style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`">
-        <iframe class="page-body__video" allowfullscreen="allowfullscreen"
+        <iframe v-if="video.provider === 'youtube'" class="page-body__video" allowfullscreen="allowfullscreen"
           v-bind:src="`//www.${video.provider}.com/embed/${video.providerUid}`" width="100%" height="100%">
+        </iframe>
+        <iframe v-if="video.provider === 'vimeo'"
+          frameborder="0" allowfullscreen=""
+          v-bind:src="`https://player.vimeo.com/video/${video.providerUid}?title=0&author=0&portrait=0&playbar=0&byline=0`" width="100%" height="100%">
         </iframe>
       </section>
 

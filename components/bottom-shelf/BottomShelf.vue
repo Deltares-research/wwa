@@ -15,13 +15,11 @@
   display: flex;
   align-content: flex-end;
   flex-direction: column;
-  background-image: linear-gradient(to top, var(--ui--black) 50%, transparent)
-}
-.bottom-shelf {
   position: fixed;
-  bottom: 0;
   left: 0;
   right: 0;
+  background-image: linear-gradient(to top, var(--ui--black) 2rem, transparent);
+  bottom: -4rem; /* hack to maintain illusion of cutting off pages in cards */
 }
 </style>
 

@@ -2,8 +2,14 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+
 // load data to define routes
 const books = require('./static/data/books/index.json')
+const themes = require('./static/data/themes/index.json')
+const influences = require('./static/data/influences/index.json')
+const keywords = require('./static/data/keywords/index.json')
+const staticPages = require('./static/data/static-pages/index.json')
+
 const chapters = books
   .reduce((chapters, book) => {
     const bookChapters = book.chapters.map(chapter => {
@@ -13,17 +19,14 @@ const chapters = books
     return chapters.concat(bookChapters)
   }, [])
 // Generate routes
-const routes = books.concat(chapters)
+const routes = books
+  .concat(chapters)
+  .concat(themes)
+  .concat(influences)
+  .concat(keywords)
+  .concat(staticPages)
   .map(item => item.path)
-  .concat([
-    '/influences/people',
-    '/influences/planet',
-    '/influences/prosperity',
-    '/influences/peace',
-    '/influences/partnership',
-    '/about'
-  ])
-// TODO: We want to enable these, but they give an error. They end up as null in the final config.
+
 const postcss = {
   plugins: {
     'postcss-import': {},
@@ -87,10 +90,13 @@ module.exports = {
       { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' }
     ],
     script: [
-      { src: 'https://cdn.polyfill.io/v2/polyfill.min.js?features=IntersectionObserver' }
+      { src: 'https://cdn.polyfill.io/v2/polyfill.min.js?features=IntersectionObserver' },
+      { src: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js', defer: true }
+
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css', rel: 'stylesheet' }
     ]
   },
 

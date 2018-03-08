@@ -2,7 +2,7 @@
   <div>
     <bottom-shelf>
       <narrative-header v-bind:book="{ title, slug, path}" />
-      <card-list v-bind:cards="chapters" />
+      <card-list v-bind:cards="chapters" bind:subtitle="title" />
     </bottom-shelf>
   </div>
 </template>

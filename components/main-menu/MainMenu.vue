@@ -1,7 +1,7 @@
 <template>
    <nav v-bind:class="`main-menu main-menu--${variant}`">
-      <nuxt-link class="main-menu__item main-menu__item--home h1" to="/" title="Go home">
-        <span class="sr-only">Return to the homepage</span>World<br />Water<br />Atlas
+     <nuxt-link class="main-menu__item main-menu__item--home h1" to="/" title="Go home">
+       <span class="sr-only">Return to the homepage</span>World<br/>Water<br/>Atlas <img alt="" src="/assets/home.svg" class="home-icon"/>
       </nuxt-link>
       <nuxt-link v-bind:class="`main-menu__item main-menu__item--about h3 ${(variant === 'dark') ? 'invert' : ''}`"
         to="/about">
@@ -42,6 +42,7 @@ export default {
   height: auto;
   text-align: right;
   color: var(--ui--white);
+
 }
 
 .main-menu--light {
@@ -87,4 +88,9 @@ export default {
   content: '+ '
 }
 
+.main-menu .home-icon {
+  width: var(--height-responsive);
+  height: var(--height-responsive);
+  vertical-align: bottom;
+}
 </style>

@@ -390,6 +390,7 @@ export default {
         this.camera.position.y = point.y
         this.camera.position.z = point.z
         this.camera.lookAt(center)
+        this.camera.updateMatrixWorld()
       }
 
       this.water.uniforms.time.value += (this.clock.getDelta() * 0.1)

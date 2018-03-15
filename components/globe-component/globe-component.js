@@ -53,11 +53,10 @@ export default {
     this.controls.minDistance = 6
     this.controls.maxDistance = 50
 
-    const that = this
     this.controls.addEventListener('change', () => {
       this.$store.commit('disableGlobeAutoRotation')
       this.cameraDistance = this.camera.position.distanceTo(center)
-      this.controls.rotateSpeed = rotateSpeed(that.camera.position.distanceTo(new THREE.Vector3(0, 0, 0)))
+      this.controls.rotateSpeed = rotateSpeed(this.camera.position.distanceTo(new THREE.Vector3(0, 0, 0)))
     })
 
     rotateSpeed
@@ -253,6 +252,8 @@ export default {
       // this.renderer.render(this.scene, this.camera)
     },
     handleClick (event) {
+      // disable rotation otherwise points move away from the intersection
+      this.$store.commit('disableGlobeAutoRotation')
       if (this.intersections.length > 0) {
         const { data = { path: '#' } } = this.intersections[0].object
         // navigate to path
@@ -395,6 +396,7 @@ export default {
       this.particles.uniforms.time.value += 0.4
 
       this.raycaster.setFromCamera(this.mouse, this.camera)
+      // TODO: sometimes intersections is empty even though I click on a icon.
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
       this.renderer.render(this.scene, this.camera)
     }

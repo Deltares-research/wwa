@@ -254,6 +254,11 @@ export default {
     handleClick (event) {
       // disable rotation otherwise points move away from the intersection
       this.$store.commit('disableGlobeAutoRotation')
+
+      this.raycaster.setFromCamera(this.mouse, this.camera)
+      this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
+
+      console.log(this.intersections.length)
       if (this.intersections.length > 0) {
         const { data = { path: '#' } } = this.intersections[0].object
         // navigate to path
@@ -396,9 +401,6 @@ export default {
       this.water.uniforms.time.value += (this.clock.getDelta() * 0.1)
       this.particles.uniforms.time.value += 0.4
 
-      this.raycaster.setFromCamera(this.mouse, this.camera)
-      // TODO: sometimes intersections is empty even though I click on a icon.
-      this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
       this.renderer.render(this.scene, this.camera)
     }
   }

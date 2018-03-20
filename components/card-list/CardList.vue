@@ -17,16 +17,22 @@
         />
       </li>
     </transition-group>
+    <button v-bind:hidden="!nextListItem" class="card-list__scroll-button" v-on:click="scrollToNext()">
+      <span class="sr-only">Scroll to next</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#fff" stroke-width="1.5" d="M7 2l11 10L7 23"/></svg>
+    </button>
   </div>
 
 </template>
 
 <script>
 import CardComponent from '~/components/card-component/CardComponent'
-
 export default {
   data () {
-    return { animationDuration: 3000 }
+    return {
+      animationDuration: 3000,
+      nextListItem: undefined
+    }
   },
   props: {
     cards: Array,
@@ -34,6 +40,44 @@ export default {
       type: String,
       default () {
         return ''
+      }
+    }
+  },
+  mounted () {
+    if ('IntersectionObserver' in window && 'scrollIntoView' in document.body) {
+      this.observeIntersectingChildren()
+    }
+  },
+  methods: {
+    observeIntersectingChildren () {
+      const trackVisibility = (entries) => {
+        const lastListItemEntry = entries[entries.length - 1]
+        let nextListItem = this.nextListItem
+        if (lastListItemEntry.intersectionRatio === 1) {
+          nextListItem = false
+        } else {
+          entries.forEach((entry, index) => {
+            if (entry.intersectionRatio <= 1 && entry.intersectionRatio > 0) {
+              // lastVisibleElement = entry.target
+              nextListItem = entry.target
+            }
+          })
+        }
+        this.nextListItem = nextListItem
+      }
+      console.log()
+      const observer = new IntersectionObserver(trackVisibility, {
+        root: this.$el, // root element is card-list
+        rootMargin: '0% 0% 0% 0%',
+        thresholds: 1
+      })
+      const cardComponentsArray = [].slice.call(this.$el.querySelectorAll('[data-list-item]'))
+      cardComponentsArray.forEach(el => observer.observe(el))
+    },
+    scrollToNext () {
+      if (this.nextListItem) {
+        const left = this.nextListItem.offsetLeft
+        this.nextListItem.parentElement.scrollLeft = left
       }
     }
   },
@@ -53,12 +97,13 @@ export default {
   content: '';
   display: block;
   position: absolute;
-  right: -6rem;
-  top: 4rem;
-  width: 8rem;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3rem;
   height: 8rem;
-  background: linear-gradient(to top, #00001e 2rem, transparent);
-  transform: rotate(-70deg);
+  /* background: linear-gradient(to top, #00001e 2rem, transparent); */
+   /* transform: rotate(-70deg); */
 }
 .card-list__list {
   overflow-x: auto;
@@ -100,5 +145,23 @@ export default {
 
 .card-list__header {
   padding-left: 2rem;
+}
+.card-list__scroll-button {
+  border: none;
+  position: absolute;
+  top: 4rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 1rem;
+  background-color: var(--ui--black--trans);
+  box-shadow: 2rem 2rem 4rem 4rem var(--ui--black--trans);
+  z-index: 1;
+  font-size: 2rem;
+  text-align: center;
+  line-height: .25rem;
+}
+.card-list__scroll-button:focus {
+  outline: none;
 }
 </style>

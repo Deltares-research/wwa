@@ -17,10 +17,6 @@
         />
       </li>
     </transition-group>
-    <button v-bind:hidden="!nextListItem" class="card-list__scroll-button" v-on:click="scrollToNext()">
-      <span class="sr-only">Scroll to next</span>
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#fff" stroke-width="1.5" d="M7 2l11 10L7 23"/></svg>
-    </button>
   </div>
 
 </template>
@@ -30,8 +26,7 @@ import CardComponent from '~/components/card-component/CardComponent'
 export default {
   data () {
     return {
-      animationDuration: 3000,
-      nextListItem: undefined
+      animationDuration: 3000
     }
   },
   props: {
@@ -44,42 +39,10 @@ export default {
     }
   },
   mounted () {
-    if ('IntersectionObserver' in window && 'scrollIntoView' in document.body) {
-      this.observeIntersectingChildren()
-    }
+  },
+  computed: {
   },
   methods: {
-    observeIntersectingChildren () {
-      const trackVisibility = (entries) => {
-        const lastListItemEntry = entries[entries.length - 1]
-        let nextListItem = this.nextListItem
-        if (lastListItemEntry.intersectionRatio === 1) {
-          nextListItem = false
-        } else {
-          entries.forEach((entry, index) => {
-            if (entry.intersectionRatio <= 1 && entry.intersectionRatio > 0) {
-              // lastVisibleElement = entry.target
-              nextListItem = entry.target
-            }
-          })
-        }
-        this.nextListItem = nextListItem
-      }
-      console.log()
-      const observer = new IntersectionObserver(trackVisibility, {
-        root: this.$el, // root element is card-list
-        rootMargin: '0% 0% 0% 0%',
-        thresholds: 1
-      })
-      const cardComponentsArray = [].slice.call(this.$el.querySelectorAll('[data-list-item]'))
-      cardComponentsArray.forEach(el => observer.observe(el))
-    },
-    scrollToNext () {
-      if (this.nextListItem) {
-        const left = this.nextListItem.offsetLeft
-        this.nextListItem.parentElement.scrollLeft = left
-      }
-    }
   },
   components: { CardComponent }
 }

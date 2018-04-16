@@ -45,6 +45,9 @@ $ npm start
 # deploy to github pages
 $ npm run deploy:gh-pages
 
+# deploy to surge (production website)
+$ npm run deploy:surge
+
 # Make sure you periodically backup
 $ npm run data:backup
 

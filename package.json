@@ -21,7 +21,9 @@
     "gh-pages:generate": "cross-env DEPLOY_ENV=GH_PAGES nuxt generate",
     "gh-pages:data": "npm run build:data",
     "gh-pages:deploy": "gh-pages -t -d dist",
+    "surge:deploy": "surge dist www.worldwateratlas.org",
     "deploy:gh-pages": "npm-run-all gh-pages:data gh-pages:generate gh-pages:deploy",
+    "deploy:surge": "npm-run-all build generate surge:deploy",
     "data:build": "dato dump",
     "data:dev": "cross-env UNPUBLISHED=1 dato dump",
     "data:backup": "dato dump --config dato.backup.js",
@@ -98,6 +100,7 @@
     "postcss-custom-properties": "6.2.0",
     "postcss-import": "11.0.0",
     "slug": "0.9.1",
+    "surge": "^0.20.1",
     "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack-bundle-analyzer": "^2.9.2",
     "webpack-glsl-loader": "^1.0.1"

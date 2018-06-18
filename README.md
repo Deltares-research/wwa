@@ -57,7 +57,6 @@ $ npm run generate
 $ surge -p dist -d name-wwa-version.surge.sh
 
 ```
-
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
 See also the relevant docs
 - [Standard](https://standardjs.com/) the style guide for javascript

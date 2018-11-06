@@ -73,7 +73,7 @@
     "ava": "^0.24.0",
     "babel-eslint": "^7.2.3",
     "babel-preset-env": "^1.6.1",
-    "canvas": "^1.6.9",
+    "canvas": "2.0.1",
     "circular-json": "0.5.1",
     "copy-webpack-plugin": "^4.3.1",
     "cpy-cli": "1.0.1",

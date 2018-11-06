@@ -318,8 +318,7 @@ export default {
       this.globe = globe
       globe.position.set(0, 0, 0)
       scene.add(globe)
-
-      this.particles = new Particles(base, {current: this.theme, target: this.theme})
+      this.particles = new Particles(base, { current: this.theme, target: this.theme })
       this.particles.load(() => this.particles.update())
       globe.add(this.particles.mesh)
 

@@ -64,14 +64,14 @@ export default {
   background-size: 1em;
 }
 .tagline [href*='too-dirty'] {
-  background-image: url('~/static/assets/too-dirty.png');
+  background-image: url('/assets/too-dirty.png');
 }
 .tagline [href*='too-much'] {
-  background-image: url('~/static/assets/too-much.png');
+  background-image: url('/assets/too-much.png');
 }
 
 .tagline [href*='too-little'] {
-  background-image: url('/static/assets/too-little.png');
+  background-image: url('/assets/too-little.png');
 }
 
 </style>

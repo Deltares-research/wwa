@@ -134,12 +134,7 @@ module.exports = {
     extractCSS: true,
     // add postcss plugins
     postcss,
-    plugins,
-    vendor: [
-      'axios',
-      'marked',
-      'vue-clazy-load'
-    ]
+    plugins
   },
   env,
   // Define dynamic routes to generate for dist,

@@ -17,7 +17,7 @@ const p = scaleLinear()
   .domain([780, 300])
   .range([10.0, 4.0])
 
-  /** Scale for colors */
+/** Scale for colors */
 const c = scaleLinear()
   .domain(range(6))
 

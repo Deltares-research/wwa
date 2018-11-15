@@ -1,13 +1,26 @@
 <template>
-  <div class="tagline invert" v-html="body"></div>
+  <div class="invert">
+    <div class="tagline" v-html="body"></div>
+    <div class="globe-spacer"/>
+
+    <h2 class="book-list__heading">Books:</h2>
+    <div style="display: flex; width: 100vw;">
+      <book-list class="page-index__book-list" style="flex: 1;" :books="books">
+        <chapter-list slot-scope="{ chapters }" :chapters="chapters" sorted="newest" :limit="3" />
+      </book-list>
+    </div>
+  </div>
 </template>
 
 <script>
 import loadData from '~/lib/load-data'
 import marked from '~/lib/custom-marked'
 import home from '~/static/data/home.json'
+import BookList from '~/components/book-list/BookList'
+import ChapterList from '~/components/chapter-list/ChapterList'
 
 export default {
+  components: { BookList, ChapterList },
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const books = await loadData(context, { book: 'index' })
@@ -74,4 +87,13 @@ export default {
   background-image: url('/assets/too-little.png');
 }
 
+
+.globe-spacer {
+  height: 85vh;
+  width: 100vw;
+}
+
+.page-index__book-list {
+  width: 100vw;
+}
 </style>

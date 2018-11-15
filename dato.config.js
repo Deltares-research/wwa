@@ -201,9 +201,9 @@ function getBooks (dato) {
       const chapters = getChapters(dato, book)
         .filter(filterPublished)
         .map(chapter => {
-          const { location, pages, path, slug, title, influences, keywords } = chapter
+          const { location, pages, path, slug, title, influences, keywords, createdAt, updatedAt } = chapter
           const theme = getDominantTheme(pages)
-          return { influences, keywords, location, path, slug, title, theme }
+          return { influences, keywords, location, path, slug, title, theme, createdAt, updatedAt }
         })
       const theme = getDominantTheme(chapters)
       const influences = collectUniqueTags(chapters, 'influences')
@@ -223,7 +223,7 @@ function getChapters (dato, bookRef) {
   return chapters
     .filter(filterPublished)
     .map(chapter => {
-      const { title, slug, chapterType } = chapter
+      const { title, slug, chapterType, createdAt, updatedAt } = chapter
       const parentBook = bookRef || getParent(dato, chapter)
       if (!parentBook) {
         console.log(`Skipped chapter ${title}, no parent book found`)
@@ -267,7 +267,9 @@ function getChapters (dato, bookRef) {
         type: chapterType,
         theme,
         nextChapter,
-        previousChapter
+        previousChapter,
+        createdAt,
+        updatedAt
       }
     })
     .filter(Boolean) // Filter falsy chapters (return false)

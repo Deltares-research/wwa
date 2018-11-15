@@ -3,9 +3,8 @@
     <div class="tagline" v-html="body"></div>
     <div class="globe-spacer"/>
 
-    <h2 class="book-list__heading">Books:</h2>
-    <div style="display: flex; width: 100vw;">
-      <book-list class="page-index__book-list" style="flex: 1;" :books="books">
+    <div class="page-index__book-list-wrapper">
+      <book-list class="page-index__book-list" :books="books">
         <chapter-list slot-scope="{ chapters }" :chapters="chapters" sorted="newest" :limit="3" />
       </book-list>
     </div>
@@ -89,11 +88,34 @@ export default {
 
 
 .globe-spacer {
-  height: 85vh;
+  height: 100vh;
   width: 100vw;
+  pointer-events: none;
+}
+
+.page-index__book-list-wrapper {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.page-index__book-list-wrapper:before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: calc(100% + 30vh);
+  top: 0;
+  transform: translateY(-30vh);
+  position: absolute;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 42, 0) 0, rgba(0, 0, 42, 0.85) 30vh);
+  pointer-events: none;
+  z-index: -1;
 }
 
 .page-index__book-list {
-  width: 100vw;
+  width: calc(100vw - 40px);
+  max-width: 950px;
+  z-index: 1;
 }
 </style>

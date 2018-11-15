@@ -1,9 +1,18 @@
 <template>
-  <ul class="chapter-list__list">
-    <li v-for="chapter in limitedChapters" :key="chapter.slug">
-      <a :href="chapter.path">{{ chapter.title }}</a>
-    </li>
-  </ul>
+  <div>
+    <ul class="chapter-list__list">
+      <li class="chapter-list__item" v-for="chapter in limitedChapters" :key="chapter.slug">
+        <a
+          class="chapter-list__item-link"
+          :href="chapter.path"
+          :style="`background-image: url(/assets/${chapterTheme(chapter)}.svg);`">
+          <span class="chapter-list__gradient"/>
+          <span class="chapter-list__item-content h1">{{ chapter.title }}</span>
+        </a>
+        <div class="chapter-list__focus-highlight" />
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -40,9 +49,16 @@ export default {
       }
     },
     limitedChapters () {
-      return this.limit === -1
-        ? this.sortedChapters
-        : this.sortedChapters.filter((_, index) => index + 1 <= this.limit)
+      return this.sortedChapters.filter((_, index) => index + 1 <= this.limit)
+    }
+  },
+  methods: {
+    chapterTheme (chapter) {
+      try {
+        return chapter.theme.slug
+      } catch (e) {
+        return 'too-dirty'
+      }
     }
   }
 }
@@ -52,5 +68,115 @@ export default {
 .chapter-list__list {
   list-style: none;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.chapter-list__list > * {
+  flex: 1;
+}
+
+.chapter-list__list > *:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.chapter-list__item {
+  display: block;
+  position: relative;
+}
+
+.chapter-list__item:before {
+  display: block;
+  content: '';
+  width: 100%;
+  padding-top: 56.25%;
+}
+
+.chapter-list__item > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.chapter-list__item-link,
+.chapter-list__focus-highlight {
+  text-shadow: none;
+  padding: 20px;
+  display: flex;
+  align-items: flex-end;
+  text-decoration: none;
+  border-radius: 5px;
+  outline: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 200%;
+  overflow: hidden;
+}
+
+.chapter-list__focus-highlight {
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.15s ease-in;
+}
+
+.chapter-list__item-link:hover + .chapter-list__focus-highlight,
+.chapter-list__item-link:focus + .chapter-list__focus-highlight {
+  opacity: 1;
+}
+
+.chapter-list__item-link:hover + .chapter-list__focus-highlight {
+  box-shadow: 0px 0px 20px 0px rgba(256, 256, 256, 1);
+}
+
+.chapter-list__item-link:focus + .chapter-list__focus-highlight {
+  box-shadow: 0px 0px 0px 3px rgba(256, 256, 256, 1);
+}
+
+.chapter-list__item-link:hover,
+.chapter-list__item-link:focus {
+  text-decoration: underline;
+}
+
+.chapter-list__gradient {
+  background-image: linear-gradient(to bottom, rgba(1, 0, 42, 0), rgba(1, 0, 42, 0.75));
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  left: -1px;
+  right: -1px;
+  z-index: 0;
+  border-radius: 5px;
+}
+
+.chapter-list__item-content {
+  z-index: 1;
+}
+
+@media (min-width: 600px) {
+  .chapter-list__list {
+    flex-direction: row;
+  }
+
+  .chapter-list__list > *:not(:last-child) {
+    margin-bottom: 0;
+  }
+
+  .chapter-list__item {
+    flex-basis: calc(100% / 3 - 10px);
+    flex-grow: 0;
+  }
+
+  .chapter-list__item:not(:last-child) {
+    margin-right: 20px;
+  }
+
+  .chapter-list__item:before {
+    padding-top: 148.53%;
+  }
+
+  .chapter-list__item-link {
+    background-size: 220%;
+  }
 }
 </style>

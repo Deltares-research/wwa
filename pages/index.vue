@@ -94,10 +94,11 @@ export default {
 }
 
 .page-index__book-list-wrapper {
-  width: 100vw;
+  width: calc(100vw - 40px);
   display: flex;
   justify-content: center;
   position: relative;
+  padding: 0 20px;
 }
 
 .page-index__book-list-wrapper:before {
@@ -117,5 +118,12 @@ export default {
   width: calc(100vw - 40px);
   max-width: 950px;
   z-index: 1;
+}
+
+@media (min-width: 600px) {
+  .page-index__book-list-wrapper {
+    width: calc(100vw - 80px);
+    padding: 0 40px;
+  }
 }
 </style>

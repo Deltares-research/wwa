@@ -31,7 +31,7 @@ export default {
 
 .book-list__list {
   list-style: none;
-  padding: 20px;
+  padding: 0px;
 }
 
 .book-list__list > *:not(:last-child) {
@@ -40,6 +40,9 @@ export default {
 
 .book-list__book-title {
   margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  line-height: 2.1875rem;
+  font-weight: 500;
 }
 
 .book-list__book-title-link {
@@ -49,5 +52,12 @@ export default {
 .book-list__book-title-link:hover,
 .book-list__book-title-link:focus {
   text-decoration: underline;
+}
+
+@media (min-width: 600px) {
+  .book-list__book-title {
+    font-size: 1.5rem;
+    line-height: 2.25rem;
+  }
 }
 </style>

@@ -6,6 +6,11 @@
           class="chapter-list__item-link"
           :href="chapter.path"
           :style="`background-image: url(/assets/${chapterTheme(chapter)}.svg);`">
+          <span class="chapter-list__cover" v-if="chapter.cover">
+            <img
+              :src="`${chapter.cover.imgixHost}${chapter.cover.value.path}?w=${coverWidth(chapter.cover, 450)}&q=85`"
+              />
+          </span>
           <span class="chapter-list__gradient"/>
           <span class="chapter-list__item-content h1">{{ chapter.title }}</span>
         </a>
@@ -59,6 +64,10 @@ export default {
       } catch (e) {
         return 'too-dirty'
       }
+    },
+    coverWidth (cover, maxElementHeight) {
+      const heigthFactor = maxElementHeight / cover.value.height
+      return cover.value.width * heigthFactor
     }
   }
 }
@@ -97,6 +106,16 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.chapter-list__cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.chapter-list__cover img {
+  transform: translateX(-50%);
 }
 
 .chapter-list__item-link,

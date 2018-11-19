@@ -201,9 +201,9 @@ function getBooks (dato) {
       const chapters = getChapters(dato, book)
         .filter(filterPublished)
         .map(chapter => {
-          const { location, pages, path, slug, title, influences, keywords, createdAt, updatedAt } = chapter
+          const { location, pages, path, slug, title, influences, keywords, createdAt, updatedAt, cover } = chapter
           const theme = getDominantTheme(pages)
-          return { influences, keywords, location, path, slug, title, theme, createdAt, updatedAt }
+          return { influences, keywords, location, path, slug, title, theme, createdAt, updatedAt, cover }
         })
       const theme = getDominantTheme(chapters)
       const influences = collectUniqueTags(chapters, 'influences')
@@ -252,6 +252,7 @@ function getChapters (dato, bookRef) {
       const location = (firstLocationPage) ? firstLocationPage.location : null
       const influences = collectUniqueTags(pages, 'influences')
       const keywords = collectUniqueTags(pages, 'keywords')
+      const cover = getChapterCover(pages)
 
       return {
         book,
@@ -269,7 +270,8 @@ function getChapters (dato, bookRef) {
         nextChapter,
         previousChapter,
         createdAt,
-        updatedAt
+        updatedAt,
+        cover
       }
     })
     .filter(Boolean) // Filter falsy chapters (return false)
@@ -511,6 +513,14 @@ function getDominantTheme (items) {
     }, {})
 
   return Object.values(themes).sort((a, b) => a.score < b.score)[0]
+}
+
+function getChapterCover (pages) {
+  const images = pages
+    .filter(page => page.images)
+    .map(page => page.images)
+    .reduce((list, images) => [...list, ...images])
+  return images[0]
 }
 
 /**

@@ -29,13 +29,7 @@
                 media="(min-width: 600px)"
               >
               <img
-                :srcset="`${coverPath(chapter)}?w=280&h=158&fit=crop 280w,
-                          ${coverPath(chapter)}?w=360&h=202&fit=crop 360w,
-                          ${coverPath(chapter)}?w=460&h=259&fit=crop 460w,
-                          ${coverPath(chapter)}?w=559&h=314&fit=crop 559w,
-                          ${coverPath(chapter)}?w=559&h=314&fit=crop&dpr=2 1118w,
-                          ${coverPath(chapter)}?w=559&h=314&fit=crop&dpr=3 1677w`"
-                :src="`${coverPath(chapter)}?w=280&h=158`"
+                :src="`${coverPath(chapter)}?w=157&h=232&fit=crop`"
                 role="presentation"
               >
             </picture>
@@ -158,6 +152,8 @@ export default {
   transform-origin: center;
   transition: transform 0.20s cubic-bezier(0.8, 0.01, 0.65, 1.01);
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .chapter-list__cover-image--horizontal {

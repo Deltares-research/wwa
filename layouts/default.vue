@@ -2,7 +2,7 @@
   <main class="layout layout--globe">
     <main-menu variant="dark" />
     <transition name="fadeIn" mode="out-in">
-      <globe-component v-bind:is="GlobeComponent" class="globe-component" />
+      <!-- <globe-component v-bind:is="GlobeComponent" class="globe-component" /> -->
     </transition>
     <nuxt/>
 

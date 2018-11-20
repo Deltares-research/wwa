@@ -6,11 +6,39 @@
           class="chapter-list__item-link"
           :href="chapter.path">
           <span class="chapter-list__cover" :class="{'chapter-list__cover--fallback': !chapter.cover}">
-            <img
-              v-if="chapter.cover"
-              :src="`${chapter.cover.imgixHost}${chapter.cover.value.path}?w=${coverWidth(chapter.cover, 420)}&q=85`"
-              role="presentation"
-              />
+            <picture v-if="chapter.cover">
+              <source
+                :srcset="`${coverPath(chapter)}?w=280&h=158&fit=crop 280w,
+                          ${coverPath(chapter)}?w=360&h=202&fit=crop 360w,
+                          ${coverPath(chapter)}?w=460&h=259&fit=crop 460w,
+                          ${coverPath(chapter)}?w=559&h=314&fit=crop 559w,
+                          ${coverPath(chapter)}?w=559&h=314&fit=crop&dpr=2 1118w,
+                          ${coverPath(chapter)}?w=559&h=314&fit=crop&dpr=3 1677w`"
+                sizes="100vw"
+                media="(max-width: 599px)"
+              >
+              <source
+                :srcset="`${coverPath(chapter)}?w=157&h=232&fit=crop 157w,
+                          ${coverPath(chapter)}?w=190&h=282&fit=crop 190w,
+                          ${coverPath(chapter)}?w=223&h=331&fit=crop 223w,
+                          ${coverPath(chapter)}?w=240&h=356&fit=crop 240w,
+                          ${coverPath(chapter)}?w=283&h=420&fit=crop 283w,
+                          ${coverPath(chapter)}?w=283&h=420&fit=crop&dpr=2 566w,
+                          ${coverPath(chapter)}?w=283&h=420&fit=crop&dpr=3 849w,`"
+                sizes="(min-width: 1024px) 17.6875rem, 26vw"
+                media="(min-width: 600px)"
+              >
+              <img
+                :srcset="`${coverPath(chapter)}?w=280&h=158&fit=crop 280w,
+                          ${coverPath(chapter)}?w=360&h=202&fit=crop 360w,
+                          ${coverPath(chapter)}?w=460&h=259&fit=crop 460w,
+                          ${coverPath(chapter)}?w=559&h=314&fit=crop 559w,
+                          ${coverPath(chapter)}?w=559&h=314&fit=crop&dpr=2 1118w,
+                          ${coverPath(chapter)}?w=559&h=314&fit=crop&dpr=3 1677w`"
+                :src="`${coverPath(chapter)}?w=280&h=158`"
+                role="presentation"
+              >
+            </picture>
             <img
               v-else
               :src="`/assets/${chapterTheme(chapter)}.svg`"
@@ -75,10 +103,8 @@ export default {
       const heigthFactor = maxElementHeight / cover.value.height
       return cover.value.width * heigthFactor
     },
-    coverUrl (chapter) {
-      return chapter.cover
-        ? `${chapter.cover.imgixHost}${chapter.cover.value.path}?w=${this.coverWidth(chapter.cover, 450)}&q=85`
-        : `/assets/${this.chapterTheme(chapter)}.svg`
+    coverPath (chapter) {
+      return `${chapter.cover.imgixHost}${chapter.cover.value.path}`
     }
   }
 }
@@ -121,19 +147,29 @@ export default {
 
 .chapter-list__cover {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   pointer-events: none;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 .chapter-list__cover img {
   transform-origin: center;
   transition: transform 0.20s cubic-bezier(0.8, 0.01, 0.65, 1.01);
+  width: 100%;
+}
+
+.chapter-list__cover-image--horizontal {
+  display: inline-block;
+}
+
+.chapter-list__cover-image--vertical {
+  display: none;
 }
 
 .chapter-list__cover--fallback img {
-  transform: scale(11);
+  transform: scale(3);
 }
 
 .chapter-list__item-link,
@@ -179,7 +215,7 @@ export default {
 
 .chapter-list__item-link:hover .chapter-list__cover--fallback img,
 .chapter-list__item-link:focus .chapter-list__cover--fallback img {
-  transform: scale(13);
+  transform: scale(3.5);
 }
 
 .chapter-list__gradient {
@@ -229,6 +265,14 @@ export default {
   .chapter-list__item-content {
     font-size: 1.7rem;
     line-height: 2.2rem;
+  }
+
+  .chapter-list__cover-image--horizontal {
+    display: none;
+  }
+
+  .chapter-list__cover-image--vertical {
+    display: inline-block;
   }
 
   .chapter-list__gradient {

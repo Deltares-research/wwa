@@ -123,13 +123,13 @@ export default {
 <style>
 
 :root {
-  --chapter-narrative-header-height: 15rem;
+  --chapter-narrative-header-height: 16rem;
   --target-offset: 50vh
 }
 
 .full-width {
   position: absolute;
-  top: var(--target-offset);
+  top: var(--chapter-narrative-header-height);
   left:0;
   right: 0;
   z-index: 0;
@@ -145,10 +145,6 @@ export default {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-}
-
-.page-component:not(.chapter__page--0) {
-  padding-top: var(--target-offset);
 }
 
 .chapter__page--0 {
@@ -167,8 +163,8 @@ export default {
 }
 
 @media (min-width: 720px) {
-  .chapter__page--0 {
-    padding-top: calc(var(--chapter-narrative-header-height) / 2);
+  .page-component {
+    padding-top: var(--target-offset);
   }
 }
 </style>

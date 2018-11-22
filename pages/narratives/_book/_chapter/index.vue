@@ -3,7 +3,11 @@
     <div data-scrolled-to-top-trigger />
     <scroll-indicator v-bind:pages="pages" v-bind:activePage="activePage" />
     <div class="chapter full-width">
-      <narrative-header v-bind:chapter="chapter" :condensed="headerCondensed"/>
+      <narrative-header
+        :chapter="chapter"
+        :pages="pages"
+        :active-page="activePage && activePage.slug"
+        :condensed="headerCondensed"/>
       <page-component
         data-page-component
         v-for="(page, index) in pages"

@@ -5,6 +5,20 @@
       <h1 class="narrative-header__title">
         {{ chapter.title }}
       </h1>
+      <button class="narrative-header__navigation-toggle" @click="setShowNavigation(showNavigation)">In this chapter</button>
+      <nav class="narrative-header__navigation" :class="{'narrative-header__navigation--show': displayNavigationList}">
+        <ol class="narrative-header__navigation-list">
+          <li
+            class="narrative-header__navigation-item"
+            :class="{'narrative-header__navigation-item--active': page.slug === activePage}"
+            v-for="page in pages"
+            :key="page.slug">
+            <a :href="page.slug">
+              {{ page.title }}
+            </a>
+          </li>
+        </ol>
+      </nav>
     </div>
   </header>
 </template>
@@ -16,16 +30,39 @@ export default {
       type: Object,
       required: false
     },
+    pages: {
+      type: Array,
+      default: () => []
+    },
     condensed: {
       type: Boolean,
       default: false
+    },
+    activePage: {
+      type: String,
+      default: ''
     }
   },
+  data: () => ({
+    showNavigation: null
+  }),
   computed: {
     coverPath () {
       return this.chapter && this.chapter.cover
         ? `${this.chapter.cover.imgixHost}${this.chapter.cover.value.path}`
         : ''
+    },
+    displayNavigationList () {
+      return this.showNavigation !== null
+        ? this.showNavigation
+        : !this.condensed
+    }
+  },
+  methods: {
+    setShowNavigation (value) {
+      this.showNavigation = value === null
+        ? this.condensed
+        : !value
     }
   }
 }
@@ -43,7 +80,6 @@ export default {
 }
 
 .narrative-header__content {
-  background-color: var(--ui-light-grey);
   height: calc(var(--narrative-header-expanded-height) - var(--narrative-header-logo-size));
   display: flex;
   align-items: flex-start;
@@ -68,6 +104,17 @@ export default {
   transition: opacity var(--narrative-header-transition-speed) var(--narrative-header-transition-timing-hide);
 }
 
+.narrative-header__content:after {
+  content: '';
+  background-color: var(--ui-light-grey);
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -3;
+}
+
 .narrative-header__title {
   color: var(--ui--text--invert);
   font-size: 2rem;
@@ -87,6 +134,39 @@ export default {
   z-index: -2;
   opacity: 1;
   transition: opacity var(--narrative-header-transition-speed) var(--narrative-header-transition-timing-hide);
+}
+
+.narrative-header__navigation-toggle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.narrative-header__navigation {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  background-color: red;
+  transform: none;
+  z-index: -4;
+  transition: transform var(--narrative-header-transition-speed) var(--narrative-header-transition-timing-hide);
+}
+
+.narrative-header__navigation--show {
+  transform: translateY(100%);
+}
+
+.narrative-header__navigation-list {
+  margin: 0;
+}
+
+.narrative-header__navigation-item {
+  padding: 0.5em;
+}
+
+.narrative-header__navigation-item--active {
+  background-color: green;
 }
 
 .narrative-header--condensed .narrative-header__content {

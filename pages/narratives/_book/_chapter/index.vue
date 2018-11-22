@@ -1,19 +1,21 @@
 <template>
   <div>
+    <div data-scrolled-to-top-trigger />
     <scroll-indicator v-bind:pages="pages" v-bind:activePage="activePage" />
     <div class="chapter full-width">
-      <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
-        <page-component
-          data-page-component
-          v-for="page in pages"
-          v-bind:key="page.slug"
-          v-bind:page="page"
-          v-bind:id="page.slug"
-        />
-        <narrative-footer
-          v-bind:previousLink="chapter.previousChapter"
-          v-bind:nextLink="chapter.nextChapter"
-        />
+      <narrative-header v-bind:chapter="chapter" :condensed="headerCondensed"/>
+      <page-component
+        data-page-component
+        v-for="(page, index) in pages"
+        v-bind:key="page.slug"
+        v-bind:page="page"
+        v-bind:id="page.slug"
+        :class="['chaper__page', `chapter__page--${index}`]"
+      />
+      <narrative-footer
+        v-bind:previousLink="chapter.previousChapter"
+        v-bind:nextLink="chapter.nextChapter"
+      />
     </div>
   </div>
 </template>
@@ -27,14 +29,15 @@ import loadData from '~/lib/load-data'
 
 export default {
   async asyncData (context) {
-    const { book, pages, path, slug, title, previousChapter, nextChapter } = await loadData(context, context.params)
-    const chapter = { path, slug, title, previousChapter, nextChapter }
+    const { book, pages, path, slug, title, previousChapter, nextChapter, cover } = await loadData(context, context.params)
+    const chapter = { path, slug, title, previousChapter, nextChapter, cover }
     return { book, chapter, pages, path, slug, title }
   },
   data () {
     return {
       activePage: null,
-      scrollIntoViewSupport: false
+      scrollIntoViewSupport: false,
+      headerCondensed: false
     }
   },
   mounted () {
@@ -45,6 +48,7 @@ export default {
     this.updateActivePage(pageSlug)
     if ('IntersectionObserver' in window) {
       this.observeIntersectingChildren()
+      this.observeScrolledToTop()
     }
   },
   components: {
@@ -70,6 +74,20 @@ export default {
       })
       const pageComponentsArray = [].slice.call(this.$el.querySelectorAll('[data-page-component]'))
       pageComponentsArray.forEach(el => observer.observe(el))
+    },
+    observeScrolledToTop () {
+      const trackVisibility = (entries) => {
+        entries.forEach(entry => {
+          this.headerCondensed = !entry.isIntersecting
+        })
+      }
+      const observer = new IntersectionObserver(trackVisibility, {
+        // No explicit root, we want the viewport
+        rootMargin: '0% 0% 0% 0%',
+        thresholds: 0
+      })
+      const triggerElement = this.$el.querySelector('[data-scrolled-to-top-trigger]')
+      observer.observe(triggerElement)
     },
     scrollToSlug (pageSlug) {
       const activeElement = document.getElementById(pageSlug)
@@ -117,16 +135,29 @@ export default {
 }
 
 .chapter .narrative-header {
-  width: 100%;
-  max-width: calc(60rem + 2 * 2rem);
+  width: 100vw;
+  max-width: 60rem;
   margin: auto;
-  position: relative;
+  position: fixed;
   margin-bottom: calc(-1 * var(--target-offset));
   z-index: 1;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.page-component {
+.page-component:not(.chapter__page--0) {
   padding-top: var(--target-offset);
 }
 
+[data-scrolled-to-top-trigger] {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 1px;
+  background-color: transparent;
+  z-index: 1;
+}
 </style>

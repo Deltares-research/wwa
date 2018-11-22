@@ -90,6 +90,9 @@
   --ui--bg: var(--ui--black);
   --ui--bg--white: var(--ui--white);
   --ui--bg--light: var(--booklet--neutral);
+  --ui--bg--dark-transparent: rgba(1, 0, 42, 0);
+  --ui--bg--dark-translucent: rgba(1, 0, 42, 0.75);
+  --ui--bg--dark-opaque: rgba(1, 0, 42, 1);
   --ui--text: var(--booklet--text);
   --ui--text--light: var(--booklet--text--light);
   --ui--text--invert: var(--ui--white);
@@ -97,6 +100,7 @@
   --ui--action--light: var(--booklet--action--light);
   --ui--bottom-gradient: linear-gradient(to top, var(--ui--black), transparent);
   --ui--left-gradient: linear-gradient(to right, var(--ui--black),  transparent);
+  --ui-light-grey: var(--booklet--neutral);
 }
 
 html {

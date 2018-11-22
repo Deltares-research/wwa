@@ -123,13 +123,12 @@ export default {
 <style>
 
 :root {
-  --chapter-narrative-header-height: 16rem;
   --target-offset: 50vh
 }
 
 .full-width {
   position: absolute;
-  top: var(--chapter-narrative-header-height);
+  top: 0;
   left:0;
   right: 0;
   z-index: 0;
@@ -139,12 +138,9 @@ export default {
   width: 100vw;
   max-width: 60rem;
   margin: auto;
-  position: fixed;
-  margin-bottom: calc(-1 * var(--target-offset));
+  position: sticky;
   z-index: 1;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .chapter__page--0 {

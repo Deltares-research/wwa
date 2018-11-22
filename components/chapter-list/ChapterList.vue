@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="chapter-list">
     <ul class="chapter-list__list">
       <li class="chapter-list__item" v-for="chapter in limitedChapters" :key="chapter.slug">
         <a

@@ -1,5 +1,5 @@
 <template>
-  <ul class="book-list__list">
+  <ul class="book-list">
     <li v-for="book in books" :key="book.slug">
       <h2 class="book-list__book-title">
         <a class="book-list__book-title-link" :href="book.path">{{ book.title }}</a>
@@ -29,12 +29,12 @@ export default {
   margin: 0;
 }
 
-.book-list__list {
+.book-list {
   list-style: none;
   padding: 0px;
 }
 
-.book-list__list > *:not(:last-child) {
+.book-list > *:not(:last-child) {
   margin-bottom: 3rem;
 }
 

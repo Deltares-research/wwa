@@ -123,6 +123,7 @@ export default {
 <style>
 
 :root {
+  --chapter-narrative-header-height: 15rem;
   --target-offset: 50vh
 }
 
@@ -150,6 +151,10 @@ export default {
   padding-top: var(--target-offset);
 }
 
+.chapter__page--0 {
+  padding-top: 0;
+}
+
 [data-scrolled-to-top-trigger] {
   display: block;
   position: absolute;
@@ -159,5 +164,11 @@ export default {
   height: 1px;
   background-color: transparent;
   z-index: 1;
+}
+
+@media (min-width: 720px) {
+  .chapter__page--0 {
+    padding-top: calc(var(--chapter-narrative-header-height) / 2);
+  }
 }
 </style>

@@ -13,9 +13,9 @@
             :class="{'narrative-header__navigation-item--active': page.slug === activePage}"
             v-for="page in pages"
             :key="page.slug">
-            <a :href="page.slug">
+            <nuxt-link :to="`#${page.slug}`">
               {{ page.title }}
-            </a>
+            </nuxt-link>
           </li>
         </ol>
       </nav>

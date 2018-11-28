@@ -1,16 +1,25 @@
 <template>
-   <nav v-bind:class="`main-menu main-menu--${variant}`">
-     <nuxt-link class="main-menu__item main-menu__item--home h1" to="/" title="Go home">
-       <span class="sr-only">Return to the homepage</span>World<br/>Water<br/>Atlas <img alt="" src="/assets/home.png" class="home-icon"/>
-      </nuxt-link>
-      <nuxt-link v-bind:class="`main-menu__item main-menu__item--about h3 ${(variant === 'dark') ? 'invert' : ''}`"
-        to="/about">
-        About
-      </nuxt-link>
-      <nuxt-link v-bind:class="`main-menu__item main-menu__item--submit h3 ${(variant === 'dark') ? 'invert' : ''}`"
-        to="/submit-a-story">
-        Submit a story
-      </nuxt-link>
+    <nav v-bind:class="`main-menu main-menu--${variant}`">
+      <div class="main-menu__container">
+        <div class="main-menu__section main-menu__section--no-padding">
+          <nuxt-link v-bind:class="`main-menu__item main-menu__item--home ${(variant === 'light') ? 'main-menu__item--dark-background' : ''}`" to="/" title="Go home">
+            <span class="sr-only">Return to the homepage</span>World Water<br/>Atlas
+          </nuxt-link>
+        </div>
+        <div class="main-menu__section main-menu__section--align-center">
+          <portal-target name="menu-center-content" />
+        </div>
+        <div class="main-menu__section main-menu__section--align-right">
+          <nuxt-link v-bind:class="`main-menu__item main-menu__item--about h3 ${(variant === 'dark') ? 'invert' : ''}`"
+            to="/about">
+            About
+          </nuxt-link>
+          <nuxt-link v-bind:class="`main-menu__item main-menu__item--submit h3 ${(variant === 'dark') ? 'invert' : ''}`"
+            to="/submit-a-story">
+            Submit a story
+          </nuxt-link>
+        </div>
+      </div>
     </nav>
 </template>
 
@@ -34,23 +43,57 @@ export default {
 @import '../colors/colors.css';
 
 .main-menu {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  padding: 1rem;
   height: auto;
-  text-align: right;
   color: var(--ui--white);
+  z-index: 1;
+}
 
+.main-menu__section {
+  flex: 1 1;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  min-height: 3rem;
+}
+
+.main-menu__section--no-padding {
+  padding: 0;
+}
+
+.main-menu__section--align-center {
+  justify-content: center;
+}
+
+.main-menu__section--align-right {
+  justify-content: flex-end;
+}
+
+@media only screen and (max-width: 768px) {
+  .main-menu__section--align-right {
+    display: none;
+  }
+}
+
+.main-menu__container {
+  position: relative;
+  display: flex;
+  justify-items: center;
+}
+
+.main-menu--dark {
+  background-color: var(--ui--blue);
 }
 
 .main-menu--light {
   color: var(--ui--black);
+  background-color: var(--ui--white--trans);
 }
 
 .main-menu__item {
-  position: relative;
   display: inline-block;
   margin: 0 .5rem;
   padding: .5rem;
@@ -58,6 +101,11 @@ export default {
   font-weight: normal;
   text-decoration: none;
   color: inherit;
+  z-index: 1;
+}
+
+.main-menu__item .nuxt-link-active {
+  text-decoration: none;
 }
 
 .main-menu__item:hover,
@@ -68,16 +116,20 @@ export default {
 }
 .main-menu .main-menu__item--home {
   text-decoration: none;
-  font-weight: normal;
-  position: fixed;
   text-align: left;
   left:0;
   top: 0;
   margin: 0;
+  padding: 0.5em;
   z-index: 100;
+  font-size: 1.375em;
+  line-height: 1.15;
+  font-weight: 600;
   opacity: 1;
-  padding: 1rem;
   color: var(--ui--white);
+}
+
+.main-menu--light .main-menu__item--home {
   background-color: var(--ui--black--trans);
 }
 

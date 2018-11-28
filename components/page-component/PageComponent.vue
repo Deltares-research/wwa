@@ -8,8 +8,7 @@
       v-bind:video="page.video"
       v-bind:mapboxStyle="page.mapboxStyle"
       v-bind:links="page.links"
-      v-bind:partner="page.partner" />
-    <page-aside
+      v-bind:partner="page.partner"
       v-bind:influences="page.influences"
       v-bind:keywords="page.keywords"
       v-bind:storyteller="page.storyteller"
@@ -18,7 +17,6 @@
 </template>
 
 <script>
-import PageAside from '~/components/page-aside/PageAside'
 import PageBody from '~/components/page-body/PageBody'
 
 export default {
@@ -26,7 +24,6 @@ export default {
     page: { type: Object }
   },
   components: {
-    PageAside,
     PageBody
   }
 }
@@ -36,20 +33,16 @@ export default {
 @import '../colors/colors.css';
 
 .page-component {
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
   min-height: 25vh;
-  max-width: 60rem;
+  max-width: 40rem;
+  margin: 3rem auto 0 auto;
 }
 
-@media screen and (min-width: 720px) {
+@media only screen and (min-width: 600px) {
   .page-component {
-    flex-direction: row;
-      padding-left: 2rem;
-      padding-right: 2rem;
+    margin: 3.75rem auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 

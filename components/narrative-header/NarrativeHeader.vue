@@ -5,16 +5,22 @@
       <h1 class="narrative-header__title">
         {{ chapter.title }}
       </h1>
-      <button class="narrative-header__navigation-toggle" @click="setShowNavigation(showNavigation)">In this chapter</button>
+      <button class="narrative-header__navigation-toggle" @click="setShowNavigation(showNavigation)">
+        In this chapter
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="narrative-header__toggle-icon" :class="{'narrative-header__toggle-icon--active': displayNavigationList}">
+          <path d="M7 10l5 5 5-5z"/>
+          <path d="M0 0h24v24H0z" fill="none"/>
+        </svg>
+      </button>
       <nav class="narrative-header__navigation" :class="{'narrative-header__navigation--show': displayNavigationList}">
         <ol class="narrative-header__navigation-list">
           <li
             class="narrative-header__navigation-item"
             :class="{'narrative-header__navigation-item--active': page.slug === activePage}"
-            v-for="page in pages"
+            v-for="(page, index) in pages"
             :key="page.slug">
-            <nuxt-link :to="`#${page.slug}`">
-              {{ page.title }}
+            <nuxt-link class="narrative-header__link" :to="`#${page.slug}`">
+              <span class="narrative-header__link-index">{{ index+1 }}.</span>&nbsp;&nbsp;{{ page.title }}
             </nuxt-link>
           </li>
         </ol>
@@ -44,7 +50,7 @@ export default {
     }
   },
   data: () => ({
-    showNavigation: null
+    showNavigation: false
   }),
   computed: {
     coverPath () {
@@ -72,36 +78,39 @@ export default {
 @import '../colors/colors.css';
 
 :root {
-  --narrative-header-logo-size: 120px; /* temporary until the logo is removed */
-  --narrative-header-expanded-height: 15rem;
-  --narrative-header-transition-speed: 0.30s;
+  --narrative-header-transition-speed: 300ms;
   --narrative-header-transition-timing-hide: cubic-bezier(0.83, 0, 0.73, 1);
   --narrative-header-transition-timing-reveal: cubic-bezier(0.17, 0, 0.27, 1);
+  --narrative-hearder__navigation-toggle-fixed-size: 10rem;
+}
+
+.narrative-header {
+  z-index: 2;
 }
 
 .narrative-header__content {
-  height: calc(var(--narrative-header-expanded-height) - var(--narrative-header-logo-size));
-  display: flex;
-  align-items: flex-start;
-  padding: 20px;
-  padding-top: var(--narrative-header-logo-size);
+  padding: 3.75rem 1.5rem;
   position: relative;
-  text-shadow: 0 0 2rem var(--ui--black--trans);
-  z-index: 0;
+  z-index: 2;
   transition: transform var(--narrative-header-transition-speed) var(--narrative-header-transition-timing-hide);
+}
+
+@media (min-width: 600px) {
+  .narrative-header__content {
+    padding: 3.75rem 2.5rem;
+  }
 }
 
 .narrative-header__content:before {
   content: '';
   background-image: linear-gradient(to bottom, var(--ui--bg--dark-transparent), var(--ui--bg--dark-translucent));
   position: absolute;
-  top: 25%;
+  top: 10%;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: -1;
+  z-index: 3;
   opacity: 1;
-  transition: opacity var(--narrative-header-transition-speed) var(--narrative-header-transition-timing-hide);
 }
 
 .narrative-header__content:after {
@@ -112,16 +121,26 @@ export default {
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: -3;
+  z-index: 1;
 }
 
 .narrative-header__title {
   color: var(--ui--text--invert);
-  font-size: 2rem;
+  font-size: 1.5rem;
+  line-height: 1.75rem;
+  min-height: 5.25rem;
   font-weight: bold;
+  position: relative;
+  z-index: 4;
   margin: 0;
-  transition: color var(--narrative-header-transition-speed) var(--narrative-header-transition-timing-hide),
-    transform var(--narrative-header-transition-speed) var(--narrative-header-transition-timing-hide);
+}
+
+@media (min-width: 768px) {
+  .narrative-header__title {
+    font-size: 2rem;
+    line-height: 2.5rem;
+    min-height: 7.5rem;
+  }
 }
 
 .narrative-header__cover {
@@ -131,81 +150,147 @@ export default {
   top: 0;
   left: 0;
   object-fit: cover;
-  z-index: -2;
+  z-index: 2;
   opacity: 1;
   transition: opacity var(--narrative-header-transition-speed) var(--narrative-header-transition-timing-hide);
 }
 
 .narrative-header__navigation-toggle {
   position: absolute;
+  z-index: 5;
   bottom: 0;
   right: 0;
+  background-color: #467388;
+  color: #ffffff;
+  border: none;
+  padding: 8px 1em;
+  line-height: 24px;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  width: 50%;
+}
+
+.narrative-header__toggle-icon {
+  display: inline-block;
+  fill: #ffffff;
+  transition: transform 200ms ease-in-out;
+}
+
+.narrative-header__toggle-icon--active {
+  transform: rotate(180deg);
+}
+
+.narrative-header--condensed .narrative-header__navigation-toggle {
+  width: var(--narrative-hearder__navigation-toggle-fixed-size);
 }
 
 .narrative-header__navigation {
   position: absolute;
+  box-sizing: border-box;
   bottom: 0;
   right: 0;
   width: 100%;
-  background-color: red;
+  background-color: #ffffff;
   transform: none;
-  z-index: -4;
+  z-index: 0;
   transition: transform var(--narrative-header-transition-speed) var(--narrative-header-transition-timing-hide);
+  padding: 0.5rem 1rem;
+
+  /* we need to restrict the height */
+  max-height: 19.5rem;
+  overflow: scroll;
+}
+
+@media (min-width: 768px) {
+  .narrative-header__navigation {
+    max-width: 600px;
+  }
 }
 
 .narrative-header__navigation--show {
   transform: translateY(100%);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 .narrative-header__navigation-list {
   margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.narrative-header__navigation-item {
-  padding: 0.5em;
+.narrative-header__link {
+  padding: 1em 1.5em;
+  border-radius: 2em;
+  text-decoration: none;
+  display: block;
+  color: #467388;
 }
 
-.narrative-header__navigation-item--active {
-  background-color: green;
+.narrative-header__navigation-item--active .narrative-header__link {
+  background-color: #f6f8fa;
+  color: #467388;
+  font-weight: bold;
 }
+
+.narrative-header__link:hover {
+  color: #467388;
+  text-decoration: underline;
+}
+
+.narrative-header__link-index {
+  color: #000000;
+  font-weight: bold;
+}
+
+.narrative-header--condensed {
+  max-width: none;
+  width: 100vw;
+  top: 4rem;
+  position: fixed;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 1024px) {
+  .narrative-header--condensed {
+    width: 67vw;
+  }
+}
+
+@media (min-width: 1440px) {
+  .narrative-header--condensed {
+    width: 50vw;
+  }
+}
+
 
 .narrative-header--condensed .narrative-header__content {
   text-shadow: none;
-  transform: translateY(-78%);
   align-items: flex-end;
-  transition-timing-function: var(--narrative-header-transition-timing-reveal);
+  padding: 0.5rem;
 }
 
 .narrative-header--condensed .narrative-header__title {
-  --size-tweak: 20px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: calc(100vw - (var(--size-tweak) * 2) - var(--narrative-header-logo-size));
+  width: calc(100vw - 1rem - (var(--narrative-hearder__navigation-toggle-fixed-size)));
   font-size: 1rem;
   color: var(--ui-black);
-  transform: translateX(calc(var(--narrative-header-logo-size) - var(--size-tweak)));
+  min-height: auto;
+  font-weight: 500;
+  line-height: 1.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .narrative-header--condensed .narrative-header__content:before {
   opacity: 0;
-  transition-timing-function: var(--narrative-header-transition-timing-reveal);
 }
 
 .narrative-header--condensed .narrative-header__content .narrative-header__cover {
   opacity: 0;
-  transition-timing-function: var(--narrative-header-transition-timing-reveal);
-}
-
-@media (min-width: 1100px) {
-  .narrative-header--condensed .narrative-header__title {
-    transform: translateX(calc(var(--narrative-header-logo-size) / 2));
-  }
-}
-
-@media (min-width: 1200px) {
-  .narrative-header--condensed .narrative-header__title {
-    transform: none;
-  }
 }
 </style>

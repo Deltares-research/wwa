@@ -86,7 +86,10 @@
   /* UI colors */
   --ui--white: #fff;
   --ui--black: #00001e;
+  --ui--white--trans: rgba(255, 255, 255, .75);
   --ui--black--trans: rgba(0, 0, 30, .75);
+  --ui--blue:rgba(0,0,48, 1);
+  --ui--blue--trans:rgba(0,0,48, .75);
   --ui--bg: var(--ui--black);
   --ui--bg--white: var(--ui--white);
   --ui--bg--light: var(--booklet--neutral);

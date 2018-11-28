@@ -1,6 +1,12 @@
 <template>
   <section class="page-body">
-      <h1 class="page-body__title">{{ title }}</h1>
+      <page-body-title
+        v-bind:pageTitle="title"
+        v-bind:influences="influences"
+        v-bind:keywords="keywords"
+        v-bind:storyteller="storyteller"
+        v-bind:theme="theme" />
+
       <section v-if="htmlBody" class="page-body__body" v-html="htmlBody"></section>
 
       <section v-if="images.length" class="page-body__images">
@@ -26,6 +32,7 @@
           <figcaption>{{ graph.value.title }}</figcaption>
         </figure>
       </section>
+
       <section v-if="video" class="page-body__video fixed-ratio"
         v-bind:style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`">
         <iframe v-if="video.provider === 'youtube'" allowfullscreen="allowfullscreen" frameborder="0"
@@ -42,7 +49,7 @@
 
       <section class="clearfix page-body__footer">
         <ul v-if="links" class="page-body__links">
-          <li v-for="link in links">
+          <li v-for="link in links" :key="link.title">
             <a target="_blank" v-bind:href="link.path">{{ link.title }}</a>
           </li>
         </ul>
@@ -62,6 +69,7 @@
 
 <script>
 import LazyImage from '~/components/lazy-image/LazyImage'
+import PageBodyTitle from '~/components/page-body-title/PageBodyTitle'
 import StoryMap from '~/components/story-map/StoryMap'
 import renderMarkedContent from '~/lib/custom-marked'
 
@@ -74,25 +82,16 @@ export default {
     title: String,
     video: Object,
     mapboxStyle: String,
+    influences: Array,
+    keywords: Array,
+    storyteller: Object,
     partner: Object,
-    sizeLimit: {
-      type: Number,
-      default: 3 * 16
-    }
+    theme: Object
   },
-  components: { LazyImage, StoryMap },
+  components: { LazyImage, PageBodyTitle, StoryMap },
   computed: {
     htmlBody () {
       return renderMarkedContent(this.body)
-    }
-  },
-  methods: {
-    scaleMaxToSize: function (imgObj, sizeLimit) {
-      if (!imgObj.value.width) {
-        return { h: Math.round(sizeLimit), w: Math.round(sizeLimit) }
-      }
-      const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height)
-      return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) }
     }
   }
 }
@@ -102,9 +101,19 @@ export default {
 @import '../colors/colors.css';
 
 .page-body {
-  padding: 2rem;
+  padding: 1.5rem;
   background-color: var(--ui--bg--white);
-  flex: 0 1 100%;
+}
+
+@media only screen and (min-width: 600px) {
+  .page-body {
+    padding: 1rem 2.5rem;
+  }
+}
+
+.page-body p.intro {
+  font-size: 1rem;
+  color: #3f6a7e;
 }
 
 .page-body figure {
@@ -112,19 +121,11 @@ export default {
   position: relative;
 }
 
-.page-body figure + figure {
-  margin-top: 2rem;
-}
-
-.page-body__title {
-  margin-top: 0;
-}
-
 .page-body__images,
 .page-body__graphs,
 .page-body__video,
 .page-body__map {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 .page-body > :last-child {
   margin-bottom: 0;

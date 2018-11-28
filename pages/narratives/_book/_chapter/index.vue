@@ -2,7 +2,7 @@
   <div>
     <div data-scrolled-to-top-trigger />
     <scroll-indicator v-bind:pages="pages" v-bind:activePage="activePage" />
-    <div class="chapter full-width">
+    <div class="chapter chapter-column">
       <narrative-header
         :chapter="chapter"
         :pages="pages"
@@ -21,10 +21,14 @@
         v-bind:nextLink="chapter.nextChapter"
       />
     </div>
+    <portal to="menu-center-content">
+      <menu-dropdown v-bind:book="book" v-bind:booksList="booksList" />
+    </portal>
   </div>
 </template>
 
 <script>
+import MenuDropdown from '~/components/menu-dropdown/MenuDropdown'
 import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter'
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import PageComponent from '~/components/page-component/PageComponent'
@@ -35,7 +39,8 @@ export default {
   async asyncData (context) {
     const { book, pages, path, slug, title, previousChapter, nextChapter, cover } = await loadData(context, context.params)
     const chapter = { path, slug, title, previousChapter, nextChapter, cover }
-    return { book, chapter, pages, path, slug, title }
+    const booksList = await loadData(context, { booksList: 'index' })
+    return { book, chapter, pages, path, slug, title, booksList }
   },
   data () {
     return {
@@ -58,6 +63,7 @@ export default {
   components: {
     NarrativeFooter,
     NarrativeHeader,
+    MenuDropdown,
     PageComponent,
     ScrollIndicator
   },
@@ -125,36 +131,33 @@ export default {
 </script>
 
 <style>
-
-:root {
-  --target-offset: 50vh
-}
-
-.full-width {
+.chapter-column {
   position: absolute;
   top: 0;
   left:0;
-  right: 0;
+  padding-top: 64px;
   z-index: 0;
-}
-
-.chapter .narrative-header {
   width: 100vw;
-  max-width: 60rem;
-  margin: auto;
-  position: sticky;
-  z-index: 1;
-  top: 0;
+  background-color: #dde4eb;
+  overflow: hidden;
 }
 
-.chapter__page--0 {
-  padding-top: 0;
+@media only screen and (min-width: 1024px) {
+  .chapter-column {
+    width: 67vw;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .chapter-column {
+    width: 50vw;
+  }
 }
 
 [data-scrolled-to-top-trigger] {
   display: block;
   position: absolute;
-  top: 0;
+  top: 10.25rem;
   right: 0;
   width: 1px;
   height: 1px;
@@ -162,9 +165,9 @@ export default {
   z-index: 1;
 }
 
-@media (min-width: 720px) {
-  .page-component {
-    padding-top: var(--target-offset);
+@media (min-width: 768px) {
+  [data-scrolled-to-top-trigger] {
+    top: 12.5rem;
   }
 }
 </style>

@@ -1,13 +1,25 @@
 <template>
-  <div class="tagline invert" v-html="body"></div>
+  <div class="invert">
+    <div class="tagline" v-html="body"></div>
+    <div class="globe-spacer"/>
+
+    <div class="page-index__book-list-wrapper">
+      <book-list class="page-index__book-list" :books="books">
+        <chapter-list slot-scope="{ chapters }" :chapters="chapters" sorted="newest" :limit="3" />
+      </book-list>
+    </div>
+  </div>
 </template>
 
 <script>
 import loadData from '~/lib/load-data'
 import marked from '~/lib/custom-marked'
 import home from '~/static/data/home.json'
+import BookList from '~/components/book-list/BookList'
+import ChapterList from '~/components/chapter-list/ChapterList'
 
 export default {
+  components: { BookList, ChapterList },
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const books = await loadData(context, { book: 'index' })
@@ -74,4 +86,44 @@ export default {
   background-image: url('/assets/too-little.png');
 }
 
+
+.globe-spacer {
+  height: 100vh;
+  width: 100vw;
+  pointer-events: none;
+}
+
+.page-index__book-list-wrapper {
+  width: calc(100vw - 40px);
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: 0 20px;
+}
+
+.page-index__book-list-wrapper:before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: calc(100% + 30vh);
+  top: 0;
+  transform: translateY(-30vh);
+  position: absolute;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 42, 0) 0, rgba(0, 0, 42, 0.85) 30vh);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.page-index__book-list {
+  width: calc(100vw - 40px);
+  max-width: 950px;
+  z-index: 1;
+}
+
+@media (min-width: 600px) {
+  .page-index__book-list-wrapper {
+    width: calc(100vw - 80px);
+    padding: 0 40px;
+  }
+}
 </style>

@@ -107,5 +107,5 @@
 }
 
 html {
-  background-color: var(--ui--black);
+  background-color: var(--ui--bg--dark-opaque);
 }

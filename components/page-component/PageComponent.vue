@@ -40,7 +40,7 @@ export default {
 
 @media only screen and (min-width: 600px) {
   .page-component {
-    margin: 3.75rem auto;
+    margin: 3.75rem auto 0 auto;
     padding-left: 2rem;
     padding-right: 2rem;
   }

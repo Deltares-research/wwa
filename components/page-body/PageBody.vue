@@ -1,5 +1,6 @@
 <template>
-  <section class="page-body">
+  <div>
+    <section class="page-body">
       <page-body-title
         v-bind:pageTitle="title"
         v-bind:influences="influences"
@@ -8,46 +9,49 @@
         v-bind:theme="theme" />
 
       <section v-if="htmlBody" class="page-body__body" v-html="htmlBody"></section>
+    </section>
+    <section v-if="images.length" class="page-body__images">
+      <figure v-for="image in images" v-bind:key="image.id" class="page-body__figure">
+        <lazy-image
+          v-bind:src="`${image.imgixHost}${image.value.path}?w=640&q=65`"
+          v-bind:srcWidth="image.value.width"
+          v-bind:srcHeight="image.value.height"
+          v-bind:alt="image.value.alt"
+          width=100% />
+        <figcaption class="page-body__asset-placeholder">{{ image.value.title }}</figcaption>
+      </figure>
+    </section>
 
-      <section v-if="images.length" class="page-body__images">
-        <figure v-for="image in images" v-bind:key="image.id">
+    <section v-if="graphs.length" class="page-body__graphs">
+      <figure v-for="graph in graphs" v-bind:key="graph.id" class="page-body__figure">
           <lazy-image
-            v-bind:src="`${image.imgixHost}${image.value.path}?w=640&q=65`"
-            v-bind:srcWidth="image.value.width"
-            v-bind:srcHeight="image.value.height"
-            v-bind:alt="image.value.alt"
-            width=100% />
-          <figcaption>{{ image.value.title }}</figcaption>
-        </figure>
-      </section>
+          v-bind:src="`${graph.imgixHost}${graph.value.path}?w=640&q=65`"
+          v-bind:srcWidth="graph.value.width"
+          v-bind:srcHeight="graph.value.height"
+          v-bind:alt="graph.value.alt"
+          width=100% />
+        <figcaption class="page-body__asset-placeholder">{{ graph.value.title }}</figcaption>
+      </figure>
+    </section>
 
-      <section v-if="graphs.length" class="page-body__graphs">
-        <figure v-for="graph in graphs" v-bind:key="graph.id">
-           <lazy-image
-            v-bind:src="`${graph.imgixHost}${graph.value.path}?w=640&q=65`"
-            v-bind:srcWidth="graph.value.width"
-            v-bind:srcHeight="graph.value.height"
-            v-bind:alt="graph.value.alt"
-            width=100% />
-          <figcaption>{{ graph.value.title }}</figcaption>
-        </figure>
-      </section>
+    <section v-if="video" class="page-body__video page-body__figure fixed-ratio"
+      v-bind:style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`">
+      <iframe v-if="video.provider === 'youtube'" allowfullscreen="allowfullscreen" frameborder="0"
+        v-bind:src="`//www.${video.provider}.com/embed/${video.providerUid}`" width="100%" height="100%">
+      </iframe>
+      <iframe v-else-if="video.provider === 'vimeo'" allowfullscreen="allowfullscreen" frameborder="0"
+        v-bind:src="`https://player.vimeo.com/video/${video.providerUid}?title=0&author=0&portrait=0&playbar=0&byline=0`" width="100%" height="100%">
+      </iframe>
+    </section>
 
-      <section v-if="video" class="page-body__video fixed-ratio"
-        v-bind:style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`">
-        <iframe v-if="video.provider === 'youtube'" allowfullscreen="allowfullscreen" frameborder="0"
-          v-bind:src="`//www.${video.provider}.com/embed/${video.providerUid}`" width="100%" height="100%">
-        </iframe>
-        <iframe v-else-if="video.provider === 'vimeo'" allowfullscreen="allowfullscreen" frameborder="0"
-          v-bind:src="`https://player.vimeo.com/video/${video.providerUid}?title=0&author=0&portrait=0&playbar=0&byline=0`" width="100%" height="100%">
-        </iframe>
-      </section>
+    <section v-if="mapboxStyle" class="page-body__map">
+      <story-map v-bind:mapbox-style="mapboxStyle"></story-map>
+      <div class="page-body__asset-placeholder">
 
-      <section v-if="mapboxStyle" class="page-body__map">
-        <story-map v-bind:mapbox-style="mapboxStyle"></story-map>
-      </section>
-
-      <section class="clearfix page-body__footer">
+      </div>
+    </section>
+    <section class="page-body">
+      <section class="page-body__footer">
         <ul v-if="links" class="page-body__links">
           <li v-for="link in links" :key="link.title">
             <a target="_blank" v-bind:href="link.path">{{ link.title }}</a>
@@ -65,6 +69,7 @@
       </section>
 
     </section>
+  </div>
 </template>
 
 <script>
@@ -116,25 +121,29 @@ export default {
   color: #3f6a7e;
 }
 
-.page-body figure {
+.page-body__figure {
   margin: 0;
   position: relative;
 }
 
-.page-body__images,
-.page-body__graphs,
-.page-body__video,
-.page-body__map {
-  margin-bottom: 1rem;
-}
-.page-body > :last-child {
-  margin-bottom: 0;
+@media only screen and (min-width: 1200px) {
+  .page-body__figure {
+    width: calc(100% + 5rem);
+    margin-left: -2.5rem;
+  }
 }
 
-.page-body figcaption {
-  color: var(--ui--text--light);
-  width: 100%;
-  padding: 5px 0;
+.page-body__asset-placeholder {
+  padding: 0.5rem 1.5rem;
+  background-color: var(--ui--bg--white);
+  max-width: 35rem;
+  margin: 0 auto;
+}
+
+@media only screen and (min-width: 600px) {
+  .page-body__asset-placeholder {
+    padding: 0.5rem 2.5rem;
+  }
 }
 
 .page-body__footer {
@@ -152,7 +161,7 @@ export default {
 }
 
 .page-body__footer--partner {
-  text-align:center;
+  text-align: center;
 }
 
 .page-body__partner {

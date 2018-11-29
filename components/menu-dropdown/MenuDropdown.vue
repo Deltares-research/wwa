@@ -163,7 +163,9 @@ export default {
 }
 
 @media only screen and (min-width: 600px) {
-  justify-content: center;
+  .menu-dropdown__button {
+    justify-content: center;
+  }
 }
 
 .menu-dropdown__button:hover,

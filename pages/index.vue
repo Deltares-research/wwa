@@ -3,6 +3,14 @@
     <div class="tagline" v-html="body"></div>
     <div class="globe-spacer"/>
 
+    <div class="page-index__scroll-to-wrapper" id="scroll-to-book-list">
+      <a class="page-index__scroll-to-button" href="#scroll-to-book-list">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="page-index__button-icon">
+          <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+          <path fill="none" d="M0 0h24v24H0V0z"></path>
+        </svg>
+      </a>
+    </div>
     <div class="page-index__book-list-wrapper">
       <book-list class="page-index__book-list" :books="books">
         <chapter-list slot-scope="{ chapters }" :chapters="chapters" sorted="newest" :limit="3" />
@@ -86,11 +94,42 @@ export default {
   background-image: url('/assets/too-little.png');
 }
 
-
 .globe-spacer {
-  height: 100vh;
+  height: 85vh;
   width: 100vw;
   pointer-events: none;
+}
+
+.page-index__scroll-to-wrapper {
+  width: calc(100vw - 40px);
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: 0 20px;
+}
+
+.page-index__scroll-to-button {
+  color: var(--ui-invert);
+  width: 2.5rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  cursor: pointer;
+  border-radius: 100%;
+  background-color: rgba(255, 255, 255, 0.23);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 200ms ease-in-out;
+}
+
+.page-index__scroll-to-button:hover {
+  background-color: var(--ui--blue);
+  box-shadow: 0px 0px 50px 0px rgba(152, 171, 186, 0.75);
+}
+
+.page-index__button-icon {
+  fill: var(--ui--white);
+  display: block;
 }
 
 .page-index__book-list-wrapper {

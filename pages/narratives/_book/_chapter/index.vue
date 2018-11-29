@@ -167,7 +167,7 @@ export default {
 
 @media (min-width: 768px) {
   [data-scrolled-to-top-trigger] {
-    top: 12.5rem;
+    top: calc(12.5rem + 1px);
   }
 }
 </style>

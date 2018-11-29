@@ -5,7 +5,7 @@
     </bottom-shelf>
     <portal to="menu-center-content">
       <transition name="fade">
-        <menu-dropdown v-bind:book="'title'" v-bind:booksList="booksList" />
+        <menu-dropdown v-bind:book="{ title }" v-bind:booksList="booksList" />
       </transition>
     </portal>
   </div>
@@ -22,8 +22,8 @@ export default {
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const booksList = await loadData(context, { booksList: 'index' })
-    const { book, chapters, theme } = await loadData(context, context.params)
-    return { booksList, book, chapters, themes: await themes, theme }
+    const { book, title, chapters, theme } = await loadData(context, context.params)
+    return { booksList, book, title, chapters, themes: await themes, theme }
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.chapters)

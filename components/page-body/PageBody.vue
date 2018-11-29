@@ -13,6 +13,7 @@
     <section v-if="images.length" class="page-body__images">
       <figure v-for="image in images" v-bind:key="image.id" class="page-body__figure">
         <lazy-image
+          class="page-body__lazy-image"
           v-bind:src="`${image.imgixHost}${image.value.path}?w=640&q=65`"
           v-bind:srcWidth="image.value.width"
           v-bind:srcHeight="image.value.height"
@@ -25,6 +26,7 @@
     <section v-if="graphs.length" class="page-body__graphs">
       <figure v-for="graph in graphs" v-bind:key="graph.id" class="page-body__figure">
           <lazy-image
+          class="page-body__lazy-image"
           v-bind:src="`${graph.imgixHost}${graph.value.path}?w=640&q=65`"
           v-bind:srcWidth="graph.value.width"
           v-bind:srcHeight="graph.value.height"
@@ -59,11 +61,9 @@
         </ul>
         <div class="page-body__footer--partner">
           <p v-if="partner && partner.name">
-             Created in partnership with:
-             <span class="clearfix page-body__partner">
-              <img v-if="partner.logo && partner.logo.imgixHost" v-bind:src="`${partner.logo.imgixHost}${partner.logo.value.path}?w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`" v-bind:width="scaleMaxToSize(partner.logo, sizeLimit).w" v-bind:height="scaleMaxToSize(partner.logo, sizeLimit).h">
-              {{ partner.name }}
-            </span>
+            Created in partnership with:
+            <img v-if="partner.logo && partner.logo.imgixHost" v-bind:src="`${partner.logo.imgixHost}${partner.logo.value.path}?w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`" class="page-body__partner-img" v-bind:width="scaleMaxToSize(partner.logo, sizeLimit).w" v-bind:height="scaleMaxToSize(partner.logo, sizeLimit).h">
+            {{ partner.name }}
           </p>
         </div>
       </section>
@@ -91,12 +91,25 @@ export default {
     keywords: Array,
     storyteller: Object,
     partner: Object,
-    theme: Object
+    theme: Object,
+    sizeLimit: {
+      type: Number,
+      default: 3 * 16
+    }
   },
   components: { LazyImage, PageBodyTitle, StoryMap },
   computed: {
     htmlBody () {
       return renderMarkedContent(this.body)
+    }
+  },
+  methods: {
+    scaleMaxToSize: function (imgObj, sizeLimit) {
+      if (!imgObj.value.width) {
+        return { h: Math.round(sizeLimit), w: Math.round(sizeLimit) }
+      }
+      const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height)
+      return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) }
     }
   }
 }
@@ -128,13 +141,17 @@ export default {
 
 @media only screen and (min-width: 1200px) {
   .page-body__figure {
-    width: calc(100% + 5rem);
-    margin-left: -2.5rem;
+    width: calc(100% + 3rem);
+    margin-left: -1.5rem;
   }
 }
 
+.page-body__lazy-image {
+  vertical-align: bottom;
+}
+
 .page-body__asset-placeholder {
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 1.5rem 1rem 1.5rem;
   background-color: var(--ui--bg--white);
   max-width: 35rem;
   margin: 0 auto;
@@ -142,7 +159,7 @@ export default {
 
 @media only screen and (min-width: 600px) {
   .page-body__asset-placeholder {
-    padding: 0.5rem 2.5rem;
+    padding: 0.5rem 2.5rem 1rem 2.5rem;
   }
 }
 
@@ -171,9 +188,10 @@ export default {
   font-style: italic;
 }
 
-.page-body__partner img {
+.page-body__partner-img {
   margin: 0 4px;
   vertical-align: middle;
+  display: inline-block;
 }
 
 .fixed-ratio {

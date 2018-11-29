@@ -1,30 +1,37 @@
 <template>
-  <header class="narrative-header" :class="{'narrative-header--condensed': condensed}">
-    <div class="narrative-header__content">
-      <img class="narrative-header__cover" :src="coverPath" />
-      <h1 class="narrative-header__title">
-        {{ chapter.title }}
-      </h1>
-      <button class="narrative-header__navigation-toggle" @click="setShowNavigation(showNavigation)">
-        In this chapter
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="narrative-header__toggle-icon" :class="{'narrative-header__toggle-icon--active': displayNavigationList}">
-          <path d="M7 10l5 5 5-5z"/>
-          <path d="M0 0h24v24H0z" fill="none"/>
-        </svg>
-      </button>
-      <nav class="narrative-header__navigation" :class="{'narrative-header__navigation--show': displayNavigationList}">
-        <ol class="narrative-header__navigation-list">
-          <li
-            class="narrative-header__navigation-item"
-            :class="{'narrative-header__navigation-item--active': page.slug === activePage}"
-            v-for="(page, index) in pages"
-            :key="page.slug">
-            <nuxt-link class="narrative-header__link" :to="`#${page.slug}`">
-              <span class="narrative-header__link-index">{{ index+1 }}.</span>&nbsp;&nbsp;{{ page.title }}
-            </nuxt-link>
-          </li>
-        </ol>
-      </nav>
+  <header class="narrative-header__container">
+    <div class="narrative-header" :class="{'narrative-header--condensed': condensed}">
+      <div class="narrative-header__content">
+        <img class="narrative-header__cover" :src="coverPath" />
+        <h1 class="narrative-header__title">
+          {{ chapter.title }}
+        </h1>
+        <button class="narrative-header__navigation-toggle" @click="setShowNavigation(showNavigation)">
+          In this chapter
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="narrative-header__toggle-icon" :class="{'narrative-header__toggle-icon--active': displayNavigationList}">
+            <path d="M7 10l5 5 5-5z"/>
+            <path d="M0 0h24v24H0z" fill="none"/>
+          </svg>
+        </button>
+        <nav
+          class="narrative-header__navigation"
+          :class="{'narrative-header__navigation--show': displayNavigationList}"
+        >
+          <ol class="narrative-header__navigation-list">
+            <li
+              class="narrative-header__navigation-item"
+              :class="{'narrative-header__navigation-item--active': page.slug === activePage}"
+              v-for="(page, index) in pages"
+              :key="page.slug"
+              @click="setShowNavigation(showNavigation)"
+            >
+              <nuxt-link class="narrative-header__link" :to="`#${page.slug}`">
+                <span class="narrative-header__link-index" >{{ index+1 }}.</span>&nbsp;&nbsp;{{ page.title }}
+              </nuxt-link>
+            </li>
+          </ol>
+        </nav>
+      </div>
     </div>
   </header>
 </template>
@@ -82,6 +89,10 @@ export default {
   --narrative-header-transition-timing-hide: cubic-bezier(0.83, 0, 0.73, 1);
   --narrative-header-transition-timing-reveal: cubic-bezier(0.17, 0, 0.27, 1);
   --narrative-hearder__navigation-toggle-fixed-size: 10rem;
+}
+
+.narrative-header__container {
+  min-height: 240px;
 }
 
 .narrative-header {

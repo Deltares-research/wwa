@@ -60,12 +60,16 @@ export default {
     this.$store.commit('replaceFeatures', this.pages)
     this.$store.commit('disableInteraction')
     this.$store.commit('disableGlobeAutoRotation')
+    this.$store.commit('enableGlobePositionRight')
     const pageSlug = this.$route.hash.replace(/^#/, '')
     this.updateActivePage(pageSlug)
     if ('IntersectionObserver' in window) {
       this.observeIntersectingChildren()
       this.observeScrolledToTop()
     }
+  },
+  destroyed () {
+    this.$store.commit('disableGlobePositionRight')
   },
   components: {
     NarrativeFooter,

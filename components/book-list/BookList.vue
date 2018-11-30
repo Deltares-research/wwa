@@ -34,12 +34,8 @@ export default {
   padding: 0px;
 }
 
-.book-list > *:not(:last-child) {
-  margin-bottom: 3rem;
-}
-
 .book-list__book-title {
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   font-size: 1.25rem;
   line-height: 2.1875rem;
   font-weight: 500;

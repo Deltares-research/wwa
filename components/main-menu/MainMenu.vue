@@ -49,7 +49,7 @@ export default {
   top: 0;
   height: auto;
   color: var(--ui--white);
-  z-index: 1;
+  z-index: 2;
 }
 
 .main-menu__section {
@@ -101,7 +101,7 @@ export default {
   font-weight: normal;
   text-decoration: none;
   color: inherit;
-  z-index: 1;
+  z-index: 2;
 }
 
 .main-menu__item .nuxt-link-active {

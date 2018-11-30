@@ -115,13 +115,10 @@ export default {
   flex: 1;
 }
 
-.chapter-list__list > *:not(:last-child) {
-  margin-bottom: 1rem;
-}
-
 .chapter-list__item {
   display: block;
   position: relative;
+  margin-bottom: 1rem;
 }
 
 .chapter-list__item:before {
@@ -166,6 +163,10 @@ export default {
 
 .chapter-list__cover--fallback img {
   transform: scale(3);
+}
+
+.chapter-list__item-link {
+  background-color: var(--ui-light-grey);
 }
 
 .chapter-list__item-link,
@@ -233,21 +234,22 @@ export default {
 }
 
 @media (min-width: 600px) {
-  .chapter-list__list {
-    flex-direction: row;
+  .chapter-list {
+    margin: 0 -16px;
   }
 
-  .chapter-list__list > *:not(:last-child) {
-    margin-bottom: 0;
+  .chapter-list__list {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   .chapter-list__item {
-    flex-basis: calc(100% / 3 - 16px);
+    flex-basis: calc(100% / 3 - 24px);
     flex-grow: 0;
   }
 
-  .chapter-list__item:not(:last-child) {
-    margin-right: 25px;
+  .chapter-list__item {
+    margin: 0 12px 24px 12px;
   }
 
   .chapter-list__item:before {
@@ -277,12 +279,16 @@ export default {
 }
 
 @media (min-width: 900px) {
-  .chapter-list__item {
-    flex-basis: calc(100% / 3 - 33px);
+  .chapter-list {
+    margin: 0 -25px;
   }
 
-  .chapter-list__item:not(:last-child) {
-    margin-right: 50px;
+  .chapter-list__item {
+    flex-basis: calc(100% / 3 - 50px);
+  }
+
+  .chapter-list__item {
+    margin: 0 25px 50px 25px;
   }
 
   .chapter-list__item-content {

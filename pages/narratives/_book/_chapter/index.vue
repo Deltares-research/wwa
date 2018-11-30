@@ -1,19 +1,26 @@
 <template>
   <div>
     <div data-scrolled-to-top-trigger />
-    <scroll-indicator v-bind:pages="pages" v-bind:activePage="activePage" />
+    <scroll-indicator
+      v-if="pages.length > 1"
+      v-bind:pages="pages"
+      v-bind:activePage="activePage"
+    />
     <div class="chapter chapter-column">
       <narrative-header
         :chapter="chapter"
         :pages="pages"
         :active-page="activePage && activePage.slug"
-        :condensed="headerCondensed"/>
+        :condensed="headerCondensed"
+        @selectLink="smoothScroll"
+      />
       <page-component
         data-page-component
         v-for="(page, index) in pages"
         v-bind:key="page.slug"
         v-bind:page="page"
         v-bind:id="page.slug"
+        :ref="page.slug"
         :class="['chaper__page', `chapter__page--${index}`]"
       />
       <narrative-footer
@@ -104,6 +111,11 @@ export default {
       if (activeElement) {
         activeElement.scrollIntoView()
       }
+    },
+    smoothScroll (slug) {
+      const element = this.$refs[slug][0].$el
+      const domRect = element.getBoundingClientRect()
+      window.scrollBy({ top: domRect.y - 160, behavior: 'smooth' })
     },
     updateActivePage (pageSlug) {
       const activePages = (pageSlug) ? this.pages.filter(page => page.slug === pageSlug) : null

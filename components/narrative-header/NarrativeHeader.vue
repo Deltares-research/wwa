@@ -6,7 +6,11 @@
         <h1 class="narrative-header__title">
           {{ chapter.title }}
         </h1>
-        <button class="narrative-header__navigation-toggle" @click="setShowNavigation(showNavigation)">
+        <button
+          v-if="pages.length > 1"
+          class="narrative-header__navigation-toggle"
+          @click="setShowNavigation(showNavigation)"
+        >
           In this chapter
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="narrative-header__toggle-icon" :class="{'narrative-header__toggle-icon--active': displayNavigationList}">
             <path d="M7 10l5 5 5-5z"/>
@@ -14,6 +18,7 @@
           </svg>
         </button>
         <nav
+          v-if="pages.length > 1"
           class="narrative-header__navigation"
           :class="{'narrative-header__navigation--show': displayNavigationList}"
         >
@@ -25,9 +30,9 @@
               :key="page.slug"
               @click="setShowNavigation(showNavigation)"
             >
-              <nuxt-link class="narrative-header__link" :to="`#${page.slug}`">
+              <span class="narrative-header__link" @click="$emit('selectLink', page.slug)" >
                 <span class="narrative-header__link-index" >{{ index+1 }}.</span>&nbsp;&nbsp;{{ page.title }}
-              </nuxt-link>
+              </span>
             </li>
           </ol>
         </nav>
@@ -172,7 +177,7 @@ export default {
   bottom: 0;
   right: 0;
   background-color: #467388;
-  color: #ffffff;
+  color: var(--ui--white);
   border: none;
   padding: 8px 1em;
   line-height: 24px;
@@ -185,7 +190,7 @@ export default {
 
 .narrative-header__toggle-icon {
   display: inline-block;
-  fill: #ffffff;
+  fill: var(--ui--white);
   transition: transform 200ms ease-in-out;
 }
 
@@ -203,7 +208,7 @@ export default {
   bottom: 0;
   right: 0;
   width: 100%;
-  background-color: #ffffff;
+  background-color: var(--ui--white);
   transform: none;
   z-index: 0;
   transition: transform var(--narrative-header-transition-speed) var(--narrative-header-transition-timing-hide);
@@ -237,6 +242,7 @@ export default {
   text-decoration: none;
   display: block;
   color: #467388;
+  cursor: pointer;
 }
 
 .narrative-header__navigation-item--active .narrative-header__link {
@@ -288,7 +294,7 @@ export default {
   text-overflow: ellipsis;
   width: calc(100vw - 1rem - (var(--narrative-hearder__navigation-toggle-fixed-size)));
   font-size: 1rem;
-  color: var(--ui-black);
+  color: var(--ui--black);
   min-height: auto;
   font-weight: 500;
   line-height: 1.5rem;

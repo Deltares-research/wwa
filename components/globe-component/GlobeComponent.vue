@@ -26,7 +26,7 @@
   }
 }
 
-  .hidden {
-    display: none;
-  }
+.hidden {
+  display: none;
+}
 </style>

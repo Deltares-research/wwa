@@ -2,7 +2,7 @@
   <header class="narrative-header__container">
     <div class="narrative-header" :class="{'narrative-header--condensed': condensed}">
       <div class="narrative-header__content">
-        <img class="narrative-header__cover" :src="coverPath" />
+        <img v-if="coverPath" class="narrative-header__cover" :src="coverPath" />
         <h1 class="narrative-header__title">
           {{ chapter.title }}
         </h1>

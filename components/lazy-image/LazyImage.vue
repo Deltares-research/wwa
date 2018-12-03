@@ -1,7 +1,7 @@
 <template>
-  <clazy-load v-bind:src="src" class="lazy-image fixed-ratio"
-    v-bind:style="`padding-bottom:${Math.round(srcHeight/srcWidth * 10000)/100}%`">
-    <img v-bind:src="src" v-bind:alt="alt" slot="image" width="100%" />
+  <clazy-load :src="src" class="lazy-image fixed-ratio"
+    :style="`padding-bottom:${Math.round(srcHeight/srcWidth * 10000)/100}%`">
+    <img :src="src" :alt="alt" slot="image" width="100%" />
     <div slot="placeholder">
       <p class="placeholder">{{alt}}</p>
     </div>

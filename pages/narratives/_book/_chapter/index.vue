@@ -3,8 +3,8 @@
     <div data-scrolled-to-top-trigger />
     <scroll-indicator
       v-if="pages.length > 1"
-      v-bind:pages="pages"
-      v-bind:activePage="activePage"
+      :pages="pages"
+      :activePage="activePage"
     />
     <div class="chapter chapter-column">
       <narrative-header
@@ -17,19 +17,19 @@
       <page-component
         data-page-component
         v-for="(page, index) in pages"
-        v-bind:key="page.slug"
-        v-bind:page="page"
-        v-bind:id="page.slug"
+        :key="page.slug"
+        :page="page"
+        :id="page.slug"
         :ref="page.slug"
         :class="['chaper__page', `chapter__page--${index}`]"
       />
       <narrative-footer
-        v-bind:previousLink="chapter.previousChapter"
-        v-bind:nextLink="chapter.nextChapter"
+        :previousLink="chapter.previousChapter"
+        :nextLink="chapter.nextChapter"
       />
     </div>
     <portal to="menu-center-content">
-      <menu-dropdown v-bind:book="book" v-bind:booksList="booksList" />
+      <menu-dropdown :book="book" :booksList="booksList" />
     </portal>
   </div>
 </template>

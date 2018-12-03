@@ -1,18 +1,18 @@
 <template>
   <article class="page-component">
     <page-body
-      v-bind:body="page.body"
-      v-bind:images="page.images"
-      v-bind:graphs="page.graphs"
-      v-bind:title="page.title"
-      v-bind:video="page.video"
-      v-bind:mapboxStyle="page.mapboxStyle"
-      v-bind:links="page.links"
-      v-bind:partner="page.partner"
-      v-bind:influences="page.influences"
-      v-bind:keywords="page.keywords"
-      v-bind:storyteller="page.storyteller"
-      v-bind:theme="page.theme" />
+      :body="page.body"
+      :images="page.images"
+      :graphs="page.graphs"
+      :title="page.title"
+      :video="page.video"
+      :mapboxStyle="page.mapboxStyle"
+      :links="page.links"
+      :partner="page.partner"
+      :influences="page.influences"
+      :keywords="page.keywords"
+      :storyteller="page.storyteller"
+      :theme="page.theme" />
   </article>
 </template>
 

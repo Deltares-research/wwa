@@ -1,7 +1,7 @@
 <template>
   <section class="page-body-title">
     <div class="page-body-title__theme">
-      <img v-if="theme && theme.slug" class="theme-icon page-body-title__theme-icon" v-bind:src="`assets/${theme.slug}.png`" width="48" height="48" />
+      <img v-if="theme && theme.slug" class="theme-icon page-body-title__theme-icon" :src="`assets/${theme.slug}.png`" width="48" height="48" />
     </div>
 
     <div class="page-body-title__storyteller">
@@ -14,11 +14,11 @@
 
     <div class="page-body-title__keywords" v-if="keywords.length || influences.length">
       <ul class="list--inline">
-        <li v-for="link in keywords" v-bind:key="link.slug">
-          <nuxt-link class="tag" v-bind:to="link.path">{{ link.title }}</nuxt-link>
+        <li v-for="link in keywords" :key="link.slug">
+          <nuxt-link class="tag" :to="link.path">{{ link.title }}</nuxt-link>
         </li>
-        <li v-for="link in influences" v-bind:key="link.slug">
-          <nuxt-link v-bind:to="link.path" v-bind:class="`tag tag--influence tag--${link.slug}`">{{ link.title }}</nuxt-link>
+        <li v-for="link in influences" :key="link.slug">
+          <nuxt-link :to="link.path" :class="`tag tag--influence tag--${link.slug}`">{{ link.title }}</nuxt-link>
         </li>
       </ul>
     </div>

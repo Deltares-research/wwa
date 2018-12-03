@@ -1,8 +1,8 @@
 <template>
   <div>
-    <theme-list v-bind:themes="themes" v-bind:active-slug="slug" />
+    <theme-list :themes="themes" :active-slug="slug" />
     <bottom-shelf>
-      <card-list v-bind:cards="entries" />
+      <card-list :cards="entries" />
     </bottom-shelf>
   </div>
 </template>

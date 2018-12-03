@@ -1,9 +1,9 @@
 <template>
   <nav class="narrative-footer">
-    <nuxt-link v-if="previousLink" v-bind:to="previousLink.path" class="h2 narrative-footer__link" v-bind:title="previousLink.title">
+    <nuxt-link v-if="previousLink" :to="previousLink.path" class="h2 narrative-footer__link" :title="previousLink.title">
       <span class="sr-only">Continue reading about</span> {{ previousLink.title }}
     </nuxt-link>
-    <nuxt-link v-if="nextLink" v-bind:to="nextLink.path" class="h2 narrative-footer__link narrative-footer__link--next" v-bind:title="nextLink.title">
+    <nuxt-link v-if="nextLink" :to="nextLink.path" class="h2 narrative-footer__link narrative-footer__link--next" :title="nextLink.title">
       <span class="sr-only">Continue reading about</span> {{ nextLink.title }}
     </nuxt-link>
   </nav>

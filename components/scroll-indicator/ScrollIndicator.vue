@@ -6,9 +6,9 @@
           <span class="scroll-indicator__label sr-only">Back to top</span>
         </nuxt-link>
       </li>
-      <li v-for="page in pages" v-bind:key="page.slug"
-        v-bind:class="`${(activePage && page.slug === activePage.slug) ? 'active' : ''}`">
-        <nuxt-link v-bind:to="`#${page.slug}`" v-bind:title="page.title">
+      <li v-for="page in pages" :key="page.slug"
+        :class="`${(activePage && page.slug === activePage.slug) ? 'active' : ''}`">
+        <nuxt-link :to="`#${page.slug}`" :title="page.title">
           <span class="scroll-indicator__label sr-only">{{ page.title }}</span></nuxt-link>
       </li>
     </ul>

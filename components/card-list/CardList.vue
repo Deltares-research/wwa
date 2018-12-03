@@ -3,17 +3,17 @@
     <header class="card-list__header" v-show="$slots.header">
       <slot name="header"></slot>
     </header>
-    <transition-group v-if="cards" class="card-list__list" name="slideUp" tag="ul" appear disappear v-bind:duration="animationDuration">
+    <transition-group v-if="cards" class="card-list__list" name="slideUp" tag="ul" appear disappear :duration="animationDuration">
       <li v-for="card in cards"
-        v-bind:key="card.slug"
-        v-bind:id="card.slug"
+        :key="card.slug"
+        :id="card.slug"
         class="card-list__item"
         data-list-item>
         <card-component
-          v-bind:subtitle="(card.book) ? card.book.title : subtitle"
-          v-bind:title="card.title"
-          v-bind:slug="card.slug"
-          v-bind:path="card.path"
+          :subtitle="(card.book) ? card.book.title : subtitle"
+          :title="card.title"
+          :slug="card.slug"
+          :path="card.path"
         />
       </li>
     </transition-group>

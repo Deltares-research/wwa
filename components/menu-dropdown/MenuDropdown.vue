@@ -1,18 +1,18 @@
 <template>
  <div
     class="menu-dropdown"
-    v-on:click="showDropdownMenu = !showDropdownMenu"
+    @click="showDropdownMenu = !showDropdownMenu"
     v-click-outside="outside"
   >
     <button
       class="menu-dropdown__button"
-      v-bind:class="{ 'menu-dropdown__button--active': showDropdownMenu }"
+      :class="{ 'menu-dropdown__button--active': showDropdownMenu }"
     >
       <span class="sr-only">Go to book</span>
       <span class="menu-dropdown__title">{{ book.title }}</span>
       <svg
         class="menu-dropdown__icon"
-        v-bind:class="{ 'menu-dropdown__icon--active': showDropdownMenu }"
+        :class="{ 'menu-dropdown__icon--active': showDropdownMenu }"
         xmlns="http://www.w3.org/2000/svg"
         width="24"
         height="24"
@@ -22,7 +22,7 @@
         <path fill="none" d="M0 0h24v24H0V0z"/>
       </svg>
     </button>
-    <div class="menu-dropdown__dropdown" v-bind:class="{ 'menu-dropdown__dropdown--active': showDropdownMenu }">
+    <div class="menu-dropdown__dropdown" :class="{ 'menu-dropdown__dropdown--active': showDropdownMenu }">
       <ul class="menu-dropdown__list">
         <li v-for="bookTitle in booksList" :key="bookTitle.slug" class="menu-dropdown__list-item ">
           <nuxt-link class="menu-dropdown__list-link" :to="bookTitle.path" >{{ bookTitle.title }}</nuxt-link>

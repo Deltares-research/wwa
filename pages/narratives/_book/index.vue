@@ -16,7 +16,7 @@
     </div>
     <portal to="menu-center-content">
       <transition name="fade">
-        <menu-dropdown v-bind:book="{ title }" v-bind:booksList="booksList" />
+        <menu-dropdown :book="{ title }" :booksList="booksList" />
       </transition>
     </portal>
   </div>

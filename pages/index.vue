@@ -15,7 +15,7 @@
       class="page-index__book-list-wrapper"
       id="scrollToBooksList">
       <book-list class="page-index__book-list" :books="books">
-        <chapter-list slot-scope="{ chapters, limit }" :chapters="chapters" :limit="limit" sorted="newest" />
+        <chapter-list slot-scope="{ chapters, limit }" :chapters="chapters" sorted="newest" :limit="limit" />
       </book-list>
     </div>
   </div>

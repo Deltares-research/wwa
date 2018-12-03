@@ -1,19 +1,19 @@
 <template>
   <bottom-shelf>
-    <card-list v-bind:cards="results" >
+    <card-list :cards="results" >
       <template slot="header">
         <h1><span class="sr-only">Keywords</span></h1>
         <ul class="list--inline">
-          <li v-for="keyword in activeKeywords" v-bind:key="keyword.slug">
-            <nuxt-link class="tag tag--removable" v-bind:to="keyword.unsetLink">
+          <li v-for="keyword in activeKeywords" :key="keyword.slug">
+            <nuxt-link class="tag tag--removable" :to="keyword.unsetLink">
               <span class="sr-only">remove </span>{{keyword.title }}
             </nuxt-link>
           </li>
           <li>
-            <select class="tag tag--control" v-on:change="updatePath">
+            <select class="tag tag--control" @change="updatePath">
               <option disabled selected>Select new keyword to add</option>
-              <option v-for="keyword in availableKeywords" v-bind:key="keyword.slug"
-                v-bind:value="keyword.slug">
+              <option v-for="keyword in availableKeywords" :key="keyword.slug"
+                :value="keyword.slug">
                 {{ keyword.title }}
               </option>
             </select>

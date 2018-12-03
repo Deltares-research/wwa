@@ -6,15 +6,17 @@
       </div>
     </div>
   </div>
-
 </template>
+
 <script src="./globe-component.js"></script>
+
 <style>
-  .globe-container {
-    width: 100vw;
-    height: 100vh;
-  }
-  .hidden {
-    display: none;
-  }
+.globe-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+.hidden {
+  display: none;
+}
 </style>

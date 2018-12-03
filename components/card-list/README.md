@@ -4,7 +4,7 @@ Returns a horizontal (ordered) list of cards.
 
 ## How to use
 
-`<card-list v-bind:cards="cards" />`
+`<card-list :cards="cards" />`
 
 Where cards is an array of objects with the following properties:
 

@@ -110,6 +110,11 @@ module.exports = {
     ]
   },
 
+  plugins: [
+    { src: '~/plugins/smoothscroll', ssr: false },
+    { src: '~/plugins/vue-portal', ssr: true },
+  ],
+
   // include routerbase
   router: routerBase.router,
   // Build configuration

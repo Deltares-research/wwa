@@ -515,14 +515,6 @@ function getDominantTheme (items) {
   return Object.values(themes).sort((a, b) => a.score < b.score)[0]
 }
 
-function getChapterCover (pages) {
-  const images = pages
-    .filter(page => page.images)
-    .map(page => page.images)
-    .reduce((list, images) => [...list, ...images])
-  return images[0]
-}
-
 /**
  * Get the first image found in the pages array
  *

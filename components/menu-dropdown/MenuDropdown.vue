@@ -140,7 +140,7 @@ export default {
 .menu-dropdown__list-link:hover {
   background: lightgray;
 }
-.menu-dropdown__list-link.nuxt-link-exact-active {
+.menu-dropdown__list-link.nuxt-link-active {
   font-weight: bold;
 }
 .menu-dropdown__button {

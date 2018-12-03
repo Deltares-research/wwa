@@ -201,15 +201,9 @@ function getBooks (dato) {
       const chapters = getChapters(dato, book)
         .filter(filterPublished)
         .map(chapter => {
-<<<<<<< HEAD
-          const { location, pages, path, slug, title, influences, keywords, cover } = chapter
-          const theme = getDominantTheme(pages)
-          return { influences, keywords, location, path, slug, title, theme, cover }
-=======
           const { location, pages, path, slug, title, influences, keywords, createdAt, updatedAt, cover } = chapter
           const theme = getDominantTheme(pages)
           return { influences, keywords, location, path, slug, title, theme, createdAt, updatedAt, cover }
->>>>>>> fda50f5b34cf1138037e6d00b28ce9a27c8593d3
         })
       const theme = getDominantTheme(chapters)
       const influences = collectUniqueTags(chapters, 'influences')
@@ -275,11 +269,8 @@ function getChapters (dato, bookRef) {
         theme,
         nextChapter,
         previousChapter,
-<<<<<<< HEAD
-=======
         createdAt,
         updatedAt,
->>>>>>> fda50f5b34cf1138037e6d00b28ce9a27c8593d3
         cover
       }
     })

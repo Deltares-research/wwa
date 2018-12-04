@@ -11,6 +11,7 @@
         </svg>
       </span>
     </div>
+    <filter-keywords :keywords="keywords" />
     <div
       class="page-index__book-list-wrapper"
       id="scrollToBooksList">
@@ -24,12 +25,15 @@
 <script>
 import loadData from '~/lib/load-data'
 import marked from '~/lib/custom-marked'
+
 import home from '~/static/data/home.json'
+import keywords from '~/static/data/influences/index.json' // for now we will import inluences as keywords
+
 import BookList from '~/components/book-list/BookList'
 import ChapterList from '~/components/chapter-list/ChapterList'
+import FilterKeywords from '~/components/filter-keywords/FilterKeywords'
 
 export default {
-  components: { BookList, ChapterList },
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const books = await loadData(context, { book: 'index' })
@@ -38,12 +42,13 @@ export default {
       .reduce((a, b) => a.concat(b.chapters), []) // flatten array
       .filter(marker => marker.location)
 
-    return { books, markers, themes: await themes }
+    return { books, markers, themes: await themes, keywords }
   },
   data () {
     const body = marked(home.body)
     return { body }
   },
+  components: { BookList, ChapterList, FilterKeywords },
   mounted () {
     this.$store.commit('replaceFeatures', this.markers)
     this.$store.commit('enableInteraction')
@@ -53,7 +58,7 @@ export default {
     smoothScroll (id) {
       const element = document.getElementById(id)
       const domRect = element.getBoundingClientRect()
-      window.scrollBy({ top: domRect.y - 64, behavior: 'smooth' })
+      window.scrollBy({ top: domRect.y - 128, behavior: 'smooth' })
     }
   }
 }
@@ -104,7 +109,7 @@ export default {
 }
 
 .globe-spacer {
-  height: 85vh;
+  height: 80vh;
   width: 100vw;
   pointer-events: none;
 }
@@ -166,6 +171,7 @@ export default {
   width: calc(100vw - 40px);
   max-width: 950px;
   z-index: 1;
+  margin-top: 0;
 }
 
 @media (min-width: 600px) {

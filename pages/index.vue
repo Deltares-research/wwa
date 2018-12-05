@@ -4,12 +4,12 @@
     <div class="globe-spacer"/>
 
     <div class="page-index__scroll-to-wrapper">
-      <span class="page-index__scroll-to-button" @click="smoothScroll('scrollToBooksList')">
+      <button class="page-index__scroll-to-button" @click="smoothScroll('scrollToBooksList')">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="page-index__button-icon">
           <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
           <path fill="none" d="M0 0h24v24H0V0z"></path>
         </svg>
-      </span>
+      </button>
     </div>
     <filter-keywords :keywords="keywords" />
     <div
@@ -134,6 +134,7 @@ export default {
   justify-content: center;
   align-items: center;
   transition: all 200ms ease-in-out;
+  border: none;
 }
 
 .page-index__scroll-to-button:hover {

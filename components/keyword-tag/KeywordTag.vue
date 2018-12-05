@@ -1,10 +1,10 @@
 <template>
-  <span
+  <button
     :class="`tag tag--influence tag--${keyword.slug} keyword-tag ${active ? 'keyword-tag--active' : ''}`"
 
   >
     <span class="sr-only">remove </span>{{keyword.title }}
-  </span>
+  </button>
 </template>
 
 <script>
@@ -21,6 +21,7 @@ export default {
   transition: opacity .25s;
   cursor: pointer;
   text-shadow: none;
+  border: none;
 }
 .keyword-tag:not(.keyword-tag--active) {
   opacity: .5;

@@ -6,6 +6,8 @@ const store = () => {
     state: {
       activeFeature: null,
       features: [],
+      rotate: true,
+      zoom: true,
       globeInteraction: true,
       theme: 'too-much',
       globeAutoRotation: true,
@@ -25,11 +27,25 @@ const store = () => {
       replaceFeatures (state, features) {
         state.features = features
       },
+      disableRotate (state) {
+        state.rotate = false
+      },
+      enableRotate (state) {
+        state.rotate = true
+      },
+      disableZoom (state) {
+        state.zoom = false
+      },
+      enableZoom (state) {
+        state.zoom = true
+      },
       disableInteraction (state) {
-        state.globeInteraction = false
+        state.zoom = false
+        state.rotate = false
       },
       enableInteraction (state) {
-        state.globeInteraction = true
+        state.zoom = true
+        state.rotate = true
       },
       disableGlobeAutoRotation (state) {
         state.globeAutoRotation = false

@@ -2,7 +2,7 @@
   <ul class="book-list">
     <li v-for="book in books" :key="book.slug">
       <h2 class="book-list__book-title">
-        <a class="book-list__book-title-link" :href="book.path">{{ book.title }}</a>
+        <nuxt-link class="book-list__book-title-link" :to="book.path">{{ book.title }}</nuxt-link>
       </h2>
       <slot v-if="hasSlotContent" :chapters="book.chapters"/>
       <chapter-list v-else :chapters="book.chapters" />

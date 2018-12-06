@@ -66,7 +66,7 @@ export default {
     },
     limit: {
       type: Number,
-      default: -1
+      default: -1 // default all?
     }
   },
   computed: {

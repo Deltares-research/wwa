@@ -85,6 +85,7 @@ export default {
   max-width: 100%;
   background: var(--ui--black);
   overflow: hidden;
+  z-index: 0;
 }
 
 .vimeo-embed iframe,
@@ -125,6 +126,12 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.vimeo-embed__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .vimeo-embed__description {

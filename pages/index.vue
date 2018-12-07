@@ -3,7 +3,6 @@
     <div class="tagline" v-html="body"></div>
     <div class="globe-spacer"/>
 
-    <video-highlights />
     <div class="page-index__scroll-to-wrapper">
       <span class="page-index__scroll-to-button" @click="smoothScroll('scrollToBooksList')">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="page-index__button-icon">
@@ -12,9 +11,12 @@
         </svg>
       </span>
     </div>
+    <video-highlights
+      id="scrollToBooksList"
+     />
     <div
       class="page-index__book-list-wrapper"
-      id="scrollToBooksList">
+    >
       <book-list class="page-index__book-list" :books="books">
         <chapter-list slot-scope="{ chapters }" :chapters="chapters" sorted="newest" :limit="3" />
       </book-list>
@@ -118,6 +120,7 @@ export default {
   justify-content: center;
   position: relative;
   padding: 0 20px;
+  margin-bottom: 1.5rem;
 }
 
 .page-index__scroll-to-button {

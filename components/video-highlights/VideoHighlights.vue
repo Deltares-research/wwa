@@ -35,8 +35,19 @@ export default {
   data () {
     return {
       videos: [
-        { id: 1, title: 'Urban resilience in Rotterdam', description: 'Description video', vimeoId: 186083977, cover: '/4410/1519643886-himalayan-mountains-1389998675rrz.jpg' },
-        { id: 2, title: 'Supporting resillient', description: 'Description video', vimeoId: 186083977, cover: '/4410/1519643886-himalayan-mountains-1389998675rrz.jpg' }
+        {
+          id: 1,
+          title: 'Urban resilience in Rotterdam',
+          description: 'Description video',
+          vimeoId: 186083977,
+          cover: '/4410/1526296492-5000.jpg'
+        },
+        {
+          id: 2,
+          title: 'Supporting resillient',
+          description: 'Description video',
+          vimeoId: 186083977,
+          cover: '/4410/1519643886-himalayan-mountains-1389998675rrz.jpg' }
       ]
     }
   }
@@ -47,7 +58,6 @@ export default {
 .video-highlights {
   background-color: rgba(255,255,255, 0.19);
   padding: 1.5rem 0;
-  margin-bottom: 1.5rem;
   width: 100vw;
 }
 
@@ -94,7 +104,6 @@ export default {
   }
 }
 
-
 /*
 ** Temp page margin styles to be removed after merge
 */
@@ -118,6 +127,4 @@ export default {
   max-width: 950px;
   width: 100%;
 }
-
-
 </style>

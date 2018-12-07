@@ -3,6 +3,7 @@
     <div class="tagline" v-html="body"></div>
     <div class="globe-spacer"/>
 
+    <video-highlights />
     <div class="page-index__scroll-to-wrapper">
       <span class="page-index__scroll-to-button" @click="smoothScroll('scrollToBooksList')">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="page-index__button-icon">
@@ -25,11 +26,13 @@
 import loadData from '~/lib/load-data'
 import marked from '~/lib/custom-marked'
 import home from '~/static/data/home.json'
+
 import BookList from '~/components/book-list/BookList'
 import ChapterList from '~/components/chapter-list/ChapterList'
+import VideoHighlights from '~/components/video-highlights/VideoHighlights'
 
 export default {
-  components: { BookList, ChapterList },
+  components: { BookList, ChapterList, VideoHighlights },
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const books = await loadData(context, { book: 'index' })

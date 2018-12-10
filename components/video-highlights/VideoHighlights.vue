@@ -90,7 +90,6 @@ export default {
 @media (min-width: 600px) {
   .video-highlights {
     padding: 2.5rem 0;
-    margin-bottom: 2.5rem;
   }
 
   .video-highlights__title {

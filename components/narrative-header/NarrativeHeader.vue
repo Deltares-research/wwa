@@ -131,7 +131,7 @@ export default {
 
 .narrative-header__content:after {
   content: '';
-  background-color: var(--ui-light-grey);
+  background-color: var(--ui--light-grey);
   position: absolute;
   top: 0;
   left: 0;

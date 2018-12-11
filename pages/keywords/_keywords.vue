@@ -1,12 +1,13 @@
 <template>
-  <bottom-shelf>
-    <card-list :cards="results" >
-      <template slot="header">
-        <h1><span class="sr-only">Keywords</span></h1>
+  <div class="invert">
+    <div class="globe-spacer-keywords" />
+    <div class="layout-section">
+      <div class="layout-section__container">
+        <h1>Keywords</h1>
         <ul class="list--inline">
           <li v-for="keyword in activeKeywords" :key="keyword.slug">
             <nuxt-link class="tag tag--removable" :to="keyword.unsetLink">
-              <span class="sr-only">remove </span>{{keyword.title }}
+              <span class="sr-only">remove </span>{{ keyword.title }}
             </nuxt-link>
           </li>
           <li>
@@ -19,15 +20,19 @@
             </select>
           </li>
         </ul>
-      </template>
-    </card-list>
-  </bottom-shelf>
+      </div>
+    </div>
+    <div class="layout-section layout-section--gradient">
+      <div class="layout-section__container">
+        <chapter-list :chapters="results" sorted="newest" :limit="20" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import allKeywords from '~/static/data/keywords/index.json'
-import BottomShelf from '~/components/bottom-shelf/BottomShelf'
-import CardList from '~/components/card-list/CardList'
+import ChapterList from '~/components/chapter-list/ChapterList'
 import loadData from '~/lib/load-data'
 import { unionByProp } from '~/lib/set-operations'
 
@@ -46,8 +51,7 @@ export default {
     return { allKeywords }
   },
   components: {
-    BottomShelf,
-    CardList
+    ChapterList
   },
   computed: {
     activeKeywords () {
@@ -83,3 +87,10 @@ export default {
 }
 </script>
 
+<style>
+  .globe-spacer-keywords {
+    height: 50vh;
+    width: 100vw;
+    pointer-events: none;
+  }
+</style>

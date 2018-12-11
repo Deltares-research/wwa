@@ -3,7 +3,7 @@
     <div class="tagline" v-html="body"></div>
     <div class="globe-spacer"/>
 
-    <div class="page-index__scroll-to-wrapper">
+    <div class="layout-section">
       <span class="page-index__scroll-to-button" @click="smoothScroll('scrollToBooksList')">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="page-index__button-icon">
           <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
@@ -12,9 +12,9 @@
       </span>
     </div>
     <div
-      class="page-index__book-list-wrapper"
+      class="layout-section layout-section--gradient"
       id="scrollToBooksList">
-      <book-list class="page-index__book-list" :books="books">
+      <book-list class="layout-section__container" :books="books">
         <chapter-list slot-scope="{ chapters, limit }" :chapters="chapters" sorted="newest" :limit="limit" />
       </book-list>
     </div>
@@ -109,14 +109,6 @@ export default {
   pointer-events: none;
 }
 
-.page-index__scroll-to-wrapper {
-  width: calc(100vw - 40px);
-  display: flex;
-  justify-content: center;
-  position: relative;
-  padding: 0 20px;
-}
-
 .page-index__scroll-to-button {
   color: var(--ui-invert);
   width: 2.5rem;
@@ -139,39 +131,5 @@ export default {
 .page-index__button-icon {
   fill: var(--ui--white);
   display: block;
-}
-
-.page-index__book-list-wrapper {
-  width: calc(100vw - 40px);
-  display: flex;
-  justify-content: center;
-  position: relative;
-  padding: 0 20px;
-}
-
-.page-index__book-list-wrapper:before {
-  content: '';
-  display: block;
-  width: 100%;
-  height: calc(100% + 30vh);
-  top: 0;
-  transform: translateY(-30vh);
-  position: absolute;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 42, 0) 0, rgba(0, 0, 42, 0.85) 30vh);
-  pointer-events: none;
-  z-index: -1;
-}
-
-.page-index__book-list {
-  width: calc(100vw - 40px);
-  max-width: 950px;
-  z-index: 1;
-}
-
-@media (min-width: 600px) {
-  .page-index__book-list-wrapper {
-    width: calc(100vw - 80px);
-    padding: 0 40px;
-  }
 }
 </style>

@@ -11,6 +11,7 @@
   text-transform: uppercase;
   font-weight: bold;
   transition: color .25s;
+  text-shadow: none;
 }
 .tag:hover {
   color: var(--ui--text--light);

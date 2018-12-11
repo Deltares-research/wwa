@@ -14,8 +14,18 @@
       class="vimeo-embed__play-button"
     >
       <div class="vimeo-embed__description">
-        <h3 class="vimeo-embed__title h1">{{ title }}</h3>
-        <p>{{ description }}</p>
+        <h3
+          v-if="title.length > 0"
+          class="vimeo-embed__title h1">{{ title }}</h3>
+        <p
+          v-if="description.length > 0"
+        >
+          {{ description }}
+        </p>
+        <nuxt-link
+          v-if="url.length > 0"
+          :to="url"
+        >Read more ...</nuxt-link>
       </div>
     </div>
   </div>
@@ -27,13 +37,8 @@ export default {
     id: Number,
     title: String,
     description: String,
-    vimeoId: Number,
-    cover: String
-  },
-  data () {
-    return {
-      vimeoButtonClicked: false
-    }
+    url: String,
+    vimeoId: Number
   }
 }
 </script>
@@ -60,17 +65,6 @@ export default {
   height: 100%;
 }
 
-.vimeo-embed__hover {
-  background: var(--ui--white);
-  opacity: 0;
-  z-index: 1;
-  transition: opacity 200ms ease-in-out;
-}
-
-.vimeo-embed:hover .vimeo-embed__hover {
-  opacity: 0.2;
-}
-
 .vimeo-embed__description {
   text-align: left;
   padding: 1rem 1.5rem 1rem 1.5rem;
@@ -81,10 +75,12 @@ export default {
   margin-bottom: 0.5rem;
 }
 
-.vimeo-embed__icon {
-  fill: var(--ui--white);
-  position: absolute;
-  left: 1.5rem;
-  bottom: 1rem;
+@media (min-width: 600px) and (max-width: 900px) {
+  .vimeo-embed__title {
+    height: 3.25rem;
+    line-height: 1.625rem;
+    overflow: hidden;
+  }
 }
+
 </style>

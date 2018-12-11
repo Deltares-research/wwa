@@ -1,5 +1,8 @@
 <template>
-  <section class="video-highlights">
+  <section
+    v-if="videos.length > 0"
+    class="video-highlights"
+  >
     <div class="layout-section">
       <div class="layout-section__container">
         <h2 class="video-highlights__title">Video highlights</h2>
@@ -17,7 +20,7 @@
                 :title="video.title"
                 :description="video.description"
                 :vimeoId="video.vimeoId"
-                :cover="video.cover"
+                :url="video.url"
               />
             </li>
           </ul>
@@ -38,16 +41,17 @@ export default {
         {
           id: 1,
           title: 'Urban resilience in Rotterdam',
-          description: 'Description video',
+          description: 'Description lorum ipsum',
           vimeoId: 186083977,
-          cover: '/4410/1526296492-5000.jpg'
+          url: '/link1'
         },
         {
           id: 2,
           title: 'Supporting resillient',
           description: 'Description video',
           vimeoId: 186083977,
-          cover: '/4410/1519643886-himalayan-mountains-1389998675rrz.jpg' }
+          url: '/link2'
+        }
       ]
     }
   }

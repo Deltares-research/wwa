@@ -47,7 +47,8 @@ export default {
   },
   data () {
     const body = marked(home.body)
-    return { body }
+    const videoHighlights = home.videoHighlights
+    return { body, videoHighlights }
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.markers)

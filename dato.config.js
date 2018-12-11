@@ -1,3 +1,4 @@
+const pick = require('lodash/fp/pick')
 const slugify = require('slug')
 
 /**
@@ -35,8 +36,12 @@ const exportScope = process.env.DATO_EXPORT
 const contentBasePath = '/narratives'
 
 module.exports = (dato, root, i18n) => {
-  const { body } = dato.home
-  root.createDataFile(`static/data/home.json`, 'json', { body })
+  const { body, videoHighlights } = dato.home
+
+  root.createDataFile(`static/data/home.json`, 'json', {
+    body,
+    videoHighlights: videoHighlights.map(pick(['title', 'video', 'url', 'body']))
+  })
 
   switch (exportScope) {
     case 'books':

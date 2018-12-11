@@ -1,3 +1,4 @@
+const pick = require('lodash/fp/pick')
 const slugify = require('slug')
 
 /**
@@ -253,6 +254,18 @@ function getChapters (dato, bookRef) {
       const influences = collectUniqueTags(pages, 'influences')
       const keywords = collectUniqueTags(pages, 'keywords')
       const coverFallback = getChapterCover(pages)
+      const related = chapter.related.length < 1
+        ? []
+        : chapter.related
+          .map(chapter => ({ ...chapter, pages: getPages(dato, chapter), parent: getParent(dato, chapter) }))
+          .filter(chapter => chapter.parent)
+          .map(pick(['title', 'slug', 'cover', 'pages', 'parent']))
+          .map(item => ({
+            ...item,
+            path: `${contentBasePath}/${item.parent.slug}/${item.slug}`,
+            cover: item.cover ? item.cover : getChapterCover(item.pages)
+          }))
+          .map(({ pages, parent, ...chapter }) => chapter)
 
       return {
         book,
@@ -271,7 +284,8 @@ function getChapters (dato, bookRef) {
         previousChapter,
         createdAt,
         updatedAt,
-        cover: cover || coverFallback
+        cover: cover || coverFallback,
+        related
       }
     })
     .filter(Boolean) // Filter falsy chapters (return false)

@@ -56,7 +56,7 @@ export default {
 
 <style>
 .video-highlights {
-  background-color: rgba(255,255,255, 0.19);
+  background-color: rgba(67, 67, 109, 0.75);
   padding: 1.5rem 0;
   width: 100vw;
 }

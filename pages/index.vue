@@ -3,7 +3,7 @@
     <div class="tagline" v-html="body"></div>
     <div class="globe-spacer"/>
 
-    <div class="page-index__scroll-to-wrapper">
+    <div class="page-index__scroll-to-wrapper page-index__wrapper--gradient">
       <span class="page-index__scroll-to-button" @click="smoothScroll('scrollToBooksList')">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="page-index__button-icon">
           <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
@@ -119,8 +119,7 @@ export default {
   display: flex;
   justify-content: center;
   position: relative;
-  padding: 0 20px;
-  margin-bottom: 1.5rem;
+  padding: 0 20px 1.5rem 20px;
 }
 
 .page-index__scroll-to-button {
@@ -153,17 +152,22 @@ export default {
   justify-content: center;
   position: relative;
   padding: 0 20px;
+  background-color: var(--ui--blue--trans);
 }
 
-.page-index__book-list-wrapper:before {
+.page-index__wrapper--gradient {
+  position: relative;
+  z-index: 0;
+}
+
+.page-index__wrapper--gradient:before {
   content: '';
   display: block;
   width: 100%;
   height: calc(100% + 30vh);
-  top: 0;
-  transform: translateY(-30vh);
+  bottom: 0;
   position: absolute;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 42, 0) 0, rgba(0, 0, 42, 0.85) 30vh);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 42, 0) 0, rgba(0, 0, 42, 0.75) 30vh);
   pointer-events: none;
   z-index: -1;
 }

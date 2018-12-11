@@ -41,8 +41,12 @@ export default {
   position: relative;
   color: var(--ui--text--light);
   background-color: var(--ui--bg--light);
+  overflow: hidden;
 }
 .fixed-ratio > * {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
 }
 </style>

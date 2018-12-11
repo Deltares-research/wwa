@@ -26,6 +26,7 @@
       <narrative-footer
         :previousLink="chapter.previousChapter"
         :nextLink="chapter.nextChapter"
+        :related="chapter.related"
       />
     </div>
     <portal to="menu-center-content">

@@ -15,7 +15,7 @@
       class="layout-section layout-section--gradient"
       id="scrollToBooksList">
       <book-list class="layout-section__container" :books="books">
-        <chapter-list slot-scope="{ chapters }" :chapters="chapters" sorted="newest" :limit="3" />
+        <chapter-list slot-scope="{ chapters, limit }" :chapters="chapters" sorted="newest" :limit="limit" />
       </book-list>
     </div>
   </div>

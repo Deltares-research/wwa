@@ -288,7 +288,7 @@ export default {
   }
 
   .chapter-list__item {
-    margin: 0 25px 50px 25px;
+    margin: 0 25px 25px 25px;
   }
 
   .chapter-list__item-content {

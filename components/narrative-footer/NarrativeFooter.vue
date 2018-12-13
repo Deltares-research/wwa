@@ -16,14 +16,30 @@
           :key="relatedChapter.path"
           class="narrative-footer__related-item"
         >
-          <nuxt-link :to="relatedChapter.path" :title="relatedChapter.title">
-            <lazy-image
-              :src="`${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?w=640&q=65`"
-              :srcWidth="16"
-              :srcHeight="9"
-              :alt="relatedChapter.cover.value.alt"
-              width=100%
-            />
+          <nuxt-link :to="relatedChapter.path" :title="relatedChapter.title" class="narrative-footer__related-link">
+            <picture>
+              <source
+                :srcset="`
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?w=340&h=200&fit=crop 340w,
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?w=340&h=200&fit=crop&dpr=2 680w,
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?w=340&h=200&fit=crop&dpr=3 1140w`"
+                sizes="100vw"
+                media="(max-width: 599px)"
+              />
+              <source
+                :srcset="`
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?w=340&h=400&fit=crop 340w,
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?w=340&h=400&fit=crop&dpr=2 680w,
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?w=340&h=400&fit=crop&dpr=3 1140w`"
+                sizes="100vw"
+                media="(min-width: 600px)"
+              />
+              <img
+                :src="`${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?w=270&h=340&fit=crop&q=65`"
+                width="100%"
+              />
+            </picture>
+
             <span class="narrative-footer__related-title">
               {{ relatedChapter.title }}
             </span>
@@ -111,15 +127,24 @@ export default {
   left: auto
 }
 
+.narrative-footer {
+  max-width: 40rem;
+  margin: auto;
+}
+
 .narrative-footer__related-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .narrative-footer__related-item {
   width: 100%;
   position: relative;
+  margin-bottom: 2rem;
 }
 
 .narrative-footer__related-title {
@@ -137,7 +162,11 @@ export default {
 
 @media (min-width: 600px) {
   .narrative-footer__related-item {
-    width: 30%;
+    width: 48%;
+  }
+
+  .narrative-footer__related-list {
+    flex-direction: row;
   }
 }
 </style>

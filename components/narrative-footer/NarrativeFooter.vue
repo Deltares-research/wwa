@@ -40,9 +40,9 @@
               />
             </picture>
 
-            <span class="narrative-footer__related-title">
-              {{ relatedChapter.title }}
-            </span>
+            <p class="narrative-footer__related-title">
+              <small class="narrative-footer__related-book-title">{{ relatedChapter.bookTitle }}</small><br />{{ relatedChapter.title }}
+            </p>
           </nuxt-link>
         </li>
       </ul>
@@ -154,10 +154,15 @@ export default {
   bottom: 0;
   left: 0;
   padding: 1rem;
+  margin: 0;
   color: var(--ui--white);
   font-weight: bold;
   font-size: 1.5rem;
   background-image: linear-gradient(to bottom, rgba(1, 0, 42, 0), rgba(1, 0, 42, 1));
+}
+
+.narrative-footer__related-book-title {
+  font-weight: normal;
 }
 
 @media (min-width: 600px) {

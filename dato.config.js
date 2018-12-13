@@ -262,6 +262,7 @@ function getChapters (dato, bookRef) {
           .map(pick(['title', 'slug', 'cover', 'pages', 'parent']))
           .map(item => ({
             ...item,
+            bookTitle: item.parent.title,
             path: `${contentBasePath}/${item.parent.slug}/${item.slug}`,
             cover: item.cover ? item.cover : getChapterCover(item.pages)
           }))

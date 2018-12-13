@@ -105,12 +105,13 @@ export default {
 
 .mobile-menu {
   position: fixed;
-  left: -200px;
+  left: 0;
   top: 0;
+  transform: translateX(-200px);
   height: 100%;
 	overflow-y: scroll;
 	overflow-x: visible;
-	transition: left 0.3s ease, box-shadow 0.3s ease;
+	transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 	z-index: 3;
 }
 
@@ -118,7 +119,6 @@ export default {
   list-style: none;
   margin: 0;
   padding: 4rem 0 1rem 0;
-  /* Hide shadow w/ -8px while 'closed' */
   box-shadow: -8px 0 8px rgba(0,0,0,.5);
   min-height: 100%;
   width: 200px;
@@ -144,7 +144,7 @@ export default {
 }
 
 .mobile-menu--open {
-  left: 0;
+  transform: translateX(0px);
   outline: none;
   box-shadow: 3px 0 12px rgba(0,0,0,.25);
 }
@@ -169,30 +169,6 @@ export default {
   .mobile-menu__toggle,
   .mobile-menu__close {
     display: none;
-  }
-
-  /* Undo positioning of off-canvas menu */
-  .mobile-menu {
-    position: relative;
-		left: auto;
-		top: auto;
-		height: auto;
-  }
-
-  .mobile-menu__list {
-    display: flex;
-
-    /* Undo off-canvas styling */
-    padding: 0;
-    box-shadow: none;
-    height: auto;
-    width: auto;
-    background: none;
-  }
-
-  .mobile-menu__link:hover,
-  .mobile-menu__link:focus {
-    background: none; /* Remove background from off-canvas styling */
   }
 }
 </style>

@@ -34,7 +34,6 @@
 <script>
 export default {
   props: {
-    id: Number,
     title: String,
     description: String,
     url: String,

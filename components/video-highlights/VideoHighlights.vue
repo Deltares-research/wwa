@@ -1,6 +1,6 @@
 <template>
   <section
-    v-if="videos.length > 0"
+    v-if="videoHighlights.length > 0"
     class="video-highlights"
   >
     <div class="layout-section">
@@ -11,16 +11,15 @@
             class="video-list__list"
           >
             <li
-              v-for="video in videos"
-              :key="video.id"
+              v-for="videoHighlight in videoHighlights"
+              :key="videoHighlight.providerUid"
               class="video-list__item"
             >
               <vimeo-embed
-                :id="video.id"
-                :title="video.title"
-                :description="video.description"
-                :vimeoId="video.vimeoId"
-                :url="video.url"
+                :title="videoHighlight.title"
+                :description="videoHighlight.body"
+                :vimeoId="videoHighlight.video.providerUid"
+                :url="videoHighlight.url"
               />
             </li>
           </ul>
@@ -37,23 +36,11 @@ export default {
   components: { VimeoEmbed },
   data () {
     return {
-      videos: [
-        {
-          id: 1,
-          title: 'Urban resilience in Rotterdam',
-          description: 'Description lorum ipsum',
-          vimeoId: 186083977,
-          url: '/link1'
-        },
-        {
-          id: 2,
-          title: 'Supporting resillient',
-          description: 'Description video',
-          vimeoId: 186083977,
-          url: '/link2'
-        }
-      ]
+      videoHighlights: []
     }
+  },
+  props: {
+    videoHighlights: Array
   }
 }
 </script>

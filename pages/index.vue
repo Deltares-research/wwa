@@ -13,6 +13,7 @@
     </div>
     <video-highlights
       id="scrollToBooksList"
+      :videoHighlights="videoHighlights"
      />
     <div
       class="page-index__book-list-wrapper"

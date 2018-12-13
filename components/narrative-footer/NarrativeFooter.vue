@@ -167,6 +167,7 @@ export default {
 .narrative-footer__related-book-title {
   font-weight: normal;
   text-transform: uppercase;
+  font-weight: bold;
 }
 
 @media (min-width: 600px) {

@@ -5,7 +5,12 @@
       <div class="layout-section__container">
         <div class="book-header">
           <h1 class="book-title">{{ title }}</h1>
-          <p class="book-description">A short sentence about {{ title }}. Why we have this theme and what is so important about all the chapters in this book.</p>
+          <p
+            v-if="body.length"
+            class="book-description"
+          >
+            {{ body }}
+          </p>
         </div>
       </div>
     </div>
@@ -32,8 +37,8 @@ export default {
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const booksList = await loadData(context, { booksList: 'index' })
-    const { title, chapters, theme } = await loadData(context, context.params)
-    return { booksList, title, chapters, themes: await themes, theme }
+    const { title, body, chapters, theme } = await loadData(context, context.params)
+    return { booksList, title, body, chapters, themes: await themes, theme }
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.chapters)

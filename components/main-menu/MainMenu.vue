@@ -1,8 +1,11 @@
 <template>
-    <nav :class="`main-menu main-menu--${variant}`">
+  <div>
+    <nav
+      :class="`main-menu main-menu--${variant}`"
+    >
       <div class="main-menu__container">
         <div class="main-menu__section main-menu__section--no-padding">
-          <nuxt-link :class="`main-menu__item main-menu__item--home ${(variant === 'light') ? 'main-menu__item--dark-background' : ''}`" to="/" title="Go home">
+          <nuxt-link :class="`menu__item menu__item--home ${(variant === 'light') ? 'menu__item--dark-background' : ''}`" to="/" title="Go home">
             <span class="sr-only">Return to the homepage</span>World Water<br/>Atlas
           </nuxt-link>
         </div>
@@ -10,21 +13,28 @@
           <portal-target name="menu-center-content" />
         </div>
         <div class="main-menu__section main-menu__section--align-right">
-          <nuxt-link :class="`main-menu__item main-menu__item--about h3 ${(variant === 'dark') ? 'invert' : ''}`"
+          <nuxt-link :class="`menu__item menu__item--about menu__item--margin h3 ${(variant === 'dark') ? 'invert' : ''}`"
             to="/about">
             About
           </nuxt-link>
-          <nuxt-link :class="`main-menu__item main-menu__item--submit h3 ${(variant === 'dark') ? 'invert' : ''}`"
+          <nuxt-link :class="`menu__item menu__item--submit menu__item--margin h3 ${(variant === 'dark') ? 'invert' : ''}`"
             to="/submit-a-story">
             Submit a story
           </nuxt-link>
         </div>
       </div>
     </nav>
+    <mobile-menu
+      :variant="variant"
+    />
+  </div>
 </template>
 
 <script>
+import MobileMenu from '~/components/mobile-menu/MobileMenu'
+
 export default {
+  components: { MobileMenu },
   props: {
     variant: {
       type: String,
@@ -72,7 +82,7 @@ export default {
   justify-content: flex-end;
 }
 
-@media only screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .main-menu__section--align-right {
     display: none;
   }
@@ -93,9 +103,8 @@ export default {
   background-color: var(--ui--white--trans);
 }
 
-.main-menu__item {
+.menu__item {
   display: inline-block;
-  margin: 0 .5rem;
   padding: .5rem;
   transition: .5s opacity;
   font-weight: normal;
@@ -104,17 +113,25 @@ export default {
   z-index: 2;
 }
 
-.main-menu__item .nuxt-link-active {
+.menu__item--margin {
+  margin: 0 .5rem;
+}
+
+.menu__item--display-block {
+  display: block;
+}
+
+.menu__item .nuxt-link-active {
   text-decoration: none;
 }
 
-.main-menu__item:hover,
-.main-menu__item:focus,
-.main-menu__item:active {
+.menu__item:hover,
+.menu__item:focus,
+.menu__item:active {
   text-decoration: none;
   opacity: 1;
 }
-.main-menu .main-menu__item--home {
+.menu__item--home {
   text-decoration: none;
   text-align: left;
   left:0;
@@ -127,22 +144,19 @@ export default {
   font-weight: 600;
   opacity: 1;
   color: var(--ui--white);
-}
-
-.main-menu--light .main-menu__item--home {
   background-color: var(--ui--black--trans);
 }
 
-.main-menu__item--submit {
-  outline: 1px solid var(--ui--white);
-}
-.main-menu__item--submit::before {
-  content: '+ '
+@media (max-width: 768px) {
+  .menu__item--home {
+    display: none;
+  }
 }
 
-.main-menu .home-icon {
-  width: var(--height-responsive);
-  height: var(--height-responsive);
-  vertical-align: bottom;
+.menu__item--submit {
+  outline: 1px solid var(--ui--white);
+}
+.menu__item--submit::before {
+  content: '+ '
 }
 </style>

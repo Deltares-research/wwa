@@ -1,13 +1,5 @@
 <template>
   <nav class="narrative-footer">
-    <section class="narrative-footer__prev-next">
-      <nuxt-link v-if="previousLink" :to="previousLink.path" class="h2 narrative-footer__link" :title="previousLink.title">
-        <span class="sr-only">Continue reading about</span> {{ previousLink.title }}
-      </nuxt-link>
-      <nuxt-link v-if="nextLink" :to="nextLink.path" class="h2 narrative-footer__link narrative-footer__link--next" :title="nextLink.title">
-        <span class="sr-only">Continue reading about</span> {{ nextLink.title }}
-      </nuxt-link>
-    </section>
     <article v-if="related.length" class="narrative-footer__related">
       <h3 class="h2">Similar Stories</h3>
       <ul class="narrative-footer__related-list">
@@ -48,6 +40,14 @@
         </li>
       </ul>
     </article>
+    <section class="narrative-footer__prev-next">
+      <nuxt-link v-if="previousLink" :to="previousLink.path" class="h2 narrative-footer__link" :title="previousLink.title">
+        <span class="sr-only">Continue reading about</span> {{ previousLink.title }}
+      </nuxt-link>
+      <nuxt-link v-if="nextLink" :to="nextLink.path" class="h2 narrative-footer__link narrative-footer__link--next" :title="nextLink.title">
+        <span class="sr-only">Continue reading about</span> {{ nextLink.title }}
+      </nuxt-link>
+    </section>
   </nav>
 </template>
 
@@ -77,13 +77,11 @@ export default {
 @import '../colors/colors.css';
 
 .narrative-footer {
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-bottom: 2rem
+  padding: 2rem;
 }
 
 .narrative-footer__prev-next {
-  margin: 2.5rem auto;
+  margin: 2.5rem auto 0;
   max-width: 40rem;
   display: flex;
   justify-content: center;

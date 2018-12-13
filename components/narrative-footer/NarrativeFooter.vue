@@ -9,7 +9,7 @@
       </nuxt-link>
     </section>
     <article v-if="related.length" class="narrative-footer__related">
-      <h3>Related chapters</h3>
+      <h3>Related</h3>
       <ul class="narrative-footer__related-list">
         <li
           v-for="relatedChapter in related"

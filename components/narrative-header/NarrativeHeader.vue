@@ -3,6 +3,12 @@
     <div class="narrative-header" :class="{'narrative-header--condensed': condensed}">
       <div class="narrative-header__content">
         <img v-if="coverPath" class="narrative-header__cover" :src="coverPath" />
+        <button class="narrative-header__back" @click="goBack" v-if="!condensed">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+            <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/>
+          </svg>
+          back
+        </button>
         <h1 class="narrative-header__title">
           {{ chapter.title }}
         </h1>
@@ -81,6 +87,9 @@ export default {
       this.showNavigation = value === null
         ? this.condensed
         : !value
+    },
+    goBack () {
+      window.history.go(-1)
     }
   }
 }
@@ -149,6 +158,26 @@ export default {
   position: relative;
   z-index: 4;
   margin: 0;
+}
+
+.narrative-header__back {
+  position: relative;
+  z-index: 4;
+  color: var(--ui--text--invert);
+  text-transform: uppercase;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.narrative-header__back svg {
+  height: 1em;
+  width: 1em;
 }
 
 @media (min-width: 768px) {

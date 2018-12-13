@@ -9,7 +9,7 @@
       </nuxt-link>
     </section>
     <article v-if="related.length" class="narrative-footer__related">
-      <h3>Related</h3>
+      <h3 class="h2">Similar Stories</h3>
       <ul class="narrative-footer__related-list">
         <li
           v-for="relatedChapter in related"
@@ -31,12 +31,13 @@
                   ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?w=340&h=400&fit=crop 340w,
                   ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?w=340&h=400&fit=crop&dpr=2 680w,
                   ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?w=340&h=400&fit=crop&dpr=3 1140w`"
-                sizes="100vw"
+                sizes="340px"
                 media="(min-width: 600px)"
               />
               <img
                 :src="`${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?w=270&h=340&fit=crop&q=65`"
                 width="100%"
+                class="narrative-footer__related-image"
               />
             </picture>
 
@@ -145,6 +146,8 @@ export default {
   width: 100%;
   position: relative;
   margin-bottom: 2rem;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .narrative-footer__related-title {
@@ -153,7 +156,7 @@ export default {
   width: calc(100% - 2rem);
   bottom: 0;
   left: 0;
-  padding: 1rem;
+  padding: 1.5rem;
   margin: 0;
   color: var(--ui--white);
   font-weight: bold;
@@ -163,6 +166,7 @@ export default {
 
 .narrative-footer__related-book-title {
   font-weight: normal;
+  text-transform: uppercase;
 }
 
 @media (min-width: 600px) {

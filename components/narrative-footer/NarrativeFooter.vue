@@ -33,9 +33,11 @@
               />
             </picture>
 
-            <p class="narrative-footer__related-title">
-              <small class="narrative-footer__related-book-title">{{ relatedChapter.bookTitle }}</small><br />{{ relatedChapter.title }}
-            </p>
+            <span class="narrative-footer__related-title">
+              <small class="narrative-footer__related-book-title">{{ relatedChapter.bookTitle }}</small>
+                <br />
+              <span class="narrative-footer__related-chapter-title">{{ relatedChapter.title }}</span>
+            </span>
           </nuxt-link>
         </li>
       </ul>
@@ -160,12 +162,30 @@ export default {
   font-weight: bold;
   font-size: 1.5rem;
   background-image: linear-gradient(to bottom, rgba(1, 0, 42, 0), rgba(1, 0, 42, 1));
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .narrative-footer__related-book-title {
   font-weight: normal;
   text-transform: uppercase;
   font-weight: bold;
+}
+
+.narrative-footer__related-link img {
+  transition: transform  0.20s cubic-bezier(0.8, 0.01, 0.65, 1.01);
+}
+
+.narrative-footer__related-link:active img,
+.narrative-footer__related-link:focus img,
+.narrative-footer__related-link:hover img {
+  transform: scale(1.25);
+}
+
+.narrative-footer__related-link:active .narrative-footer__related-chapter-title,
+.narrative-footer__related-link:focus .narrative-footer__related-chapter-title,
+.narrative-footer__related-link:hover .narrative-footer__related-chapter-title {
+  text-decoration: underline;
 }
 
 @media (min-width: 600px) {

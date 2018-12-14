@@ -1,16 +1,17 @@
 <template>
   <div class="invert">
-    <div class="tagline" v-html="body"></div>
+    <hero-header />
     <div class="globe-spacer"/>
 
-    <div class="layout-section">
+    <theme-switch :themes="themes" :active-slug="slug" />
+    <!-- <div class="layout-section">
       <span class="page-index__scroll-to-button" @click="smoothScroll('scrollToBooksList')">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="page-index__button-icon">
           <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
           <path fill="none" d="M0 0h24v24H0V0z"></path>
         </svg>
       </span>
-    </div>
+    </div> -->
     <div
       class="layout-section layout-section--gradient"
       id="scrollToBooksList">
@@ -27,9 +28,11 @@ import marked from '~/lib/custom-marked'
 import home from '~/static/data/home.json'
 import BookList from '~/components/book-list/BookList'
 import ChapterList from '~/components/chapter-list/ChapterList'
+import HeroHeader from '~/components/hero-header/HeroHeader'
+import ThemeSwitch from '~/components/theme-switch/ThemeSwitch'
 
 export default {
-  components: { BookList, ChapterList },
+  components: { BookList, ChapterList, HeroHeader, ThemeSwitch },
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const books = await loadData(context, { book: 'index' })
@@ -61,47 +64,6 @@ export default {
 
 <style>
 @import "../components/colors/colors.css";
-
-.tagline {
-  position: absolute;
-  top: 5rem;
-  margin-top: 5vw;
-  width: 10rem;
-  padding: 1rem;
-}
-
-.tagline::before {
-  content: '';
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 10rem;
-  background-image: var(--ui--left-gradient);
-  overflow: visible;
-  z-index: -1;
-}
-
-.tagline [href*='too-dirty'],
-.tagline [href*='too-much'],
-.tagline [href*='too-little'] {
-  display: inline-block;
-  padding-left: 1.25em;
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: 1em;
-}
-.tagline [href*='too-dirty'] {
-  background-image: url('/assets/too-dirty.png');
-}
-.tagline [href*='too-much'] {
-  background-image: url('/assets/too-much.png');
-}
-
-.tagline [href*='too-little'] {
-  background-image: url('/assets/too-little.png');
-}
 
 .globe-spacer {
   height: 85vh;

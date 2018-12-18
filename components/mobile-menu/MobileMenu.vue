@@ -3,7 +3,7 @@
     <button
         class="mobile-menu__toggle"
         :class="`mobile-menu__toggle--${variant}`"
-        @click="showMobileMenu = !showMobileMenu"
+        @click="showMobileMenu = true"
       >
         <span class="sr-only">Open main menu</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true">
@@ -17,7 +17,7 @@
     >
       <button
         class="mobile-menu__close"
-        @click="showMobileMenu = !showMobileMenu"
+        @click="showMobileMenu = false"
       >
         <span class="sr-only">Close slide menu</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true">
@@ -28,26 +28,26 @@
       <ul class="mobile-menu__list">
         <li class="mobile-menu__list-item">
           <nuxt-link
-            :class="`mobile-menu__link menu__item menu__item--about menu__item--margin h3`"
+            class="menu__item menu__item--about menu__item--margin h3"
             to="/"
-            @click="showMobileMenu = !showMobileMenu"
+            @click.native="showMobileMenu = false"
           >
             Home
           </nuxt-link>
         <li class="mobile-menu__list-item">
           <nuxt-link
-            :class="`mobile-menu__link menu__item menu__item--display-block menu__item--submit h3`"
+            class="menu__item menu__item--display-block menu__item--submit h3"
             to="/submit-a-story"
-            @click="showMobileMenu = !showMobileMenu"
+            @click.native="showMobileMenu = false"
           >
             Submit a story
           </nuxt-link>
         </li>
         <li class="mobile-menu__list-item">
           <nuxt-link
-            :class="`mobile-menu__link menu__item menu__item--display-block menu__item--about h3`"
+            class="menu__item menu__item--display-block menu__item--about h3"
             to="/about"
-            @click="showMobileMenu = !showMobileMenu"
+            @click.native="showMobileMenu = false"
           >
             About
           </nuxt-link>
@@ -57,7 +57,7 @@
     <div
       class="mobile-menu__backdrop"
       :class="{ 'mobile-menu__backdrop--active': showMobileMenu }"
-      @click="showMobileMenu = !showMobileMenu"
+      @click="showMobileMenu = false"
     >
     </div>
   </div>

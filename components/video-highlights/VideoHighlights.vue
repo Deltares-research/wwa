@@ -6,24 +6,20 @@
     <div class="layout-section">
       <div class="layout-section__container">
         <h2 class="video-highlights__title">Video highlights</h2>
-        <div class="video-list">
-          <ul
-            class="video-list__list"
+        <ul class="video-list">
+          <li
+            v-for="videoHighlight in videoHighlights"
+            :key="videoHighlight.providerUid"
+            class="video-list__item"
           >
-            <li
-              v-for="videoHighlight in videoHighlights"
-              :key="videoHighlight.providerUid"
-              class="video-list__item"
-            >
-              <vimeo-embed
-                :title="videoHighlight.title"
-                :description="videoHighlight.body"
-                :vimeoId="videoHighlight.video.providerUid"
-                :url="videoHighlight.url"
-              />
-            </li>
-          </ul>
-        </div>
+            <vimeo-embed
+              :title="videoHighlight.title"
+              :description="videoHighlight.body"
+              :vimeoId="videoHighlight.video.providerUid"
+              :url="videoHighlight.url"
+            />
+          </li>
+        </ul>
       </div>
     </div>
   </section>
@@ -34,13 +30,11 @@ import VimeoEmbed from '~/components/vimeo-embed/VimeoEmbed'
 
 export default {
   components: { VimeoEmbed },
-  data () {
-    return {
-      videoHighlights: []
-    }
-  },
   props: {
-    videoHighlights: Array
+    videoHighlights: {
+      type: Array,
+      default: () => []
+    }
   }
 }
 </script>
@@ -53,10 +47,6 @@ export default {
 }
 
 .video-list {
-  margin: 0 -25px;
-}
-
-.video-list__list {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -65,8 +55,8 @@ export default {
 }
 
 .video-list__item {
-  flex-basis: calc(50% -50px);
-  margin: 0 25px 1rem 25px;
+
+  margin-bottom: 1rem;
   display: block;
   position: relative;
 }
@@ -88,9 +78,17 @@ export default {
     line-height: 2.25rem;
   }
 
-  .video-list__list {
+  .video-list {
     flex-direction: row;
     flex-wrap: wrap;
+  }
+
+  .video-list__item {
+    flex-basis: calc(50% -25px);
+  }
+
+  .video-list__item:first-child {
+    margin-right: 50px;
   }
 }
 

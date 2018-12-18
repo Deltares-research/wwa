@@ -37,7 +37,7 @@ export default {
     title: String,
     description: String,
     url: String,
-    vimeoId: Number
+    vimeoId: String
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <nav class="narrative-footer">
-    <article v-if="related.length" class="narrative-footer__related">
+    <section v-if="related.length" class="narrative-footer__related">
       <h3 class="h2">Similar Stories</h3>
       <ul class="narrative-footer__related-list">
         <li
@@ -41,7 +41,7 @@
           </nuxt-link>
         </li>
       </ul>
-    </article>
+    </section>
     <section class="narrative-footer__prev-next">
       <nuxt-link v-if="previousLink" :to="previousLink.path" class="h2 narrative-footer__link" :title="previousLink.title">
         <span class="sr-only">Continue reading about</span> {{ previousLink.title }}
@@ -54,10 +54,7 @@
 </template>
 
 <script>
-import LazyImage from '../lazy-image/LazyImage'
-
 export default {
-  components: { LazyImage },
   props: {
     previousLink: {
       type: Object,

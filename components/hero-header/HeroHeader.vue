@@ -1,17 +1,37 @@
 <template>
-  <header class="hero-header hero-header--gradient">
-    <div class="hero-header__container">
-      <h1 class="hero-header__title">World Water <br /> Atlas</h1>
-      <p class="hero-header__intro">
-        The World Water Atlas is a platform where we <br /> collect stories about water. Stories from people <br /> all over the world.
-      </p>
+  <header
+    class="hero-header hero-header--gradient"
+  >
+    <div
+      class="hero-header__container"
+    >
+      <h1
+        class="hero-header__title"
+        @click="setHeroHeader"
+      >
+        World Water <br /> Atlas
+      </h1>
+      <p v-if="body.length" class="hero-header__intro" v-html="body" ></p>
     </div>
   </header>
 </template>
 
 <script>
 export default {
-
+  props: {
+    body: {
+      type: String,
+      default: ''
+    }
+  },
+  data: () => ({
+    showHeroHeader: true
+  }),
+  methods: {
+    setHeroHeader () {
+      console.log('hero')
+    }
+  }
 }
 </script>
 
@@ -19,7 +39,7 @@ export default {
 .hero-header {
   position: absolute;
   width: 100vw;
-  padding-top: 56px;
+  padding-top: 2rem;
   text-align: center;
   z-index: 0;
 }
@@ -36,17 +56,19 @@ export default {
   pointer-events: none;
 }
 .hero-header__container {
-  max-width: 950px;
+  max-width: 350px;
   margin: 0 auto;
 }
 .hero-header__title {
   font-size: 2rem;
   font-weight: 500;
   line-height: 1;
+  margin-bottom: 0.5rem;
 }
 .hero-header__intro {
   font-size: 0.875rem;
-
+  max-height: 4.7rem;
+  overflow: hidden;
 }
 @media (min-width: 768px) {
   .hero-header__title {

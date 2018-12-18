@@ -9,7 +9,8 @@ const store = () => {
       globeInteraction: true,
       theme: 'too-much',
       globeAutoRotation: true,
-      globePositionRight: false
+      globePositionRight: false,
+      navBackgroundTrans: false
     },
     mutations: {
       activateFeature (state, feature) {
@@ -42,6 +43,12 @@ const store = () => {
       },
       enableGlobePositionRight (state) {
         state.globePositionRight = true
+      },
+      disableNavBackgroundTrans (state) {
+        state.navBackgroundTrans = false
+      },
+      enableNavBackgroundTrans (state) {
+        state.navBackgroundTrans = true
       }
     }
   })

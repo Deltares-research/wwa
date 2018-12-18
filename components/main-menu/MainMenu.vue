@@ -1,5 +1,5 @@
 <template>
-    <nav :class="`main-menu main-menu--${variant}`">
+    <nav :class="`main-menu main-menu--${variant} main-menu--transparent-${navBackgroundTrans}`">
       <div class="main-menu__container">
         <div class="main-menu__section main-menu__section--no-padding">
           <nuxt-link :class="`main-menu__item main-menu__item--home ${(variant === 'light') ? 'main-menu__item--dark-background' : ''}`" to="/" title="Go home">
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   props: {
     variant: {
@@ -35,6 +37,9 @@ export default {
         return 'dark'
       }
     }
+  },
+  computed: {
+    ...mapState(['navBackgroundTrans'])
   }
 }
 </script>
@@ -91,6 +96,10 @@ export default {
 .main-menu--light {
   color: var(--ui--black);
   background-color: var(--ui--white--trans);
+}
+
+.main-menu--transparent-true {
+  background: transparent;
 }
 
 .main-menu__item {

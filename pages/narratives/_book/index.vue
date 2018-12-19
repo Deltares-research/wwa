@@ -51,45 +51,9 @@ export default {
 
 <style>
 .globe-spacer-narrative {
-  height: 50vh;
+  height: 60vh;
   width: 100vw;
   pointer-events: none;
-}
-
-.page-index__scroll-to-wrapper {
-  width: calc(100vw - 40px);
-  display: flex;
-  justify-content: center;
-  position: relative;
-  padding: 0 20px;
-}
-
-.page-index__scroll-to-wrapper--margin-bottom {
-  margin-bottom: 2rem;
-}
-
-.page-index__scroll-to-button {
-  color: var(--ui-invert);
-  width: 2.5rem;
-  height: 2.5rem;
-  line-height: 2.5rem;
-  cursor: pointer;
-  border-radius: 100%;
-  background-color: rgba(255, 255, 255, 0.23);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 200ms ease-in-out;
-}
-
-.page-index__scroll-to-button:hover {
-  background-color: var(--ui--blue);
-  box-shadow: 0px 0px 50px 0px rgba(152, 171, 186, 0.75);
-}
-
-.page-index__button-icon {
-  fill: var(--ui--white);
-  display: block;
 }
 
 .book-title {
@@ -101,7 +65,7 @@ export default {
 
 @media (min-width: 1024px) {
   .book-header {
-    max-width: 50%;
+    max-width: 66%;
   }
   .book-title {
     font-size: 3rem;

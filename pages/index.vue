@@ -35,9 +35,11 @@ export default {
 
     return { books, markers, themes: await themes }
   },
-  data () {
-    const body = marked(home.body)
-    return { body }
+  data: function () {
+    return {
+      body: marked(home.body),
+      slug: ''
+    }
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.markers)

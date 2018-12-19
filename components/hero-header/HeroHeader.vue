@@ -1,17 +1,15 @@
 <template>
   <header
     class="hero-header hero-header--gradient"
+    :class="`hero-header--show-${showHeroHeader}`"
+    @click="showHeroHeader = false"
   >
-    <div
-      class="hero-header__container"
-    >
-      <h1
-        class="hero-header__title"
-        @click="setHeroHeader"
-      >
+    <div data-hero-hide-trigger />
+    <div class="hero-header__container">
+      <h1 class="hero-header__title" >
         World Water <br /> Atlas
       </h1>
-      <p v-if="body.length" class="hero-header__intro" v-html="body" ></p>
+      <section v-if="body.length > 0" class="hero-header__intro" v-html="body" ></section>
     </div>
   </header>
 </template>
@@ -27,9 +25,25 @@ export default {
   data: () => ({
     showHeroHeader: true
   }),
+  mounted () {
+    if ('IntersectionObserver' in window) {
+      this.observeScrolledToTop()
+    }
+  },
   methods: {
-    setHeroHeader () {
-      console.log('hero')
+    observeScrolledToTop () {
+      const trackVisibility = (entries) => {
+        entries.forEach(entry => {
+          this.showHeroHeader = entry.isIntersecting
+        })
+      }
+      const observer = new IntersectionObserver(trackVisibility, {
+        // No explicit root, we want the viewport
+        rootMargin: '0% 0% 0% 0%',
+        thresholds: 0
+      })
+      const triggerElement = this.$el.querySelector('[data-hero-hide-trigger]')
+      observer.observe(triggerElement)
     }
   }
 }
@@ -39,9 +53,14 @@ export default {
 .hero-header {
   position: absolute;
   width: 100vw;
-  padding-top: 2rem;
+  padding-top: 4rem;
   text-align: center;
   z-index: 0;
+  transition: transform 300ms ease-in-out;
+  cursor: pointer;
+}
+.hero-header--show-false {
+  transform: translateY(-100%);
 }
 .hero-header--gradient::before {
   content: '';
@@ -69,6 +88,21 @@ export default {
   font-size: 0.875rem;
   max-height: 4.7rem;
   overflow: hidden;
+}
+[data-hero-hide-trigger] {
+  display: block;
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  width: 1px;
+  height: 1px;
+  background-color: transparent;
+  z-index: 1;
+}
+@media (min-width: 600px) {
+  .hero-header {
+    padding-top: 2rem;
+  }
 }
 @media (min-width: 768px) {
   .hero-header__title {

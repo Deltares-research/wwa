@@ -1,6 +1,9 @@
 <template>
   <div class="invert">
-    <hero-header :body="body" ></hero-header>
+    <div data-hero-hide-trigger />
+    <hero-header
+      :body="body"
+      :showHeroHeader="showHeroHeader" />
     <div class="globe-spacer"/>
 
     <theme-switch :themes="themes" :active-slug="slug" />
@@ -38,7 +41,8 @@ export default {
   data: function () {
     return {
       body: marked(home.body),
-      slug: ''
+      slug: '',
+      showHeroHeader: true
     }
   },
   mounted () {
@@ -46,9 +50,28 @@ export default {
     this.$store.commit('enableInteraction')
     this.$store.commit('enableGlobeAutoRotation')
     this.$store.commit('enableNavBackgroundTrans')
+    if ('IntersectionObserver' in window) {
+      this.observeScrolledToTop()
+    }
   },
   destroyed () {
     this.$store.commit('disableNavBackgroundTrans')
+  },
+  methods: {
+    observeScrolledToTop () {
+      const trackVisibility = (entries) => {
+        entries.forEach(entry => {
+          this.showHeroHeader = entry.isIntersecting
+        })
+      }
+      const observer = new IntersectionObserver(trackVisibility, {
+        // No explicit root, we want the viewport
+        rootMargin: '0% 0% 0% 0%',
+        thresholds: 0
+      })
+      const triggerElement = this.$el.querySelector('[data-hero-hide-trigger]')
+      observer.observe(triggerElement)
+    }
   }
 }
 </script>
@@ -60,5 +83,15 @@ export default {
   height: 82vh;
   width: 100vw;
   pointer-events: none;
+}
+[data-hero-hide-trigger] {
+  display: block;
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  width: 1px;
+  height: 1px;
+  background-color: transparent;
+  z-index: 1;
 }
 </style>

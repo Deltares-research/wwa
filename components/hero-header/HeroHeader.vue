@@ -4,7 +4,6 @@
     :class="`hero-header--show-${showHeroHeader}`"
     @click="showHeroHeader = false"
   >
-    <div data-hero-hide-trigger />
     <div class="hero-header__container">
       <h1 class="hero-header__title" >
         World Water <br /> Atlas
@@ -20,30 +19,10 @@ export default {
     body: {
       type: String,
       default: ''
-    }
-  },
-  data: () => ({
-    showHeroHeader: true
-  }),
-  mounted () {
-    if ('IntersectionObserver' in window) {
-      this.observeScrolledToTop()
-    }
-  },
-  methods: {
-    observeScrolledToTop () {
-      const trackVisibility = (entries) => {
-        entries.forEach(entry => {
-          this.showHeroHeader = entry.isIntersecting
-        })
-      }
-      const observer = new IntersectionObserver(trackVisibility, {
-        // No explicit root, we want the viewport
-        rootMargin: '0% 0% 0% 0%',
-        thresholds: 0
-      })
-      const triggerElement = this.$el.querySelector('[data-hero-hide-trigger]')
-      observer.observe(triggerElement)
+    },
+    showHeroHeader: {
+      type: Boolean,
+      default: true
     }
   }
 }
@@ -88,16 +67,6 @@ export default {
   font-size: 0.875rem;
   max-height: 4.7rem;
   overflow: hidden;
-}
-[data-hero-hide-trigger] {
-  display: block;
-  position: absolute;
-  top: 1rem;
-  right: 0;
-  width: 1px;
-  height: 1px;
-  background-color: transparent;
-  z-index: 1;
 }
 @media (min-width: 600px) {
   .hero-header {

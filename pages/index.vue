@@ -1,15 +1,15 @@
 <template>
   <div class="invert">
     <div class="tagline" v-html="body"></div>
-    <div class="globe-spacer"/>
+    <div class="globe-spacer" />
 
     <div class="layout-section">
-      <span class="page-index__scroll-to-button" @click="smoothScroll('scrollToBooksList')">
+      <button class="page-index__scroll-to-button" @click="smoothScroll('scrollToBooksList')">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="page-index__button-icon">
           <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
           <path fill="none" d="M0 0h24v24H0V0z"></path>
         </svg>
-      </span>
+      </button>
     </div>
     <div
       class="layout-section layout-section--gradient"
@@ -24,12 +24,15 @@
 <script>
 import loadData from '~/lib/load-data'
 import marked from '~/lib/custom-marked'
+
 import home from '~/static/data/home.json'
+import keywords from '~/static/data/influences/index.json' // for now we will import inluences as keywords
+
 import BookList from '~/components/book-list/BookList'
 import ChapterList from '~/components/chapter-list/ChapterList'
+import FilterKeywords from '~/components/filter-keywords/FilterKeywords'
 
 export default {
-  components: { BookList, ChapterList },
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const books = await loadData(context, { book: 'index' })
@@ -38,12 +41,13 @@ export default {
       .reduce((a, b) => a.concat(b.chapters), []) // flatten array
       .filter(marker => marker.location)
 
-    return { books, markers, themes: await themes }
+    return { books, markers, themes: await themes, keywords }
   },
   data () {
     const body = marked(home.body)
     return { body }
   },
+  components: { BookList, ChapterList, FilterKeywords },
   mounted () {
     this.$store.commit('replaceFeatures', this.markers)
     this.$store.commit('enableInteraction')
@@ -53,7 +57,7 @@ export default {
     smoothScroll (id) {
       const element = document.getElementById(id)
       const domRect = element.getBoundingClientRect()
-      window.scrollBy({ top: domRect.y - 64, behavior: 'smooth' })
+      window.scrollBy({ top: domRect.y - 128, behavior: 'smooth' })
     }
   }
 }
@@ -104,7 +108,7 @@ export default {
 }
 
 .globe-spacer {
-  height: 85vh;
+  height: 80vh;
   width: 100vw;
   pointer-events: none;
 }
@@ -121,6 +125,7 @@ export default {
   justify-content: center;
   align-items: center;
   transition: all 200ms ease-in-out;
+  border: none;
 }
 
 .page-index__scroll-to-button:hover {

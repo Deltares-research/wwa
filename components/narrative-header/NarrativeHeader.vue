@@ -30,9 +30,9 @@
               :key="page.slug"
               @click="setShowNavigation(showNavigation)"
             >
-              <span class="narrative-header__link" @click="$emit('selectLink', page.slug)" >
+              <button class="narrative-header__link" @click="$emit('selectLink', page.slug)" >
                 <span class="narrative-header__link-index" >{{ index+1 }}.</span>&nbsp;&nbsp;{{ page.title }}
-              </span>
+              </button>
             </li>
           </ol>
         </nav>
@@ -243,6 +243,9 @@ export default {
   display: block;
   color: #467388;
   cursor: pointer;
+  border: none;
+  width: 100%;
+  text-align: left;
 }
 
 .narrative-header__navigation-item--active .narrative-header__link {

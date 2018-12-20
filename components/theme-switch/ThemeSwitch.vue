@@ -16,7 +16,7 @@
               <span class="theme-switch__title">{{ theme.title }}</span>
             </button>
           </dt>
-          <dd class="invert theme-switch__description" :key="`${theme.slug}-description`" v-html="formattedBodies[index]"></dd>
+          <dd class="invert theme-switch__description" :key="`${theme.slug}-active-description`" v-html="formattedBodies[index]"></dd>
         </template>
         <dt
           v-else
@@ -36,6 +36,7 @@
             <span class="theme-switch__title">{{ theme.title }}</span>
           </nuxt-link>
         </dt>
+        <dd class="sr-only invert theme-switch__description" :key="`${theme.slug}-sr-description`" v-html="formattedBodies[index]"></dd>
     </template>
   </dl>
 </template>
@@ -149,6 +150,8 @@ export default {
     min-width: 4.5rem;
     text-align: left;
   }
+}
+@media (min-width: 860px) {
   .theme-switch__description {
     display: block;
   }

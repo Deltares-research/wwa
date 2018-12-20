@@ -2,7 +2,7 @@
   <header
     class="hero-header hero-header--gradient"
     :class="`hero-header--show-${showHeroHeader}`"
-    @click="showHeroHeader = false"
+    @click="$emit('hideHeroHeader')"
   >
     <div class="hero-header__container">
       <h1 class="hero-header__title" >
@@ -65,7 +65,7 @@ export default {
 }
 .hero-header__intro {
   font-size: 0.875rem;
-  max-height: 4.7rem;
+  max-height: 4.4rem;
   overflow: hidden;
 }
 @media (min-width: 600px) {

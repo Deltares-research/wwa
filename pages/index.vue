@@ -3,7 +3,9 @@
     <div data-hero-hide-trigger />
     <hero-header
       :body="body"
-      :showHeroHeader="showHeroHeader" />
+      :showHeroHeader="showHeroHeader"
+      v-on:hideHeroHeader="showHeroHeader = false"
+    />
     <div class="globe-spacer"/>
 
     <theme-switch :themes="themes" :active-slug="slug" />

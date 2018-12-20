@@ -90,6 +90,7 @@
   --ui--black--trans: rgba(0, 0, 30, .75);
   --ui--blue:rgba(0,0,48, 1);
   --ui--blue--trans:rgba(0,0,48, .75);
+  --ui--blue--bg: #4d4c69;
   --ui--bg: var(--ui--black);
   --ui--bg--white: var(--ui--white);
   --ui--bg--light: var(--booklet--neutral);
@@ -103,7 +104,7 @@
   --ui--action--light: var(--booklet--action--light);
   --ui--bottom-gradient: linear-gradient(to top, var(--ui--black), transparent);
   --ui--left-gradient: linear-gradient(to right, var(--ui--black),  transparent);
-  --ui-light-grey: var(--booklet--neutral);
+  --ui--light-grey: var(--booklet--neutral);
 }
 
 html {

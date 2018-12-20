@@ -1,15 +1,16 @@
 <template>
-  <div>
+  <div class="invert">
     <theme-list :themes="themes" :active-slug="slug" />
-    <bottom-shelf>
-      <card-list :cards="entries" />
-    </bottom-shelf>
+    <div class="layout-section layout-section--gradient">
+      <div class="layout-section__container">
+        <chapter-list :chapters="entries" sorted="newest" :limit="24" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import BottomShelf from '~/components/bottom-shelf/BottomShelf'
-import CardList from '~/components/card-list/CardList'
+import ChapterList from '~/components/chapter-list/ChapterList'
 import loadData from '~/lib/load-data'
 import ThemeList from '~/components/theme-list/ThemeList'
 
@@ -29,8 +30,7 @@ export default {
     this.$store.commit('enableGlobeAutoRotation')
   },
   components: {
-    BottomShelf,
-    CardList,
+    ChapterList,
     ThemeList
   }
 }

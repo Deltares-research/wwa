@@ -1,16 +1,16 @@
 <template>
   <div class="invert">
     <div class="globe-spacer-narrative"/>
-    <div class="page-index__chapter-list-wrapper">
-      <div class="page-index__chapter-list">
+    <div class="layout-section">
+      <div class="layout-section__container">
         <div class="book-header">
           <h1 class="book-title">{{ title }}</h1>
           <p class="book-description">A short sentence about {{ title }}. Why we have this theme and what is so important about all the chapters in this book.</p>
         </div>
       </div>
     </div>
-    <div class="page-index__chapter-list-wrapper page-index__chapter-list-wrapper--gradient">
-      <div class="page-index__chapter-list">
+    <div class="layout-section layout-section--gradient">
+      <div class="layout-section__container">
         <chapter-list :chapters="chapters" sorted="newest" :limit="9" />
       </div>
     </div>
@@ -87,43 +87,6 @@ export default {
   display: block;
 }
 
-.page-index__chapter-list-wrapper {
-  width: calc(100vw - 40px);
-  display: flex;
-  justify-content: center;
-  position: relative;
-  padding: 0 20px;
-}
-
-.page-index__chapter-list-wrapper--gradient:before {
-  content: '';
-  display: block;
-  width: 100%;
-  height: calc(100% + 30vh);
-  top: 0;
-  transform: translateY(-30vh);
-  position: absolute;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 42, 0) 0, rgba(0, 0, 42, 0.85) 30vh);
-  pointer-events: none;
-  z-index: -1;
-}
-
-.page-index__chapter-list {
-  width: calc(100vw - 40px);
-  max-width: 950px;
-  z-index: 1;
-}
-
-@media (min-width: 600px) {
-  .page-index__chapter-list-wrapper {
-    width: calc(100vw - 80px);
-    padding: 0 40px;
-  }
-}
-
-.book-header {
-
-}
 .book-title {
   margin-bottom: 0.5rem;
 }

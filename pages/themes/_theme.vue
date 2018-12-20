@@ -1,7 +1,10 @@
 <template>
   <div class="invert">
     <div class="globe-spacer-theme"></div>
-    <theme-switch :themes="themes" :active-slug="slug" />
+
+    <div class="layout-section layout-section--no-padding layout-section--gradient">
+      <theme-switch :themes="themes" :active-slug="slug" />
+    </div>
     <div
       class="layout-section layout-section--themes"
       :class="`layout-section--theme-${slug}-active`"

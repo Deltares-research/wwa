@@ -57,7 +57,7 @@ export default {
 @import "../../components/tag/tag.css";
 
 .globe-spacer-influences {
-  height: 50vh;
+  height: 60vh;
   width: 100vw;
   pointer-events: none;
 }

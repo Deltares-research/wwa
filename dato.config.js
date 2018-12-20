@@ -254,8 +254,6 @@ function getChapters (dato, bookRef) {
       const influences = collectUniqueTags(pages, 'influences')
       const keywords = collectUniqueTags(pages, 'keywords')
       const coverFallback = getChapterCover(pages)
-<<<<<<< HEAD
-=======
       const related = chapter.related.length < 1
         ? []
         : chapter.related
@@ -269,7 +267,6 @@ function getChapters (dato, bookRef) {
             cover: item.cover ? item.cover : getChapterCover(item.pages)
           }))
           .map(({ pages, parent, ...chapter }) => chapter)
->>>>>>> 5df1f187be116107823f31009e7079730fbb25a7
 
       return {
         book,
@@ -288,12 +285,8 @@ function getChapters (dato, bookRef) {
         previousChapter,
         createdAt,
         updatedAt,
-<<<<<<< HEAD
-        cover: cover || coverFallback
-=======
         cover: cover || coverFallback,
         related
->>>>>>> 5df1f187be116107823f31009e7079730fbb25a7
       }
     })
     .filter(Boolean) // Filter falsy chapters (return false)

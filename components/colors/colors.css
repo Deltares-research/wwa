@@ -97,6 +97,9 @@
   --ui--bg--dark-transparent: rgba(1, 0, 42, 0);
   --ui--bg--dark-translucent: rgba(1, 0, 42, 0.75);
   --ui--bg--dark-opaque: rgba(1, 0, 42, 1);
+  --ui--bg--theme-too-much-trans: rgba(38, 52, 147, 0.8);
+  --ui--bg--theme-too-little-trans: rgba(254, 141, 59, 0.8);
+  --ui--bg--theme-too-dirty-trans: rgba(122, 1, 119, 0.8);
   --ui--text: var(--booklet--text);
   --ui--text--light: var(--booklet--text--light);
   --ui--text--invert: var(--ui--white);

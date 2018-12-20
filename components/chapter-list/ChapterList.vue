@@ -67,6 +67,9 @@ export default {
     limit: {
       type: Number,
       default: -1 // default all?
+    },
+    theme: {
+      type: String
     }
   },
   computed: {

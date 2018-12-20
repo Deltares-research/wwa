@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <nav
-      :class="`main-menu main-menu--${variant}`"
-    >
+  <div class="menu">
+    <nav :class="[`main-menu main-menu--${variant}`, { 'main-menu--transparent' : navBackgroundTrans }]">
       <div class="main-menu__container">
         <div class="main-menu__section main-menu__section--no-padding">
           <nuxt-link :class="`menu__item menu__item--home ${(variant === 'light') ? 'menu__item--dark-background' : ''}`" to="/" title="Go home">
@@ -13,11 +11,11 @@
           <portal-target name="menu-center-content" />
         </div>
         <div class="main-menu__section main-menu__section--align-right">
-          <nuxt-link :class="`menu__item menu__item--about menu__item--margin h3 ${(variant === 'dark') ? 'invert' : ''}`"
+          <nuxt-link :class="`menu__item menu__item--about h3 ${(variant === 'dark') ? 'invert' : ''}`"
             to="/about">
             About
           </nuxt-link>
-          <nuxt-link :class="`menu__item menu__item--submit menu__item--margin h3 ${(variant === 'dark') ? 'invert' : ''}`"
+          <nuxt-link :class="`menu__item menu__item--submit h3 ${(variant === 'dark') ? 'invert' : ''}`"
             to="/submit-a-story">
             Submit a story
           </nuxt-link>
@@ -31,6 +29,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import MobileMenu from '~/components/mobile-menu/MobileMenu'
 
 export default {
@@ -45,6 +45,9 @@ export default {
         return 'dark'
       }
     }
+  },
+  computed: {
+    ...mapState(['navBackgroundTrans'])
   }
 }
 </script>
@@ -82,12 +85,6 @@ export default {
   justify-content: flex-end;
 }
 
-@media (max-width: 768px) {
-  .main-menu__section--align-right {
-    display: none;
-  }
-}
-
 .main-menu__container {
   position: relative;
   display: flex;
@@ -101,6 +98,10 @@ export default {
 .main-menu--light {
   color: var(--ui--black);
   background-color: var(--ui--white--trans);
+}
+
+.main-menu--transparent {
+  background: transparent;
 }
 
 .menu__item {
@@ -147,7 +148,10 @@ export default {
   background-color: var(--ui--black--trans);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 799px) {
+  .main-menu__section--align-right {
+    display: none;
+  }
   .menu__item--home {
     display: none;
   }

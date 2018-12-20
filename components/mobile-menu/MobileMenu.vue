@@ -162,7 +162,7 @@ export default {
   cursor: default;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 800px) {
   .mobile-menu,
   .mobile-menu__backdrop,
   .mobile-menu__backdrop--active,

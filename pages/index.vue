@@ -1,13 +1,21 @@
 <template>
   <div class="invert">
-    <div class="tagline" v-html="body"></div>
-    <div class="globe-spacer" />
+    <div data-hero-hide-trigger />
+    <hero-header
+      :body="body"
+      :showHeroHeader="showHeroHeader"
+      v-on:hideHeroHeader="showHeroHeader = false"
+    />
+    <div class="globe-spacer"/>
 
+    <div class="layout-section layout-section--no-padding layout-section--gradient">
+      <theme-switch :themes="themes" :active-slug="slug" />
+    </div>
     <video-highlights
       id="scrollToBooksList"
       :videoHighlights="videoHighlights"
     />
-    <div class="layout-section">
+    <div class="layout-section layout-section--blue-trans">
       <book-list class="layout-section__container" :books="books">
         <chapter-list slot-scope="{ chapters, limit }" :chapters="chapters" sorted="newest" :limit="limit" />
       </book-list>
@@ -23,10 +31,12 @@ import home from '~/static/data/home.json'
 
 import BookList from '~/components/book-list/BookList'
 import ChapterList from '~/components/chapter-list/ChapterList'
+import HeroHeader from '~/components/hero-header/HeroHeader'
+import ThemeSwitch from '~/components/theme-switch/ThemeSwitch'
 import VideoHighlights from '~/components/video-highlights/VideoHighlights'
 
 export default {
-  components: { BookList, ChapterList, VideoHighlights },
+  components: { BookList, ChapterList, HeroHeader, ThemeSwitch, VideoHighlights },
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const books = await loadData(context, { book: 'index' })
@@ -37,21 +47,40 @@ export default {
 
     return { books, markers, themes: await themes }
   },
-  data () {
-    const body = marked(home.body)
-    const videoHighlights = home.videoHighlights
-    return { body, videoHighlights }
+  data: function () {
+    return {
+      body: marked(home.body),
+      videoHighlights: home.videoHighlights,
+      slug: '',
+      showHeroHeader: true
+    }
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.markers)
     this.$store.commit('enableInteraction')
     this.$store.commit('enableGlobeAutoRotation')
+    this.$store.commit('enableNavBackgroundTrans')
+    if ('IntersectionObserver' in window) {
+      this.observeScrolledToTop()
+    }
+  },
+  destroyed () {
+    this.$store.commit('disableNavBackgroundTrans')
   },
   methods: {
-    smoothScroll (id) {
-      const element = document.getElementById(id)
-      const domRect = element.getBoundingClientRect()
-      window.scrollBy({ top: domRect.y - 128, behavior: 'smooth' })
+    observeScrolledToTop () {
+      const trackVisibility = (entries) => {
+        entries.forEach(entry => {
+          this.showHeroHeader = entry.isIntersecting
+        })
+      }
+      const observer = new IntersectionObserver(trackVisibility, {
+        // No explicit root, we want the viewport
+        rootMargin: '0% 0% 0% 0%',
+        thresholds: 0
+      })
+      const triggerElement = this.$el.querySelector('[data-hero-hide-trigger]')
+      observer.observe(triggerElement)
     }
   }
 }
@@ -60,50 +89,20 @@ export default {
 <style>
 @import "../components/colors/colors.css";
 
-.tagline {
-  position: absolute;
-  top: 5rem;
-  margin-top: 5vw;
-  width: 10rem;
-  padding: 1rem;
-}
-
-.tagline::before {
-  content: '';
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 10rem;
-  background-image: var(--ui--left-gradient);
-  overflow: visible;
-  z-index: -1;
-}
-
-.tagline [href*='too-dirty'],
-.tagline [href*='too-much'],
-.tagline [href*='too-little'] {
-  display: inline-block;
-  padding-left: 1.25em;
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: 1em;
-}
-.tagline [href*='too-dirty'] {
-  background-image: url('/assets/too-dirty.png');
-}
-.tagline [href*='too-much'] {
-  background-image: url('/assets/too-much.png');
-}
-
-.tagline [href*='too-little'] {
-  background-image: url('/assets/too-little.png');
-}
-
 .globe-spacer {
-  height: 80vh;
+  height: 82vh;
   width: 100vw;
   pointer-events: none;
+}
+
+[data-hero-hide-trigger] {
+  display: block;
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  width: 1px;
+  height: 1px;
+  background-color: transparent;
+  z-index: 1;
 }
 </style>

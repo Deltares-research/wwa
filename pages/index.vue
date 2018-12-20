@@ -3,17 +3,11 @@
     <div class="tagline" v-html="body"></div>
     <div class="globe-spacer" />
 
+    <video-highlights
+      id="scrollToBooksList"
+      :videoHighlights="videoHighlights"
+    />
     <div class="layout-section">
-      <button class="page-index__scroll-to-button" @click="smoothScroll('scrollToBooksList')">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="page-index__button-icon">
-          <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
-          <path fill="none" d="M0 0h24v24H0V0z"></path>
-        </svg>
-      </button>
-    </div>
-    <div
-      class="layout-section layout-section--gradient"
-      id="scrollToBooksList">
       <book-list class="layout-section__container" :books="books">
         <chapter-list slot-scope="{ chapters, limit }" :chapters="chapters" sorted="newest" :limit="limit" />
       </book-list>
@@ -26,13 +20,13 @@ import loadData from '~/lib/load-data'
 import marked from '~/lib/custom-marked'
 
 import home from '~/static/data/home.json'
-import keywords from '~/static/data/influences/index.json' // for now we will import inluences as keywords
 
 import BookList from '~/components/book-list/BookList'
 import ChapterList from '~/components/chapter-list/ChapterList'
-import FilterKeywords from '~/components/filter-keywords/FilterKeywords'
+import VideoHighlights from '~/components/video-highlights/VideoHighlights'
 
 export default {
+  components: { BookList, ChapterList, VideoHighlights },
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const books = await loadData(context, { book: 'index' })
@@ -41,13 +35,13 @@ export default {
       .reduce((a, b) => a.concat(b.chapters), []) // flatten array
       .filter(marker => marker.location)
 
-    return { books, markers, themes: await themes, keywords }
+    return { books, markers, themes: await themes }
   },
   data () {
     const body = marked(home.body)
-    return { body }
+    const videoHighlights = home.videoHighlights
+    return { body, videoHighlights }
   },
-  components: { BookList, ChapterList, FilterKeywords },
   mounted () {
     this.$store.commit('replaceFeatures', this.markers)
     this.$store.commit('enableInteraction')
@@ -111,30 +105,5 @@ export default {
   height: 80vh;
   width: 100vw;
   pointer-events: none;
-}
-
-.page-index__scroll-to-button {
-  color: var(--ui-invert);
-  width: 2.5rem;
-  height: 2.5rem;
-  line-height: 2.5rem;
-  cursor: pointer;
-  border-radius: 100%;
-  background-color: rgba(255, 255, 255, 0.23);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 200ms ease-in-out;
-  border: none;
-}
-
-.page-index__scroll-to-button:hover {
-  background-color: var(--ui--blue);
-  box-shadow: 0px 0px 50px 0px rgba(152, 171, 186, 0.75);
-}
-
-.page-index__button-icon {
-  fill: var(--ui--white);
-  display: block;
 }
 </style>

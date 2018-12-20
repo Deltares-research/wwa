@@ -1,8 +1,9 @@
 <template>
-  <bottom-shelf>
-    <card-list :cards="results">
-      <template slot="header">
-        <h1><span class="sr-only">Influences</span></h1>
+  <div class="invert">
+    <div class="globe-spacer-influences" />
+    <div class="layout-section">
+      <div class="layout-section__container">
+        <h1>Influences</h1>
         <ul class="list--inline influences-filter">
           <li v-for="link in influences" :key="link.slug">
             <nuxt-link
@@ -12,14 +13,18 @@
             </nuxt-link>
           </li>
         </ul>
-      </template>
-    </card-list>
-  </bottom-shelf>
+      </div>
+    </div>
+    <div class="layout-section layout-section--gradient">
+      <div class="layout-section__container">
+        <chapter-list :chapters="results" sorted="newest" :limit="20" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import BottomShelf from '~/components/bottom-shelf/BottomShelf'
-import CardList from '~/components/card-list/CardList'
+import ChapterList from '~/components/chapter-list/ChapterList'
 import loadData from '~/lib/load-data'
 import allInfluences from '~/static/data/influences/index.json'
 
@@ -43,14 +48,19 @@ export default {
     this.$store.commit('enableGlobeAutoRotation')
   },
   components: {
-    BottomShelf,
-    CardList
+    ChapterList
   }
 }
 </script>
 
 <style>
 @import "../../components/tag/tag.css";
+
+.globe-spacer-influences {
+  height: 60vh;
+  width: 100vw;
+  pointer-events: none;
+}
 
 .influences-filter .tag {
   transition: opacity .25s;

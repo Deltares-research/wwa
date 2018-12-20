@@ -228,7 +228,7 @@ function getChapters (dato, bookRef) {
   return chapters
     .filter(filterPublished)
     .map(chapter => {
-      const { title, slug, chapterType, createdAt, updatedAt } = chapter
+      const { title, slug, chapterType, createdAt, updatedAt, cover } = chapter
       const parentBook = bookRef || getParent(dato, chapter)
       if (!parentBook) {
         console.log(`Skipped chapter ${title}, no parent book found`)
@@ -257,7 +257,20 @@ function getChapters (dato, bookRef) {
       const location = (firstLocationPage) ? firstLocationPage.location : null
       const influences = collectUniqueTags(pages, 'influences')
       const keywords = collectUniqueTags(pages, 'keywords')
-      const cover = getChapterCover(pages)
+      const coverFallback = getChapterCover(pages)
+      const related = chapter.related.length < 1
+        ? []
+        : chapter.related
+          .map(chapter => ({ ...chapter, pages: getPages(dato, chapter), parent: getParent(dato, chapter) }))
+          .filter(chapter => chapter.parent)
+          .map(pick(['title', 'slug', 'cover', 'pages', 'parent']))
+          .map(item => ({
+            ...item,
+            bookTitle: item.parent.title,
+            path: `${contentBasePath}/${item.parent.slug}/${item.slug}`,
+            cover: item.cover ? item.cover : getChapterCover(item.pages)
+          }))
+          .map(({ pages, parent, ...chapter }) => chapter)
 
       return {
         book,
@@ -276,7 +289,8 @@ function getChapters (dato, bookRef) {
         previousChapter,
         createdAt,
         updatedAt,
-        cover
+        cover: cover || coverFallback,
+        related
       }
     })
     .filter(Boolean) // Filter falsy chapters (return false)

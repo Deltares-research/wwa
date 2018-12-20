@@ -3,6 +3,7 @@
     class="hero-header hero-header--gradient"
     :class="`hero-header--show-${showHeroHeader}`"
     @click="$emit('hideHeroHeader')"
+    role="button"
   >
     <div class="hero-header__container">
       <h1 class="hero-header__title" >

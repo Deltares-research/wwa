@@ -24,7 +24,7 @@
         >
           <nuxt-link
             :to="theme.path"
-            class="theme-switch__button theme-switch__button--in-active"
+            class="theme-switch__button theme-switch__button--inactive"
             :class="`theme-switch__button-${theme.slug}`"
           >
             <span class="theme-switch__icon">
@@ -87,7 +87,7 @@ export default {
   transition: all 200ms ease-in-out;
   z-index: 2;
 }
-.theme-switch__button--in-active:hover {
+.theme-switch__button--inactive:hover {
   background-color: rgba(255,255,255,0.5);
 }
 .theme-switch__button:hover {

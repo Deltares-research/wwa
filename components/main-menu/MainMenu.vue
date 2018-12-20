@@ -1,26 +1,26 @@
 <template>
-    <nav :class="`main-menu main-menu--${variant} main-menu--transparent-${navBackgroundTrans}`">
-      <div class="main-menu__container">
-        <div class="main-menu__section main-menu__section--no-padding">
-          <nuxt-link :class="`main-menu__item main-menu__item--home ${(variant === 'light') ? 'main-menu__item--dark-background' : ''}`" to="/" title="Go home">
-            <span class="sr-only">Return to the homepage</span>World Water<br/>Atlas
-          </nuxt-link>
-        </div>
-        <div class="main-menu__section main-menu__section--align-center">
-          <portal-target name="menu-center-content" />
-        </div>
-        <div class="main-menu__section main-menu__section--align-right">
-          <nuxt-link :class="`main-menu__item main-menu__item--about h3 ${(variant === 'dark') ? 'invert' : ''}`"
-            to="/about">
-            About
-          </nuxt-link>
-          <nuxt-link :class="`main-menu__item main-menu__item--submit h3 ${(variant === 'dark') ? 'invert' : ''}`"
-            to="/submit-a-story">
-            Submit a story
-          </nuxt-link>
-        </div>
+  <nav :class="[`main-menu main-menu--${variant}`, { 'main-menu--transparent' : navBackgroundTrans }]">
+    <div class="main-menu__container">
+      <div class="main-menu__section main-menu__section--no-padding">
+        <nuxt-link :class="`main-menu__item main-menu__item--home ${(variant === 'light') ? 'main-menu__item--dark-background' : ''}`" to="/" title="Go home">
+          <span class="sr-only">Return to the homepage</span>World Water<br/>Atlas
+        </nuxt-link>
       </div>
-    </nav>
+      <div class="main-menu__section main-menu__section--align-center">
+        <portal-target name="menu-center-content" />
+      </div>
+      <div class="main-menu__section main-menu__section--align-right">
+        <nuxt-link :class="`main-menu__item main-menu__item--about h3 ${(variant === 'dark') ? 'invert' : ''}`"
+          to="/about">
+          About
+        </nuxt-link>
+        <nuxt-link :class="`main-menu__item main-menu__item--submit h3 ${(variant === 'dark') ? 'invert' : ''}`"
+          to="/submit-a-story">
+          Submit a story
+        </nuxt-link>
+      </div>
+    </div>
+  </nav>
 </template>
 
 <script>
@@ -98,7 +98,7 @@ export default {
   background-color: var(--ui--white--trans);
 }
 
-.main-menu--transparent-true {
+.main-menu--transparent {
   background: transparent;
 }
 

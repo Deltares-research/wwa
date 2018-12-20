@@ -1,7 +1,7 @@
 <template>
   <header
     class="hero-header hero-header--gradient"
-    :class="`hero-header--show-${showHeroHeader}`"
+    :class="{ 'hero-header--hidden' : !showHeroHeader }"
     @click="$emit('hideHeroHeader')"
     role="button"
   >
@@ -39,7 +39,7 @@ export default {
   transition: transform 300ms ease-in-out;
   cursor: pointer;
 }
-.hero-header--show-false {
+.hero-header--hidden {
   transform: translateY(-100%);
 }
 .hero-header--gradient::before {

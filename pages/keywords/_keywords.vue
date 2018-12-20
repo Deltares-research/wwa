@@ -89,7 +89,7 @@ export default {
 
 <style>
   .globe-spacer-keywords {
-    height: 50vh;
+    height: 60vh;
     width: 100vw;
     pointer-events: none;
   }

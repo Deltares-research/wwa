@@ -51,7 +51,7 @@ export default {
 
 <style>
 .globe-spacer-narrative {
-  height: 75vh;
+  height: 65vh;
   width: 100vw;
   pointer-events: none;
 }

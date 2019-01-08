@@ -3,24 +3,26 @@ import {
   schemeYlOrRd,
   schemeRdPu
 } from 'd3-scale-chromatic'
+import { range } from 'd3-array'
+import { scaleLinear } from 'd3-scale'
 
 export const metrics = {
   'too-much': {
-    colorRange: schemeYlGnBu[5],
     label: 'Flood Occurrence',
     variable: 'hfo',
-    positionIndex: 1 // position in the data set array
+    positionIndex: 1, // position in the data set array
+    c: scaleLinear().domain(range(6)).range(schemeYlGnBu[5])
   },
   'too-little': {
-    colorRange: schemeYlOrRd[5],
     label: 'Drought Severity',
     variable: 'dro',
-    positionIndex: 2 // position in the data set array
+    positionIndex: 2, // position in the data set array
+    c: scaleLinear().domain(range(6)).range(schemeYlOrRd[5])
   },
   'too-dirty': {
-    colorRange: schemeRdPu[5],
     label: 'Upstream Protected Land',
     variable: 'eco_s',
-    positionIndex: 3 // position in the data set array
+    positionIndex: 3, // position in the data set array
+    c: scaleLinear().domain(range(6)).range(schemeRdPu[5])
   }
 }

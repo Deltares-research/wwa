@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import { loadData } from 'd3-jetpack'
 import { scaleLinear } from 'd3-scale'
-import { range } from 'd3-array'
 import { color } from 'd3-color'
 import { lat2theta, lon2phi, polar2cartesian } from './common'
 import { metrics } from './metrics'
@@ -16,10 +15,6 @@ const rgb2unit = scaleLinear()
 const p = scaleLinear()
   .domain([780, 300])
   .range([10.0, 4.0])
-
-/** Scale for colors */
-const c = scaleLinear()
-  .domain(range(6))
 
 class Particles {
   constructor (base, state) {
@@ -94,40 +89,60 @@ class Particles {
         console.error(`error loading globe-data.csv: ${error}`)
       }
 
+      let currentLat = null
+      const CHAR_OFFSET = 48
+
+      const keys = Object.keys(metrics)
+
       result[0].forEach((d, i) => {
         const particle = {}
-        particle.lat = lat2theta(+d.lat)
+
+        if (d.lat !== '') {
+          currentLat = lat2theta(+d.lat)
+        }
+
+        particle.lat = currentLat
         particle.lon = lon2phi(+d.lon)
 
-        particle.hfo = +d.HFO_s || null
-        particle.dro = +d.DRO_s || null
-        particle.eco_s = +d.ECO_S_s || null
+        if (d.chr === '0') {
+          particle.hfo = 0
+          particle.dro = 0
+          particle.eco_s = 0
+        } else if (d.chr === '') {
+          particle.hfo = null
+          particle.dro = null
+          particle.eco_s = null
+        } else {
+          particle.hfo = (d.chr.charCodeAt(0) - CHAR_OFFSET) / 10
+          particle.dro = (d.chr.charCodeAt(1) - CHAR_OFFSET) / 10
+          particle.eco_s = (d.chr.charCodeAt(2) - CHAR_OFFSET) / 10
+        }
 
         this.data.push(particle)
 
-        Object.keys(metrics).forEach((m) => {
-          c.range(metrics[m].colorRange)
+        keys.forEach((m) => {
+          const metric = metrics[m]
 
           const radius = GLOBE_RADIUS
           const point = polar2cartesian(radius, particle.lat, particle.lon)
           const pos = new THREE.Vector3(point.x, point.y, point.z)
 
-          metrics[m].positions[(i * 3) + 0] = pos.x
-          metrics[m].positions[(i * 3) + 1] = pos.y
-          metrics[m].positions[(i * 3) + 2] = pos.z
+          metric.positions[(i * 3) + 0] = pos.x
+          metric.positions[(i * 3) + 1] = pos.y
+          metric.positions[(i * 3) + 2] = pos.z
 
-          const rgb = particle[metrics[m].variable] < 0 || particle.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(c(particle[metrics[m].variable]))
-          metrics[m].colors[(i * 3) + 0] = rgb2unit(rgb.r)
-          metrics[m].colors[(i * 3) + 1] = rgb2unit(rgb.g)
-          metrics[m].colors[(i * 3) + 2] = rgb2unit(rgb.b)
+          const rgb = particle[metric.variable] < 0 || particle.lat < lat2theta(-60) ? { r: 76, g: 76, b: 76 } : color(metric.c(particle[metric.variable]))
+          metric.colors[(i * 3) + 0] = rgb2unit(rgb.r)
+          metric.colors[(i * 3) + 1] = rgb2unit(rgb.g)
+          metric.colors[(i * 3) + 2] = rgb2unit(rgb.b)
 
           const colors = this.geometry.attributes.color.array
           colors[(i * 3) + 0] = rgb2unit(rgb.r)
           colors[(i * 3) + 1] = rgb2unit(rgb.g)
           colors[(i * 3) + 2] = rgb2unit(rgb.b)
 
-          metrics[m].values[i] = particle[metrics[m].variable]
-          metrics[m].indices[i] = i
+          metric.values[i] = particle[metric.variable]
+          metric.indices[i] = i
         })
       })
 

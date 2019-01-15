@@ -209,6 +209,7 @@ export default {
 */
 
 @media print {
+  .page-body__links a:after,
   .page-body p a:after {
     content: " (" attr(href) ")";
     font-size: 80%;

@@ -342,4 +342,32 @@ export default {
 .narrative-header--condensed .narrative-header__content .narrative-header__cover {
   opacity: 0;
 }
+
+@media print {
+  .narrative-header,
+  .narrative-header--condensed {
+    position: relative;
+    top: 0;
+  }
+  .narrative-header__title,
+  .narrative-header__container {
+    min-height: auto;
+  }
+  .narrative-header__content:after {
+    background-color: var(--ui--blue);
+    -webkit-print-color-adjust: exact;
+  }
+  .narrative-header__content:before {
+    display: none;
+  }
+  .narrative-header__cover {
+    display: none;
+  }
+  .narrative-header__navigation-toggle {
+    display: none;
+  }
+  .narrative-header__back {
+    display: none;
+  }
+}
 </style>

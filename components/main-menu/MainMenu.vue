@@ -163,4 +163,14 @@ export default {
 .menu__item--submit::before {
   content: '+ '
 }
+
+/*
+* style rules for a minimal print layout
+*/
+
+@media print {
+  .menu {
+    display: none;
+  }
+}
 </style>

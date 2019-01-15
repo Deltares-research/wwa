@@ -96,5 +96,17 @@ export default {
   }
 }
 
+/*
+* style rules for a minimal print layout
+*/
 
+@media print {
+  .page-body-title__theme {
+    height: auto;
+  }
+  .page-body-title__theme-icon {
+    position: relative;
+    top: 0;
+  }
+}
 </style>

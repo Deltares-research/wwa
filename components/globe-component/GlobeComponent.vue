@@ -19,4 +19,10 @@
 .hidden {
   display: none;
 }
+
+@media print {
+  .globe-container {
+    display: none;
+  }
+}
 </style>

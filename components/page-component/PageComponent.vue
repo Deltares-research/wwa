@@ -46,4 +46,13 @@ export default {
   }
 }
 
+/*
+* style rules for a minimal print layout
+*/
+
+@media print {
+  .page-component {
+    break-after: page;
+  }
+}
 </style>

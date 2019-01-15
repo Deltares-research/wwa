@@ -66,3 +66,12 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 12'%3E%3Cpath fill='%23F4960A' fill-rule='evenodd' d='M4.5 12h4V3h-4zM0 12h3V7H0zm10 0h4V0h-4z'/%3E%3C/svg%3E");
 }
 
+/*
+* style rules for a minimal print layout
+*/
+
+@media print {
+  .tag {
+    -webkit-print-color-adjust: exact;
+  }
+}

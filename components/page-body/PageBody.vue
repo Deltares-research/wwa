@@ -203,4 +203,34 @@ export default {
 .fixed-ratio > * {
   position: absolute;
 }
+
+/*
+* style rules for a minimal print layout
+*/
+
+@media print {
+  .page-body p a:after {
+    content: " (" attr(href) ")";
+    font-size: 80%;
+  }
+  .page-body__video {
+    display: none;
+  }
+  .page-body__figure {
+    page-break-inside: avoid;
+    max-width: 100mm;
+  }
+  .page-body__links {
+    page-break-inside: avoid;
+  }
+  .page-body__images,
+  .page-body__graphs {
+    padding: 0 1.5rem;
+  }
+  .page-body__asset-placeholder {
+    max-width: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
 </style>

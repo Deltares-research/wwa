@@ -21,7 +21,7 @@
         :page="page"
         :id="page.slug"
         :ref="page.slug"
-        :class="['chaper__page', `chapter__page--${index}`]"
+        :class="['chapter__page', `chapter__page--${index}`]"
       />
       <narrative-footer
         :previousLink="chapter.previousChapter"
@@ -185,6 +185,17 @@ export default {
 @media (min-width: 768px) {
   [data-scrolled-to-top-trigger] {
     top: calc(12.5rem + 1px);
+  }
+}
+
+/*
+* style rules for a minimal print layout
+*/
+
+@media print {
+  .chapter-column {
+    padding: 0;
+    background-color: var(--ui--white);
   }
 }
 </style>

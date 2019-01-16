@@ -160,7 +160,11 @@ export default {
   font-weight: 600;
   opacity: 1;
   color: var(--ui--white);
+}
+.menu__item--dark-background,
+.menu__item--dark-background:hover {
   background-color: var(--ui--black--trans);
+  color: var(--ui--white);
 }
 
 @media (max-width: 799px) {

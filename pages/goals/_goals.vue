@@ -3,7 +3,7 @@
     <div class="globe-spacer-goal" />
     <div class="layout-section">
       <div class="layout-section__container">
-        <h1>Sustainable Development Goals</h1>
+        <h1>Sustainable Development Goals </h1>
         <ul class="list--inline goal-filter">
           <li v-for="link in goals" :key="link.slug">
             <nuxt-link

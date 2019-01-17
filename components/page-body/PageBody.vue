@@ -4,6 +4,7 @@
       <page-body-title
         :pageTitle="title"
         :influences="influences"
+        :goals="goals"
         :keywords="keywords"
         :storyteller="storyteller"
         :theme="theme" />
@@ -93,6 +94,7 @@ export default {
     video: Object,
     mapboxStyle: String,
     influences: Array,
+    goals: Array,
     keywords: Array,
     storyteller: Object,
     partner: Object,

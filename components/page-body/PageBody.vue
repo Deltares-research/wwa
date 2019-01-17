@@ -36,22 +36,27 @@
       </figure>
     </section>
 
-    <section v-if="video" class="page-body__video page-body__figure fixed-ratio"
-      :style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`">
-      <iframe v-if="video.provider === 'youtube'" allowfullscreen="allowfullscreen" frameborder="0"
-        :src="`//www.${video.provider}.com/embed/${video.providerUid}`" width="100%" height="100%">
-      </iframe>
-      <iframe v-else-if="video.provider === 'vimeo'" allowfullscreen="allowfullscreen" frameborder="0"
-        :src="`https://player.vimeo.com/video/${video.providerUid}?title=0&author=0&portrait=0&playbar=0&byline=0`" width="100%" height="100%">
-      </iframe>
+    <section v-if="video" class="page-body__video page-body__figure">
+      <div class="fixed-ratio" :style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`">
+        <iframe v-if="video.provider === 'youtube'" allowfullscreen="allowfullscreen" frameborder="0"
+          :src="`//www.${video.provider}.com/embed/${video.providerUid}`" width="100%" height="100%">
+        </iframe>
+        <iframe v-else-if="video.provider === 'vimeo'" allowfullscreen="allowfullscreen" frameborder="0"
+          :src="`https://player.vimeo.com/video/${video.providerUid}?title=0&author=0&portrait=0&playbar=0&byline=0`" width="100%" height="100%">
+        </iframe>
+      </div>
+      <div class="page-body__asset-placeholder">
+
+      </div>
     </section>
 
-    <section v-if="mapboxStyle" class="page-body__map">
+    <section v-if="mapboxStyle" class="page-body__map page-body__figure">
       <story-map :mapbox-style="mapboxStyle"></story-map>
       <div class="page-body__asset-placeholder">
 
       </div>
     </section>
+
     <section class="page-body">
       <section class="page-body__footer">
         <ul v-if="links" class="page-body__links">

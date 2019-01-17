@@ -10,23 +10,21 @@
       >
       </iframe>
     </div>
-    <div
-      class="vimeo-embed__play-button"
-    >
-      <div class="vimeo-embed__description">
-        <h3
-          v-if="title.length > 0"
-          class="vimeo-embed__title h1">{{ title }}</h3>
-        <p
-          v-if="description.length > 0"
-        >
-          {{ description }}
-        </p>
-        <nuxt-link
-          v-if="url.length > 0"
-          :to="url"
-        >Read more ...</nuxt-link>
-      </div>
+    <div class="vimeo-embed__description"  v-if="title.length > 0 || description.length > 0 || url.length > 0">
+      <h3
+        v-if="title.length > 0"
+        class="vimeo-embed__title h1">
+        {{ title }}
+      </h3>
+      <p
+        v-if="description.length > 0"
+      >
+        {{ description }}
+      </p>
+      <nuxt-link
+        v-if="url.length > 0"
+        :to="url"
+      >Read more ...</nuxt-link>
     </div>
   </div>
 </template>

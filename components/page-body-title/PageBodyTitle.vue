@@ -22,6 +22,19 @@
         </li>
       </ul>
     </div>
+    <div class="page-body-title__goals" v-if="goals.length">
+      <ul class="list--inline">
+        <li v-for="link in goals" :key="link.slug">
+            <nuxt-link
+              :class="`sdg-tag sdg-tag--${link.slug.slice(0,2)}`"
+              :to="link.path"
+              :title="link.title"
+              >
+              <span class="sr-only">{{ link.title }}</span>
+            </nuxt-link>
+        </li>
+      </ul>
+    </div>
   </section>
 </template>
 
@@ -30,6 +43,7 @@ export default {
   props: {
     pageTitle: String,
     influences: Array,
+    goals: Array,
     keywords: Array,
     storyteller: Object,
     partner: Object,

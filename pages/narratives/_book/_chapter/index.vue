@@ -17,7 +17,7 @@
       <page-component
         data-page-component
         v-for="(page, index) in pages"
-        :key="page.slug"
+        :key="`${page.slug}-${index}`"
         :page="page"
         :id="page.slug"
         :ref="page.slug"
@@ -50,7 +50,7 @@ export default {
     const booksList = await loadData(context, { booksList: 'index' })
     return { book, chapter, pages, path, slug, title, booksList }
   },
-  data () {
+  data: function () {
     return {
       activePage: null,
       scrollIntoViewSupport: false,
@@ -64,7 +64,11 @@ export default {
     this.$store.commit('enableGlobePositionRight')
     const pageSlug = this.$route.hash.replace(/^#/, '')
     this.updateActivePage(pageSlug)
-    if ('IntersectionObserver' in window) {
+    if (
+      'IntersectionObserver' in window &&
+      'IntersectionObserverEntry' in window &&
+      'intersectionRatio' in window.IntersectionObserverEntry.prototype
+    ) {
       this.observeIntersectingChildren()
       this.observeScrolledToTop()
     }
@@ -194,6 +198,7 @@ export default {
 
 @media print {
   .chapter-column {
+    position: relative;
     padding: 0;
     background-color: var(--ui--white);
   }

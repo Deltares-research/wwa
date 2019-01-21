@@ -60,7 +60,11 @@ export default {
     this.$store.commit('enableInteraction')
     this.$store.commit('enableGlobeAutoRotation')
     this.$store.commit('enableNavBackgroundTrans')
-    if ('IntersectionObserver' in window) {
+    if (
+      'IntersectionObserver' in window &&
+      'IntersectionObserverEntry' in window &&
+      'intersectionRatio' in window.IntersectionObserverEntry.prototype
+    ) {
       this.observeScrolledToTop()
     }
   },

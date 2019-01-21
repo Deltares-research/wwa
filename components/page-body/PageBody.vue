@@ -7,12 +7,12 @@
         :keywords="keywords"
         :storyteller="storyteller"
         :theme="theme" />
-
       <section v-if="htmlBody" class="page-body__body" v-html="htmlBody"></section>
     </section>
+
     <section v-if="images.length" class="page-body__images">
       <figure v-for="image in images" :key="image.id" class="page-body__figure">
-        <lazy-image
+        <responsive-image
           class="page-body__lazy-image"
           :src="`${image.imgixHost}${image.value.path}?w=640&q=65`"
           :srcWidth="image.value.width"
@@ -25,7 +25,7 @@
 
     <section v-if="graphs.length" class="page-body__graphs">
       <figure v-for="graph in graphs" :key="graph.id" class="page-body__figure">
-          <lazy-image
+        <responsive-image
           class="page-body__lazy-image"
           :src="`${graph.imgixHost}${graph.value.path}?w=640&q=65`"
           :srcWidth="graph.value.width"
@@ -36,26 +36,26 @@
       </figure>
     </section>
 
-    <section v-if="video" class="page-body__video page-body__figure fixed-ratio"
-      :style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`">
-      <iframe v-if="video.provider === 'youtube'" allowfullscreen="allowfullscreen" frameborder="0"
-        :src="`//www.${video.provider}.com/embed/${video.providerUid}`" width="100%" height="100%">
-      </iframe>
-      <iframe v-else-if="video.provider === 'vimeo'" allowfullscreen="allowfullscreen" frameborder="0"
-        :src="`https://player.vimeo.com/video/${video.providerUid}?title=0&author=0&portrait=0&playbar=0&byline=0`" width="100%" height="100%">
-      </iframe>
+    <section v-if="video" class="page-body__video page-body__figure">
+      <responsive-video
+        class="page-body__lazy-video"
+        :videoWidth="video.width"
+        :videoHeight="video.height"
+        :videoProvider="video.provider"
+        :videoProviderUid="video.providerUid"
+      />
+      <div class="page-body__asset-placeholder"></div>
     </section>
 
     <section v-if="mapboxStyle" class="page-body__map">
       <story-map :mapbox-style="mapboxStyle"></story-map>
-      <div class="page-body__asset-placeholder">
-
-      </div>
+      <div class="page-body__asset-placeholder"></div>
     </section>
+
     <section class="page-body">
       <section class="page-body__footer">
         <ul v-if="links" class="page-body__links">
-          <li v-for="link in links" :key="link.title">
+          <li v-for="(link, index) in links" :key="`${link.title}-${index}`">
             <a target="_blank" :href="link.path">{{ link.title }}</a>
           </li>
         </ul>
@@ -73,10 +73,11 @@
 </template>
 
 <script>
-import LazyImage from '~/components/lazy-image/LazyImage'
 import PageBodyTitle from '~/components/page-body-title/PageBodyTitle'
 import StoryMap from '~/components/story-map/StoryMap'
 import renderMarkedContent from '~/lib/custom-marked'
+import ResponsiveImage from '~/components/responsive-image/ResponsiveImage'
+import ResponsiveVideo from '~/components/responsive-video/ResponsiveVideo'
 
 export default {
   props: {
@@ -97,7 +98,7 @@ export default {
       default: 3 * 16
     }
   },
-  components: { LazyImage, PageBodyTitle, StoryMap },
+  components: { PageBodyTitle, StoryMap, ResponsiveImage, ResponsiveVideo },
   computed: {
     htmlBody () {
       return renderMarkedContent(this.body)

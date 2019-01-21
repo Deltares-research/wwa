@@ -33,7 +33,7 @@
               class="narrative-header__navigation-item"
               :class="{'narrative-header__navigation-item--active': page.slug === activePage}"
               v-for="(page, index) in pages"
-              :key="page.slug"
+              :key="`${page.slug}-${index}`"
               @click="setShowNavigation(showNavigation)"
             >
               <button class="narrative-header__link" @click="$emit('selectLink', page.slug)" >
@@ -275,6 +275,9 @@ export default {
   border: none;
   width: 100%;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .narrative-header__navigation-item--active .narrative-header__link {

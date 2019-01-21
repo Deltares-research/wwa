@@ -51,8 +51,13 @@ export default {
 */
 
 @media print {
+  /*
+  ** Below only works in normal donument flow
+  ** chapter-column needs to be set relative for
+  ** this to work
+  */
   .page-component {
-    break-after: page;
+    page-break-after: always;
   }
 }
 </style>

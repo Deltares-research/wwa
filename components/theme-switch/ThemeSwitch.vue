@@ -3,7 +3,8 @@
     <template v-for="(theme, index) in themes">
         <template v-if="(theme.slug === activeSlug)">
           <dt :key="`${theme.slug}-title`">
-            <button
+            <nuxt-link
+              to="/"
               class="theme-switch__button"
               :class="`theme-switch__button-${theme.slug} theme-switch__button-${theme.slug}--active`"
             >
@@ -14,7 +15,7 @@
                 />
               </span>
               <span class="theme-switch__title">{{ theme.title }}</span>
-            </button>
+            </nuxt-link>
           </dt>
           <dd class="invert theme-switch__description" :key="`${theme.slug}-active-description`" v-html="formattedBodies[index]"></dd>
         </template>

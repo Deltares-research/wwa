@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 // load data to define routes
 const books = require('./static/data/books/index.json')
 const themes = require('./static/data/themes/index.json')
+const goals = require('./static/data/goals/index.json')
 const influences = require('./static/data/influences/index.json')
 const keywords = require('./static/data/keywords/index.json')
 const staticPages = require('./static/data/static-pages/index.json')
@@ -22,6 +23,7 @@ const chapters = books
 const routes = books
   .concat(chapters)
   .concat(themes)
+  .concat(goals)
   .concat(influences)
   .concat(keywords)
   .concat(staticPages)

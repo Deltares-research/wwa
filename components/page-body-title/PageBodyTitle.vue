@@ -14,11 +14,25 @@
 
     <div class="page-body-title__keywords" v-if="keywords.length || influences.length">
       <ul class="list--inline">
-        <li v-for="link in keywords" :key="link.slug">
+        <li v-for="link in keywords" :key="`keyword-${link.slug}`">
           <nuxt-link class="tag" :to="link.path">{{ link.title }}</nuxt-link>
         </li>
-        <li v-for="link in influences" :key="link.slug">
+        <li v-for="link in influences" :key="`influence-${link.slug}`">
           <nuxt-link :to="link.path" :class="`tag tag--influence tag--${link.slug}`">{{ link.title }}</nuxt-link>
+        </li>
+      </ul>
+    </div>
+    <div class="page-body-title__goals" v-if="goals.length">
+      <ul class="list--inline">
+        <li v-for="link in goals" :key="link.slug">
+            <nuxt-link
+              class="sdg-tag"
+              :style="{ backgroundImage: `url('assets/E_SDG-goals_icons-individual-rgb-${link.slug.slice(0,2)}.png')` }"
+              :to="link.path"
+              :title="link.title"
+              >
+              <span class="sr-only">{{ link.title }}</span>
+            </nuxt-link>
         </li>
       </ul>
     </div>
@@ -30,6 +44,7 @@ export default {
   props: {
     pageTitle: String,
     influences: Array,
+    goals: Array,
     keywords: Array,
     storyteller: Object,
     partner: Object,
@@ -96,5 +111,17 @@ export default {
   }
 }
 
+/*
+* style rules for a minimal print layout
+*/
 
+@media print {
+  .page-body-title__theme {
+    height: auto;
+  }
+  .page-body-title__theme-icon {
+    position: relative;
+    top: 0;
+  }
+}
 </style>

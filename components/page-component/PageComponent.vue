@@ -47,4 +47,18 @@ export default {
   }
 }
 
+/*
+* style rules for a minimal print layout
+*/
+
+@media print {
+  /*
+  ** Below only works in normal donument flow
+  ** chapter-column needs to be set relative for
+  ** this to work
+  */
+  .page-component {
+    page-break-after: always;
+  }
+}
 </style>

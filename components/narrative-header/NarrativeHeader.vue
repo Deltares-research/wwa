@@ -33,7 +33,7 @@
               class="narrative-header__navigation-item"
               :class="{'narrative-header__navigation-item--active': page.slug === activePage}"
               v-for="(page, index) in pages"
-              :key="page.slug"
+              :key="`${page.slug}-${index}`"
               @click="setShowNavigation(showNavigation)"
             >
               <button class="narrative-header__link" @click="$emit('selectLink', page.slug)" >
@@ -275,6 +275,9 @@ export default {
   border: none;
   width: 100%;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .narrative-header__navigation-item--active .narrative-header__link {
@@ -341,5 +344,33 @@ export default {
 
 .narrative-header--condensed .narrative-header__content .narrative-header__cover {
   opacity: 0;
+}
+
+@media print {
+  .narrative-header,
+  .narrative-header--condensed {
+    position: relative;
+    top: 0;
+  }
+  .narrative-header__title,
+  .narrative-header__container {
+    min-height: auto;
+  }
+  .narrative-header__content:after {
+    background-color: var(--ui--blue);
+    -webkit-print-color-adjust: exact;
+  }
+  .narrative-header__content:before {
+    display: none;
+  }
+  .narrative-header__cover {
+    display: none;
+  }
+  .narrative-header__navigation-toggle {
+    display: none;
+  }
+  .narrative-header__back {
+    display: none;
+  }
 }
 </style>

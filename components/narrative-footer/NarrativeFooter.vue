@@ -194,4 +194,10 @@ export default {
     flex-direction: row;
   }
 }
+
+@media print {
+  .narrative-footer {
+    display: none;
+  }
+}
 </style>

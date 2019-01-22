@@ -24,7 +24,7 @@
 
 <script>
 import loadData from '~/lib/load-data'
-import lazyImage from '~/components/lazy-image/LazyImage'
+import lazyImage from '~/components/lazy-media/LazyMedia'
 import marked from '~/lib/custom-marked'
 
 export default {

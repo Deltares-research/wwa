@@ -4,6 +4,7 @@
       <page-body-title
         :pageTitle="title"
         :influences="influences"
+        :goals="goals"
         :keywords="keywords"
         :storyteller="storyteller"
         :theme="theme" />
@@ -47,7 +48,7 @@
       <div class="page-body__asset-placeholder"></div>
     </section>
 
-    <section v-if="mapboxStyle" class="page-body__map">
+    <section v-if="mapboxStyle" class="page-body__map page-body__figure">
       <story-map :mapbox-style="mapboxStyle"></story-map>
       <div class="page-body__asset-placeholder"></div>
     </section>
@@ -89,6 +90,7 @@ export default {
     video: Object,
     mapboxStyle: String,
     influences: Array,
+    goals: Array,
     keywords: Array,
     storyteller: Object,
     partner: Object,

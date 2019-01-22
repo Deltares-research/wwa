@@ -10,6 +10,7 @@
       :links="page.links"
       :partner="page.partner"
       :influences="page.influences"
+      :goals="page.goals"
       :keywords="page.keywords"
       :storyteller="page.storyteller"
       :theme="page.theme" />

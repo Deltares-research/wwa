@@ -114,7 +114,8 @@ module.exports = {
 
   plugins: [
     { src: '~/plugins/smoothscroll', ssr: false },
-    { src: '~/plugins/vue-portal', ssr: true }
+    { src: '~/plugins/vue-portal', ssr: true },
+    { src: '~/plugins/ga.js', ssr: false }
   ],
 
   // include routerbase

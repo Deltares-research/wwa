@@ -14,10 +14,10 @@
 
     <div class="page-body-title__keywords" v-if="keywords.length || influences.length">
       <ul class="list--inline">
-        <li v-for="link in keywords" :key="link.slug">
+        <li v-for="link in keywords" :key="`keyword-${link.slug}`">
           <nuxt-link class="tag" :to="link.path">{{ link.title }}</nuxt-link>
         </li>
-        <li v-for="link in influences" :key="link.slug">
+        <li v-for="link in influences" :key="`influence-${link.slug}`">
           <nuxt-link :to="link.path" :class="`tag tag--influence tag--${link.slug}`">{{ link.title }}</nuxt-link>
         </li>
       </ul>
@@ -111,5 +111,17 @@ export default {
   }
 }
 
+/*
+* style rules for a minimal print layout
+*/
 
+@media print {
+  .page-body-title__theme {
+    height: auto;
+  }
+  .page-body-title__theme-icon {
+    position: relative;
+    top: 0;
+  }
+}
 </style>

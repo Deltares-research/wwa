@@ -17,11 +17,11 @@
       <page-component
         data-page-component
         v-for="(page, index) in pages"
-        :key="page.slug"
+        :key="`${page.slug}-${index}`"
         :page="page"
         :id="page.slug"
         :ref="page.slug"
-        :class="['chaper__page', `chapter__page--${index}`]"
+        :class="['chapter__page', `chapter__page--${index}`]"
       />
       <narrative-footer
         :previousLink="chapter.previousChapter"
@@ -50,7 +50,7 @@ export default {
     const booksList = await loadData(context, { booksList: 'index' })
     return { book, chapter, pages, path, slug, title, booksList }
   },
-  data () {
+  data: function () {
     return {
       activePage: null,
       scrollIntoViewSupport: false,
@@ -64,7 +64,11 @@ export default {
     this.$store.commit('enableGlobePositionRight')
     const pageSlug = this.$route.hash.replace(/^#/, '')
     this.updateActivePage(pageSlug)
-    if ('IntersectionObserver' in window) {
+    if (
+      'IntersectionObserver' in window &&
+      'IntersectionObserverEntry' in window &&
+      'intersectionRatio' in window.IntersectionObserverEntry.prototype
+    ) {
       this.observeIntersectingChildren()
       this.observeScrolledToTop()
     }
@@ -185,6 +189,18 @@ export default {
 @media (min-width: 768px) {
   [data-scrolled-to-top-trigger] {
     top: calc(12.5rem + 1px);
+  }
+}
+
+/*
+* style rules for a minimal print layout
+*/
+
+@media print {
+  .chapter-column {
+    position: relative;
+    padding: 0;
+    background-color: var(--ui--white);
   }
 }
 </style>

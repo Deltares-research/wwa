@@ -16,23 +16,11 @@
   overflow: hidden;
   transition: opacity 240ms ease-in-out;
   box-sizing: border-box;
-}
-
-.sdg-tag::before {
-  content: '';
-  display: inline-block;
-  width: 48px;
-  height: 48px;
-  vertical-align: middle;
-  background-repeat: no-repeat;
   background-size: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
+  background-repeat: no-repeat;
 }
 
-.sdg-tag--large,
-.sdg-tag--large::before {
+.sdg-tag--large {
   width: 80px;
   height: 80px;
 }
@@ -49,58 +37,3 @@
   opacity: 1;
   cursor: default;
 }
-
-.sdg-tag--01::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-01.png');
-}
-.sdg-tag--02::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-02.png');
-}
-.sdg-tag--03::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-03.png');
-}
-.sdg-tag--04::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-04.png');
-}
-.sdg-tag--05::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-05.png');
-}
-.sdg-tag--06::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-06.png');
-}
-.sdg-tag--07::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-07.png');
-}
-.sdg-tag--08::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-08.png');
-}
-.sdg-tag--09::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-09.png');
-}
-.sdg-tag--10::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-10.png');
-}
-.sdg-tag--11::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-11.png');
-}
-.sdg-tag--12::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-12.png');
-}
-.sdg-tag--13::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-13.png');
-}
-.sdg-tag--14::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-14.png');
-}
-.sdg-tag--15::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-15.png');
-}
-.sdg-tag--16::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-16.png');
-}
-.sdg-tag--17::before {
-  background-image: url('assets/E_SDG-goals_icons-individual-rgb-17.png');
-}
-
-
-

@@ -36,6 +36,10 @@ html {
   background-color: rgba(0, 0, 42, 0.85);
 }
 
+.layout-section--grey-trans {
+  background-color: var(--ui--bg--grey-trans);
+}
+
 .layout-section--gradient:before {
   content: '';
   display: block;

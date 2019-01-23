@@ -94,6 +94,7 @@
   --ui--bg: var(--ui--black);
   --ui--bg--white: var(--ui--white);
   --ui--bg--light: var(--booklet--neutral);
+  --ui--bg--grey-trans: rgba(177, 183, 199, 0.4);
   --ui--bg--dark-transparent: rgba(1, 0, 42, 0);
   --ui--bg--dark-translucent: rgba(1, 0, 42, 0.75);
   --ui--bg--dark-opaque: rgba(1, 0, 42, 1);

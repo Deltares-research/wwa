@@ -102,7 +102,7 @@
   --ui--bg--theme-too-dirty-trans: rgba(122, 1, 119, 0.8);
   --ui--bg--theme-too-much-dark-trans: rgba(20, 28, 79, 0.75);
   --ui--bg--theme-too-little-dark-trans: rgba(84, 2, 18, 0.75);
-  --ui--bg--theme-too-dirty-dark-trans: rgba(61, 0, 59, 0.75);
+  --ui--bg--theme-too-dirty-dark-trans: rgba(74, 33, 2, 0.75);
   --ui--text: var(--booklet--text);
   --ui--text--light: var(--booklet--text--light);
   --ui--text--invert: var(--ui--white);

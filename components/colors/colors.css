@@ -100,6 +100,9 @@
   --ui--bg--theme-too-much-trans: rgba(38, 52, 147, 0.8);
   --ui--bg--theme-too-little-trans: rgba(254, 141, 59, 0.8);
   --ui--bg--theme-too-dirty-trans: rgba(122, 1, 119, 0.8);
+  --ui--bg--theme-too-much-dark-trans: rgba(20, 28, 79, 0.75);
+  --ui--bg--theme-too-little-dark-trans: rgba(84, 2, 18, 0.75);
+  --ui--bg--theme-too-dirty-dark-trans: rgba(61, 0, 59, 0.75);
   --ui--text: var(--booklet--text);
   --ui--text--light: var(--booklet--text--light);
   --ui--text--invert: var(--ui--white);

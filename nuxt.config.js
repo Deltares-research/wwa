@@ -1,6 +1,5 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 // load data to define routes
@@ -119,7 +118,17 @@ module.exports = {
   ],
 
   // include routerbase
-  router: routerBase.router,
+  router: {
+    ...routerBase.router,
+    scrollBehavior: (to, from) => {
+      if (
+        (to.name !== 'themes-theme') &&
+        (from.name !== 'themes-theme' || from.name !== 'index')
+      ) {
+        return { x: 0, y: 0 }
+      }
+    }
+  },
   // Build configuration
   build: {
     // Run ESLint on save

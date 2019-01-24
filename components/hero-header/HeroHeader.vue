@@ -80,6 +80,7 @@ export default {
   }
   .hero-header__intro {
     font-size: 1rem;
+    max-height: 5rem;
   }
 }
 </style>

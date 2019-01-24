@@ -151,7 +151,7 @@ export default {
   letter-spacing: 0.6px;
   text-transform: uppercase;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--ui--white);
   width: 100%;
   display: flex;
   justify-content: flex-end;
@@ -180,7 +180,7 @@ export default {
 }
 .menu-dropdown__icon {
   display: inline-block;
-  fill: #ffffff;
+  fill: var(--ui--white);
   margin: 3px 0 3px 0.5em;
   transition: transform 200ms ease-in-out;
 }

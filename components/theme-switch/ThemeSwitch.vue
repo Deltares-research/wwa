@@ -75,6 +75,9 @@ export default {
 .theme-switch__button {
   position: relative;
   display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding: 0.375rem;
   margin: 0 0.25rem;
   line-height: 1.75rem;

@@ -15,19 +15,9 @@
         :to="book.path"
       >
         <span class="book-list__more-content">
-          more on {{ book.title }} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="book-list__more-chevron"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+          {{ book.title }} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="book-list__more-chevron"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
         </span>
       </nuxt-link>
-      <!--
-      <button
-        v-if="bookLimitMap[book.slug] < book.chapters.length"
-        class="book-list__more"
-        @click="increaseLimit(book.slug)">
-        <span class="book-list__more-content">
-          more on {{ book.title }} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="book-list__more-chevron"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path> <path fill="none" d="M0 0h24v24H0V0z"></path></svg>
-        </span>
-      </button>
-      -->
     </li>
   </ul>
 </template>
@@ -48,11 +38,6 @@ export default {
   computed: {
     hasSlotContent () {
       return this.$scopedSlots.hasOwnProperty('default')
-    }
-  },
-  methods: {
-    increaseLimit (slug) {
-      Vue.set(this.bookLimitMap, slug, this.bookLimitMap[slug] + 3)
     }
   }
 }

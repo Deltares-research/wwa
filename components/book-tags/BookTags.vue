@@ -22,7 +22,7 @@ export default {
 
 <style>
   .book-tags {
-    margin: 1.5rem 0 1rem 0;
+    margin: 0.5rem 0 1rem 0;
     padding: 0;
   }
   .book-tags__list-item {

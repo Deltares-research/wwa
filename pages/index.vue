@@ -65,7 +65,7 @@ export default {
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.markers)
-    this.$store.commit('enableInteraction')
+    this.$store.commit('enableRotate')
     this.$store.commit('enableGlobeAutoRotation')
     this.$store.commit('enableNavBackgroundTrans')
     if (

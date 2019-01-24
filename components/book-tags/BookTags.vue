@@ -64,21 +64,22 @@ export default {
     text-transform: none;
   }
   .books-tags__button {
+    max-width: 18.5rem;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 1rem;
-    background: #467388;
-
-
+    background-color: rgba(255,255,255,0.25);
     border: 1px solid transparent;
-    /* background: none; */
-    font-size: 1em;
-    line-height: 30px;
+    border-radius: 2.5rem;
+    font-size: 0.65rem;
+    line-height: 38px;
     letter-spacing: 0.6px;
     font-weight: bold;
     color: var(--ui--white);
     width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 0 0.5rem;
+    padding: 0 0.5rem 0 1rem;
     cursor: pointer;
     white-space: nowrap;
     overflow: hidden;
@@ -87,7 +88,7 @@ export default {
 
   .books-tags__button:hover,
   .books-tags__button--active {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255,255,255,0.5);
     transition: background-color 200ms ease-in-out;
   }
   .books-tags__title {
@@ -98,7 +99,7 @@ export default {
   .books-tags__button__icon {
     display: inline-block;
     fill: var(--ui--white);
-    margin: 3px 0 3px 0.5em;
+    margin: 7px 0 7px 0.5em;
     transition: transform 200ms ease-in-out;
   }
   .books-tags__button__icon--active {

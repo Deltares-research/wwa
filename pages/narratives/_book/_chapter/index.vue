@@ -48,6 +48,7 @@ export default {
     const { book, pages, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params)
     const chapter = { path, slug, title, previousChapter, nextChapter, cover, related }
     const booksList = await loadData(context, { booksList: 'index' })
+    console.log(context.params)
     return { book, chapter, pages, path, slug, title, booksList }
   },
   data: function () {

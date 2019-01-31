@@ -26,7 +26,7 @@
 <script>
 import loadData from '~/lib/load-data'
 import marked from '~/lib/custom-marked'
-
+import flattenDeep from 'lodash/flattenDeep'
 import home from '~/static/data/home.json'
 
 import BookList from '~/components/book-list/BookList'
@@ -38,23 +38,26 @@ import VideoHighlights from '~/components/video-highlights/VideoHighlights'
 export default {
   components: { BookList, ChapterList, HeroHeader, ThemeSwitch, VideoHighlights },
   async asyncData (context) {
-    const themes = loadData(context, { theme: 'index' })
+    const themes = await loadData(context, { theme: 'index' })
     const books = await loadData(context, { book: 'index' })
 
-    const chapters = await Promise.all([
+    const chaptersNested = await Promise.all([
       ...books.map(book => {
-        console.log(book)
         return book.chapters.map(chapter => {
-          return loadData(context, { chapter: chapter.slug })
+          return loadData(context,
+            {
+              chapter: {
+                path: `books/${book.slug}/chapters/${chapter.slug}/index.json`
+              }
+            })
         })
       })
     ])
 
-    console.log(chapters)
-
-    const markers = chapters
-      .reduce((a, b) => a.concat(b.chapters), []) // flatten array
-      // .filter(marker => marker.location)
+    const chaptersFlattend = flattenDeep(chaptersNested)
+    const chapters = await Promise.all(chaptersFlattend)
+    const markers = flattenDeep(chapters.map(chapter => chapter.pages))
+      .filter(page => page.location && page.theme && page.path)
 
     return { books, markers, themes: await themes }
   },
@@ -67,7 +70,7 @@ export default {
     }
   },
   mounted () {
-    // this.$store.commit('replaceFeatures', this.markers)
+    this.$store.commit('replaceFeatures', this.markers)
     this.$store.commit('enableInteraction')
     this.$store.commit('enableGlobeAutoRotation')
     this.$store.commit('enableNavBackgroundTrans')

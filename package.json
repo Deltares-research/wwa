@@ -55,9 +55,12 @@
   },
   "dependencies": {
     "axios": "0.18.0",
+    "d3-array": "^2.0.3",
+    "d3-collection": "^1.0.7",
     "d3-jetpack": "2.0.19",
     "d3-scale": "^1.0.7",
     "d3-scale-chromatic": "^1.2.0",
+    "dbscanjs": "^1.0.1",
     "es6-tween": "^5.1.0",
     "lodash.get": "^4.4.2",
     "marked": "0.5.1",

@@ -202,8 +202,10 @@ export default {
       const dist = this.camera.position.distanceTo(center)
 
       this.avatar.mesh.children.forEach(child => {
-        const lon = lon2phi(child.data.location.lon)
-        const lat = lat2theta(child.data.location.lat)
+        // const lon = lon2phi(child.data.location.lon)
+        // const lat = lat2theta(child.data.location.lat)
+        const lon = lon2phi(child.data.meanLocation[0])
+        const lat = lat2theta(child.data.meanLocation[1])
 
         const { x, y, z } = polar2cartesian(GLOBE_RADIUS + (0.01 * dist), lat, lon)
         child.position.x = x

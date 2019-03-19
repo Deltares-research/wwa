@@ -62,6 +62,8 @@ class Avatar {
       geometry.vertices.push(new THREE.Vector3())
 
       avatar.data = marker
+      avatar.data.originalTexture = map
+
       this.mesh.add(avatar)
     })
 

@@ -212,15 +212,65 @@ export default {
         .key(d => d.data.cluster)
         .entries(this.avatar.mesh.children)
 
-      nested.forEach(d => {
-        if (+d.key === -1) {
-          d.values.forEach(function (d) {
+      nested.forEach(item => {
+        if (+item.key === -1) {
+          item.values.forEach(function (d) {
             d.data.meanLocation = [d.data.location.lon, d.data.location.lat]
+
+            if (d.data.clusterSize !== 0) {
+              d.data.clusterSize = 0
+              d.material.map = d.data.originalTexture
+            }
           })
         } else {
-          const meanLocation = [mean(d.values.map(d => d.data.location.lon)), mean(d.values.map(d => d.data.location.lat))]
-          d.values.forEach(function (d) {
+          const meanLocation = [mean(item.values.map(d => d.data.location.lon)), mean(item.values.map(d => d.data.location.lat))]
+          item.values.forEach(function (d) {
             d.data.meanLocation = meanLocation
+
+            if (!d.data.clusterSize || d.data.clusterSize !== item.values.length) {
+              let canvas = document.getElementById(`cluster-canvas-${item.values.length}`)
+
+              if (!canvas || canvas === null) {
+                canvas = document.createElement('canvas')
+                canvas.id = `cluster-canvas-${item.values.length}`
+
+                const size = 128
+                canvas.style.width = `${size}px`
+                canvas.style.height = `${size}px`
+                canvas.style.display = 'none'
+
+                // Set actual size in memory (scaled to account for extra pixel density).
+                const scale = window.devicePixelRatio // Change to 1 on retina screens to see blurry canvas.
+
+                canvas.width = size * scale
+                canvas.height = size * scale
+
+                const ctx = canvas.getContext('2d')
+
+                ctx.scale(scale, scale) // Normalize coordinate system to use css pixels.
+
+                ctx.beginPath()
+                ctx.arc(64, 64, 48, 0, Math.PI * 2)
+                ctx.closePath()
+                ctx.fillStyle = 'white'
+                ctx.fill()
+
+                ctx.fillStyle = 'black'
+                ctx.textAlign = 'center'
+                ctx.textBaseline = 'middle'
+                ctx.font = '36px Arial'
+                ctx.fillText(item.values.length, 64, 64)
+
+                document.body.appendChild(canvas)
+              }
+
+              d.data.clusterSize = item.values.length
+
+              const texture = new THREE.CanvasTexture(canvas)
+              d.material.map = texture
+
+              texture.needsUpdate = true
+            }
           })
         }
       })
@@ -288,7 +338,6 @@ export default {
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
 
-      console.log(this.intersections.length)
       if (this.intersections.length > 0) {
         const { data = { path: '#' } } = this.intersections[0].object
         // navigate to path

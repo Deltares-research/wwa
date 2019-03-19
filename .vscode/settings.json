@@ -10,4 +10,7 @@
   "editor.formatOnSave": false,
   "eslint.autoFixOnSave": true,
   "python.linting.enabled": false,
+  "cSpell.words": [
+    "dbscan"
+  ],
 }

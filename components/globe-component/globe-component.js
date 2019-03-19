@@ -1,10 +1,13 @@
 import * as THREE from 'three'
 // import { MeshLine, MeshLineMaterial } from 'three.meshline'
 import { Tween, autoPlay, Easing } from 'es6-tween'
-import { cartesian2polar, polar2cartesian, lat2theta, lon2phi } from './common.js'
+import { cartesian2polar, polar2cartesian, lat2theta, lon2phi, greatCircleDistance } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
 import { mapState } from 'vuex'
 import { scaleLinear } from 'd3-scale'
+import dbscan from 'dbscanjs'
+import { nest } from 'd3-collection'
+import { mean } from 'd3-array'
 
 import { GLOBE_RADIUS } from './constants'
 import Glow from './glow'
@@ -200,6 +203,31 @@ export default {
     },
     updateAvatarPositions () {
       const dist = this.camera.position.distanceTo(center)
+
+      const epsilon = 500 * ((dist - 6) / 44) // The maximum distance between two points for them to be considered as being in the same neighborhood.
+      const minPoints = 2 // The minimum number of points in any group for them to be considered a distinct group. All other points are considered to be noise, and will receive a label of -1.
+
+      const labels = dbscan(this.avatar.mesh.children.map(d => [d.data.location.lon, d.data.location.lat]), greatCircleDistance, epsilon, minPoints)
+      this.avatar.mesh.children.forEach((d, i) => {
+        d.data.cluster = labels[i]
+      })
+
+      const nested = nest()
+        .key(d => d.data.cluster)
+        .entries(this.avatar.mesh.children)
+
+      nested.forEach(d => {
+        if (+d.key === -1) {
+          d.values.forEach(function (d) {
+            d.data.meanLocation = [d.data.location.lon, d.data.location.lat]
+          })
+        } else {
+          const meanLocation = [mean(d.values.map(d => d.data.location.lon)), mean(d.values.map(d => d.data.location.lat))]
+          d.values.forEach(function (d) {
+            d.data.meanLocation = meanLocation
+          })
+        }
+      })
 
       this.avatar.mesh.children.forEach(child => {
         // const lon = lon2phi(child.data.location.lon)

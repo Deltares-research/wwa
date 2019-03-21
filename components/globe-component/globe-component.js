@@ -253,12 +253,15 @@ export default {
                 ctx.arc(64, 64, 48, 0, Math.PI * 2)
                 ctx.closePath()
                 ctx.fillStyle = 'white'
+                ctx.strokeStyle = 'hsl(240, 8%, 52%)'
+                ctx.lineWidth = 10
                 ctx.fill()
+                ctx.stroke()
 
-                ctx.fillStyle = 'black'
+                ctx.fillStyle = 'hsl(238, 100%, 8%)'
                 ctx.textAlign = 'center'
                 ctx.textBaseline = 'middle'
-                ctx.font = '36px Arial'
+                ctx.font = 'bold 36px Arial'
                 ctx.fillText(item.values.length, 64, 64)
 
                 document.body.appendChild(canvas)
@@ -341,7 +344,11 @@ export default {
       if (this.intersections.length > 0) {
         const { data = { path: '#' } } = this.intersections[0].object
         // navigate to path
-        this.$router.push(data.path)
+        if (data.clusterSize > 0) {
+          this.$router.push(data.chapter.path)
+        } else {
+          this.$router.push(data.path)
+        }
       }
     },
     handleMouseMove (event) {

@@ -50,12 +50,12 @@ export default {
   padding-top: 1rem;
 }
 .layout-section--theme-too-much-active {
-  background-color: var(--ui--bg--theme-too-much-trans);
+  background-color: var(--ui--bg--theme-too-much-dark-trans);
 }
 .layout-section--theme-too-little-active {
-  background-color: var(--ui--bg--theme-too-little-trans);
+  background-color: var(--ui--bg--theme-too-little-dark-trans);
 }
 .layout-section--theme-too-dirty-active {
-  background-color: var(--ui--bg--theme-too-dirty-trans);
+  background-color: var(--ui--bg--theme-too-dirty-dark-trans);
 }
 </style>

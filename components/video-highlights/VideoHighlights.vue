@@ -91,28 +91,4 @@ export default {
     margin-right: 50px;
   }
 }
-
-/*
-** Temp page margin styles to be removed after merge
-*/
-
-.layout-section {
-  width: calc(100vw - 40px);
-  display: flex;
-  justify-content: center;
-  position: relative;
-  padding: 0 20px;
-}
-
-@media (min-width: 600px) {
-  .layout-section {
-      width: calc(100vw - 80px);
-      padding: 0 40px;
-  }
-}
-
-.layout-section__container {
-  max-width: 950px;
-  width: 100%;
-}
 </style>

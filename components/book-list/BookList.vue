@@ -1,19 +1,23 @@
 <template>
   <ul class="book-list">
-    <li v-for="book in books" :key="book.slug">
+    <li
+      v-for="book in books"
+      :key="book.slug"
+      :id="book.slug"
+    >
       <h2 class="book-list__book-title">
         <nuxt-link class="book-list__book-title-link" :to="book.path">{{ book.title }}</nuxt-link>
       </h2>
       <slot v-if="hasSlotContent" :chapters="book.chapters" :limit="bookLimitMap[book.slug]"/>
       <chapter-list v-else :chapters="book.chapters" :limit="bookLimitMap[book.slug]"/>
-      <button
-        v-if="bookLimitMap[book.slug] < book.chapters.length"
+      <nuxt-link
         class="book-list__more"
-        @click="increaseLimit(book.slug)">
+        :to="book.path"
+      >
         <span class="book-list__more-content">
-          more on {{ book.title }} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="book-list__more-chevron"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path> <path fill="none" d="M0 0h24v24H0V0z"></path></svg>
+          {{ book.title }} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="book-list__more-chevron"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
         </span>
-      </button>
+      </nuxt-link>
     </li>
   </ul>
 </template>
@@ -34,11 +38,6 @@ export default {
   computed: {
     hasSlotContent () {
       return this.$scopedSlots.hasOwnProperty('default')
-    }
-  },
-  methods: {
-    increaseLimit (slug) {
-      Vue.set(this.bookLimitMap, slug, this.bookLimitMap[slug] + 3)
     }
   }
 }
@@ -71,9 +70,11 @@ export default {
 }
 
 .book-list__more {
-  display: block;
+  display: flex;
+  justify-content: center;
   width: 100%;
   border: none;
+  text-decoration: none;
   color: var(--ui-white);
   background-color: transparent;
   position: relative;
@@ -88,7 +89,7 @@ export default {
   text-transform: uppercase;
   font-size: 0.875rem;
   font-weight: bold;
-  padding: 0.5em 1em;
+  padding: 0.5rem 1rem 0.5rem 1.5rem ;
   border-radius: 2em;
   cursor: pointer;
   display: inline-flex;
@@ -97,9 +98,6 @@ export default {
 
 .book-list__more-chevron {
   fill: white;
-  top: 50%;
-  position: relative;
-  transform: translateX(25%);
 }
 
 .book-list__more:before {

@@ -109,8 +109,11 @@ export default {
     features (val) {
       this.replaceFeatures(val)
     },
-    globeInteraction (val) {
-      this.enableInteraction(val)
+    rotate (val) {
+      this.setEnableRotate(val)
+    },
+    zoom (val) {
+      this.setEnableZoom(val)
     },
     theme (val, old) {
       this.replaceTheme(val, old)
@@ -124,7 +127,8 @@ export default {
     ...mapState({
       activeFeature: state => state.activeFeature,
       features: state => state.features,
-      globeInteraction: state => state.interaction,
+      zoom: state => state.zoom,
+      rotate: state => state.rotate,
       theme: state => state.theme,
       globeAutoRotation: state => state.globeAutoRotation
     }),
@@ -216,12 +220,17 @@ export default {
     replaceTheme (slug) {
       this.particles.replaceTheme(slug)
     },
-    enableInteraction (val) {
+    setEnableZoom (val) {
+      if (!(this.controls)) {
+        return
+      }
+      this.controls.enableZoom = val
+    },
+    setEnableRotate (val) {
       if (!(this.controls)) {
         return
       }
       this.controls.enableRotate = val
-      this.controls.enableZoom = val
     },
     replaceFeatures (features) {
       const globe = this.globe

@@ -28,7 +28,10 @@ export default {
       renderer: null,
       camera: null,
       scene: null,
-      controls: null,
+      controls: {
+        minDistance: 5.3,
+        maxDistance: 50
+      },
       connections: [],
       message: '',
       cameraDistance: 40
@@ -53,7 +56,7 @@ export default {
 
     this.controls = new OrbitControls(this.camera, this.globeContainerElement)
     this.controls.enablePan = false
-    this.controls.minDistance = 6
+    this.controls.minDistance = 5.3
     this.controls.maxDistance = 50
 
     this.controls.addEventListener('change', () => {
@@ -200,10 +203,10 @@ export default {
     updateAvatarPositions () {
       const dist = this.camera.position.distanceTo(center)
 
-      const epsilon = 500 * ((dist - 6) / 44) // The maximum distance between two points for them to be considered as being in the same neighborhood.
+      const epsilon = 500 * ((dist - this.controls.minDistance) / (this.controls.maxDistance - this.controls.minDistance)) // The maximum distance between two points for them to be considered as being in the same neighborhood.
       const minPoints = 2 // The minimum number of points in any group for them to be considered a distinct group. All other points are considered to be noise, and will receive a label of -1.
 
-      const labels = dbscan(this.avatar.mesh.children.map(d => [d.data.location.lon, d.data.location.lat]), greatCircleDistance, epsilon, minPoints)
+      const labels = dbscan(this.avatar.mesh.children.map(d => [d.data.offsetLocation.lon, d.data.offsetLocation.lat]), greatCircleDistance, epsilon, minPoints)
       this.avatar.mesh.children.forEach((d, i) => {
         d.data.cluster = labels[i]
       })
@@ -215,7 +218,7 @@ export default {
       nested.forEach(item => {
         if (+item.key === -1) {
           item.values.forEach(function (d) {
-            d.data.meanLocation = [d.data.location.lon, d.data.location.lat]
+            d.data.meanLocation = [d.data.offsetLocation.lon, d.data.offsetLocation.lat]
 
             if (d.data.clusterSize !== 0) {
               d.data.clusterSize = 0
@@ -223,7 +226,7 @@ export default {
             }
           })
         } else {
-          const meanLocation = [mean(item.values.map(d => d.data.location.lon)), mean(item.values.map(d => d.data.location.lat))]
+          const meanLocation = [mean(item.values.map(d => d.data.offsetLocation.lon)), mean(item.values.map(d => d.data.offsetLocation.lat))]
           item.values.forEach(function (d) {
             d.data.meanLocation = meanLocation
 
@@ -279,8 +282,6 @@ export default {
       })
 
       this.avatar.mesh.children.forEach(child => {
-        // const lon = lon2phi(child.data.location.lon)
-        // const lat = lat2theta(child.data.location.lat)
         const lon = lon2phi(child.data.meanLocation[0])
         const lat = lat2theta(child.data.meanLocation[1])
 
@@ -335,8 +336,8 @@ export default {
       // this.renderer.render(this.scene, this.camera)
     },
     handleClick (event) {
-      // disable rotation otherwise points move away from the intersection
-      this.$store.commit('disableGlobeAutoRotation')
+      // dynamically setting raycaster threshold level based on zoom to change precision
+      this.raycaster.params.Points.threshold = this.camera.position.distanceTo(center) / 100
 
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
@@ -344,9 +345,9 @@ export default {
       if (this.intersections.length > 0) {
         const { data = { path: '#' } } = this.intersections[0].object
         // navigate to path
-        if (data.clusterSize > 0) {
-          this.$router.push(data.chapter.path)
-        } else {
+        if (data.clusterSize === 0) {
+          // disable rotation otherwise points move away from the intersection
+          this.$store.commit('disableGlobeAutoRotation')
           this.$router.push(data.path)
         }
       }
@@ -435,7 +436,7 @@ export default {
      */
     createRaycaster () {
       this.raycaster = new THREE.Raycaster()
-      this.raycaster.params.Points.threshold = 0.4
+      this.raycaster.params.Points.threshold = 0.1
     },
 
     /**

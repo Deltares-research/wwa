@@ -62,7 +62,7 @@ See also the relevant docs
 - [Standard](https://standardjs.com/) the style guide for javascript
 - [Ava](https://github.com/avajs/ava) the test runner
 - [Github pages](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/) github deployment (already setup)
-- [Surge](http://surge.sh/) front-end publishing
+- [Netlfiy](https://www.netlify.com/) front-end publishing
 
 # Adding geographical data
 You can add geographical data by using the following approach

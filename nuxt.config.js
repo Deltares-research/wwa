@@ -89,7 +89,7 @@ module.exports = {
   ],
 
   router: {
-    ...routerBase.router,
+    base: routerBase.router.base,
     scrollBehavior: (to, from) => {
       if (
         (to.name !== 'themes-theme') &&

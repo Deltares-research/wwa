@@ -1,17 +1,17 @@
 @import '../colors/colors.css';
 .tag {
   color: var(--ui--text);
-  background-color: var(--ui--bg--white);
+  background-color: var(--booklet--neutral);
   display: inline-block;
   border-radius: 1rem;
   padding: .25rem 1rem .375rem 1rem;
   margin: .25em 1px .25em -1px;
   text-decoration: none;
-  position: relative;
   border: none;
   text-transform: uppercase;
   font-weight: bold;
   transition: color .25s;
+  text-shadow: none;
 }
 .tag:hover {
   color: var(--ui--text--light);
@@ -66,3 +66,12 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 12'%3E%3Cpath fill='%23F4960A' fill-rule='evenodd' d='M4.5 12h4V3h-4zM0 12h3V7H0zm10 0h4V0h-4z'/%3E%3C/svg%3E");
 }
 
+/*
+* style rules for a minimal print layout
+*/
+
+@media print {
+  .tag {
+    -webkit-print-color-adjust: exact;
+  }
+}

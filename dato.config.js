@@ -1,3 +1,4 @@
+const pick = require('lodash/fp/pick')
 const slugify = require('slug')
 
 /**
@@ -35,8 +36,12 @@ const exportScope = process.env.DATO_EXPORT
 const contentBasePath = '/narratives'
 
 module.exports = (dato, root, i18n) => {
-  const { body } = dato.home
-  root.createDataFile(`static/data/home.json`, 'json', { body })
+  const { body, videoHighlights } = dato.home
+
+  root.createDataFile(`static/data/home.json`, 'json', {
+    body,
+    videoHighlights: videoHighlights.map(pick(['title', 'video', 'url', 'body']))
+  })
 
   switch (exportScope) {
     case 'books':
@@ -47,6 +52,9 @@ module.exports = (dato, root, i18n) => {
       break
     case 'influences':
       generateByInfluence(dato, root, i18n)
+      break
+    case 'goals':
+      generateByGoal(dato, root, i18n)
       break
     case 'keywords':
       generateByKeyword(dato, root, i18n)
@@ -61,6 +69,7 @@ module.exports = (dato, root, i18n) => {
       generateChapters(dato, root, i18n)
       generateBooks(dato, root, i18n)
       generateByInfluence(dato, root, i18n)
+      generateByGoal(dato, root, i18n)
       generateByKeyword(dato, root, i18n)
       generateStaticPages(dato, root, i18n)
       generateThemes(dato, root, i18n)
@@ -123,6 +132,32 @@ function generateByInfluence (dato, root, i18n) {
   }
   root.createDataFile('static/data/influences/index.json', 'json', influences)
 }
+
+/**
+ * Write out JSON files by goal tag
+ *
+ * @param {Dato} dato - DatoCMS API
+ * @param {Root} root - Project root
+ * @param {i18n} i18n
+ */
+function generateByGoal (dato, root, i18n) {
+  const goals = getGoals(dato)
+  const chapters = getChapters(dato)
+    .filter(chapter => chapter.goals)
+    .map(chapter => {
+      delete chapter.pages
+      delete chapter.keywords
+      return chapter
+    })
+
+  for (const goal of goals) {
+    const chaptersByGoals = chapters
+      .filter(chapter => chapter.goals)
+      .filter(chapter => chapter.goals.some(chapterGoal => chapterGoal.slug === goal.slug))
+    root.createDataFile(`static/data/goals/${goal.slug}.json`, 'json', { ...goal, entries: chaptersByGoals })
+  }
+  root.createDataFile('static/data/goals/index.json', 'json', goals)
+}
 /**
  * Write out JSON files by keyword
  *
@@ -158,6 +193,7 @@ function generateThemes (dato, root, i18n) {
       delete chapter.pages
       delete chapter.keywords
       delete chapter.influences
+      delete chapter.goals
       return chapter
     })
   for (const theme of themes) {
@@ -201,14 +237,15 @@ function getBooks (dato) {
       const chapters = getChapters(dato, book)
         .filter(filterPublished)
         .map(chapter => {
-          const { location, pages, path, slug, title, influences, keywords } = chapter
+          const { location, pages, path, slug, title, influences, goals, keywords, createdAt, updatedAt, cover } = chapter
           const theme = getDominantTheme(pages)
-          return { influences, keywords, location, path, slug, title, theme }
+          return { influences, goals, keywords, location, path, slug, title, theme, createdAt, updatedAt, cover }
         })
       const theme = getDominantTheme(chapters)
       const influences = collectUniqueTags(chapters, 'influences')
+      const goals = collectUniqueTags(chapters, 'goals')
       const keywords = collectUniqueTags(chapters, 'keywords')
-      return { body, chapters, influences, keywords, path, slug, title, theme }
+      return { body, chapters, influences, goals, keywords, path, slug, title, theme }
     })
 }
 
@@ -223,7 +260,7 @@ function getChapters (dato, bookRef) {
   return chapters
     .filter(filterPublished)
     .map(chapter => {
-      const { title, slug, chapterType } = chapter
+      const { title, slug, chapterType, createdAt, updatedAt, cover } = chapter
       const parentBook = bookRef || getParent(dato, chapter)
       if (!parentBook) {
         console.log(`Skipped chapter ${title}, no parent book found`)
@@ -251,11 +288,27 @@ function getChapters (dato, bookRef) {
       const storyteller = (firstLocationPage) ? firstLocationPage.storyteller : null
       const location = (firstLocationPage) ? firstLocationPage.location : null
       const influences = collectUniqueTags(pages, 'influences')
+      const goals = collectUniqueTags(pages, 'goals')
       const keywords = collectUniqueTags(pages, 'keywords')
+      const coverFallback = getChapterCover(pages)
+      const related = chapter.related.length < 1
+        ? []
+        : chapter.related
+          .map(chapter => ({ ...chapter, pages: getPages(dato, chapter), parent: getParent(dato, chapter) }))
+          .filter(chapter => chapter.parent)
+          .map(pick(['title', 'slug', 'cover', 'pages', 'parent']))
+          .map(item => ({
+            ...item,
+            bookTitle: item.parent.title,
+            path: `${contentBasePath}/${item.parent.slug}/${item.slug}`,
+            cover: item.cover ? item.cover : getChapterCover(item.pages)
+          }))
+          .map(({ pages, parent, ...chapter }) => chapter)
 
       return {
         book,
         influences,
+        goals,
         location,
         keywords,
         pages,
@@ -267,7 +320,11 @@ function getChapters (dato, bookRef) {
         type: chapterType,
         theme,
         nextChapter,
-        previousChapter
+        previousChapter,
+        createdAt,
+        updatedAt,
+        cover: cover || coverFallback,
+        related
       }
     })
     .filter(Boolean) // Filter falsy chapters (return false)
@@ -296,6 +353,11 @@ function getPages (dato, chapterRef) {
         title: tag.title,
         slug: tag.slug,
         path: `/influences/${tag.slug}`
+      })) : []
+      const goals = (page.goal) ? page.goal.map(tag => ({
+        title: tag.title,
+        slug: tag.slug,
+        path: `/goals/${tag.slug}`
       })) : []
       const theme = (page.theme) ? {
         title: page.theme.title,
@@ -341,6 +403,7 @@ function getPages (dato, chapterRef) {
         links,
         location,
         influences,
+        goals,
         path,
         slug,
         storyteller: {
@@ -375,6 +438,21 @@ function getInfluences (dato) {
 }
 
 /**
+ * Get Dato Goal entities
+ *
+ * @param {Dato} dato
+ * @returns {Object}
+*/
+function getGoals (dato) {
+  const goals = dato.goals
+  return goals.map(goal => {
+    const { body, slug, title } = goal
+    const path = `/goals/${slug}`
+    return { body, path, slug, title }
+  })
+}
+
+/**
  * Get Dato Theme entities
  *
  * @param {Dato} dato
@@ -398,10 +476,10 @@ function getThemes (dato) {
 function collectPagesByKeyword (pages) {
   return pages
     .map(page => {
-      const { book, chapter, keywords, location, influences, path, slug, storyteller, theme, title } = page
+      const { book, chapter, keywords, location, influences, goals, path, slug, storyteller, theme, title } = page
       return {
         tags: page.keywords,
-        page: { book, chapter, keywords, location, influences, path, slug, storyteller, theme, title }
+        page: { book, chapter, keywords, location, influences, goals, path, slug, storyteller, theme, title }
       }
     })
     .filter(match => Boolean(match.tags)) // filter falsy (false, undefined, '')
@@ -509,6 +587,19 @@ function getDominantTheme (items) {
     }, {})
 
   return Object.values(themes).sort((a, b) => a.score < b.score)[0]
+}
+
+/**
+ * Get the first image found in the pages array
+ *
+ * @param {object[]} pages
+ */
+function getChapterCover (pages) {
+  const images = pages
+    .filter(page => page.images)
+    .map(page => page.images)
+    .reduce((list, images) => [...list, ...images])
+  return images[0]
 }
 
 /**

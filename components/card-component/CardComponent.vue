@@ -1,6 +1,6 @@
 <template>
   <article class="card-component">
-    <nuxt-link v-bind:to="path">
+    <nuxt-link :to="path">
       <p class="subtitle h3">{{ subtitle }}</p>
       <h2>{{title}}</h2>
     </nuxt-link>

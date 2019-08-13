@@ -1,24 +1,42 @@
 <template>
   <div>
-    <scroll-indicator v-bind:pages="pages" v-bind:activePage="activePage" />
-    <div class="chapter full-width">
-      <narrative-header v-bind:book="book" v-bind:chapter="chapter" />
-        <page-component
-          data-page-component
-          v-for="page in pages"
-          v-bind:key="page.slug"
-          v-bind:page="page"
-          v-bind:id="page.slug"
-        />
-        <narrative-footer
-          v-bind:previousLink="chapter.previousChapter"
-          v-bind:nextLink="chapter.nextChapter"
-        />
+    <div data-scrolled-to-top-trigger />
+    <scroll-indicator
+      v-if="pages.length > 1"
+      :pages="pages"
+      :activePage="activePage"
+    />
+    <div class="chapter chapter-column">
+      <narrative-header
+        :chapter="chapter"
+        :pages="pages"
+        :active-page="activePage && activePage.slug"
+        :condensed="headerCondensed"
+        @selectLink="smoothScroll"
+      />
+      <page-component
+        data-page-component
+        v-for="(page, index) in pages"
+        :key="`${page.slug}-${index}`"
+        :page="page"
+        :id="page.slug"
+        :ref="page.slug"
+        :class="['chapter__page', `chapter__page--${index}`]"
+      />
+      <narrative-footer
+        :previousLink="chapter.previousChapter"
+        :nextLink="chapter.nextChapter"
+        :related="chapter.related"
+      />
     </div>
+    <portal to="menu-center-content">
+      <menu-dropdown :book="book" :booksList="booksList" />
+    </portal>
   </div>
 </template>
 
 <script>
+import MenuDropdown from '~/components/menu-dropdown/MenuDropdown'
 import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter'
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import PageComponent from '~/components/page-component/PageComponent'
@@ -27,29 +45,41 @@ import loadData from '~/lib/load-data'
 
 export default {
   async asyncData (context) {
-    const { book, pages, path, slug, title, previousChapter, nextChapter } = await loadData(context, context.params)
-    const chapter = { path, slug, title, previousChapter, nextChapter }
-    return { book, chapter, pages, path, slug, title }
+    const { book, pages, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params)
+    const chapter = { path, slug, title, previousChapter, nextChapter, cover, related }
+    const booksList = await loadData(context, { booksList: 'index' })
+    return { book, chapter, pages, path, slug, title, booksList }
   },
-  data () {
+  data: function () {
     return {
       activePage: null,
-      scrollIntoViewSupport: false
+      scrollIntoViewSupport: false,
+      headerCondensed: false
     }
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.pages)
     this.$store.commit('disableInteraction')
     this.$store.commit('disableGlobeAutoRotation')
+    this.$store.commit('enableGlobePositionRight')
     const pageSlug = this.$route.hash.replace(/^#/, '')
     this.updateActivePage(pageSlug)
-    if ('IntersectionObserver' in window) {
+    if (
+      'IntersectionObserver' in window &&
+      'IntersectionObserverEntry' in window &&
+      'intersectionRatio' in window.IntersectionObserverEntry.prototype
+    ) {
       this.observeIntersectingChildren()
+      this.observeScrolledToTop()
     }
+  },
+  destroyed () {
+    this.$store.commit('disableGlobePositionRight')
   },
   components: {
     NarrativeFooter,
     NarrativeHeader,
+    MenuDropdown,
     PageComponent,
     ScrollIndicator
   },
@@ -71,11 +101,30 @@ export default {
       const pageComponentsArray = [].slice.call(this.$el.querySelectorAll('[data-page-component]'))
       pageComponentsArray.forEach(el => observer.observe(el))
     },
+    observeScrolledToTop () {
+      const trackVisibility = (entries) => {
+        entries.forEach(entry => {
+          this.headerCondensed = !entry.isIntersecting
+        })
+      }
+      const observer = new IntersectionObserver(trackVisibility, {
+        // No explicit root, we want the viewport
+        rootMargin: '0% 0% 0% 0%',
+        thresholds: 0
+      })
+      const triggerElement = this.$el.querySelector('[data-scrolled-to-top-trigger]')
+      observer.observe(triggerElement)
+    },
     scrollToSlug (pageSlug) {
       const activeElement = document.getElementById(pageSlug)
       if (activeElement) {
         activeElement.scrollIntoView()
       }
+    },
+    smoothScroll (slug) {
+      const element = this.$refs[slug][0].$el
+      const domRect = element.getBoundingClientRect()
+      window.scrollBy({ top: domRect.y - 160, behavior: 'smooth' })
     },
     updateActivePage (pageSlug) {
       const activePages = (pageSlug) ? this.pages.filter(page => page.slug === pageSlug) : null
@@ -103,30 +152,55 @@ export default {
 </script>
 
 <style>
-
-:root {
-  --target-offset: 50vh
-}
-
-.full-width {
+.chapter-column {
   position: absolute;
-  top: var(--target-offset);
+  top: 0;
   left:0;
-  right: 0;
+  padding-top: 64px;
   z-index: 0;
+  width: 100vw;
+  background-color: #dde4eb;
+  overflow: hidden;
 }
 
-.chapter .narrative-header {
-  width: 100%;
-  max-width: calc(60rem + 2 * 2rem);
-  margin: auto;
-  position: relative;
-  margin-bottom: calc(-1 * var(--target-offset));
+@media only screen and (min-width: 1024px) {
+  .chapter-column {
+    width: 67vw;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .chapter-column {
+    width: 50vw;
+  }
+}
+
+[data-scrolled-to-top-trigger] {
+  display: block;
+  position: absolute;
+  top: 10.25rem;
+  right: 0;
+  width: 1px;
+  height: 1px;
+  background-color: transparent;
   z-index: 1;
 }
 
-.page-component {
-  padding-top: var(--target-offset);
+@media (min-width: 768px) {
+  [data-scrolled-to-top-trigger] {
+    top: calc(12.5rem + 1px);
+  }
 }
 
+/*
+* style rules for a minimal print layout
+*/
+
+@media print {
+  .chapter-column {
+    position: relative;
+    padding: 0;
+    background-color: var(--ui--white);
+  }
+}
 </style>

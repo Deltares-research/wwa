@@ -6,9 +6,13 @@ const store = () => {
     state: {
       activeFeature: null,
       features: [],
+      rotate: true,
+      zoom: true,
       globeInteraction: true,
       theme: 'too-much',
-      globeAutoRotation: true
+      globeAutoRotation: true,
+      globePositionRight: false,
+      navBackgroundTrans: false
     },
     mutations: {
       activateFeature (state, feature) {
@@ -24,17 +28,43 @@ const store = () => {
       replaceFeatures (state, features) {
         state.features = features
       },
+      disableRotate (state) {
+        state.rotate = false
+      },
+      enableRotate (state) {
+        state.rotate = true
+      },
+      disableZoom (state) {
+        state.zoom = false
+      },
+      enableZoom (state) {
+        state.zoom = true
+      },
       disableInteraction (state) {
-        state.globeInteraction = false
+        state.zoom = false
+        state.rotate = false
       },
       enableInteraction (state) {
-        state.globeInteraction = true
+        state.zoom = true
+        state.rotate = true
       },
       disableGlobeAutoRotation (state) {
         state.globeAutoRotation = false
       },
       enableGlobeAutoRotation (state) {
         state.globeAutoRotation = true
+      },
+      disableGlobePositionRight (state) {
+        state.globePositionRight = false
+      },
+      enableGlobePositionRight (state) {
+        state.globePositionRight = true
+      },
+      disableNavBackgroundTrans (state) {
+        state.navBackgroundTrans = false
+      },
+      enableNavBackgroundTrans (state) {
+        state.navBackgroundTrans = true
       }
     }
   })

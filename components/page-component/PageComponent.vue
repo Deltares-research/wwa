@@ -1,24 +1,23 @@
 <template>
   <article class="page-component">
     <page-body
-      v-bind:body="page.body"
-      v-bind:images="page.images"
-      v-bind:graphs="page.graphs"
-      v-bind:title="page.title"
-      v-bind:video="page.video"
-      v-bind:mapboxStyle="page.mapboxStyle"
-      v-bind:links="page.links"
-      v-bind:partner="page.partner" />
-    <page-aside
-      v-bind:influences="page.influences"
-      v-bind:keywords="page.keywords"
-      v-bind:storyteller="page.storyteller"
-      v-bind:theme="page.theme" />
+      :body="page.body"
+      :images="page.images"
+      :graphs="page.graphs"
+      :title="page.title"
+      :video="page.video"
+      :mapboxStyle="page.mapboxStyle"
+      :links="page.links"
+      :partner="page.partner"
+      :influences="page.influences"
+      :goals="page.goals"
+      :keywords="page.keywords"
+      :storyteller="page.storyteller"
+      :theme="page.theme" />
   </article>
 </template>
 
 <script>
-import PageAside from '~/components/page-aside/PageAside'
 import PageBody from '~/components/page-body/PageBody'
 
 export default {
@@ -26,7 +25,6 @@ export default {
     page: { type: Object }
   },
   components: {
-    PageAside,
     PageBody
   }
 }
@@ -36,21 +34,31 @@ export default {
 @import '../colors/colors.css';
 
 .page-component {
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
   min-height: 25vh;
-  max-width: 60rem;
+  max-width: 40rem;
+  margin: 3rem auto 0 auto;
 }
 
-@media screen and (min-width: 720px) {
+@media only screen and (min-width: 600px) {
   .page-component {
-    flex-direction: row;
-      padding-left: 2rem;
-      padding-right: 2rem;
+    margin: 3.75rem auto 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 
+/*
+* style rules for a minimal print layout
+*/
+
+@media print {
+  /*
+  ** Below only works in normal donument flow
+  ** chapter-column needs to be set relative for
+  ** this to work
+  */
+  .page-component {
+    page-break-after: always;
+  }
+}
 </style>

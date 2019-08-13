@@ -86,10 +86,23 @@
   /* UI colors */
   --ui--white: #fff;
   --ui--black: #00001e;
+  --ui--white--trans: rgba(255, 255, 255, .75);
   --ui--black--trans: rgba(0, 0, 30, .75);
+  --ui--blue:rgba(0,0,48, 1);
+  --ui--blue--trans:rgba(0,0,48, .75);
+  --ui--blue--bg: #4d4c69;
   --ui--bg: var(--ui--black);
   --ui--bg--white: var(--ui--white);
   --ui--bg--light: var(--booklet--neutral);
+  --ui--bg--dark-transparent: rgba(1, 0, 42, 0);
+  --ui--bg--dark-translucent: rgba(1, 0, 42, 0.75);
+  --ui--bg--dark-opaque: rgba(1, 0, 42, 1);
+  --ui--bg--theme-too-much-trans: rgba(38, 52, 147, 0.8);
+  --ui--bg--theme-too-little-trans: rgba(254, 141, 59, 0.8);
+  --ui--bg--theme-too-dirty-trans: rgba(122, 1, 119, 0.8);
+  --ui--bg--theme-too-much-dark-trans: rgba(20, 28, 79, 0.75);
+  --ui--bg--theme-too-little-dark-trans: rgba(84, 2, 18, 0.75);
+  --ui--bg--theme-too-dirty-dark-trans: rgba(61, 0, 59, 0.75);
   --ui--text: var(--booklet--text);
   --ui--text--light: var(--booklet--text--light);
   --ui--text--invert: var(--ui--white);
@@ -97,8 +110,9 @@
   --ui--action--light: var(--booklet--action--light);
   --ui--bottom-gradient: linear-gradient(to top, var(--ui--black), transparent);
   --ui--left-gradient: linear-gradient(to right, var(--ui--black),  transparent);
+  --ui--light-grey: var(--booklet--neutral);
 }
 
 html {
-  background-color: var(--ui--black);
+  background-color: var(--ui--bg--dark-opaque);
 }

@@ -1,8 +1,8 @@
 
 <template>
   <article class="static-page">
-    <section v-if="video" class="static-page__video fixed-ratio"
-      :style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`">
+    <section v-if="video" class="static-page__video static-page__fixed-ratio"
+      v-bind:style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`">
       <iframe class="static-page__video" allowfullscreen="allowfullscreen"
         :src="`//www.${video.provider}.com/embed/${video.providerUid}`" width="100%" height="100%">
       </iframe>
@@ -61,5 +61,15 @@ export default {
 
 .static-page__video {
   margin-bottom: 2rem;
+}
+
+.static-page__fixed-ratio {
+  padding: 0;
+  position: relative;
+  color: var(--ui--text--light);
+  background-color: var(--ui--bg--light);
+}
+.static-page__fixed-ratio > * {
+  position: absolute;
 }
 </style>

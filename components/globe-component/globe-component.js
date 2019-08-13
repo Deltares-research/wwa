@@ -1,10 +1,13 @@
 import * as THREE from 'three'
 // import { MeshLine, MeshLineMaterial } from 'three.meshline'
 import { Tween, autoPlay, Easing } from 'es6-tween'
-import { cartesian2polar, polar2cartesian, lat2theta, lon2phi } from './common.js'
+import { cartesian2polar, polar2cartesian, lat2theta, lon2phi, greatCircleDistance } from './common.js'
 import { OrbitControls } from './orbit-controls.js'
 import { mapState } from 'vuex'
 import { scaleLinear } from 'd3-scale'
+import dbscan from 'dbscanjs'
+import { nest } from 'd3-collection'
+import { mean } from 'd3-array'
 
 import { GLOBE_RADIUS } from './constants'
 import Glow from './glow'
@@ -25,7 +28,10 @@ export default {
       renderer: null,
       camera: null,
       scene: null,
-      controls: null,
+      controls: {
+        minDistance: 5.3,
+        maxDistance: 50
+      },
       connections: [],
       message: '',
       cameraDistance: 40
@@ -50,7 +56,7 @@ export default {
 
     this.controls = new OrbitControls(this.camera, this.globeContainerElement)
     this.controls.enablePan = false
-    this.controls.minDistance = 6
+    this.controls.minDistance = 5.3
     this.controls.maxDistance = 50
 
     this.controls.addEventListener('change', () => {
@@ -201,9 +207,87 @@ export default {
     updateAvatarPositions () {
       const dist = this.camera.position.distanceTo(center)
 
+      const epsilon = 500 * ((dist - this.controls.minDistance) / (this.controls.maxDistance - this.controls.minDistance)) // The maximum distance between two points for them to be considered as being in the same neighborhood.
+      const minPoints = 2 // The minimum number of points in any group for them to be considered a distinct group. All other points are considered to be noise, and will receive a label of -1.
+
+      const labels = dbscan(this.avatar.mesh.children.map(d => [d.data.offsetLocation.lon, d.data.offsetLocation.lat]), greatCircleDistance, epsilon, minPoints)
+      this.avatar.mesh.children.forEach((d, i) => {
+        d.data.cluster = labels[i]
+      })
+
+      const nested = nest()
+        .key(d => d.data.cluster)
+        .entries(this.avatar.mesh.children)
+
+      nested.forEach(item => {
+        if (+item.key === -1) {
+          item.values.forEach(function (d) {
+            d.data.meanLocation = [d.data.offsetLocation.lon, d.data.offsetLocation.lat]
+
+            if (d.data.clusterSize !== 0) {
+              d.data.clusterSize = 0
+              d.material.map = d.data.originalTexture
+            }
+          })
+        } else {
+          const meanLocation = [mean(item.values.map(d => d.data.offsetLocation.lon)), mean(item.values.map(d => d.data.offsetLocation.lat))]
+          item.values.forEach(function (d) {
+            d.data.meanLocation = meanLocation
+
+            if (!d.data.clusterSize || d.data.clusterSize !== item.values.length) {
+              let canvas = document.getElementById(`cluster-canvas-${item.values.length}`)
+
+              if (!canvas || canvas === null) {
+                canvas = document.createElement('canvas')
+                canvas.id = `cluster-canvas-${item.values.length}`
+
+                const size = 128
+                canvas.style.width = `${size}px`
+                canvas.style.height = `${size}px`
+                canvas.style.display = 'none'
+
+                // Set actual size in memory (scaled to account for extra pixel density).
+                const scale = window.devicePixelRatio // Change to 1 on retina screens to see blurry canvas.
+
+                canvas.width = size * scale
+                canvas.height = size * scale
+
+                const ctx = canvas.getContext('2d')
+
+                ctx.scale(scale, scale) // Normalize coordinate system to use css pixels.
+
+                ctx.beginPath()
+                ctx.arc(64, 64, 48, 0, Math.PI * 2)
+                ctx.closePath()
+                ctx.fillStyle = 'white'
+                ctx.strokeStyle = 'hsl(240, 8%, 52%)'
+                ctx.lineWidth = 10
+                ctx.fill()
+                ctx.stroke()
+
+                ctx.fillStyle = 'hsl(238, 100%, 8%)'
+                ctx.textAlign = 'center'
+                ctx.textBaseline = 'middle'
+                ctx.font = 'bold 36px Arial'
+                ctx.fillText(item.values.length, 64, 64)
+
+                document.body.appendChild(canvas)
+              }
+
+              d.data.clusterSize = item.values.length
+
+              const texture = new THREE.CanvasTexture(canvas)
+              d.material.map = texture
+
+              texture.needsUpdate = true
+            }
+          })
+        }
+      })
+
       this.avatar.mesh.children.forEach(child => {
-        const lon = lon2phi(child.data.location.lon)
-        const lat = lat2theta(child.data.location.lat)
+        const lon = lon2phi(child.data.meanLocation[0])
+        const lat = lat2theta(child.data.meanLocation[1])
 
         const { x, y, z } = polar2cartesian(GLOBE_RADIUS + (0.01 * dist), lat, lon)
         child.position.x = x
@@ -261,17 +345,20 @@ export default {
       // this.renderer.render(this.scene, this.camera)
     },
     handleClick (event) {
-      // disable rotation otherwise points move away from the intersection
-      this.$store.commit('disableGlobeAutoRotation')
+      // dynamically setting raycaster threshold level based on zoom to change precision
+      this.raycaster.params.Points.threshold = this.camera.position.distanceTo(center) / 100
 
       this.raycaster.setFromCamera(this.mouse, this.camera)
       this.intersections = this.raycaster.intersectObjects(this.avatar.mesh.children)
 
-      console.log(this.intersections.length)
       if (this.intersections.length > 0) {
         const { data = { path: '#' } } = this.intersections[0].object
         // navigate to path
-        this.$router.push(data.path)
+        if (data.clusterSize === 0) {
+          // disable rotation otherwise points move away from the intersection
+          this.$store.commit('disableGlobeAutoRotation')
+          this.$router.push(data.path)
+        }
       }
     },
     handleMouseMove (event) {
@@ -358,7 +445,7 @@ export default {
      */
     createRaycaster () {
       this.raycaster = new THREE.Raycaster()
-      this.raycaster.params.Points.threshold = 0.4
+      this.raycaster.params.Points.threshold = 0.1
     },
 
     /**

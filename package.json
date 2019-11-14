@@ -83,7 +83,7 @@
     "copy-webpack-plugin": "4.6.0",
     "cpy-cli": "2.0.0",
     "cross-env": "5.2.0",
-    "datocms-client": "0.3.41",
+    "datocms-client": "^0.3.41",
     "eslint": "5.8.0",
     "eslint-config-standard": "12.0.0",
     "eslint-loader": "2.1.1",

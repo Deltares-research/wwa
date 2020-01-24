@@ -6,7 +6,7 @@
       @click="showMobileTags = !showMobileTags"
     >
       <span class="sr-only">Go to</span>
-      <span class="books-tags__button__title">Themes</span>
+      <span class="books-tags__button__title">Books</span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"

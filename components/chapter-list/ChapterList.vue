@@ -1,7 +1,7 @@
 <template>
   <div class="chapter-list">
     <ul class="chapter-list__list">
-      <li class="chapter-list__item" v-for="chapter in limitedChapters" :key="chapter.slug">
+      <li class="chapter-list__item" v-for="chapter in flattenedChapters" :key="chapter.slug">
         <nuxt-link
           class="chapter-list__item-link"
           :to="chapter.path">
@@ -86,6 +86,14 @@ export default {
     },
     limitedChapters () {
       return this.sortedChapters.filter((_, index) => index + 1 <= this.limit)
+    },
+    flattenedChapters () {
+      return this.limitedChapters.map(chapter => {
+        return {
+          theme: chapter.theme,
+          ...(chapter.chapter || chapter)
+        }
+      })
     }
   },
   methods: {

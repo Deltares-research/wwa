@@ -380,7 +380,8 @@ function getPages (dato, chapterRef) {
         path: `${book.path}/${parentChapter.slug}`,
         slug: parentChapter.slug,
         title: parentChapter.title,
-        type: parentChapter.chapterType
+        type: parentChapter.chapterType,
+        cover: parentChapter.cover
       }
       const path = `${chapter.path}#${slug}`
       const links = (page.links) ? page.links.split('\n')

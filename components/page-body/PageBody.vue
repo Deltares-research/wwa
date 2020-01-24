@@ -142,6 +142,10 @@ export default {
   position: relative;
 }
 
+.page-body__body img {
+  width: 100%;
+}
+
 @media only screen and (min-width: 1200px) {
   .page-body__figure {
     width: calc(100% + 3rem);

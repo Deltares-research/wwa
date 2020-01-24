@@ -13,4 +13,7 @@
   "cSpell.words": [
     "dbscan"
   ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
 }

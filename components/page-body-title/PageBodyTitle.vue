@@ -4,6 +4,10 @@
       <img v-if="theme && theme.slug" class="theme-icon page-body-title__theme-icon" :src="`assets/${theme.slug}.png`" width="48" height="48" />
     </div>
 
+    <div class="page-body-title__storyteller-avatar">
+      <img v-if="storyteller && storyteller.avatar" class="theme-icon page-body-title__storyteller-avatar-icon" :src="`${storyteller.avatar.imgixHost}${storyteller.avatar.value.path}?w=48&h=48&fit=crop`" width="48" height="48" />
+    </div>
+
     <div class="page-body-title__storyteller">
       <span v-if="storyteller && storyteller.name">
         {{ storyteller.name }}
@@ -76,18 +80,31 @@ export default {
   box-sizing: border-box;
 }
 
+.page-body-title__storyteller-avatar,
 .page-body-title__theme {
   position: relative;
   height: 1px;
   margin-top: -1px;
   position: relative;
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
 }
 
+.page-body-title__storyteller-avatar-icon,
 .page-body-title__theme-icon {
   position: absolute;
   top: calc(-1*(1.5rem + 24px));
   left: 0;
+}
+
+.page-body-title__storyteller-avatar {
+  margin-bottom: 1rem;
+}
+
+.page-body-title__storyteller-avatar-icon {
+  left: 4rem;
+  border-radius: 50px;
+  border: 3px solid white;
+  box-sizing: border-box;
 }
 
 .page-body-title__storyteller {
@@ -104,6 +121,11 @@ export default {
   .page-body-title__theme-icon {
     top: 0;
     left: calc(-1*(2.5rem + 24px));
+  }
+
+  .page-body-title__storyteller-avatar-icon {
+    left: calc(-1*(2.5rem + 24px));
+    top: calc(4rem);
   }
 
   .page-body-title__storyteller {

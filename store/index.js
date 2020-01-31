@@ -12,7 +12,8 @@ const store = () => {
       theme: 'too-much',
       globeAutoRotation: true,
       globePositionRight: false,
-      navBackgroundTrans: false
+      navBackgroundTrans: false,
+      backButtonText: undefined
     },
     mutations: {
       activateFeature (state, feature) {
@@ -65,6 +66,15 @@ const store = () => {
       },
       enableNavBackgroundTrans (state) {
         state.navBackgroundTrans = true
+      },
+      setBackButtonToHome (state) {
+        state.backButtonText = 'home'
+      },
+      setBackButtonToArrow (state) {
+        state.backButtonText = 'arrow'
+      },
+      hideBackButton (state) {
+        state.backButtonText = undefined
       }
     }
   })

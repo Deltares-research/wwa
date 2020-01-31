@@ -95,9 +95,9 @@ export default {
   width: 16rem;
 }
 
-@media only screen and (max-width: 320px) {
+@media only screen and (max-width: 500px) {
   .menu-dropdown {
-    width: 10em;
+    max-width: calc(100vw - 10rem);
   }
 }
 
@@ -154,18 +154,12 @@ export default {
   color: var(--ui--white);
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   padding: 0;
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-@media only screen and (min-width: 600px) {
-  .menu-dropdown__button {
-    justify-content: center;
-  }
 }
 
 .menu-dropdown__button:hover,

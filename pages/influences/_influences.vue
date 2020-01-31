@@ -46,6 +46,7 @@ export default {
   mounted () {
     this.$store.commit('replaceFeatures', this.results)
     this.$store.commit('enableGlobeAutoRotation')
+    this.$store.commit('setBackButtonToHome')
   },
   components: {
     ChapterList

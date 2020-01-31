@@ -1,8 +1,8 @@
 <template>
   <main class="layout layout--globe">
-    <main-menu variant="dark" />
+    <main-menu variant="dark" :back-button="backButtonText" />
     <transition name="fadeIn" mode="out-in">
-      <globe-component :is="GlobeComponent" class="globe-component" :class="{ 'globe-component--right': globePositionRight }"/>
+      <!-- <globe-component :is="GlobeComponent" class="globe-component" :class="{ 'globe-component--right': globePositionRight }"/> -->
     </transition>
     <nuxt/>
 
@@ -18,9 +18,13 @@ export default {
       component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue')
     })
   },
+  data: () => ({
+    backButton: false
+  }),
   components: { MainMenu },
   computed: {
-    ...mapState(['globePositionRight'])
+    ...mapState(['globePositionRight']),
+    ...mapState(['backButtonText'])
   }
 }
 </script>

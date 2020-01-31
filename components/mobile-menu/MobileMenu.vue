@@ -96,7 +96,7 @@ export default {
   position: fixed;
   z-index: 2;
   top: 0.75rem;
-  left: 0.5rem;
+  right: 0.5rem;
 }
 
 .mobile-menu__toggle--light {
@@ -105,9 +105,9 @@ export default {
 
 .mobile-menu {
   position: fixed;
-  left: 0;
+  right: 0;
   top: 0;
-  transform: translateX(-200px);
+  transform: translateX(200px);
   height: 100%;
 	overflow-y: scroll;
 	overflow-x: visible;
@@ -130,6 +130,7 @@ export default {
   padding: 0 1rem;
   margin-bottom: 0.5rem;
   color: var(--ui--white);
+  text-align: right;
 }
 
 .mobile-menu__close {

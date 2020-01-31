@@ -62,6 +62,7 @@ export default {
     this.$store.commit('disableInteraction')
     this.$store.commit('disableGlobeAutoRotation')
     this.$store.commit('enableGlobePositionRight')
+    this.$store.commit('setBackButtonToArrow')
     const pageSlug = this.$route.hash.replace(/^#/, '')
     this.updateActivePage(pageSlug)
     if (

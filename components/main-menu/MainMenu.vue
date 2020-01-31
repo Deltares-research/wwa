@@ -2,6 +2,15 @@
   <div class="menu">
     <nav :class="[`main-menu main-menu--${variant}`, { 'main-menu--transparent' : navBackgroundTrans }]">
       <div class="main-menu__container">
+        <button class="main-menu__back" @click="onBack" v-if="backButton !== undefined">
+          <svg v-if="backButton === 'arrow'" xmlns="http://www.w3.org/2000/svg" width="12" height="24" viewBox="0 0 12 24" fill="#fff">
+            <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/>
+          </svg>
+          <span
+            :class="`menu__item h3 ${(variant === 'dark') ? 'invert' : ''} ${(backButton === 'arrow') ? 'sr-only': ''}`">
+            {{ backButton }}
+          </span>
+        </button>
         <div class="main-menu__section main-menu__section--no-padding">
           <nuxt-link :class="`menu__item menu__item--home ${(variant === 'light') ? 'menu__item--dark-background' : ''}`" to="/" title="Go home">
             <span class="sr-only">Return to the homepage</span>
@@ -45,10 +54,19 @@ export default {
       default () {
         return 'dark'
       }
+    },
+    backButton: {
+      type: String,
+      default: undefined
     }
   },
   computed: {
     ...mapState(['navBackgroundTrans'])
+  },
+  methods: {
+    onBack () {
+      window.history.go(-1)
+    }
   }
 }
 </script>
@@ -72,6 +90,21 @@ export default {
   align-items: center;
   padding: 0.5rem;
   min-height: 3rem;
+}
+
+.main-menu__back {
+  padding: 0.5rem;
+  position: absolute;
+  top: 50%;
+  left: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 2.5rem;
+  transform: translateY(-50%);
+  display: none;
+  background-color: transparent;
+  border: none;
 }
 
 .main-menu__section--no-padding {
@@ -158,6 +191,12 @@ export default {
 }
 
 @media (max-width: 799px) {
+  .main-menu__back {
+    display: block;
+  }
+  .main-menu__section--no-padding {
+    display: none;
+  }
   .main-menu__section--align-right {
     display: none;
   }

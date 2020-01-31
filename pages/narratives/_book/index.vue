@@ -44,6 +44,7 @@ export default {
     this.$store.commit('replaceFeatures', this.chapters)
     this.$store.commit('replaceTheme', this.theme.slug)
     this.$store.commit('disableGlobeAutoRotation')
+    this.$store.commit('setBackButtonToHome')
   },
   components: { ChapterList, MenuDropdown, NarrativeHeader }
 }

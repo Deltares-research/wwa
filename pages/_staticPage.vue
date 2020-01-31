@@ -44,6 +44,7 @@ export default {
   },
   mounted () {
     this.$store.commit('disableInteraction')
+    this.$store.commit('setBackButtonToHome')
   }
 }
 </script>

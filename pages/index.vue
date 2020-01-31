@@ -82,6 +82,7 @@ export default {
     this.$store.commit('enableInteraction')
     this.$store.commit('enableGlobeAutoRotation')
     this.$store.commit('enableNavBackgroundTrans')
+    this.$store.commit('hideBackButton')
     if (
       'IntersectionObserver' in window &&
       'IntersectionObserverEntry' in window &&

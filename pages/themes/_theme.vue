@@ -35,6 +35,7 @@ export default {
     this.$store.commit('replaceFeatures', this.entries)
     this.$store.commit('replaceTheme', this.$route.params.theme)
     this.$store.commit('enableGlobeAutoRotation')
+    this.$store.commit('setBackButtonToHome')
   },
   components: { ChapterList, ThemeSwitch }
 }

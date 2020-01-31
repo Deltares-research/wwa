@@ -59,6 +59,24 @@ export default {
     this.controls.minDistance = 5.3
     this.controls.maxDistance = 50
 
+    try {
+      if (process.client) {
+        const widthChange = (mq) => {
+          if (mq.matches) {
+            this.controls.enableZoom = false
+          } else {
+            this.controls.enableZoom = true
+          }
+        }
+
+        const mq = window.matchMedia('(min-width: 600px)')
+        mq.addListener(widthChange)
+        widthChange(mq)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+
     this.controls.addEventListener('change', () => {
       this.$store.commit('disableGlobeAutoRotation')
       this.cameraDistance = this.camera.position.distanceTo(center)

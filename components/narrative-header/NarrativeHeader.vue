@@ -1,6 +1,12 @@
 <template>
   <header class="narrative-header__container">
     <div class="narrative-header" :class="{'narrative-header--condensed': condensed}">
+      <button class="narrative-header__close-button" @click="goBack">
+        <span class="sr-only">Close</span>
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" viewBox="0 0 47.971 47.971">
+          <path fill="white" d="M28.228,23.986L47.092,5.122c1.172-1.171,1.172-3.071,0-4.242c-1.172-1.172-3.07-1.172-4.242,0L23.986,19.744L5.121,0.88   c-1.172-1.172-3.07-1.172-4.242,0c-1.172,1.171-1.172,3.071,0,4.242l18.865,18.864L0.879,42.85c-1.172,1.171-1.172,3.071,0,4.242   C1.465,47.677,2.233,47.97,3,47.97s1.535-0.293,2.121-0.879l18.865-18.864L42.85,47.091c0.586,0.586,1.354,0.879,2.121,0.879   s1.535-0.293,2.121-0.879c1.172-1.171,1.172-3.071,0-4.242L28.228,23.986z"/>
+        </svg>
+      </button>
       <div class="narrative-header__content">
         <img v-if="coverPath" class="narrative-header__cover" :src="coverPath" />
         <button class="narrative-header__back" @click="goBack" v-if="!condensed">
@@ -120,6 +126,34 @@ export default {
   transition: transform var(--narrative-header-transition-speed) var(--narrative-header-transition-timing-hide);
 }
 
+.narrative-header__close-button {
+  position: absolute;
+  z-index: 5;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  padding: 10px;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.narrative-header__close-button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.narrative-header--condensed .narrative-header__close-button {
+  padding: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 40px;
+  background-color: #467388;
+}
+
 @media (min-width: 600px) {
   .narrative-header__content {
     padding: 3.75rem 2.5rem;
@@ -229,6 +263,7 @@ export default {
 
 .narrative-header--condensed .narrative-header__navigation-toggle {
   width: var(--narrative-hearder__navigation-toggle-fixed-size);
+  margin-right: 60px;
 }
 
 .narrative-header__navigation {

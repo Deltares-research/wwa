@@ -14,7 +14,8 @@
         <div class="main-menu__section main-menu__section--no-padding">
           <nuxt-link :class="`menu__item menu__item--home ${(variant === 'light') ? 'menu__item--dark-background' : ''}`" to="/" title="Go home">
             <span class="sr-only">Return to the homepage</span>
-            <span class="main-menu__go-home-text">World Water<br/>Atlas</span>
+            <span v-if="backButton" class="main-menu__go-home-text">Home</span>
+            <span v-else class="main-menu__go-home-text">World Water<br/>Atlas</span>
           </nuxt-link>
         </div>
         <div class="main-menu__section main-menu__section--align-center">

@@ -11,7 +11,10 @@ module.exports = {
     'html'
   ],
   // add your custom rules here
-  rules: {},
+  rules: {
+    'template-curly-spacing': 'off',
+    indent: 'off',
+  },
   globals: {
     mapboxgl: true
   }

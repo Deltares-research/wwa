@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     formattedBodies () {
-      return this.themes.map(theme => marked(theme.body, { sanitize: true }))
+      return this.themes.map(theme => marked(theme.body))
     }
   }
 }

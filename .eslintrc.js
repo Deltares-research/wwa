@@ -1,21 +1,26 @@
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
   env: {
     browser: true,
     node: true
   },
-  extends: 'standard',
-  // required to lint *.vue files
-  plugins: [
-    'html'
+  parserOptions: {
+    parser: 'babel-eslint'
+  },
+  extends: [
+    'eslint:recommended',
+    'plugin:vue/essential',
   ],
-  // add your custom rules here
+  plugins: [
+    'vue'
+  ],
   rules: {
-    'template-curly-spacing': 'off',
-    indent: 'off',
+    'no-prototype-builtins': ['off'],
+    'no-unused-vars': ['off'],
+    'no-case-declarations': ['off'],
+    'vue/no-unused-components': ['off'],
   },
   globals: {
-    mapboxgl: true
+    mapboxgl: true,
   }
 }

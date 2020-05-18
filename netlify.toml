@@ -1,3 +1,27 @@
 [build]
   command = "npm run build && npm run generate"
   publish = "dist/"
+  [build.environment]
+    NODE_VERSION = "12"
+    NODE_ENV = "development"
+    NPM_FLAGS = "--no-production --prefer-offline --no-audit"
+  [build.processing]
+    skip_processing = true
+
+[context.production.environment]
+  NODE_ENV = "production"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Referrer-Policy = "no-referrer-when-downgrade"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+
+[[headers]]
+  for = "/_nuxt/*"
+  [headers.values]
+    cache-control = '''
+      public,
+      max-age=31536000,
+      immutable'''

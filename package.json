@@ -67,7 +67,6 @@
     "postcss-custom-properties": "^9.1.1",
     "postcss-import": "^12.0.1",
     "slug": "^2.1.1",
-    "webpack-bundle-analyzer": "^3.7.0",
     "webpack-glsl-loader": "^1.0.1"
   }
 }

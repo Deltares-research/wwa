@@ -1,5 +1,3 @@
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-
 const books = require('./static/data/books/index.json')
 const themes = require('./static/data/themes/index.json')
 const goals = require('./static/data/goals/index.json')
@@ -38,12 +36,6 @@ const routerBase = {
     base: '/'
   }
 }
-const plugins = [
-  new BundleAnalyzerPlugin({
-    analyzerMode: 'static',
-    openAnalyzer: false
-  })
-]
 
 const env = {
   // Allow to choose a baseurl (should only be used during generate)
@@ -122,7 +114,6 @@ module.exports = {
     // Create separate css file
     extractCSS: true,
     postcss,
-    plugins
   },
   env,
   // Define dynamic routes to generate for dist,

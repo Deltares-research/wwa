@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "acorn": "^7.1.1",
-    "axios": "0.18.0",
+    "axios": "0.18.1",
     "d3-array": "^2.4.0",
     "d3-collection": "^1.0.7",
     "d3-jetpack": "^2.0.20",

@@ -4,7 +4,7 @@ const path = require('path')
 const dotenv = require('dotenv-safe')
 const request = require('request')
 
-dotenv.config();
+dotenv.config()
 
 module.exports = (dato, root, i18n) => {
   const client = new SiteClient(process.env.DATO_API_TOKEN)

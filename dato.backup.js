@@ -2,7 +2,7 @@ const SiteClient = require('datocms-client').SiteClient
 const fs = require('fs')
 const path = require('path')
 const dotenv = require('dotenv-safe')
-const request = require('request')
+const bent = require('bent')
 
 dotenv.config()
 
@@ -28,12 +28,9 @@ function backup (client) {
               (chain, upload) => {
                 return chain.then(() => {
                   return new Promise((resolve) => {
-                    const imageUrl = 'https://' + site.imgixHost + upload.path
-                    console.log(`Downloading ${imageUrl}...`)
-
                     const stream = fs.createWriteStream('./backup/' + path.basename(upload.path))
                     stream.on('close', resolve)
-                    request(imageUrl).pipe(stream)
+                    bent(`https://${site.imgixHost}`)(upload.path).then(result => result.pipe(stream))
                   })
                 })
               },

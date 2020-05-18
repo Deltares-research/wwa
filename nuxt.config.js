@@ -1,8 +1,5 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-// load data to define routes
 const books = require('./static/data/books/index.json')
 const themes = require('./static/data/themes/index.json')
 const goals = require('./static/data/goals/index.json')
@@ -32,21 +29,16 @@ const postcss = {
   plugins: {
     'postcss-import': {},
     'postcss-calc': {},
-    'postcss-custom-properties': {
-      // TODO: check warnings about variables declared outside :root
-      warnings: false
-    }
+    'postcss-custom-properties': {},
   }
 }
 
-// only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
 const routerBase = {
   router: {
     base: '/'
   }
 }
 const plugins = [
-  // creat report.html with bundle size
   new BundleAnalyzerPlugin({
     analyzerMode: 'static',
     openAnalyzer: false
@@ -56,24 +48,6 @@ const plugins = [
 const env = {
   // Allow to choose a baseurl (should only be used during generate)
   baseUrl: process.env.BASE_URL || 'http://localhost:3000'
-}
-
-// extra options for github pages
-if (process.env.DEPLOY_ENV === 'GH_PAGES') {
-  routerBase.router = {
-    base: '/wwa/'
-  }
-  plugins.push(
-    new UglifyJSPlugin({
-      sourceMap: true
-    })
-  )
-  plugins.push(
-    new CopyWebpackPlugin([{
-      from: 'static/.nojekyll',
-      to: 'dist/.nojekyll'
-    }], {})
-  )
 }
 
 module.exports = {
@@ -117,7 +91,6 @@ module.exports = {
     { src: '~/plugins/ga.js', ssr: false }
   ],
 
-  // include routerbase
   router: {
     ...routerBase.router,
     scrollBehavior: (to, from) => {
@@ -129,15 +102,14 @@ module.exports = {
       }
     }
   },
-  // Build configuration
+
   build: {
-    // Run ESLint on save
-    extend (config, { isDev, isClient }) {
-      if (isDev && isClient) {
+    extend (config, context) {
+      if (context.isDev && context.isClient) {
         config.module.rules.push({
-          enforce: 'pre',
+          enforce: "pre",
           test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
+          loader: "eslint-loader",
           exclude: /(node_modules)/
         })
       }
@@ -149,7 +121,6 @@ module.exports = {
     },
     // Create separate css file
     extractCSS: true,
-    // add postcss plugins
     postcss,
     plugins
   },

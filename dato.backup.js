@@ -1,11 +1,12 @@
 const SiteClient = require('datocms-client').SiteClient
 const fs = require('fs')
 const path = require('path')
-const dotenv = require('dotenv')
+const dotenv = require('dotenv-safe')
 const request = require('request')
 
+dotenv.config();
+
 module.exports = (dato, root, i18n) => {
-  dotenv.load({ silent: true })
   const client = new SiteClient(process.env.DATO_API_TOKEN)
   backup(client)
 }

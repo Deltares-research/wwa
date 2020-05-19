@@ -11,20 +11,20 @@
       <section v-if="htmlBody" class="page-body__body" v-html="htmlBody"></section>
     </section>
 
-    <section v-if="images.length" class="page-body__images">
+    <section v-if="images && images.length" class="page-body__images">
       <figure v-for="image in images" :key="image.id" class="page-body__figure">
         <responsive-image
           class="page-body__lazy-image"
-          :src="`${image.imgixHost}${image.value.path}?w=640&q=65`"
-          :srcWidth="image.value.width"
-          :srcHeight="image.value.height"
-          :alt="image.value.alt"
+          :src="`${image.url || `${image.imgixHost}${image.value.path}`}?w=640&q=65`"
+          :srcWidth="image.width || image.value && image.value.width"
+          :srcHeight="image.height || image.value && image.value.height"
+          :alt="image.alt || image.value && image.value.alt"
           width=100% />
-        <figcaption class="page-body__asset-placeholder">{{ image.value.title }}</figcaption>
+        <figcaption class="page-body__asset-placeholder">{{ image.title || image.value && image.value.title }}</figcaption>
       </figure>
     </section>
 
-    <section v-if="graphs.length" class="page-body__graphs">
+    <section v-if="graphs && graphs.length" class="page-body__graphs">
       <figure v-for="graph in graphs" :key="graph.id" class="page-body__figure">
         <responsive-image
           class="page-body__lazy-image"
@@ -135,6 +135,10 @@ export default {
 .page-body p.intro {
   font-size: 1rem;
   color: #3f6a7e;
+}
+
+.page-body img {
+  max-width: 100%;
 }
 
 .page-body__figure {

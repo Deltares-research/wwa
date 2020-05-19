@@ -12,7 +12,7 @@
 
     <h1 class="page-body-title__title">{{ pageTitle }}</h1>
 
-    <div class="page-body-title__keywords" v-if="keywords.length || influences.length">
+    <div class="page-body-title__keywords" v-if="keywords && keywords.length || influences && influences.length">
       <ul class="list--inline">
         <li v-for="link in keywords" :key="`keyword-${link.slug}`">
           <nuxt-link class="tag" :to="link.path">{{ link.title }}</nuxt-link>
@@ -22,7 +22,7 @@
         </li>
       </ul>
     </div>
-    <div class="page-body-title__goals" v-if="goals.length">
+    <div class="page-body-title__goals" v-if="goals && goals.length">
       <ul class="list--inline">
         <li v-for="link in goals" :key="link.slug">
             <nuxt-link

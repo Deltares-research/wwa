@@ -1,9 +1,13 @@
+const dotenv = require('dotenv-safe')
+
 const books = require('./static/data/books/index.json')
 const themes = require('./static/data/themes/index.json')
 const goals = require('./static/data/goals/index.json')
 const influences = require('./static/data/influences/index.json')
 const keywords = require('./static/data/keywords/index.json')
 const staticPages = require('./static/data/static-pages/index.json')
+
+dotenv.config()
 
 const chapters = books
   .reduce((chapters, book) => {
@@ -39,7 +43,8 @@ const routerBase = {
 
 const env = {
   // Allow to choose a baseurl (should only be used during generate)
-  baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+  baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+  DATO_API_TOKEN: process.env.DATO_API_TOKEN ,
 }
 
 module.exports = {

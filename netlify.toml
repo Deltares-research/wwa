@@ -4,7 +4,8 @@
   [build.environment]
     NODE_VERSION = "12"
     NODE_ENV = "development"
-    NPM_FLAGS = "--no-production --prefer-offline --no-audit"
+    NPM_CONFIG_AUDIT = "false"
+    NPM_CONFIG_PRODUCTION = "false"
   [build.processing]
     skip_processing = true
 

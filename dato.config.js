@@ -102,7 +102,7 @@ function generateChapters (dato, root, i18n) {
     if (chapter.book != null) { // so that null result will not be written out
       root.createDataFile(`static/data/books/${chapter.book.slug}/chapters/${chapter.slug}/index.json`, 'json', chapter)
     } else {
-      console.log(`Skipped chapter ${chapter.title}, book is null`)
+      console.info(`Skipped chapter ${chapter.title}, book is null`)
     }
   }
 }
@@ -263,7 +263,7 @@ function getChapters (dato, bookRef) {
       const { title, slug, chapterType, createdAt, updatedAt, cover } = chapter
       const parentBook = bookRef || getParent(dato, chapter)
       if (!parentBook) {
-        console.log(`Skipped chapter ${title}, no parent book found`)
+        console.info(`Skipped chapter ${title}, no parent book found`)
         return false
       }
       const book = {

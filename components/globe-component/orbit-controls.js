@@ -349,25 +349,21 @@ function OrbitControls (object, domElement) {
   //
 
   function handleMouseDownRotate (event) {
-    // console.log( 'handleMouseDownRotate' );
 
     rotateStart.set(event.clientX, event.clientY)
   }
 
   function handleMouseDownDolly (event) {
-    // console.log( 'handleMouseDownDolly' );
 
     dollyStart.set(event.clientX, event.clientY)
   }
 
   function handleMouseDownPan (event) {
-    // console.log( 'handleMouseDownPan' );
 
     panStart.set(event.clientX, event.clientY)
   }
 
   function handleMouseMoveRotate (event) {
-    // console.log( 'handleMouseMoveRotate' );
 
     rotateEnd.set(event.clientX, event.clientY)
     rotateDelta.subVectors(rotateEnd, rotateStart)
@@ -386,7 +382,6 @@ function OrbitControls (object, domElement) {
   }
 
   function handleMouseMoveDolly (event) {
-    // console.log( 'handleMouseMoveDolly' );
 
     dollyEnd.set(event.clientX, event.clientY)
 
@@ -404,7 +399,6 @@ function OrbitControls (object, domElement) {
   }
 
   function handleMouseMovePan (event) {
-    // console.log( 'handleMouseMovePan' );
 
     panEnd.set(event.clientX, event.clientY)
 
@@ -419,12 +413,10 @@ function OrbitControls (object, domElement) {
 
   function handleMouseUp (event) {
 
-    // console.log( 'handleMouseUp' );
 
   }
 
   function handleMouseWheel (event) {
-    // console.log( 'handleMouseWheel' );
 
     if (event.deltaY < 0) {
       dollyOut(getZoomScale())
@@ -436,7 +428,6 @@ function OrbitControls (object, domElement) {
   }
 
   function handleKeyDown (event) {
-    // console.log( 'handleKeyDown' );
 
     switch (event.keyCode) {
       case scope.keys.UP:
@@ -462,13 +453,11 @@ function OrbitControls (object, domElement) {
   }
 
   function handleTouchStartRotate (event) {
-    // console.log( 'handleTouchStartRotate' );
 
     rotateStart.set(event.touches[ 0 ].pageX, event.touches[ 0 ].pageY)
   }
 
   function handleTouchStartDolly (event) {
-    // console.log( 'handleTouchStartDolly' );
 
     var dx = event.touches[ 0 ].pageX - event.touches[ 1 ].pageX
     var dy = event.touches[ 0 ].pageY - event.touches[ 1 ].pageY
@@ -479,13 +468,11 @@ function OrbitControls (object, domElement) {
   }
 
   function handleTouchStartPan (event) {
-    // console.log( 'handleTouchStartPan' );
 
     panStart.set(event.touches[ 0 ].pageX, event.touches[ 0 ].pageY)
   }
 
   function handleTouchMoveRotate (event) {
-    // console.log( 'handleTouchMoveRotate' );
 
     rotateEnd.set(event.touches[ 0 ].pageX, event.touches[ 0 ].pageY)
     rotateDelta.subVectors(rotateEnd, rotateStart)
@@ -504,7 +491,6 @@ function OrbitControls (object, domElement) {
   }
 
   function handleTouchMoveDolly (event) {
-    // console.log( 'handleTouchMoveDolly' );
 
     var dx = event.touches[ 0 ].pageX - event.touches[ 1 ].pageX
     var dy = event.touches[ 0 ].pageY - event.touches[ 1 ].pageY
@@ -527,7 +513,6 @@ function OrbitControls (object, domElement) {
   }
 
   function handleTouchMovePan (event) {
-    // console.log( 'handleTouchMovePan' );
 
     panEnd.set(event.touches[ 0 ].pageX, event.touches[ 0 ].pageY)
 
@@ -542,7 +527,6 @@ function OrbitControls (object, domElement) {
 
   function handleTouchEnd (event) {
 
-    // console.log( 'handleTouchEnd' );
 
   }
 

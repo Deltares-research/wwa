@@ -12,7 +12,7 @@ module.exports = (dato, root, i18n) => {
 }
 
 function backup (client) {
-  console.log('Downloading records...')
+  console.info('Downloading records...')
   client.items.all({}, { allPages: true })
     .then(response => {
       fs.writeFileSync('backup/records.json', JSON.stringify(response, null, 2))
@@ -38,5 +38,5 @@ function backup (client) {
           }
         )
     })
-  console.log('Done!')
+  console.info('Done!')
 }

@@ -9,7 +9,7 @@
         <ul class="video-list">
           <li
             v-for="videoHighlight in videoHighlights"
-            :key="videoHighlight.providerUid"
+            :key="videoHighlight.id"
             class="video-list__item"
           >
             <vimeo-embed

@@ -25,7 +25,7 @@
     <div class="menu-dropdown__dropdown" :class="{ 'menu-dropdown__dropdown--active': showDropdownMenu }">
       <ul class="menu-dropdown__list">
         <li v-for="bookTitle in booksList" :key="bookTitle.slug" class="menu-dropdown__list-item ">
-          <nuxt-link class="menu-dropdown__list-link" :to="bookTitle.path" >{{ bookTitle.title }}</nuxt-link>
+          <nuxt-link class="menu-dropdown__list-link" :to="path.replace(book.slug, bookTitle.slug)" >{{ bookTitle.title }}</nuxt-link>
         </li>
       </ul>
     </div>
@@ -36,7 +36,7 @@
 export default {
   data () {
     return {
-      showDropdownMenu: false
+      showDropdownMenu: false,
     }
   },
   props: {
@@ -47,7 +47,8 @@ export default {
     booksList: {
       type: Array,
       required: true
-    }
+    },
+    path: String,
   },
   methods: {
     outside: function (e) {

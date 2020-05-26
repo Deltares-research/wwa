@@ -1,4 +1,3 @@
-
 <template>
   <article class="static-page">
     <section v-if="video" class="static-page__video fixed-ratio"
@@ -12,27 +11,49 @@
     </section>
     <figure v-for="image in images" :key="image.id">
       <lazy-image
-      :srcWidth="image.value.width"
-      :srcHeight="image.value.height"
-      :src="`${image.imgixHost}${image.value.path}?w=640&q=65`"
-      :alt="image.value.alt"
+      :srcWidth="image.width"
+      :srcHeight="image.height"
+      :src="`${image.responsiveImage.src}?w=640&q=65`"
+      :alt="image.alt"
       width=100% />
-      <figcaption>{{ image.value.title }}</figcaption>
+      <figcaption>{{ image.title }}</figcaption>
     </figure>
   </article>
 </template>
 
 <script>
-import loadData from '~/lib/load-data'
+import fetchContent from '~/lib/fetch-content';
 import lazyImage from '~/components/lazy-media/LazyMedia'
 import marked from '~/lib/custom-marked'
 
 export default {
   layout: 'static-page',
-  async asyncData (context) {
-    const { title, body, images, video } = await loadData(context, context.params)
+  async asyncData ({ params }) {
+    const query = `
+      {
+        staticPage(locale: ${params.language}, filter: { slug: { eq: "${params.staticPage}" } }) {
+          title
+          body
+          images {
+            id
+            alt
+            width
+            height
+            responsiveImage {
+              src
+            }
+          }
+          video {
+            provider
+            providerUid
+            width
+            height
+          }
+        }
+      }
+    `;
 
-    return { title, body, images, video }
+    return fetchContent(query).then(data => data.staticPage)
   },
   computed: {
     htmlBody () {
@@ -48,7 +69,7 @@ export default {
 }
 </script>
 <style>
-  @import '../components/colors/colors.css';
+  @import '../../components/colors/colors.css';
 
 .static-page {
   box-sizing: border-box;

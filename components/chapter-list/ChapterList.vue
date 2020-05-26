@@ -4,7 +4,8 @@
       <li class="chapter-list__item" v-for="chapter in limitedChapters" :key="chapter.slug">
         <nuxt-link
           class="chapter-list__item-link"
-          :to="chapter.path">
+          :to="`${path}/${chapter.slug}`"
+        >
           <span class="chapter-list__cover" :class="{'chapter-list__cover--fallback': !chapter.cover}">
             <picture v-if="chapter.cover">
               <source
@@ -53,6 +54,7 @@ import sortBy from 'lodash/fp/sortBy'
 
 export default {
   props: {
+    path: String,
     chapters: {
       type: Array,
       default: () => []
@@ -101,7 +103,7 @@ export default {
       return cover.value.width * heigthFactor
     },
     coverPath (chapter) {
-      return `${chapter.cover.imgixHost}${chapter.cover.value.path}`
+      return chapter.cover.responsiveImage && chapter.cover.responsiveImage.src || `${chapter.cover.imgixHost}${chapter.cover.value.path}`;
     }
   }
 }

@@ -27,6 +27,9 @@ const routes = books
   .concat(staticPages)
   .map(item => item.path)
 
+// const fs = require('fs').promises;
+// fs.writeFile('_redirects', routes.map(route => `${route} /en${route}`).join('\n'))
+
 const postcss = {
   plugins: {
     'postcss-import': {},
@@ -123,6 +126,11 @@ module.exports = {
   env,
   // Define dynamic routes to generate for dist,
   generate: {
-    routes
+    routes: [
+      '/en',
+      '/zh',
+      '/en/narratives/drought/climate-change-and-migration',
+      '/zh/narratives/drought/climate-change-and-migration',
+    ]
   }
 }

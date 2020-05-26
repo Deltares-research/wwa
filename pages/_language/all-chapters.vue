@@ -23,6 +23,7 @@
 </template>
 
 <script>
+  import fetchContent from '~/lib/fetch-content';
   import PageComponent from '~/components/page-component/PageComponent'
 
   export default {
@@ -35,44 +36,33 @@
         meta: [ { name: 'robots', content: 'noindex' } ],
       }
     },
-    asyncData () {
-      return fetch('https://graphql.datocms.com/', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': process.env.DATO_API_TOKEN,
-        },
-        body: JSON.stringify({
-          query: `
-            {
-              allChapters(first: 100, orderBy: _publishedAt_DESC) {
-                id
+    asyncData ({ params }) {
+      return fetchContent(`
+        {
+          allChapters(locale: ${params.language}, first: 100, orderBy: _publishedAt_DESC) {
+            id
+            title
+            body
+            pages {
+              id
+              body
+              images {
                 title
-                body
-                pages {
-                  id
-                  body
-                  images {
-                    title
-                    url
-                    width
-                    height
-                    alt
-                  }
-                  video {
-                    width
-                    height
-                    provider
-                    providerUid
-                  }
-                }
+                url
+                width
+                height
+                alt
+              }
+              video {
+                width
+                height
+                provider
+                providerUid
               }
             }
-          `
-        })
-      })
-      .then(response => response.json())
-      .then(({ data }) => data)
+          }
+        }
+      `)
     }
   }
 </script>

@@ -40,6 +40,8 @@ export default {
     const activeGoals = allGoals
       .filter(tag => goalsFromUrl.some(active => active === tag.slug))
 
+      console.log(results
+      );
     return {
       goals: allGoals,
       activeGoals,
@@ -66,4 +68,3 @@ export default {
 }
 
 </style>
-

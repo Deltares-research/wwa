@@ -24,7 +24,7 @@
           :key="`${theme.slug}-title`"
         >
           <nuxt-link
-            :to="theme.path"
+            :to="`/${language}/themes/${theme.slug}`"
             class="theme-switch__button theme-switch__button--inactive"
             :class="`theme-switch__button-${theme.slug}`"
           >
@@ -48,7 +48,8 @@ import marked from 'marked'
 export default {
   props: {
     themes: Array,
-    activeSlug: String
+    activeSlug: String,
+    language: String,
   },
   computed: {
     formattedBodies () {

@@ -184,12 +184,12 @@ export default {
 
         return {
           from: {
-            lat: feature.location.lat,
-            lon: feature.location.lon
+            lat: feature.location.lat || feature.location.latitude,
+            lon: feature.location.lon || feature.location.longitude,
           },
           to: {
-            lat: d.location.lat,
-            lon: d.location.lon
+            lat: d.location.lat || d.location.latitude,
+            lon: d.location.lon || d.location.longitude,
           }
         }
       })
@@ -199,7 +199,7 @@ export default {
       // https://en.wikipedia.org/wiki/Spherical_coordinate_system
       const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z)
       const to = {}
-      to.theta = lat2theta(feature.location.lat)
+      to.theta = lat2theta(feature.location.latitude)
       to.phi = lon2phi(feature.location.lon)
       to.r = 40 - feature.location.zoom
       this.panAndZoom(from, to)
@@ -357,7 +357,7 @@ export default {
         if (data.clusterSize === 0) {
           // disable rotation otherwise points move away from the intersection
           this.$store.commit('disableGlobeAutoRotation')
-          this.$router.push(data.path)
+          this.$router.push(`/${this.$route.params.language}/narratives/${data.bookSlug}/${data.chapterSlug}#${data.slug}`)
         }
       }
     },

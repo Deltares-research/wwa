@@ -13,6 +13,13 @@ import { mapState } from 'vuex'
 import MainMenu from '~/components/main-menu/MainMenu'
 
 export default {
+  head () {
+    return {
+      htmlAttrs: {
+        lang: this.$route.params.language,
+      }
+    }
+  },
   beforeCreate () {
     this.GlobeComponent = () => ({
       component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue')

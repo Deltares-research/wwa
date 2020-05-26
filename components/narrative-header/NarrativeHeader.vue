@@ -73,7 +73,7 @@ export default {
   computed: {
     coverPath () {
       return this.chapter && this.chapter.cover
-        ? `${this.chapter.cover.imgixHost}${this.chapter.cover.value.path}`
+        ? this.chapter.cover.responsiveImage.src
         : ''
     },
     displayNavigationList () {

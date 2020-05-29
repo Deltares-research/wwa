@@ -14,7 +14,7 @@
       <lazy-image
       :srcWidth="image.value.width"
       :srcHeight="image.value.height"
-      :src="`${image.imgixHost}${image.value.path}?w=640&q=65`"
+      :src="`${image.imgixHost}${image.value.path}?auto=compress&w=640&q=65`"
       :alt="image.value.alt"
       width=100% />
       <figcaption>{{ image.value.title }}</figcaption>

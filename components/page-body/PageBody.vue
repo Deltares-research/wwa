@@ -15,7 +15,7 @@
       <figure v-for="image in images" :key="image.id" class="page-body__figure">
         <responsive-image
           class="page-body__lazy-image"
-          :src="`${image.url || `${image.imgixHost}${image.value.path}`}?w=640&q=65`"
+          :src="`${image.url || `${image.imgixHost}${image.value.path}`}?auto=compress&w=640&q=65`"
           :srcWidth="image.width || image.value && image.value.width"
           :srcHeight="image.height || image.value && image.value.height"
           :alt="image.alt || image.value && image.value.alt"
@@ -28,7 +28,7 @@
       <figure v-for="graph in graphs" :key="graph.id" class="page-body__figure">
         <responsive-image
           class="page-body__lazy-image"
-          :src="`${graph.imgixHost}${graph.value.path}?w=640&q=65`"
+          :src="`${graph.imgixHost}${graph.value.path}?auto=compress&w=640&q=65`"
           :srcWidth="graph.value.width"
           :srcHeight="graph.value.height"
           :alt="graph.value.alt"
@@ -63,7 +63,7 @@
         <div class="page-body__footer--partner">
           <p v-if="partner && partner.name">
             Created in partnership with:
-            <img v-if="partner.logo && partner.logo.imgixHost" :src="`${partner.logo.imgixHost}${partner.logo.value.path}?w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`" class="page-body__partner-img" :width="scaleMaxToSize(partner.logo, sizeLimit).w" :height="scaleMaxToSize(partner.logo, sizeLimit).h">
+            <img v-if="partner.logo && partner.logo.imgixHost" :src="`${partner.logo.imgixHost}${partner.logo.value.path}?auto=compress&w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`" class="page-body__partner-img" :width="scaleMaxToSize(partner.logo, sizeLimit).w" :height="scaleMaxToSize(partner.logo, sizeLimit).h">
             {{ partner.name }}
           </p>
         </div>

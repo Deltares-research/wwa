@@ -1,7 +1,7 @@
 <template>
   <section class="page-body-title">
     <div class="page-body-title__theme">
-      <img v-if="theme && theme.slug" class="theme-icon page-body-title__theme-icon" :src="`assets/${theme.slug}.png`" width="48" height="48" />
+      <img v-if="theme && theme.slug" class="theme-icon page-body-title__theme-icon" :src="`/assets/${theme.slug}.png`" width="48" height="48" />
     </div>
 
     <div class="page-body-title__storyteller">
@@ -27,7 +27,7 @@
         <li v-for="link in goals" :key="link.slug">
             <nuxt-link
               class="sdg-tag"
-              :style="{ backgroundImage: `url('assets/E_SDG-goals_icons-individual-rgb-${link.slug.slice(0,2)}.png')` }"
+              :style="{ backgroundImage: `url('/assets/E_SDG-goals_icons-individual-rgb-${link.slug.slice(0,2)}.png')` }"
               :to="link.path"
               :title="link.title"
               >

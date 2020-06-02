@@ -8,7 +8,7 @@
           <li v-for="link in goals" :key="link.slug">
             <nuxt-link
               class="sdg-tag sdg-tag--filter sdg-tag--large"
-              :style="{ backgroundImage: `url('assets/E_SDG-goals_icons-individual-rgb-${link.slug.slice(0,2)}.png')` }"
+              :style="{ backgroundImage: `url('/assets/E_SDG-goals_icons-individual-rgb-${link.slug.slice(0,2)}.png')` }"
               :to="link.path"
               :title="link.title"
               >

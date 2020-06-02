@@ -1,4 +1,5 @@
 const dotenv = require('dotenv-safe')
+const ThreeMinifierResolver = require('@yushijinhun/three-minifier-webpack')
 
 const books = require('./static/data/books/index.json')
 const themes = require('./static/data/themes/index.json')
@@ -6,6 +7,8 @@ const goals = require('./static/data/goals/index.json')
 const influences = require('./static/data/influences/index.json')
 const keywords = require('./static/data/keywords/index.json')
 const staticPages = require('./static/data/static-pages/index.json')
+
+const threeMinifier = new ThreeMinifierResolver({/* options */});
 
 dotenv.config()
 
@@ -115,6 +118,12 @@ module.exports = {
         test: /\.glsl$/,
         loader: 'webpack-glsl-loader'
       })
+
+      config.plugins.unshift(
+        threeMinifier
+      )
+
+      config.resolve.plugins = [threeMinifier.resolver]
     },
     // Create separate css file
     extractCSS: true,

@@ -19,6 +19,7 @@ module.exports = {
     'no-unused-vars': ['off'],
     'no-case-declarations': ['off'],
     'vue/no-unused-components': ['off'],
+    'no-debugger': ['warn'],
   },
   globals: {
     mapboxgl: true,

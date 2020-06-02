@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import { SphereGeometry, ShaderMaterial, BackSide, AdditiveBlending, Mesh } from 'three'
 
 import { GLOBE_RADIUS } from './constants'
 
@@ -11,20 +11,20 @@ class Glow {
       viewVector: { type: 'v3', value: camera.position }
     }
 
-    this.geometry = new THREE.SphereGeometry(GLOBE_RADIUS - 0.02, 64, 64)
-    this.material = new THREE.ShaderMaterial({
+    this.geometry = new SphereGeometry(GLOBE_RADIUS - 0.02, 64, 64)
+    this.material = new ShaderMaterial({
       uniforms: this.uniforms,
       vertexShader,
       fragmentShader,
-      side: THREE.BackSide,
-      blending: THREE.AdditiveBlending,
+      side: BackSide,
+      blending: AdditiveBlending,
       transparent: true,
       opacity: 0.5,
       depthTest: true,
       depthWrite: false
     })
 
-    this.mesh = new THREE.Mesh(this.geometry, this.material)
+    this.mesh = new Mesh(this.geometry, this.material)
     this.mesh.scale.multiplyScalar(1.25)
   }
 }

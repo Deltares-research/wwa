@@ -1,10 +1,10 @@
-import * as THREE from 'three'
-import { loadData } from 'd3-jetpack'
+import { ShaderMaterial, BufferGeometry, Points, BufferAttribute, Vector3 } from 'three'
 import { scaleLinear } from 'd3-scale'
 import { color } from 'd3-color'
 import { lat2theta, lon2phi, polar2cartesian } from './common'
 import { metrics } from './metrics'
 import { GLOBE_RADIUS, MAX_PARTICLES } from './constants'
+import result from '../../static/globe-themes/globe-data-arrays.json'
 
 /** Scale to convert RGB 0-255 range to 0-1 range */
 const rgb2unit = scaleLinear()
@@ -28,7 +28,7 @@ class Particles {
       pointSize: { value: 10.0 }
     }
 
-    this.material = new THREE.ShaderMaterial({
+    this.material = new ShaderMaterial({
       uniforms: this.uniforms,
       vertexShader: require('./glsl/dot.vert.glsl'),
       fragmentShader: require('./glsl/dot.frag.glsl'),
@@ -36,8 +36,8 @@ class Particles {
       vertexColors: true
     })
 
-    this.geometry = new THREE.BufferGeometry()
-    this.mesh = new THREE.Points(this.geometry, this.material)
+    this.geometry = new BufferGeometry()
+    this.mesh = new Points(this.geometry, this.material)
   }
 
   update () {
@@ -84,38 +84,33 @@ class Particles {
 
   load (finished) {
     this.initGeometry()
-    loadData(`${this.base}globe-themes/globe-data.csv`, (error, result) => {
-      if (error) {
-        console.error(`error loading globe-data.csv: ${error}`)
-      }
-
       let currentLat = null
       const CHAR_OFFSET = 48
 
       const keys = Object.keys(metrics)
 
-      result[0].forEach((d, i) => {
+      result.forEach((d, i) => {
         const particle = {}
 
-        if (d.lat !== '') {
-          currentLat = lat2theta(+d.lat)
+        if (d[0] !== '') {
+          currentLat = lat2theta(+d[0])
         }
 
         particle.lat = currentLat
-        particle.lon = lon2phi(+d.lon)
+        particle.lon = lon2phi(+d[1])
 
-        if (d.chr === '0') {
+        if (d[2] === '0') {
           particle.hfo = 0
           particle.dro = 0
           particle.eco_s = 0
-        } else if (d.chr === '') {
+        } else if (d[2] === '') {
           particle.hfo = null
           particle.dro = null
           particle.eco_s = null
         } else {
-          particle.hfo = (d.chr.charCodeAt(0) - CHAR_OFFSET) / 10
-          particle.dro = (d.chr.charCodeAt(1) - CHAR_OFFSET) / 10
-          particle.eco_s = (d.chr.charCodeAt(2) - CHAR_OFFSET) / 10
+          particle.hfo = (d[2].charCodeAt(0) - CHAR_OFFSET) / 10
+          particle.dro = (d[2].charCodeAt(1) - CHAR_OFFSET) / 10
+          particle.eco_s = (d[2].charCodeAt(2) - CHAR_OFFSET) / 10
         }
 
         this.data.push(particle)
@@ -125,7 +120,7 @@ class Particles {
 
           const radius = GLOBE_RADIUS
           const point = polar2cartesian(radius, particle.lat, particle.lon)
-          const pos = new THREE.Vector3(point.x, point.y, point.z)
+          const pos = new Vector3(point.x, point.y, point.z)
 
           metric.positions[(i * 3) + 0] = pos.x
           metric.positions[(i * 3) + 1] = pos.y
@@ -153,29 +148,29 @@ class Particles {
       this.geometry.attributes.color.needsUpdate = true
 
       if (finished) {
+        console.log(this.data);
         finished()
       }
-    })
   }
 
   initGeometry () {
     const positions = new Float32Array(MAX_PARTICLES * 3)
-    this.geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3))
+    this.geometry.setAttribute('position', new BufferAttribute(positions, 3))
 
     const targetPositions = new Float32Array(MAX_PARTICLES * 3)
-    this.geometry.addAttribute('targetPosition', new THREE.BufferAttribute(targetPositions, 3))
+    this.geometry.setAttribute('targetPosition', new BufferAttribute(targetPositions, 3))
 
     this.colors = new Float32Array(MAX_PARTICLES * 3)
-    this.geometry.addAttribute('color', new THREE.BufferAttribute(this.colors, 3))
+    this.geometry.setAttribute('color', new BufferAttribute(this.colors, 3))
 
     this.targetColors = new Float32Array(MAX_PARTICLES * 3)
-    this.geometry.addAttribute('targetColor', new THREE.BufferAttribute(this.targetColors, 3))
+    this.geometry.setAttribute('targetColor', new BufferAttribute(this.targetColors, 3))
 
     this.values = new Float32Array(MAX_PARTICLES)
-    this.geometry.addAttribute('value', new THREE.BufferAttribute(this.values, 1))
+    this.geometry.setAttribute('value', new BufferAttribute(this.values, 1))
 
     this.indices = new Float32Array(MAX_PARTICLES)
-    this.geometry.addAttribute('ix', new THREE.BufferAttribute(this.indices, 1))
+    this.geometry.setAttribute('ix', new BufferAttribute(this.indices, 1))
 
     Object.keys(metrics).forEach((m) => {
       metrics[m].positions = new Float32Array(MAX_PARTICLES * 3)

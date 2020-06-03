@@ -44,6 +44,7 @@ import ThemeSwitch from '~/components/theme-switch/ThemeSwitch'
 import VideoHighlights from '~/components/video-highlights/VideoHighlights'
 
 export default {
+  layout: 'globe',
   components: { BookList, BookTags, ChapterList, HeroHeader, ThemeSwitch, VideoHighlights },
   async asyncData (context) {
     const themes = await loadData(context, { theme: 'index' })

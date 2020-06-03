@@ -22,6 +22,7 @@ import loadData from '~/lib/load-data'
 import ThemeSwitch from '~/components/theme-switch/ThemeSwitch'
 
 export default {
+  layout: 'globe',
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const { slug, entries } = await loadData(context, context.params)

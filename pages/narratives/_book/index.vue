@@ -34,6 +34,7 @@ import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import loadData from '~/lib/load-data'
 
 export default {
+  layout: 'globe',
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const booksList = await loadData(context, { booksList: 'index' })

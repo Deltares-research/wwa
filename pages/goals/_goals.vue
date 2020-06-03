@@ -32,6 +32,7 @@ import loadData from '~/lib/load-data'
 import allGoals from '~/static/data/goals/index.json'
 
 export default {
+  layout: 'globe',
   async asyncData (context) {
     const { params } = context
     const goalsFromUrl = (params.goals) ? [].concat(params.goals.split('+')) : []
@@ -66,4 +67,3 @@ export default {
 }
 
 </style>
-

@@ -22,7 +22,6 @@
   import fetchContent from '~/lib/fetch-content';
 
   export default {
-    layout: 'empty',
     async asyncData({ params }) {
       const query = `
         {

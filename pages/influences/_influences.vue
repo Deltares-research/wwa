@@ -29,6 +29,7 @@ import loadData from '~/lib/load-data'
 import allInfluences from '~/static/data/influences/index.json'
 
 export default {
+  layout: 'globe',
   async asyncData (context) {
     const { params } = context
     const influencesFromUrl = (params.influences) ? [].concat(params.influences.split('+')) : []
@@ -74,4 +75,3 @@ export default {
 
 
 </style>
-

@@ -191,7 +191,7 @@ function generateByKeyword (dato, root, i18n) {
  * @param {i18n} i18n
  */
 function generateFilters (dato, root, i18n) {
-  const filters = dato.home.filters.map(filter => {
+  const filters = dato.app.filters.map(filter => {
     return {
       title: filter.title,
       shortTitle: filter.shortTitle,

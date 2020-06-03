@@ -50,6 +50,9 @@ module.exports = (dato, root, i18n) => {
     case 'chapters':
       generateChapters(dato, root, i18n)
       break
+    case 'filters':
+        generateFilters(dato, root, i18n)
+        break
     case 'influences':
       generateByInfluence(dato, root, i18n)
       break
@@ -71,6 +74,7 @@ module.exports = (dato, root, i18n) => {
       generateByInfluence(dato, root, i18n)
       generateByGoal(dato, root, i18n)
       generateByKeyword(dato, root, i18n)
+      generateFilters(dato, root, i18n)
       generateStaticPages(dato, root, i18n)
       generateThemes(dato, root, i18n)
   }
@@ -178,6 +182,31 @@ function generateByKeyword (dato, root, i18n) {
   }
   root.createDataFile(`static/data/keywords/index.json`, 'json', index.filter(i => i.slug !== 'unfiled'))
 }
+
+/**
+ * Write out JSON file containing all filters
+ *
+ * @param {Dato} dato - DatoCMS API
+ * @param {Root} root - Project root
+ * @param {i18n} i18n
+ */
+function generateFilters (dato, root, i18n) {
+  const filters = dato.home.filters.map(filter => {
+    return {
+      title: filter.title,
+      shortTitle: filter.shortTitle,
+      slug: filter.slug,
+      filterItems: filter.filterItems.map(filterItem => {
+        return {
+          title: filterItem.title,
+          slug: filterItem.slug
+        }
+      })
+    }
+  })
+  root.createDataFile(`static/data/filters.json`, 'json', filters)
+}
+
 /**
  * Write out JSON files by theme
  *

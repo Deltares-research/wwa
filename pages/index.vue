@@ -121,7 +121,7 @@ export default {
 @import "../components/colors/colors.css";
 
 .globe-spacer {
-  height: 82vh;
+  height: 95vh;
   width: 100vw;
   pointer-events: none;
 }

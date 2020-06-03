@@ -21,6 +21,7 @@
     "data:dev": "cross-env UNPUBLISHED=1 dato dump",
     "data:backup": "dato dump --config dato.backup.js",
     "data:books": "cross-env DATO_EXPORT=books dato dump",
+    "data:filters": "cross-env DATO_EXPORT=filters dato dump",
     "data:chapters": "cross-env DATO_EXPORT=chapters dato dump",
     "data:keywords": "cross-env DATO_EXPORT=keywords dato dump",
     "data:influences": "cross-env DATO_EXPORT=influences dato dump",

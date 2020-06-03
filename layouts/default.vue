@@ -1,16 +1,22 @@
 <template>
   <main class="layout layout--globe">
     <main-menu variant="dark" />
+
     <transition name="fadeIn" mode="out-in">
       <globe-component :is="GlobeComponent" class="globe-component" :class="{ 'globe-component--right': globePositionRight }"/>
     </transition>
-    <nuxt/>
 
+    <transition name="fadeIn">
+      <tabbed-filters v-if="!globePositionRight" />
+    </transition>
+
+    <nuxt/>
   </main>
 </template>
 <script>
 import { mapState } from 'vuex'
 import MainMenu from '~/components/main-menu/MainMenu'
+import TabbedFilters from '~/components/tabbed-filters/TabbedFilters'
 
 export default {
   beforeCreate () {
@@ -18,7 +24,7 @@ export default {
       component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue')
     })
   },
-  components: { MainMenu },
+  components: { MainMenu, TabbedFilters },
   computed: {
     ...mapState(['globePositionRight'])
   }

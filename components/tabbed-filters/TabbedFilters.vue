@@ -40,9 +40,11 @@
             v-for="filterItem in filter.filterItems"
             :key="filterItem.slug"
           >
-            <button>
+            <nuxt-link
+              :to="`/${filter.slug}/${filterItem.slug}`"
+            >
               {{ filterItem.title }}
-            </button>
+            </nuxt-link>
           </li>
         </ul>
       </section>

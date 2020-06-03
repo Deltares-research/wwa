@@ -1,4 +1,5 @@
 const dotenv = require('dotenv-safe')
+const fetchContent = require('./lib/fetch-content').default
 
 const books = require('./static/data/books/index.json')
 const themes = require('./static/data/themes/index.json')
@@ -17,15 +18,27 @@ const chapters = books
     })
     return chapters.concat(bookChapters)
   }, [])
-// Generate routes
-const routes = books
-  .concat(chapters)
-  .concat(themes)
-  .concat(goals)
-  .concat(influences)
-  .concat(keywords)
-  .concat(staticPages)
-  .map(item => item.path)
+
+const fetchEvents = () => fetchContent(`
+  {
+    allEvents {
+      slug
+
+      _allTitleLocales {
+        locale
+      }
+    }
+  }
+`)
+  .then(({ allEvents }) =>
+    allEvents
+      .map((event) =>
+        event._allTitleLocales.map((item) =>
+          `${item.locale}/events/${event.slug}`
+        )
+      )
+      .flat()
+  )
 
 const postcss = {
   plugins: {
@@ -123,6 +136,19 @@ module.exports = {
   env,
   // Define dynamic routes to generate for dist,
   generate: {
-    routes
+    routes () {
+      return fetchEvents()
+        .then(events => {
+          return books
+            .concat(chapters)
+            .concat(themes)
+            .concat(goals)
+            .concat(influences)
+            .concat(keywords)
+            .concat(staticPages)
+            .map(item => item.path)
+            .concat(events)
+        });
+    }
   }
 }

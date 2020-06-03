@@ -4,15 +4,6 @@
     <div class="layout-section">
       <div class="layout-section__container">
         <h1>Influences</h1>
-        <ul class="list--inline influences-filter">
-          <li v-for="link in influences" :key="link.slug">
-            <nuxt-link
-              :class="`tag tag--influence tag--${link.slug} ${(activeInfluences.some(a => a.slug === link.slug)) ? 'active' : ''}`"
-              :to="link.path">
-              {{ link.title }}
-            </nuxt-link>
-          </li>
-        </ul>
       </div>
     </div>
     <div class="layout-section layout-section--gradient">
@@ -61,17 +52,4 @@ export default {
   width: 100vw;
   pointer-events: none;
 }
-
-.influences-filter .tag {
-  transition: opacity .25s;
-}
-.influences-filter .tag:not(.active) {
-  opacity: .5;
-}
-.influences-filter .tag:hover {
-  opacity: 1;
-}
-
-
 </style>
-

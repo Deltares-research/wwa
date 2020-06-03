@@ -2,9 +2,6 @@
   <div class="invert">
     <div class="globe-spacer-theme"></div>
 
-    <div class="layout-section layout-section--no-padding layout-section--gradient">
-      <theme-switch :themes="themes" :active-slug="slug" />
-    </div>
     <div
       class="layout-section layout-section--themes"
       :class="`layout-section--theme-${slug}-active`"
@@ -19,7 +16,6 @@
 <script>
 import ChapterList from '~/components/chapter-list/ChapterList'
 import loadData from '~/lib/load-data'
-import ThemeSwitch from '~/components/theme-switch/ThemeSwitch'
 
 export default {
   async asyncData (context) {
@@ -36,7 +32,7 @@ export default {
     this.$store.commit('replaceTheme', this.$route.params.theme)
     this.$store.commit('enableGlobeAutoRotation')
   },
-  components: { ChapterList, ThemeSwitch }
+  components: { ChapterList }
 }
 </script>
 

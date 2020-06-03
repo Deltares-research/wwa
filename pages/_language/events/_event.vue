@@ -22,6 +22,13 @@
   import fetchContent from '~/lib/fetch-content';
 
   export default {
+    head ({ params }) {
+      return {
+        htmlAttrs: {
+          lang: params.language,
+        }
+      }
+    },
     async asyncData({ params }) {
       const query = `
         {

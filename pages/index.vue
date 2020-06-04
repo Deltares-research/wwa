@@ -8,10 +8,7 @@
     />
     <div class="globe-spacer"/>
 
-    <video-highlights
-      id="scrollToBooksList"
-      :videoHighlights="videoHighlights"
-    />
+    <video-highlights :videoHighlights="videoHighlights" />
     <div class="layout-section layout-section--blue-trans">
       <book-list class="layout-section__container" :books="books">
         <chapter-list slot-scope="{ chapters, limit }" :chapters="chapters" sorted="newest" :limit="limit" />

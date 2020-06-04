@@ -48,7 +48,6 @@
     "marked": "^1.1.0",
     "normalize.css": "^8.0.1",
     "nuxt": "^2.12.2",
-    "portal-vue": "^2.1.7",
     "smoothscroll-polyfill": "^0.4.4",
     "three": "^0.116.1",
     "three.meshline": "^1.2.0"

@@ -4,18 +4,6 @@
     <div class="layout-section">
       <div class="layout-section__container">
         <h1>Sustainable Development Goals </h1>
-        <ul class="list--inline goal-filter">
-          <li v-for="link in goals" :key="link.slug">
-            <nuxt-link
-              class="sdg-tag sdg-tag--filter sdg-tag--large"
-              :style="{ backgroundImage: `url('/assets/E_SDG-goals_icons-individual-rgb-${link.slug.slice(0,2)}.png')` }"
-              :to="link.path"
-              :title="link.title"
-              >
-              <span class="sr-only">{{ link.title }}</span>
-            </nuxt-link>
-          </li>
-        </ul>
       </div>
     </div>
     <div class="layout-section layout-section--gradient">

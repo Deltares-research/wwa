@@ -22,7 +22,7 @@ import allMethodologies from '~/static/data/methodologies/index.json'
 export default {
   async asyncData (context) {
     const { params } = context
-    const methodologiesFromUrl = (params.methodology) ? [].concat(params.methodology.split('+')) : []
+    const methodologiesFromUrl = (params.methodologies) ? [].concat(params.methodologies.split('+')) : []
     const { results = [] } = (methodologiesFromUrl) ? await loadData(context, { methodologies: methodologiesFromUrl }) : {}
     // Build active methodologies objects from url
     const activeMethodologies = allMethodologies

@@ -26,7 +26,9 @@
     "data:keywords": "cross-env DATO_EXPORT=keywords dato dump",
     "data:influences": "cross-env DATO_EXPORT=influences dato dump",
     "data:static-pages": "cross-env DATO_EXPORT=static_pages dato dump",
-    "data:themes": "cross-env DATO_EXPORT=themes dato dump"
+    "data:themes": "cross-env DATO_EXPORT=themes dato dump",
+    "data:goals": "cross-env DATO_EXPORT=goals dato dump",
+    "data:methodologies": "cross-env DATO_EXPORT=methodologies dato dump"
   },
   "babel": {
     "presets": [

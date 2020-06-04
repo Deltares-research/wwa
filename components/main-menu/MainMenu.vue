@@ -8,9 +8,6 @@
             <span class="main-menu__go-home-text">World Water<br/>Atlas</span>
           </nuxt-link>
         </div>
-        <div class="main-menu__section main-menu__section--align-center">
-          <portal-target name="menu-center-content" />
-        </div>
         <div class="main-menu__section main-menu__section--align-right">
           <nuxt-link :class="`menu__item menu__item--about h3 ${(variant === 'dark') ? 'invert' : ''}`"
             to="/about">
@@ -76,10 +73,6 @@ export default {
 
 .main-menu__section--no-padding {
   padding: 0;
-}
-
-.main-menu__section--align-center {
-  justify-content: center;
 }
 
 .main-menu__section--align-right {

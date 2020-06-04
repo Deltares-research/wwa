@@ -29,14 +29,10 @@
         :related="chapter.related"
       />
     </div>
-    <portal to="menu-center-content">
-      <menu-dropdown :book="book" :booksList="booksList" />
-    </portal>
   </div>
 </template>
 
 <script>
-import MenuDropdown from '~/components/menu-dropdown/MenuDropdown'
 import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter'
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import PageComponent from '~/components/page-component/PageComponent'
@@ -45,10 +41,9 @@ import loadData from '~/lib/load-data'
 
 export default {
   async asyncData (context) {
-    const { book, pages, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params)
+    const { pages, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params)
     const chapter = { path, slug, title, previousChapter, nextChapter, cover, related }
-    const booksList = await loadData(context, { booksList: 'index' })
-    return { book, chapter, pages, path, slug, title, booksList }
+    return { chapter, pages, path, slug, title }
   },
   data: function () {
     return {
@@ -79,7 +74,6 @@ export default {
   components: {
     NarrativeFooter,
     NarrativeHeader,
-    MenuDropdown,
     PageComponent,
     ScrollIndicator
   },

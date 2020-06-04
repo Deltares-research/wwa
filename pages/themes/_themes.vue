@@ -29,7 +29,7 @@ export default {
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.entries)
-    this.$store.commit('replaceTheme', this.$route.params.theme)
+    this.$store.commit('replaceTheme', this.$route.params.themes)
     this.$store.commit('enableGlobeAutoRotation')
   },
   components: { ChapterList }

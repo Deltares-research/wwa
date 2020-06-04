@@ -18,7 +18,7 @@
             :aria-selected="currentTab === `tab-${filter.slug}` ? 'true' : 'false'"
             @click.prevent="selectTab(`tab-${filter.slug}`)"
             @keydown="keyboardNavigation(filter.slug, $event)"
-            :class="{ 'tabbed-filters__tab--selected' : filter.slug === routeName }"
+            :class="{ 'tabbed-filters__tab--selected' : filter.slug === activeFilterSlug }"
             ref="tab"
           >
             <span class="tabbed-filters__title--desktop">{{ filter.title }}</span>
@@ -43,7 +43,7 @@
           >
             <nuxt-link
               :to="`/${filter.slug}/${filterItem.slug}`"
-              :class="{ 'tabbed-filters__link--selected' : filterItem.slug === routeParam }"
+              :class="{ 'tabbed-filters__link--selected' : filterItem.slug === activeFilterItemSlug }"
             >
               {{ filterItem.title }}
             </nuxt-link>
@@ -65,11 +65,11 @@ export default {
   },
   computed: {
     ...mapState(['filters']),
-    routeName () {
-      return Object.keys(this.$route.params)[0]
+    activeFilterSlug () {
+      return this.$route.path.split('/')[1]
     },
-    routeParam () {
-      return this.$route.params[this.routeName]
+    activeFilterItemSlug () {
+      return this.$route.path.split('/')[2]
     }
   },
   watch:{
@@ -96,7 +96,7 @@ export default {
       }
     },
     updateRouteInfo () {
-      this.currentTab = this.routeName ? `tab-${this.routeName}` : 'tab-themes'
+      this.currentTab = this.activeFilterSlug ? `tab-${this.activeFilterSlug}` : 'tab-themes'
     }
   },
   mounted () {
@@ -110,7 +110,7 @@ export default {
   z-index: 1;
   position: absolute;
   left: 0;
-  top: 10vh;
+  top: 75vh;
   background: red;
 }
 

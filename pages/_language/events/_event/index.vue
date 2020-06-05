@@ -4,17 +4,37 @@
     <nav>
       <ul>
         <li v-for="{ locale } in event._allTitleLocales" :key="locale">
-          <a
+          <nuxt-link
             rel="alternate"
             :hreflang="locale"
             :lang="locale"
-            :href="`/${locale}/events/${params.event}`"
+            :to="`/${locale}/events/${params.event}`"
           >
             {{ locale }}
-          </a>
+          </nuxt-link>
         </li>
       </ul>
     </nav>
+
+    <ul class="event__relevant-chapters">
+      <li
+        class="chapter-preview"
+        v-for="chapter in event.relevantChapters"
+        :key="chapter.slug"
+      >
+        <nuxt-link :to="chapter.slug" append>
+          <img
+            class="chapter-preview__image"
+            v-if="chapter.cover"
+            width="400"
+            height="400"
+            :src="`${chapter.cover.url}?auto=compress&w=800`"
+            alt=""
+          >
+          <h3>{{ chapter.title }}</h3>
+        </nuxt-link>
+      </li>
+    </ul>
   </main>
 </template>
 
@@ -39,6 +59,12 @@
             _allTitleLocales {
               locale
             }
+
+            relevantChapters {
+              slug
+              title
+              cover { url }
+            }
           }
         }
       `;
@@ -60,5 +86,22 @@
     display: flex;
     justify-content: center;
     font-size: 4rem;
+  }
+
+  .event__relevant-chapters {
+    display: flex;
+  }
+
+  .event__relevant-chapters > * {
+    margin: 1rem;
+  }
+
+  .chapter-preview {
+    display: block;
+    background: var(--ui--blue);
+  }
+
+  .chapter-preview__image {
+    object-fit: cover;
   }
 </style>

@@ -44,6 +44,7 @@ export default {
     }
   },
   mounted () {
+    this.$store.commit('replaceTheme', 'too-much')
     this.$store.commit('replaceFeatures', this.results)
     this.$store.commit('enableGlobeAutoRotation')
   },

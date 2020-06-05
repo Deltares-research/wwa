@@ -75,6 +75,7 @@ export default {
     }
   },
   mounted () {
+    this.$store.commit('replaceTheme', 'too-much')
     this.$store.commit('replaceFeatures', this.results)
   },
   methods: {

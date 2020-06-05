@@ -27,11 +27,6 @@ html {
   padding: 0 20px;
 }
 
-.layout-section--no-padding {
-  width: 100vw;
-  padding: 0;
-}
-
 .layout-section--blue-trans {
   background-color: rgba(0, 0, 42, 0.85);
 }
@@ -59,10 +54,6 @@ html {
   .layout-section {
     width: calc(100vw - 80px);
     padding: 0 40px;
-  }
-  .layout-section--no-padding {
-    width: 100vw;
-    padding: 0;
   }
 }
 

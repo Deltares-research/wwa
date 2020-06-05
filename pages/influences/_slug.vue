@@ -3,16 +3,8 @@
     <div class="globe-spacer-influences" />
     <div class="layout-section">
       <div class="layout-section__container">
-        <h1>Influences</h1>
-        <ul class="list--inline influences-filter">
-          <li v-for="link in influences" :key="link.slug">
-            <nuxt-link
-              :class="`tag tag--influence tag--${link.slug} ${(activeInfluences.some(a => a.slug === link.slug)) ? 'active' : ''}`"
-              :to="link.path">
-              {{ link.title }}
-            </nuxt-link>
-          </li>
-        </ul>
+        <h1>{{ title }}</h1>
+        <div v-html="htmlBody"></div>
       </div>
     </div>
     <div class="layout-section layout-section--gradient">
@@ -26,14 +18,15 @@
 <script>
 import ChapterList from '~/components/chapter-list/ChapterList'
 import loadData from '~/lib/load-data'
+import marked from '~/lib/marked'
 import allInfluences from '~/static/data/influences/index.json'
 
 export default {
   layout: 'globe',
   async asyncData (context) {
     const { params } = context
-    const influencesFromUrl = (params.influences) ? [].concat(params.influences.split('+')) : []
-    const { results = [] } = (influencesFromUrl) ? await loadData(context, { influences: influencesFromUrl }) : {}
+    const influencesFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : []
+    const { results = [], title, body } = (influencesFromUrl) ? await loadData(context, { influences: influencesFromUrl }) : {}
     // Build active influences objects from url
     const activeInfluences = allInfluences
       .filter(tag => influencesFromUrl.some(active => active === tag.slug))
@@ -41,37 +34,29 @@ export default {
     return {
       influences: allInfluences,
       activeInfluences,
+      title,
+      body,
       results
     }
   },
+  computed: {
+    htmlBody () {
+      return marked(this.body)
+    }
+  },
   mounted () {
+    this.$store.commit('replaceTheme', 'too-much')
     this.$store.commit('replaceFeatures', this.results)
     this.$store.commit('enableGlobeAutoRotation')
   },
-  components: {
-    ChapterList
-  }
+  components: { ChapterList }
 }
 </script>
 
 <style>
-@import "../../components/tag/tag.css";
-
 .globe-spacer-influences {
-  height: 60vh;
+  height: 65vh;
   width: 100vw;
   pointer-events: none;
 }
-
-.influences-filter .tag {
-  transition: opacity .25s;
-}
-.influences-filter .tag:not(.active) {
-  opacity: .5;
-}
-.influences-filter .tag:hover {
-  opacity: 1;
-}
-
-
 </style>

@@ -8,8 +8,8 @@
           <p
             v-if="body.length"
             class="book-description"
+            v-html="htmlBody"
           >
-            {{ body }}
           </p>
         </div>
       </div>
@@ -19,34 +19,33 @@
         <chapter-list :chapters="chapters" sorted="newest" :limit="9" />
       </div>
     </div>
-    <portal to="menu-center-content">
-      <transition name="fade">
-        <menu-dropdown :book="{ title }" :booksList="booksList" />
-      </transition>
-    </portal>
   </div>
 </template>
 
 <script>
 import ChapterList from '~/components/chapter-list/ChapterList'
-import MenuDropdown from '~/components/menu-dropdown/MenuDropdown'
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import loadData from '~/lib/load-data'
+import marked from '~/lib/marked'
 
 export default {
   layout: 'globe',
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
-    const booksList = await loadData(context, { booksList: 'index' })
     const { title, body, chapters, theme } = await loadData(context, context.params)
-    return { booksList, title, body, chapters, themes: await themes, theme }
+    return { title, body, chapters, themes: await themes, theme }
+  },
+  computed: {
+    htmlBody () {
+      return marked(this.body)
+    }
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.chapters)
     this.$store.commit('replaceTheme', this.theme.slug)
     this.$store.commit('disableGlobeAutoRotation')
   },
-  components: { ChapterList, MenuDropdown, NarrativeHeader }
+  components: { ChapterList, NarrativeHeader }
 }
 </script>
 

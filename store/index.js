@@ -12,14 +12,15 @@ const store = () => {
       theme: 'too-much',
       globeAutoRotation: true,
       globePositionRight: false,
-      navBackgroundTrans: false
+      navBackgroundTrans: false,
+      filters: []
     },
     mutations: {
       activateFeature (state, feature) {
         const { theme, location, slug, path } = feature
         state.activeFeature = { location, slug, path, theme }
       },
-      deactivateFeature (state, feature) {
+      deactivateFeature (state) {
         state.activeFeature = undefined
       },
       replaceTheme (state, theme) {
@@ -65,6 +66,9 @@ const store = () => {
       },
       enableNavBackgroundTrans (state) {
         state.navBackgroundTrans = true
+      },
+      setFilters (state, filters) {
+        state.filters = filters
       }
     }
   })

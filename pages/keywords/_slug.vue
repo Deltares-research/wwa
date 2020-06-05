@@ -40,7 +40,7 @@ export default {
   layout: 'globe',
   async asyncData (context) {
     const { params } = context
-    const keywordsFromUrl = (params.keywords) ? [].concat(params.keywords.split('+')) : []
+    const keywordsFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : []
     const { results = [], tags: keywords = [] } = await loadData(context, { keywords: keywordsFromUrl })
 
     return {
@@ -76,6 +76,7 @@ export default {
     }
   },
   mounted () {
+    this.$store.commit('replaceTheme', 'too-much')
     this.$store.commit('replaceFeatures', this.results)
   },
   methods: {

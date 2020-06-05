@@ -1,26 +1,39 @@
 <template>
   <main class="layout layout--globe">
     <main-menu variant="dark" />
+
     <transition name="fadeIn" mode="out-in">
       <globe-component :is="GlobeComponent" class="globe-component" :class="{ 'globe-component--right': globePositionRight }"/>
     </transition>
-    <nuxt/>
 
+    <transition name="fadeIn">
+      <globe-navigation v-if="!globePositionRight && !isFilterPage" />
+    </transition>
+
+    <nuxt/>
   </main>
 </template>
 <script>
 import { mapState } from 'vuex'
 import MainMenu from '~/components/main-menu/MainMenu'
+import GlobeNavigation from '~/components/globe-navigation/GlobeNavigation'
 
 export default {
+  async middleware ({ store, redirect }) {
+    const filters = await import('~/static/data/filters.json')
+    store.commit('setFilters', filters.default)
+  },
   beforeCreate () {
     this.GlobeComponent = () => ({
       component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue')
     })
   },
-  components: { MainMenu },
+  components: { MainMenu, GlobeNavigation },
   computed: {
-    ...mapState(['globePositionRight'])
+    ...mapState(['globePositionRight']),
+    isFilterPage () {
+      return this.$route.name === 'keywords-slug'
+    }
   }
 }
 </script>

@@ -8,20 +8,7 @@
     />
     <div class="globe-spacer"/>
 
-    <div class="layout-section layout-section--no-padding layout-section--gradient">
-      <theme-switch :themes="themes" :active-slug="slug" />
-    </div>
-    <div class="layout-section layout-section--blue-trans">
-      <book-tags
-        class="layout-section__container"
-        :books="books"
-        @selectLink="smoothScroll"
-      />
-    </div>
-    <video-highlights
-      id="scrollToBooksList"
-      :videoHighlights="videoHighlights"
-    />
+    <video-highlights :videoHighlights="videoHighlights" />
     <div class="layout-section layout-section--blue-trans">
       <book-list class="layout-section__container" :books="books">
         <chapter-list slot-scope="{ chapters, limit }" :chapters="chapters" sorted="newest" :limit="limit" />
@@ -37,17 +24,14 @@ import flattenDeep from 'lodash/flattenDeep'
 import home from '~/static/data/home.json'
 
 import BookList from '~/components/book-list/BookList'
-import BookTags from '~/components/book-tags/BookTags'
 import ChapterList from '~/components/chapter-list/ChapterList'
 import HeroHeader from '~/components/hero-header/HeroHeader'
-import ThemeSwitch from '~/components/theme-switch/ThemeSwitch'
 import VideoHighlights from '~/components/video-highlights/VideoHighlights'
 
 export default {
   layout: 'globe',
-  components: { BookList, BookTags, ChapterList, HeroHeader, ThemeSwitch, VideoHighlights },
+  components: { BookList, ChapterList, HeroHeader, VideoHighlights },
   async asyncData (context) {
-    const themes = await loadData(context, { theme: 'index' })
     const books = await loadData(context, { book: 'index' })
 
     const chaptersNested = await Promise.all([
@@ -68,7 +52,7 @@ export default {
     const markers = flattenDeep(chapters.map(chapter => chapter.pages))
       .filter(page => page.location && page.theme && page.path)
 
-    return { books, markers, themes: await themes }
+    return { books, markers }
   },
   data: function () {
     return {
@@ -122,7 +106,7 @@ export default {
 @import "../components/colors/colors.css";
 
 .globe-spacer {
-  height: 82vh;
+  height: 75vh;
   width: 100vw;
   pointer-events: none;
 }

@@ -21,11 +21,14 @@
     "data:dev": "cross-env UNPUBLISHED=1 dato dump",
     "data:backup": "dato dump --config dato.backup.js",
     "data:books": "cross-env DATO_EXPORT=books dato dump",
+    "data:filters": "cross-env DATO_EXPORT=filters dato dump",
     "data:chapters": "cross-env DATO_EXPORT=chapters dato dump",
     "data:keywords": "cross-env DATO_EXPORT=keywords dato dump",
     "data:influences": "cross-env DATO_EXPORT=influences dato dump",
     "data:static-pages": "cross-env DATO_EXPORT=static_pages dato dump",
-    "data:themes": "cross-env DATO_EXPORT=themes dato dump"
+    "data:themes": "cross-env DATO_EXPORT=themes dato dump",
+    "data:goals": "cross-env DATO_EXPORT=goals dato dump",
+    "data:methodologies": "cross-env DATO_EXPORT=methodologies dato dump"
   },
   "babel": {
     "presets": [
@@ -46,7 +49,6 @@
     "marked": "^1.1.0",
     "normalize.css": "^8.0.1",
     "nuxt": "^2.12.2",
-    "portal-vue": "^2.1.7",
     "smoothscroll-polyfill": "^0.4.4",
     "three": "^0.116.1",
     "three.meshline": "^1.2.0"

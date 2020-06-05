@@ -54,8 +54,6 @@ export default {
 </script>
 
 <style>
-@import "../../components/tag/tag.css";
-
 .globe-spacer-goal {
   height: 65vh;
   width: 100vw;

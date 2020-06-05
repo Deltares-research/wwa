@@ -7,7 +7,7 @@
     </transition>
 
     <transition name="fadeIn">
-      <globe-navigation v-if="!globePositionRight" />
+      <globe-navigation v-if="!globePositionRight && !isFilterPage" />
     </transition>
 
     <nuxt/>
@@ -26,7 +26,10 @@ export default {
   },
   components: { MainMenu, GlobeNavigation },
   computed: {
-    ...mapState(['globePositionRight'])
+    ...mapState(['globePositionRight']),
+    isFilterPage () {
+      return this.$route.name === 'keywords-slug'
+    }
   }
 }
 </script>

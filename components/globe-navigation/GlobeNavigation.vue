@@ -1,5 +1,5 @@
 <template>
-  <div class="tabbed-filters layout-section">
+  <div class="globe-navigation layout-section">
     <div class="layout-section__container">
       <ul
         role="tablist"
@@ -18,11 +18,11 @@
             :aria-selected="currentTab === `tab-${filter.slug}` ? 'true' : 'false'"
             @click.prevent="selectTab(`tab-${filter.slug}`)"
             @keydown="keyboardNavigation(filter.slug, $event)"
-            :class="{ 'tabbed-filters__tab--selected' : filter.slug === activeFilterSlug }"
+            :class="{ 'globe-navigation__tab--selected' : filter.slug === activeFilterSlug }"
             ref="tab"
           >
-            <span class="tabbed-filters__title--desktop">{{ filter.title }}</span>
-            <span class="tabbed-filters__title--mobile">{{ filter.shortTitle }}</span>
+            <span class="globe-navigation__title--desktop">{{ filter.title }}</span>
+            <span class="globe-navigation__title--mobile">{{ filter.shortTitle }}</span>
           </a>
         </li>
       </ul>
@@ -43,7 +43,7 @@
           >
             <nuxt-link
               :to="`/${filter.slug}/${filterItem.slug}`"
-              :class="{ 'tabbed-filters__link--selected' : filterItem.slug === activeFilterItemSlug }"
+              :class="{ 'globe-navigation__link--selected' : filterItem.slug === activeFilterItemSlug }"
             >
               {{ filterItem.title }}
             </nuxt-link>
@@ -106,36 +106,36 @@ export default {
 </script>
 
 <style>
-.tabbed-filters {
+.globe-navigation {
   z-index: 1;
   position: absolute;
   left: 0;
-  top: 75vh;
+  top: 60vh;
   background: red;
 }
 
-.tabbed-filters__title--mobile {
+.globe-navigation__title--mobile {
   display: block;
 }
 
-.tabbed-filters__title--desktop {
+.globe-navigation__title--desktop {
   display: none;
 }
 
-.tabbed-filters__tab--selected {
+.globe-navigation__tab--selected {
   font-weight: bold;
 }
 
-.tabbed-filters__link--selected {
+.globe-navigation__link--selected {
   border: 1px solid blue;
 }
 
 @media (min-width: 768px) {
-  .tabbed-filters__title--mobile {
+  .globe-navigation__title--mobile {
     display: none;
   }
 
-  .tabbed-filters__title--desktop {
+  .globe-navigation__title--desktop {
     display: block;
   }
 }

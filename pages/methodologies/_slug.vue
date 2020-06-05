@@ -1,9 +1,9 @@
 <template>
   <div class="invert">
-    <div class="globe-spacer-influences" />
+    <div class="globe-spacer-methodologies" />
     <div class="layout-section">
       <div class="layout-section__container">
-        <h1>Influences</h1>
+        <h1>Methodologies</h1>
       </div>
     </div>
     <div class="layout-section layout-section--gradient">
@@ -17,20 +17,20 @@
 <script>
 import ChapterList from '~/components/chapter-list/ChapterList'
 import loadData from '~/lib/load-data'
-import allInfluences from '~/static/data/influences/index.json'
+import allMethodologies from '~/static/data/methodologies/index.json'
 
 export default {
   async asyncData (context) {
     const { params } = context
-    const influencesFromUrl = (params.influences) ? [].concat(params.influences.split('+')) : []
-    const { results = [] } = (influencesFromUrl) ? await loadData(context, { influences: influencesFromUrl }) : {}
-    // Build active influences objects from url
-    const activeInfluences = allInfluences
-      .filter(tag => influencesFromUrl.some(active => active === tag.slug))
+    const methodologiesFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : []
+    const { results = [] } = (methodologiesFromUrl) ? await loadData(context, { methodologies: methodologiesFromUrl }) : {}
+    // Build active methodologies objects from url
+    const activeMethodologies = allMethodologies
+      .filter(tag => methodologiesFromUrl.some(active => active === tag.slug))
 
     return {
-      influences: allInfluences,
-      activeInfluences,
+      methodologies: allMethodologies,
+      activeMethodologies,
       results
     }
   },
@@ -47,7 +47,7 @@ export default {
 <style>
 @import "../../components/tag/tag.css";
 
-.globe-spacer-influences {
+.globe-spacer-methodologies {
   height: 60vh;
   width: 100vw;
   pointer-events: none;

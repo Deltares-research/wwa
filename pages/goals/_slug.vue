@@ -22,7 +22,7 @@ import allGoals from '~/static/data/goals/index.json'
 export default {
   async asyncData (context) {
     const { params } = context
-    const goalsFromUrl = (params.goals) ? [].concat(params.goals.split('+')) : []
+    const goalsFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : []
     const { results = [] } = (goalsFromUrl) ? await loadData(context, { goals: goalsFromUrl }) : {}
     // Build active goal objects from url
     const activeGoals = allGoals

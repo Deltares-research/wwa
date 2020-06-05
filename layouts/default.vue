@@ -7,7 +7,7 @@
     </transition>
 
     <transition name="fadeIn">
-      <tabbed-filters v-if="!globePositionRight" />
+      <globe-navigation v-if="!globePositionRight" />
     </transition>
 
     <nuxt/>
@@ -16,7 +16,7 @@
 <script>
 import { mapState } from 'vuex'
 import MainMenu from '~/components/main-menu/MainMenu'
-import TabbedFilters from '~/components/tabbed-filters/TabbedFilters'
+import GlobeNavigation from '~/components/globe-navigation/GlobeNavigation'
 
 export default {
   beforeCreate () {
@@ -24,7 +24,7 @@ export default {
       component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue')
     })
   },
-  components: { MainMenu, TabbedFilters },
+  components: { MainMenu, GlobeNavigation },
   computed: {
     ...mapState(['globePositionRight'])
   }

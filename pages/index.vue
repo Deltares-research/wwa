@@ -31,7 +31,6 @@ import VideoHighlights from '~/components/video-highlights/VideoHighlights'
 export default {
   components: { BookList, ChapterList, HeroHeader, VideoHighlights },
   async asyncData (context) {
-    const themes = await loadData(context, { theme: 'index' })
     const books = await loadData(context, { book: 'index' })
 
     const chaptersNested = await Promise.all([
@@ -52,7 +51,7 @@ export default {
     const markers = flattenDeep(chapters.map(chapter => chapter.pages))
       .filter(page => page.location && page.theme && page.path)
 
-    return { books, markers, themes: await themes }
+    return { books, markers }
   },
   data: function () {
     return {

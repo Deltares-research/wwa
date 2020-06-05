@@ -19,6 +19,10 @@ import MainMenu from '~/components/main-menu/MainMenu'
 import GlobeNavigation from '~/components/globe-navigation/GlobeNavigation'
 
 export default {
+  async middleware ({ store, redirect }) {
+    const filters = await import('~/static/data/filters.json')
+    store.commit('setFilters', filters.default)
+  },
   beforeCreate () {
     this.GlobeComponent = () => ({
       component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue')

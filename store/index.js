@@ -70,12 +70,6 @@ const store = () => {
       setFilters (state, filters) {
         state.filters = filters
       }
-    },
-    actions: {
-      async nuxtServerInit ({ commit }) {
-        const filters = await import('~/static/data/filters.json')
-        commit('setFilters', filters.default)
-      }
     }
   })
 }

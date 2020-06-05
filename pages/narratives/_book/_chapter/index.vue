@@ -40,6 +40,7 @@ import ScrollIndicator from '~/components/scroll-indicator/ScrollIndicator'
 import loadData from '~/lib/load-data'
 
 export default {
+  layout: 'globe',
   async asyncData (context) {
     const { pages, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params)
     const chapter = { path, slug, title, previousChapter, nextChapter, cover, related }

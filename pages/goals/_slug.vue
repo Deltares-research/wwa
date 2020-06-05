@@ -22,6 +22,7 @@ import marked from '~/lib/marked'
 import allGoals from '~/static/data/goals/index.json'
 
 export default {
+  layout: 'globe',
   async asyncData (context) {
     const { params } = context
     const goalsFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : []
@@ -62,4 +63,3 @@ export default {
 }
 
 </style>
-

@@ -29,6 +29,7 @@ import loadData from '~/lib/load-data'
 import marked from '~/lib/marked'
 
 export default {
+  layout: 'globe',
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const { title, body, chapters, theme } = await loadData(context, context.params)

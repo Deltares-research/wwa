@@ -37,6 +37,7 @@ import loadData from '~/lib/load-data'
 import { unionByProp } from '~/lib/set-operations'
 
 export default {
+  layout: 'globe',
   async asyncData (context) {
     const { params } = context
     const keywordsFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : []

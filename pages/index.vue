@@ -29,6 +29,7 @@ import HeroHeader from '~/components/hero-header/HeroHeader'
 import VideoHighlights from '~/components/video-highlights/VideoHighlights'
 
 export default {
+  layout: 'globe',
   components: { BookList, ChapterList, HeroHeader, VideoHighlights },
   async asyncData (context) {
     const books = await loadData(context, { book: 'index' })

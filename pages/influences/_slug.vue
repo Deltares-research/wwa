@@ -22,6 +22,7 @@ import marked from '~/lib/marked'
 import allInfluences from '~/static/data/influences/index.json'
 
 export default {
+  layout: 'globe',
   async asyncData (context) {
     const { params } = context
     const influencesFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : []

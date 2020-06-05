@@ -88,11 +88,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .globe-spacer-keywords {
-    height: 60vh;
-    width: 100vw;
-    pointer-events: none;
-  }
-</style>

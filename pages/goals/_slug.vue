@@ -1,6 +1,6 @@
 <template>
   <div class="invert">
-    <div class="globe-spacer-goal" />
+    <div class="globe-spacer-goals" />
     <div class="layout-section">
       <div class="layout-section__container">
         <h1>{{ title }}</h1>
@@ -52,12 +52,3 @@ export default {
   components: { ChapterList }
 }
 </script>
-
-<style>
-.globe-spacer-goal {
-  height: 65vh;
-  width: 100vw;
-  pointer-events: none;
-}
-
-</style>

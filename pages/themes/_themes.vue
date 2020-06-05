@@ -51,20 +51,18 @@ export default {
 </script>
 
 <style>
-.globe-spacer-theme {
-  height: 65vh;
-  width: 100vw;
-  pointer-events: none;
-}
 .layout-section--themes {
   padding-top: 1rem;
 }
+
 .layout-section--theme-too-much-active {
   background-color: var(--ui--bg--theme-too-much-dark-trans);
 }
+
 .layout-section--theme-too-little-active {
   background-color: var(--ui--bg--theme-too-little-dark-trans);
 }
+
 .layout-section--theme-too-dirty-active {
   background-color: var(--ui--bg--theme-too-dirty-dark-trans);
 }

@@ -3,7 +3,8 @@
     <div class="globe-spacer-methodologies" />
     <div class="layout-section">
       <div class="layout-section__container">
-        <h1>Methodologies</h1>
+        <h1>{{ title }}</h1>
+        <div v-html="htmlBody"></div>
       </div>
     </div>
     <div class="layout-section layout-section--gradient">
@@ -17,13 +18,14 @@
 <script>
 import ChapterList from '~/components/chapter-list/ChapterList'
 import loadData from '~/lib/load-data'
+import marked from '~/lib/marked'
 import allMethodologies from '~/static/data/methodologies/index.json'
 
 export default {
   async asyncData (context) {
     const { params } = context
     const methodologiesFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : []
-    const { results = [] } = (methodologiesFromUrl) ? await loadData(context, { methodologies: methodologiesFromUrl }) : {}
+    const { results = [], title, body } = (methodologiesFromUrl) ? await loadData(context, { methodologies: methodologiesFromUrl }) : {}
     // Build active methodologies objects from url
     const activeMethodologies = allMethodologies
       .filter(tag => methodologiesFromUrl.some(active => active === tag.slug))
@@ -31,16 +33,21 @@ export default {
     return {
       methodologies: allMethodologies,
       activeMethodologies,
+      title,
+      body,
       results
+    }
+  },
+  computed: {
+    htmlBody () {
+      return marked(this.body)
     }
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.results)
     this.$store.commit('enableGlobeAutoRotation')
   },
-  components: {
-    ChapterList
-  }
+  components: { ChapterList }
 }
 </script>
 
@@ -48,7 +55,7 @@ export default {
 @import "../../components/tag/tag.css";
 
 .globe-spacer-methodologies {
-  height: 60vh;
+  height: 65vh;
   width: 100vw;
   pointer-events: none;
 }

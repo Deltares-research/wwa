@@ -8,8 +8,8 @@
           <p
             v-if="body.length"
             class="book-description"
+            v-html="htmlBody"
           >
-            {{ body }}
           </p>
         </div>
       </div>
@@ -26,12 +26,18 @@
 import ChapterList from '~/components/chapter-list/ChapterList'
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import loadData from '~/lib/load-data'
+import marked from '~/lib/marked'
 
 export default {
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
     const { title, body, chapters, theme } = await loadData(context, context.params)
     return { title, body, chapters, themes: await themes, theme }
+  },
+  computed: {
+    htmlBody () {
+      return marked(this.body)
+    }
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.chapters)

@@ -3,7 +3,8 @@
     <div class="globe-spacer-goal" />
     <div class="layout-section">
       <div class="layout-section__container">
-        <h1>Sustainable Development Goals </h1>
+        <h1>{{ title }}</h1>
+        <div v-html="htmlBody"></div>
       </div>
     </div>
     <div class="layout-section layout-section--gradient">
@@ -17,13 +18,14 @@
 <script>
 import ChapterList from '~/components/chapter-list/ChapterList'
 import loadData from '~/lib/load-data'
+import marked from '~/lib/marked'
 import allGoals from '~/static/data/goals/index.json'
 
 export default {
   async asyncData (context) {
     const { params } = context
     const goalsFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : []
-    const { results = [] } = (goalsFromUrl) ? await loadData(context, { goals: goalsFromUrl }) : {}
+    const { results = [], title, body } = (goalsFromUrl) ? await loadData(context, { goals: goalsFromUrl }) : {}
     // Build active goal objects from url
     const activeGoals = allGoals
       .filter(tag => goalsFromUrl.some(active => active === tag.slug))
@@ -31,16 +33,21 @@ export default {
     return {
       goals: allGoals,
       activeGoals,
+      title,
+      body,
       results
+    }
+  },
+  computed: {
+    htmlBody () {
+      return marked(this.body)
     }
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.results)
     this.$store.commit('enableGlobeAutoRotation')
   },
-  components: {
-    ChapterList
-  }
+  components: { ChapterList }
 }
 </script>
 
@@ -48,7 +55,7 @@ export default {
 @import "../../components/tag/tag.css";
 
 .globe-spacer-goal {
-  height: 60vh;
+  height: 65vh;
   width: 100vw;
   pointer-events: none;
 }

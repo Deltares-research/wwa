@@ -1,7 +1,12 @@
 <template>
   <div class="invert">
     <div class="globe-spacer-theme"></div>
-
+    <div class="layout-section">
+      <div class="layout-section__container">
+        <h1>{{ title }}</h1>
+        <div v-html="htmlBody"></div>
+      </div>
+    </div>
     <div
       class="layout-section layout-section--themes"
       :class="`layout-section--theme-${slug}-active`"
@@ -16,15 +21,23 @@
 <script>
 import ChapterList from '~/components/chapter-list/ChapterList'
 import loadData from '~/lib/load-data'
+import marked from '~/lib/marked'
 
 export default {
   async asyncData (context) {
     const themes = loadData(context, { theme: 'index' })
-    const { slug, entries } = await loadData(context, context.params)
+    const { slug, entries, title, body } = await loadData(context, context.params)
     return {
       slug,
       entries,
+      title,
+      body,
       themes: await themes
+    }
+  },
+  computed: {
+    htmlBody () {
+      return marked(this.body)
     }
   },
   mounted () {
@@ -38,7 +51,7 @@ export default {
 
 <style>
 .globe-spacer-theme {
-  height: 82vh;
+  height: 65vh;
   width: 100vw;
   pointer-events: none;
 }

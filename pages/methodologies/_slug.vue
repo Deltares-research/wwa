@@ -22,6 +22,7 @@ import marked from '~/lib/marked'
 import allMethodologies from '~/static/data/methodologies/index.json'
 
 export default {
+  layout: 'globe',
   async asyncData (context) {
     const { params } = context
     const methodologiesFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : []

@@ -28,15 +28,24 @@ const fetchEvents = () => fetchContent(`
       _allTitleLocales {
         locale
       }
+
+      relevantChapters {
+        slug
+      }
     }
   }
 `)
   .then(({ allEvents }) =>
     allEvents
       .map((event) =>
-        event._allTitleLocales.map((item) =>
-          `${item.locale}/events/${event.slug}`
-        )
+        event._allTitleLocales
+          .map((item) => [
+            `${item.locale}/events/${event.slug}`,
+            ...event.relevantChapters.map(({ slug }) =>
+              `${item.locale}/events/${event.slug}/${slug}`,
+            )
+          ])
+          .flat()
       )
       .flat()
   )

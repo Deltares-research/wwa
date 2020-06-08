@@ -123,6 +123,21 @@ module.exports = {
   },
 
   build: {
+    html: {
+      // disable minify CSS and JS to improve build times
+      // see: https://www.voorhoede.nl/en/blog/10x-faster-nuxt-builds-on-netlify/#optimise-html-minification
+      minify: {
+        collapseBooleanAttributes: true,
+        decodeEntities: true,
+        minifyCSS: false,
+        minifyJS: false,
+        processConditionalComments: true,
+        removeEmptyAttributes: true,
+        removeRedundantAttributes: true,
+        trimCustomFragments: true,
+        useShortDoctype: true
+      }
+    },
     extend (config, context) {
       if (context.isDev && context.isClient) {
         config.module.rules.push({

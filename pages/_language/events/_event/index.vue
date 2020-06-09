@@ -83,7 +83,7 @@
         <ul v-for="speaker in event.speakers" :key="speaker.id">
           <li class="speaker-card">
             <div class="speaker-card__header">
-              <img :src="`${speaker.image.url}?auto=compress&w=60`" width="60" height="60" alt="">
+              <img :src="`${speaker.image.url}?auto=compress&fm=webp&mask=ellipse&w=60`" width="60" height="60" alt="">
               <div class="speaker-card__copy">
                 <h4 class="speaker-card__name">{{ speaker.name }}</h4>
                 <p class="speaker-card__organization">{{ speaker.organization }}</p>

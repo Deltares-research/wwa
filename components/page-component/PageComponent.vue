@@ -11,6 +11,7 @@
       :partner="page.partner"
       :influences="page.influences"
       :goals="page.goals"
+      :methodologies="page.methodologies"
       :keywords="page.keywords"
       :storyteller="page.storyteller"
       :theme="page.theme" />

@@ -12,9 +12,12 @@
 
     <h1 class="page-body-title__title">{{ pageTitle }}</h1>
 
-    <div class="page-body-title__keywords" v-if="keywords && keywords.length || influences && influences.length">
+    <div class="page-body-title__keywords" v-if="keywords && keywords.length || influences && influences.length || methodologies && methodologies.length">
       <ul class="list--inline">
         <li v-for="link in keywords" :key="`keyword-${link.slug}`">
+          <nuxt-link class="tag" :to="link.path">{{ link.title }}</nuxt-link>
+        </li>
+        <li v-for="link in methodologies" :key="`methodology-${link.slug}`">
           <nuxt-link class="tag" :to="link.path">{{ link.title }}</nuxt-link>
         </li>
         <li v-for="link in influences" :key="`influence-${link.slug}`">
@@ -44,6 +47,7 @@ export default {
   props: {
     pageTitle: String,
     influences: Array,
+    methodologies: Array,
     goals: Array,
     keywords: Array,
     storyteller: Object,

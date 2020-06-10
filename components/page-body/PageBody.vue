@@ -5,6 +5,7 @@
         :pageTitle="title"
         :influences="influences"
         :goals="goals"
+        :methodologies="methodologies"
         :keywords="keywords"
         :storyteller="storyteller"
         :theme="theme" />
@@ -91,6 +92,7 @@ export default {
     mapboxStyle: String,
     influences: Array,
     goals: Array,
+    methodologies: Array,
     keywords: Array,
     storyteller: Object,
     partner: Object,

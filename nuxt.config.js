@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const dotenv = require('dotenv-safe')
 const fetchContent = require('./lib/fetch-content').default
 
@@ -20,7 +22,7 @@ const chapters = books
     return chapters.concat(bookChapters)
   }, [])
 
-const fetchEvents = () => fetchContent(`
+const fetchAllEvents = () => fetchContent(`
   {
     allEvents {
       slug
@@ -36,24 +38,39 @@ const fetchEvents = () => fetchContent(`
       }
     }
   }
-`)
-  .then(({ allEvents }) =>
-    allEvents
-      .map((event) =>
-        event._allNameLocales
-          .map((item) => [
-            `${item.locale}/events/${event.slug}`,
-            ...event.sections.map(section =>
-              section.chapters.map(({ slug }) =>
-                `${item.locale}/events/${event.slug}/${slug}`
-              )
+`);
+
+const mapAllEventsToRedirects = (allEvents) => (
+  allEvents
+    .map((event) => [
+      ...event._allNameLocales
+        .filter(({ locale }) => locale !== 'en')
+        .map(({ locale }) =>
+          `/events/${event.slug} /${locale}/events/${event.slug} 302 Language=${locale}`
+        ),
+      `/events/${event.slug} /en/events/${event.slug} 302`,
+    ])
+    .flat()
+    .join('\n')
+);
+
+const mapAllEventsToRoutes = (allEvents) => (
+  allEvents
+    .map((event) =>
+      event._allNameLocales
+        .map((item) => [
+          `${item.locale}/events/${event.slug}`,
+          ...event.sections.map(section =>
+            section.chapters.map(({ slug }) =>
+              `${item.locale}/events/${event.slug}/${slug}`
             )
-            .flat(),
-          ])
-          .flat()
-      )
-      .flat()
-  )
+          )
+          .flat(),
+        ])
+        .flat()
+    )
+    .flat()
+)
 
 const postcss = {
   plugins: {
@@ -163,11 +180,15 @@ module.exports = {
     postcss,
   },
   env,
-  // Define dynamic routes to generate for dist,
   generate: {
     routes () {
-      return fetchEvents()
-        .then(events => {
+      return fetchAllEvents()
+        .then(({ allEvents }) => {
+          fs.writeFileSync(
+            path.join('dist', '_redirects'),
+            mapAllEventsToRedirects(allEvents)
+          );
+
           return books
             .concat(chapters)
             .concat(themes)
@@ -177,8 +198,8 @@ module.exports = {
             .concat(keywords)
             .concat(staticPages)
             .map(item => item.path)
-            .concat(events)
-        });
+            .concat(mapAllEventsToRoutes(allEvents));
+        })
     }
   }
 }

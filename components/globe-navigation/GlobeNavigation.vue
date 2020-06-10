@@ -45,7 +45,7 @@ export default {
   computed: {
     ...mapState(['filters']),
     activeFilterSlug () {
-      const slug = this.$route.path.split('/')[1] ? this.$route.path.split('/')[1] : 'themes'
+      const slug = this.$route.path.split('/')[1] ? this.$route.path.split('/')[1] : this.filters[0].slug
       return slug
     },
     activeFilterItemSlug () {

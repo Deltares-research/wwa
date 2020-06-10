@@ -58,15 +58,15 @@ export default {
 </script>
 
 <style>
-@import '../colors/colors.css';
-@import '../tag/tag.css';
-@import '../typography/typography.css';
-
 .page-body-title__title {
   font-size: 1.5rem;
   line-height: 1.75rem;
   font-weight: bold;
+  margin-bottom: 1rem;
+}
 
+.page-body-title__keywords {
+  margin-bottom: 1rem;
 }
 
 @media (min-width: 768px) {

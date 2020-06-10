@@ -1,4 +1,3 @@
-@import '../colors/colors.css';
 .sdg-tag {
   color: var(--ui--black);
   background-color: var(--booklet--neutral);

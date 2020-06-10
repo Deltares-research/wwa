@@ -1,4 +1,3 @@
-@import '../colors/colors.css';
 .tag {
   color: var(--ui--text);
   background-color: var(--booklet--neutral);

@@ -121,11 +121,14 @@ export default {
 </script>
 
 <style>
-@import '../colors/colors.css';
-
 .page-body {
   padding: 1.5rem;
   background-color: var(--ui--bg--white);
+  color: var(--ui--black);
+}
+
+.page-body p {
+  margin-bottom: 1rem;
 }
 
 @media only screen and (min-width: 600px) {
@@ -162,7 +165,6 @@ export default {
 .page-body__asset-placeholder {
   padding: 0.5rem 1.5rem 1rem 1.5rem;
   background-color: var(--ui--bg--white);
-  max-width: 35rem;
   margin: 0 auto;
 }
 

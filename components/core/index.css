@@ -1,34 +1,28 @@
-@import '../components/colors/colors.css';
-@import '../components/animations/animations.css';
-
-html {
-  padding: 0;
-  margin: 0;
-}
+@import './colors.css';
+@import './reset.css';
+@import './a11y.css';
+@import './list.css';
+@import './tag/tag.css';
+@import './sdg-tag/sdg-tag.css';
+@import './typography/typography.css';
+@import './animations.css';
 
 .layout {
-  width: 0;
-  height: 0; /* minimise obstruction of globe */
-  overflow: visible;
+
 }
 
 .layout--static-page {
-  width: 100vw;
-  height: auto; /* take over screen */
-  min-height: 100vh;
+  width: 100%;
   background-color: var(--ui--white);
+  color: var(--ui--black);
 }
 
 .layout-section {
-  width: calc(100vw - 40px);
   display: flex;
   justify-content: center;
   position: relative;
-  padding: 0 20px;
-}
-
-.layout-section--blue-trans {
-  background-color: rgba(0, 0, 42, 0.85);
+  margin: 0 20px;
+  width: calc(100vw - 40px);
 }
 
 .layout-section--gradient:before {
@@ -52,13 +46,6 @@ html {
 
 @media (min-width: 600px) {
   .layout-section {
-    width: calc(100vw - 80px);
     padding: 0 40px;
   }
-}
-
-.globe-component {
-  position: fixed;
-  z-index: -10;
-  top:0;
 }

@@ -23,8 +23,6 @@ export default {
 </script>
 
 <style>
-@import '../colors/colors.css';
-
 .card-component {
   width: 100%;
   padding: 1.5rem 1rem 0;

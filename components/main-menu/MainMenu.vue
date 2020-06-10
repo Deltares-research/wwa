@@ -51,8 +51,6 @@ export default {
 </script>
 
 <style>
-@import '../colors/colors.css';
-
 .main-menu {
   position: fixed;
   left: 0;
@@ -106,7 +104,6 @@ export default {
   display: inline-block;
   padding: .5rem;
   transition: .5s opacity;
-  font-weight: normal;
   text-decoration: none;
   color: inherit;
   z-index: 2;

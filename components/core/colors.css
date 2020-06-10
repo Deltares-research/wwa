@@ -112,7 +112,3 @@
   --ui--left-gradient: linear-gradient(to right, var(--ui--black),  transparent);
   --ui--light-grey: var(--booklet--neutral);
 }
-
-html {
-  background-color: var(--ui--bg--dark-opaque);
-}

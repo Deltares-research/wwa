@@ -38,9 +38,6 @@ export default {
 </script>
 
 <style>
-@import '../colors/colors.css';
-@import '../typography/typography.css';
-
 .scroll-indicator {
   display: none;
 }

@@ -25,8 +25,6 @@ export default {
 </script>
 
 <style>
-@import '../colors/colors.css';
-
 .title-list__item {
   color: var(--ui--text--invert);
 }

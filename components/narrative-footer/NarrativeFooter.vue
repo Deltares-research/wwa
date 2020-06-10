@@ -73,8 +73,6 @@ export default {
 </script>
 
 <style>
-@import '../colors/colors.css';
-
 .narrative-footer {
   padding: 2rem;
 }

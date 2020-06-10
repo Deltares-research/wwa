@@ -7,10 +7,6 @@
 @import './typography/typography.css';
 @import './animations.css';
 
-.layout {
-
-}
-
 .layout--static-page {
   width: 100%;
   background-color: var(--ui--white);

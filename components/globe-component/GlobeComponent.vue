@@ -12,7 +12,7 @@
 
 <style>
 .globe-container {
-  width: 100vw;
+  width: calc(100vw - 40px);
   height: 100vh;
 }
 

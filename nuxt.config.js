@@ -25,12 +25,14 @@ const fetchEvents = () => fetchContent(`
     allEvents {
       slug
 
-      _allTitleLocales {
+      _allNameLocales {
         locale
       }
 
-      relevantChapters {
-        slug
+      sections {
+        chapters {
+          slug
+        }
       }
     }
   }
@@ -38,12 +40,15 @@ const fetchEvents = () => fetchContent(`
   .then(({ allEvents }) =>
     allEvents
       .map((event) =>
-        event._allTitleLocales
+        event._allNameLocales
           .map((item) => [
             `${item.locale}/events/${event.slug}`,
-            ...event.relevantChapters.map(({ slug }) =>
-              `${item.locale}/events/${event.slug}/${slug}`,
+            ...event.sections.map(section =>
+              section.chapters.map(({ slug }) =>
+                `${item.locale}/events/${event.slug}/${slug}`
+              )
             )
+            .flat(),
           ])
           .flat()
       )
@@ -123,6 +128,21 @@ module.exports = {
   },
 
   build: {
+    html: {
+      // disable minify CSS and JS to improve build times
+      // see: https://www.voorhoede.nl/en/blog/10x-faster-nuxt-builds-on-netlify/#optimise-html-minification
+      minify: {
+        collapseBooleanAttributes: true,
+        decodeEntities: true,
+        minifyCSS: false,
+        minifyJS: false,
+        processConditionalComments: true,
+        removeEmptyAttributes: true,
+        removeRedundantAttributes: true,
+        trimCustomFragments: true,
+        useShortDoctype: true
+      }
+    },
     extend (config, context) {
       if (context.isDev && context.isClient) {
         config.module.rules.push({

@@ -105,12 +105,6 @@ export default {
 <style>
 @import "../components/colors/colors.css";
 
-.globe-spacer {
-  height: 75vh;
-  width: 100vw;
-  pointer-events: none;
-}
-
 [data-hero-hide-trigger] {
   display: block;
   position: absolute;

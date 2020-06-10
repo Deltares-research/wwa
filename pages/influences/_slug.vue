@@ -52,11 +52,3 @@ export default {
   components: { ChapterList }
 }
 </script>
-
-<style>
-.globe-spacer-influences {
-  height: 65vh;
-  width: 100vw;
-  pointer-events: none;
-}
-</style>

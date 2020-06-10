@@ -50,12 +50,6 @@ export default {
 </script>
 
 <style>
-.globe-spacer-narrative {
-  height: 65vh;
-  width: 100vw;
-  pointer-events: none;
-}
-
 .book-title {
   margin-bottom: 0.5rem;
 }

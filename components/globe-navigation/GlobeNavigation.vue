@@ -1,51 +1,30 @@
 <template>
   <div class="globe-navigation layout-section">
     <div class="layout-section__container">
-      <ul
-        role="tablist"
-        class="list--inline"
-      >
+      <ul class="list--inline">
         <li
           v-for="filter in filters"
           :key="filter.slug"
-          role="presentation"
         >
-          <a
-            :id="`tab-${filter.slug}`"
-            :href="`#section-${filter.slug}`"
-            role="tab"
-            :tabindex="currentTab === `tab-${filter.slug}` ? '0' : '-1'"
-            :aria-selected="currentTab === `tab-${filter.slug}` ? 'true' : 'false'"
-            @click.prevent="selectTab(`tab-${filter.slug}`)"
-            @keydown="keyboardNavigation(filter.slug, $event)"
+          <nuxt-link
+            :to="`/${filter.slug}`"
             :class="{ 'globe-navigation__tab--selected' : filter.slug === activeFilterSlug }"
-            ref="tab"
           >
-            <span class="globe-navigation__title--desktop">{{ filter.title }}</span>
-            <span class="globe-navigation__title--mobile">{{ filter.shortTitle }}</span>
-          </a>
+            {{ filter.title }}
+          </nuxt-link>
         </li>
       </ul>
-      <section
-        v-for="filter in filters"
-        :key="filter.slug"
-        :id="`section-${filter.slug}`"
-        role="tabpanel"
-        tabindex="-1"
-        :aria-labelledby="`tab-${filter.slug}`"
-        :hidden="currentTab !== `tab-${filter.slug}`"
-        ref="panel"
-      >
+      <section>
         <ul class="list--inline">
           <li
-            v-for="filterItem in filter.filterItems"
-            :key="filterItem.slug"
+            v-for="currentFilter in currentFilters"
+            :key="currentFilter.slug"
           >
             <nuxt-link
-              :to="`/${filter.slug}/${filterItem.slug}`"
-              :class="{ 'globe-navigation__link--selected' : filterItem.slug === activeFilterItemSlug }"
+              :to="`/${activeFilterSlug}/${currentFilter.slug}`"
+              :class="{ 'globe-navigation__link--selected' : currentFilter.slug === activeFilterItemSlug }"
             >
-              {{ filterItem.title }}
+              {{ currentFilter.title }}
             </nuxt-link>
           </li>
         </ul>
@@ -66,10 +45,14 @@ export default {
   computed: {
     ...mapState(['filters']),
     activeFilterSlug () {
-      return this.$route.path.split('/')[1]
+      const slug = this.$route.path.split('/')[1] ? this.$route.path.split('/')[1] : this.filters[0].slug
+      return slug
     },
     activeFilterItemSlug () {
       return this.$route.path.split('/')[2]
+    },
+    currentFilters () {
+      return this.filters.find(filter => filter.slug === this.activeFilterSlug).filterItems
     }
   },
   watch:{

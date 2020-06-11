@@ -52,7 +52,8 @@ export default {
       return this.$route.path.split('/')[2]
     },
     currentFilters () {
-      return this.filters.find(filter => filter.slug === this.activeFilterSlug).filterItems
+      const activeFilters = this.filters.find(filter => filter.slug === this.activeFilterSlug)
+      return activeFilters ? activeFilters.filterItems : []
     }
   },
   watch:{

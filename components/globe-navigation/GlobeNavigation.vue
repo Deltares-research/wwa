@@ -1,14 +1,20 @@
 <template>
   <div class="globe-navigation layout-section">
     <div class="layout-section__container">
-      <ul class="list--inline">
+      <h1 class="globe-navigation__header">
+        Explore Atlas by
+      </h1>
+
+      <ul class="globe-navigation__tabs list--inline">
         <li
           v-for="filter in filters"
           :key="filter.slug"
+          class="globe-navigation__tab"
+          :class="{ 'globe-navigation__tab--selected' : filter.slug === activeFilterSlug }"
         >
           <nuxt-link
             :to="`/${filter.slug}`"
-            :class="{ 'globe-navigation__tab--selected' : filter.slug === activeFilterSlug }"
+            class="globe-navigation__tab-link"
           >
             {{ filter.title }}
           </nuxt-link>
@@ -93,34 +99,47 @@ export default {
 .globe-navigation {
   z-index: 1;
   position: absolute;
+  padding: 1rem 0;
   left: 0;
-  top: 60vh;
-  background: red;
+  top: 75vh;
 }
 
-.globe-navigation__title--mobile {
-  display: block;
+.globe-navigation__header {
+  margin-bottom: 1rem;
+  font-size: 12px;
+  text-transform: uppercase;
 }
 
-.globe-navigation__title--desktop {
-  display: none;
+.globe-navigation__tabs {
+  justify-content: space-between;
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.globe-navigation__tab {
+  padding-bottom: .25rem;
+  border-bottom: 2px solid transparent;
 }
 
 .globe-navigation__tab--selected {
+  border-bottom: 2px solid var(--ui--blue--light);
+}
+
+.globe-navigation__tab-link {
+  font-size: 1.25rem;
+  text-decoration: none;
+}
+
+.globe-navigation__tab--selected .globe-navigation__tab-link {
   font-weight: bold;
+  color: var(--ui--blue--light);
+}
+
+.globe-navigation__tab--selected .globe-navigation__tab-link:hover {
+  color: var(--ui--blue--light);
 }
 
 .globe-navigation__link--selected {
   border: 1px solid blue;
-}
-
-@media (min-width: 768px) {
-  .globe-navigation__title--mobile {
-    display: none;
-  }
-
-  .globe-navigation__title--desktop {
-    display: block;
-  }
 }
 </style>

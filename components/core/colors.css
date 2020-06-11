@@ -91,6 +91,7 @@
   --ui--blue:rgba(0,0,48, 1);
   --ui--blue--trans:rgba(0,0,48, .75);
   --ui--blue--bg: #4d4c69;
+  --ui--blue--light: #68e4f5;
   --ui--bg: var(--ui--black);
   --ui--bg--white: var(--ui--white);
   --ui--bg--light: var(--booklet--neutral);

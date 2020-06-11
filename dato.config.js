@@ -36,11 +36,10 @@ const exportScope = process.env.DATO_EXPORT
 const contentBasePath = '/narratives'
 
 module.exports = (dato, root, i18n) => {
-  const { body, videoHighlights } = dato.home
+  const { body } = dato.home
 
   root.createDataFile(`static/data/home.json`, 'json', {
-    body,
-    videoHighlights: videoHighlights.map(pick(['title', 'video', 'url', 'body']))
+    body
   })
 
   switch (exportScope) {

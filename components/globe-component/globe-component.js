@@ -395,7 +395,7 @@ export default {
 
       renderer.setPixelRatio(window.devicePixelRatio)
       renderer.setSize(window.innerWidth, window.innerHeight)
-      renderer.setClearColor(0x00002A)
+      renderer.setClearColor(0x000226)
 
       // append the globe canvas to our mounted element
       this.globeElement.appendChild(renderer.domElement)

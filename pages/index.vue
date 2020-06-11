@@ -103,7 +103,7 @@ export default {
 
 <style>
 .globe-section {
-  background-color: rgba(0,0,42,.85);
+  background-color: var(--ui--bg--dark-opaque);
   padding-top: 1rem;
 }
 

@@ -6,7 +6,7 @@
       </div>
     </div>
     <div
-      class="layout-section layout-section--themes"
+      class="layout-section"
       :class="`layout-section--theme-${slug}-active`"
     >
       <div class="layout-section__container">
@@ -49,20 +49,3 @@ export default {
 }
 </script>
 
-<style>
-.layout-section--themes {
-  padding-top: 1rem;
-}
-
-.layout-section--theme-too-much-active {
-  background-color: var(--ui--bg--theme-too-much-dark-trans);
-}
-
-.layout-section--theme-too-little-active {
-  background-color: var(--ui--bg--theme-too-little-dark-trans);
-}
-
-.layout-section--theme-too-dirty-active {
-  background-color: var(--ui--bg--theme-too-dirty-dark-trans);
-}
-</style>

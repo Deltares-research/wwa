@@ -41,9 +41,9 @@ export default {
 
 <style>
 .video-highlights {
-  background-color: rgba(67, 67, 109, 0.75);
   padding: 1.5rem 0;
   width: 100%;
+  background-color: var(--ui--bg--dark-opaque);
 }
 
 .video-list {

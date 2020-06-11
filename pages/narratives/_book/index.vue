@@ -5,7 +5,7 @@
         <book-header :title="title" :body="body" />
       </div>
     </div>
-    <div class="layout-section layout-section--gradient">
+    <div class="layout-section">
       <div class="layout-section__container">
         <chapter-list :chapters="chapters" sorted="newest" :limit="9" />
       </div>

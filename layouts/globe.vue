@@ -48,7 +48,7 @@ export default {
 }
 
 .globe-spacing {
-  margin-bottom: 75vh;
+  margin-bottom: 100vh;
 }
 
 @media only screen and (min-width: 1024px) {

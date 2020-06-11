@@ -26,12 +26,12 @@
             v-for="currentFilter in currentFilters"
             :key="currentFilter.slug"
           >
-            <nuxt-link
-              :to="`/${activeFilterSlug}/${currentFilter.slug}`"
-              :class="{ 'globe-navigation__link--selected' : currentFilter.slug === activeFilterItemSlug }"
-            >
-              {{ currentFilter.title }}
-            </nuxt-link>
+            <filter-tag
+              :title="currentFilter.title"
+              :url="`/${activeFilterSlug}/${currentFilter.slug}`"
+              :isSelected="currentFilter.slug === activeFilterItemSlug"
+              class="globe-navigation__tag"
+            />
           </li>
         </ul>
       </section>
@@ -40,9 +40,13 @@
 </template>
 
 <script>
+import FilterTag from '~/components/filter-tag/FilterTag'
 import { mapState } from 'vuex'
 
 export default {
+  components: {
+    FilterTag
+  },
   data () {
     return {
       currentTab: null
@@ -99,7 +103,8 @@ export default {
 .globe-navigation {
   z-index: 1;
   position: absolute;
-  padding: 1rem 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   left: 0;
   top: 75vh;
 }
@@ -114,20 +119,29 @@ export default {
   justify-content: space-between;
   display: flex;
   margin-bottom: 1rem;
+  overflow: auto;
 }
 
-.globe-navigation__tab {
+li.globe-navigation__tab {
+  flex-shrink: 0;
+  margin-right: 2rem;
   padding-bottom: .25rem;
   border-bottom: 2px solid transparent;
 }
 
-.globe-navigation__tab--selected {
+li.globe-navigation__tab--selected {
   border-bottom: 2px solid var(--ui--blue--light);
 }
 
 .globe-navigation__tab-link {
-  font-size: 1.25rem;
+  font-size: 1rem;
   text-decoration: none;
+}
+
+@media (min-width: 600px) {
+  .globe-navigation__tab-link {
+    font-size: 1.25rem;
+  }
 }
 
 .globe-navigation__tab--selected .globe-navigation__tab-link {
@@ -139,7 +153,13 @@ export default {
   color: var(--ui--blue--light);
 }
 
-.globe-navigation__link--selected {
-  border: 1px solid blue;
+.globe-navigation__tag {
+  margin-bottom: .5rem;
+}
+
+@media (min-width: 600px) {
+  .globe-navigation__tag {
+    margin: 0 .3rem .8rem 0;
+  }
 }
 </style>

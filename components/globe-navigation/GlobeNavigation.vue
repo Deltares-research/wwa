@@ -101,12 +101,8 @@ export default {
 
 <style>
 .globe-navigation {
-  z-index: 1;
-  position: absolute;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  left: 0;
-  top: 75vh;
 }
 
 .globe-navigation__header {

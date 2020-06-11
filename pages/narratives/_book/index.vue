@@ -1,6 +1,5 @@
 <template>
   <div class="invert">
-    <div class="globe-spacer-narrative"/>
     <div class="layout-section">
       <div class="layout-section__container">
         <div class="book-header">

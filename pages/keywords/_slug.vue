@@ -1,6 +1,5 @@
 <template>
   <div class="invert">
-    <div class="globe-spacer-keywords" />
     <div class="layout-section">
       <div class="layout-section__container">
         <h1>Keywords</h1>

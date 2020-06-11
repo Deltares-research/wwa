@@ -1,6 +1,5 @@
 <template>
   <div class="invert">
-    <div class="globe-spacer-influences" />
     <div class="layout-section">
       <div class="layout-section__container">
         <h1>{{ title }}</h1>

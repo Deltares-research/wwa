@@ -17,8 +17,8 @@
   display: flex;
   justify-content: center;
   position: relative;
-  margin: 0 20px;
-  width: calc(100vw - 40px);
+  padding: 0 20px;
+  width: 100%;
 }
 
 .layout-section--gradient:before {
@@ -35,7 +35,7 @@
 }
 
 .layout-section__container {
-  width: calc(100vw - 40px);
+  width: 100%;
   max-width: 950px;
   z-index: 1;
 }

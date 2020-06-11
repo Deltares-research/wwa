@@ -6,7 +6,6 @@
       :showHeroHeader="showHeroHeader"
       v-on:hideHeroHeader="showHeroHeader = false"
     />
-    <div class="globe-spacer"/>
 
     <video-highlights :videoHighlights="videoHighlights" />
     <div class="globe-section layout-section">

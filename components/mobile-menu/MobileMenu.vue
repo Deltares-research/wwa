@@ -83,8 +83,6 @@ export default {
 </script>
 
 <style>
-@import '../colors/colors.css';
-
 .mobile-menu__toggle {
   display: inline-block;
   padding: 0.5rem;

@@ -96,8 +96,6 @@ export default {
 </script>
 
 <style>
-@import '../colors/colors.css';
-
 :root {
   --narrative-header-transition-speed: 300ms;
   --narrative-header-transition-timing-hide: cubic-bezier(0.83, 0, 0.73, 1);

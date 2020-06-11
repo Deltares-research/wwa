@@ -47,7 +47,6 @@
     "isomorphic-unfetch": "^3.0.0",
     "lodash.get": "^4.4.2",
     "marked": "^1.1.0",
-    "normalize.css": "^8.0.1",
     "nuxt": "^2.12.2",
     "smoothscroll-polyfill": "^0.4.4",
     "three": "^0.116.1",

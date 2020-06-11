@@ -49,9 +49,6 @@ export default {
 </script>
 
 <style>
-@import '../colors/colors.css';
-@import '../animations/animations.css';
-
 .card-list {
   position: relative;
   width: 100%;

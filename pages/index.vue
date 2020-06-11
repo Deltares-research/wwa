@@ -6,10 +6,9 @@
       :showHeroHeader="showHeroHeader"
       v-on:hideHeroHeader="showHeroHeader = false"
     />
-    <div class="globe-spacer"/>
 
     <video-highlights :videoHighlights="videoHighlights" />
-    <div class="layout-section layout-section--blue-trans">
+    <div class="globe-section layout-section">
       <book-list class="layout-section__container" :books="books">
         <chapter-list slot-scope="{ chapters, limit }" :chapters="chapters" sorted="newest" :limit="limit" />
       </book-list>
@@ -103,7 +102,10 @@ export default {
 </script>
 
 <style>
-@import "../components/colors/colors.css";
+.globe-section {
+  background-color: rgba(0,0,42,.85);
+  padding-top: 1rem;
+}
 
 [data-hero-hide-trigger] {
   display: block;

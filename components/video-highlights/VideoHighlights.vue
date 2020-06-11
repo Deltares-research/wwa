@@ -43,7 +43,7 @@ export default {
 .video-highlights {
   background-color: rgba(67, 67, 109, 0.75);
   padding: 1.5rem 0;
-  width: 100vw;
+  width: 100%;
 }
 
 .video-list {

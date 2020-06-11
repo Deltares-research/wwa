@@ -1,17 +1,8 @@
 <template>
   <div class="invert">
-    <div class="globe-spacer-narrative"/>
     <div class="layout-section">
       <div class="layout-section__container">
-        <div class="book-header">
-          <h1 class="book-title">{{ title }}</h1>
-          <p
-            v-if="body.length"
-            class="book-description"
-            v-html="htmlBody"
-          >
-          </p>
-        </div>
+        <book-header :title="title" :body="body" />
       </div>
     </div>
     <div class="layout-section layout-section--gradient">
@@ -23,6 +14,7 @@
 </template>
 
 <script>
+import BookHeader from '~/components/book-header/BookHeader'
 import ChapterList from '~/components/chapter-list/ChapterList'
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import loadData from '~/lib/load-data'
@@ -45,27 +37,6 @@ export default {
     this.$store.commit('replaceTheme', this.theme.slug)
     this.$store.commit('disableGlobeAutoRotation')
   },
-  components: { ChapterList, NarrativeHeader }
+  components: { BookHeader, ChapterList, NarrativeHeader }
 }
 </script>
-
-<style>
-.book-title {
-  margin-bottom: 0.5rem;
-}
-.book-description {
-  margin-bottom: 2rem;
-}
-
-@media (min-width: 1024px) {
-  .book-header {
-    max-width: 66%;
-  }
-  .book-title {
-    font-size: 3rem;
-  }
-  .book-description {
-    margin-bottom: 4rem;
-  }
-}
-</style>

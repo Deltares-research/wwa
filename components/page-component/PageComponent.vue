@@ -32,11 +32,9 @@ export default {
 </script>
 
 <style>
-@import '../colors/colors.css';
-
 .page-component {
   min-height: 25vh;
-  max-width: 40rem;
+  max-width: 44rem;
   margin: 3rem auto 0 auto;
 }
 

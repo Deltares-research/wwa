@@ -1,6 +1,6 @@
 <template>
-  <main class="layout layout--globe">
-    <main-menu variant="dark" />
+  <main class="layout">
+    <main-menu class="globe-spacing" variant="dark" />
 
     <transition name="fadeIn" mode="out-in">
       <globe-component :is="GlobeComponent" class="globe-component" :class="{ 'globe-component--right': globePositionRight }"/>
@@ -38,11 +38,17 @@ export default {
 }
 </script>
 
-<style src="./base.css"></style>
 <style>
 .globe-component {
+  position: fixed;
+  z-index: -10;
+  top: 0;
   transform: none;
   transition: transform 0.5s ease-in-out;
+}
+
+.globe-spacing {
+  margin-bottom: 75vh;
 }
 
 @media only screen and (min-width: 1024px) {

@@ -48,8 +48,6 @@ export default {
 }
 </script>
 <style>
-  @import '../components/colors/colors.css';
-
 .static-page {
   box-sizing: border-box;
   width: 100%;

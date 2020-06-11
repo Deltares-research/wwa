@@ -1,10 +1,8 @@
 <template>
   <div class="invert">
-    <div class="globe-spacer-theme"></div>
     <div class="layout-section">
       <div class="layout-section__container">
-        <h1>{{ title }}</h1>
-        <div v-html="htmlBody"></div>
+        <book-header :title="title" :body="htmlBody" />
       </div>
     </div>
     <div
@@ -19,6 +17,7 @@
 </template>
 
 <script>
+import BookHeader from '~/components/book-header/BookHeader'
 import ChapterList from '~/components/chapter-list/ChapterList'
 import loadData from '~/lib/load-data'
 import marked from '~/lib/marked'
@@ -46,7 +45,7 @@ export default {
     this.$store.commit('replaceTheme', this.$route.params.themes)
     this.$store.commit('enableGlobeAutoRotation')
   },
-  components: { ChapterList }
+  components: { BookHeader, ChapterList }
 }
 </script>
 

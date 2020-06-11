@@ -93,10 +93,8 @@ const env = {
 }
 
 module.exports = {
-  // Css entry file
   css: [
-    'normalize.css',
-    '~/base.css'
+    '~/components/core/index.css',
   ],
   head: {
     title: 'World Water Atlas',

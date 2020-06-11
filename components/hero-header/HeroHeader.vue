@@ -32,7 +32,8 @@ export default {
 <style>
 .hero-header {
   position: absolute;
-  width: 100vw;
+  top: 4rem;
+  width: 100%;
   padding-top: 4rem;
   text-align: center;
   z-index: 0;
@@ -47,7 +48,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: calc(100vw - 40px);
   height: 130%;
   opacity: 0.75;
   background-image: linear-gradient(to bottom, #00002a, #00002a 52%, rgba(0, 0, 42, 0));

@@ -1,10 +1,9 @@
 <template>
   <div class="invert">
-    <div class="globe-spacer-keywords" />
     <div class="layout-section">
       <div class="layout-section__container">
-        <h1>Keywords</h1>
-        <ul class="list--inline">
+        <book-header title="Keywords" />
+        <ul class="keywords__list list--inline">
           <li v-for="keyword in activeKeywords" :key="keyword.slug">
             <nuxt-link class="tag tag--removable" :to="keyword.unsetLink">
               <span class="sr-only">remove </span>{{ keyword.title }}
@@ -32,6 +31,7 @@
 
 <script>
 import allKeywords from '~/static/data/keywords/index.json'
+import BookHeader from '~/components/book-header/BookHeader'
 import ChapterList from '~/components/chapter-list/ChapterList'
 import loadData from '~/lib/load-data'
 import { unionByProp } from '~/lib/set-operations'
@@ -52,7 +52,7 @@ export default {
     return { allKeywords }
   },
   components: {
-    ChapterList
+    BookHeader, ChapterList
   },
   computed: {
     activeKeywords () {
@@ -88,3 +88,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.keywords__list {
+  margin-top: -3rem;
+  margin-bottom: 2rem;
+}
+</style>

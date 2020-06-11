@@ -11,5 +11,3 @@ export default {
   components: { MainMenu }
 }
 </script>
-
-<style src="./base.css"></style>

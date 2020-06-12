@@ -76,7 +76,7 @@
 
 <script>
   import fetchContent from '~/lib/fetch-content';
-  import eventHeader from '~/components/event-header';
+  import eventHeader from '~/components/event-header/EventHeader';
 
   export default {
     components: {

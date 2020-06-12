@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
 import FilterTag from '~/components/filter-tag/FilterTag'
 import { mapState } from 'vuex'
 
@@ -75,29 +76,24 @@ export default {
     }
   },
   mounted () {
-    const mediaQuery = window.matchMedia("(max-width: 950px)")
+    this.tabsList = this.$refs.tabsList
+    this.tabLinks = this.$refs.tabLink
 
-    if(mediaQuery.matches) {
-      this.enableDrag()
-    }
+    this.handleResize()
 
-    mediaQuery.addListener(this.handleWindowResize)
+    window.addEventListener('resize', debounce(this.handleResize), 1000)
   },
   methods: {
-    handleWindowResize (matchList) {
-      if(matchList.matches) {
-        this.enableDrag()
+    handleResize () {
+      console.log('handleResize')
+      const elementWidth = this.tabsList.offsetWidth
+      const contentWidth = this.tabsList.scrollWidth
+
+      if (contentWidth > elementWidth) {
+        this.tabsList.addEventListener('mousedown', this.handleDrag)
       } else {
-        this.disableDrag()
+        this.tabsList.removeEventListener('mousedown', this.handleDrag)
       }
-    },
-    enableDrag () {
-      this.tabsList = this.$refs.tabsList
-      this.tabLinks = this.$refs.tabLink
-      this.tabsList.addEventListener('mousedown', this.handleDrag)
-    },
-    disableDrag () {
-      this.tabsList.removeEventListener('mousedown', this.handleDrag)
     },
     handleDrag (event) {
       this.tabsList.style.cursor = 'grabbing'
@@ -144,7 +140,6 @@ export default {
 }
 
 .globe-navigation__header {
-  margin-bottom: 1rem;
   font-size: 12px;
   text-transform: uppercase;
 }
@@ -179,8 +174,7 @@ export default {
   position: relative;
   justify-content: space-between;
   display: flex;
-  margin-bottom: 1rem;
-  padding: 0 var(--gradient-size);
+  padding: 1rem var(--gradient-size);
   overflow: auto;
   scrollbar-width: none;
   -ms-overflow-style: none

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import PageBody from '~/components/page-body/PageBody'
+import PageBody from '~/components/page-body/PageBody';
 
 export default {
   props: {
@@ -29,7 +29,7 @@ export default {
   components: {
     PageBody,
   },
-}
+};
 </script>
 
 <style>

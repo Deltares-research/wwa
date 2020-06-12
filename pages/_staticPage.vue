@@ -33,29 +33,29 @@
 </template>
 
 <script>
-import loadData from '~/lib/load-data'
-import lazyImage from '~/components/lazy-media/LazyMedia'
-import marked from '~/lib/custom-marked'
+import loadData from '~/lib/load-data';
+import lazyImage from '~/components/lazy-media/LazyMedia';
+import marked from '~/lib/custom-marked';
 
 export default {
   layout: 'static-page',
   async asyncData (context) {
-    const { title, body, images, video } = await loadData(context, context.params)
+    const { title, body, images, video } = await loadData(context, context.params);
 
-    return { title, body, images, video }
+    return { title, body, images, video };
   },
   computed: {
     htmlBody () {
-      return marked(this.body)
+      return marked(this.body);
     },
   },
   components: {
     lazyImage,
   },
   mounted () {
-    this.$store.commit('disableInteraction')
+    this.$store.commit('disableInteraction');
   },
-}
+};
 </script>
 <style>
 .static-page {

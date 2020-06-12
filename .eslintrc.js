@@ -18,8 +18,8 @@ module.exports = {
     'no-prototype-builtins': 'off',
     'no-unused-vars': 'off',
     'no-case-declarations': 'off',
+    'semi': 'warn',
     'comma-dangle': ['warn', 'always-multiline'],
-    'semi-style': ['warn', 'last'],
     'vue/require-default-prop': 'off',
   },
-}
+};

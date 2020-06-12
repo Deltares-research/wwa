@@ -23,7 +23,7 @@ export default {
     isSelected: Boolean,
     isRemovable: Boolean,
   },
-}
+};
 </script>
 
 <style>

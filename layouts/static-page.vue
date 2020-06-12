@@ -5,9 +5,9 @@
   </main>
 </template>
 <script>
-import MainMenu from '~/components/main-menu/MainMenu'
+import MainMenu from '~/components/main-menu/MainMenu';
 
 export default {
   components: { MainMenu },
-}
+};
 </script>

@@ -120,11 +120,11 @@
 </template>
 
 <script>
-import PageBodyTitle from '~/components/page-body-title/PageBodyTitle'
-import StoryMap from '~/components/story-map/StoryMap'
-import renderMarkedContent from '~/lib/custom-marked'
-import ResponsiveImage from '~/components/responsive-image/ResponsiveImage'
-import ResponsiveVideo from '~/components/responsive-video/ResponsiveVideo'
+import PageBodyTitle from '~/components/page-body-title/PageBodyTitle';
+import StoryMap from '~/components/story-map/StoryMap';
+import renderMarkedContent from '~/lib/custom-marked';
+import ResponsiveImage from '~/components/responsive-image/ResponsiveImage';
+import ResponsiveVideo from '~/components/responsive-video/ResponsiveVideo';
 
 export default {
   props: {
@@ -150,19 +150,19 @@ export default {
   components: { PageBodyTitle, StoryMap, ResponsiveImage, ResponsiveVideo },
   computed: {
     htmlBody () {
-      return renderMarkedContent(this.body)
+      return renderMarkedContent(this.body);
     },
   },
   methods: {
     scaleMaxToSize: function (imgObj, sizeLimit) {
       if (!imgObj.value.width) {
-        return { h: Math.round(sizeLimit), w: Math.round(sizeLimit) }
+        return { h: Math.round(sizeLimit), w: Math.round(sizeLimit) };
       }
-      const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height)
-      return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) }
+      const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height);
+      return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) };
     },
   },
-}
+};
 </script>
 
 <style>

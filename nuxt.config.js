@@ -1,26 +1,26 @@
 const fs = require('fs');
 const path = require('path');
-const dotenv = require('dotenv-safe')
-const fetchContent = require('./lib/fetch-content').default
+const dotenv = require('dotenv-safe');
+const fetchContent = require('./lib/fetch-content').default;
 
-const books = require('./static/data/books/index.json')
-const themes = require('./static/data/themes/index.json')
-const goals = require('./static/data/goals/index.json')
-const methodologies = require('./static/data/methodologies/index.json')
-const influences = require('./static/data/influences/index.json')
-const keywords = require('./static/data/keywords/index.json')
-const staticPages = require('./static/data/static-pages/index.json')
+const books = require('./static/data/books/index.json');
+const themes = require('./static/data/themes/index.json');
+const goals = require('./static/data/goals/index.json');
+const methodologies = require('./static/data/methodologies/index.json');
+const influences = require('./static/data/influences/index.json');
+const keywords = require('./static/data/keywords/index.json');
+const staticPages = require('./static/data/static-pages/index.json');
 
-dotenv.config()
+dotenv.config();
 
 const chapters = books
   .reduce((chapters, book) => {
     const bookChapters = book.chapters.map(chapter => {
-      chapter.book = { slug: book.slug }
-      return chapter
-    })
-    return chapters.concat(bookChapters)
-  }, [])
+      chapter.book = { slug: book.slug };
+      return chapter;
+    });
+    return chapters.concat(bookChapters);
+  }, []);
 
 const fetchAllEvents = () => fetchContent(`
   {
@@ -70,7 +70,7 @@ const mapAllEventsToRoutes = (allEvents) => (
         .flat(),
     )
     .flat()
-)
+);
 
 const postcss = {
   plugins: {
@@ -78,19 +78,19 @@ const postcss = {
     'postcss-calc': {},
     'postcss-custom-properties': {},
   },
-}
+};
 
 const routerBase = {
   router: {
     base: '/',
   },
-}
+};
 
 const env = {
   // Allow to choose a baseurl (should only be used during generate)
   baseUrl: process.env.BASE_URL || 'http://localhost:3000',
   DATO_API_TOKEN: process.env.DATO_API_TOKEN ,
-}
+};
 
 module.exports = {
   css: [
@@ -133,7 +133,7 @@ module.exports = {
         (to.name !== 'themes-theme') &&
         (from.name !== 'themes-theme' || from.name !== 'index')
       ) {
-        return { x: 0, y: 0 }
+        return { x: 0, y: 0 };
       }
     },
   },
@@ -161,13 +161,13 @@ module.exports = {
           test: /\.(js|vue)$/,
           loader: "eslint-loader",
           exclude: /(node_modules)/,
-        })
+        });
       }
 
       config.module.rules.push({
         test: /\.glsl$/,
         loader: 'webpack-glsl-loader',
-      })
+      });
     },
     // Create separate css file
     extractCSS: true,
@@ -193,7 +193,7 @@ module.exports = {
             .concat(staticPages)
             .map(item => item.path)
             .concat(mapAllEventsToRoutes(allEvents));
-        })
+        });
     },
   },
-}
+};

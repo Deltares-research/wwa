@@ -2,9 +2,9 @@ import {
   schemeYlGnBu,
   schemeYlOrRd,
   schemeRdPu,
-} from 'd3-scale-chromatic'
-import { range } from 'd3-array'
-import { scaleLinear } from 'd3-scale'
+} from 'd3-scale-chromatic';
+import { range } from 'd3-array';
+import { scaleLinear } from 'd3-scale';
 
 export const metrics = {
   'too-much': {
@@ -25,4 +25,4 @@ export const metrics = {
     positionIndex: 3, // position in the data set array
     c: scaleLinear().domain(range(6)).range(schemeRdPu[5]),
   },
-}
+};

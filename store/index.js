@@ -1,4 +1,4 @@
-import Vuex from 'vuex'
+import Vuex from 'vuex';
 
 const store = () => {
   return new Vuex.Store({
@@ -17,61 +17,61 @@ const store = () => {
     },
     mutations: {
       activateFeature (state, feature) {
-        const { theme, location, slug, path } = feature
-        state.activeFeature = { location, slug, path, theme }
+        const { theme, location, slug, path } = feature;
+        state.activeFeature = { location, slug, path, theme };
       },
       deactivateFeature (state) {
-        state.activeFeature = undefined
+        state.activeFeature = undefined;
       },
       replaceTheme (state, theme) {
-        state.theme = theme
+        state.theme = theme;
       },
       replaceFeatures (state, features) {
-        state.features = features
+        state.features = features;
       },
       disableRotate (state) {
-        state.rotate = false
+        state.rotate = false;
       },
       enableRotate (state) {
-        state.rotate = true
+        state.rotate = true;
       },
       disableZoom (state) {
-        state.zoom = false
+        state.zoom = false;
       },
       enableZoom (state) {
-        state.zoom = true
+        state.zoom = true;
       },
       disableInteraction (state) {
-        state.zoom = false
-        state.rotate = false
+        state.zoom = false;
+        state.rotate = false;
       },
       enableInteraction (state) {
-        state.zoom = true
-        state.rotate = true
+        state.zoom = true;
+        state.rotate = true;
       },
       disableGlobeAutoRotation (state) {
-        state.globeAutoRotation = false
+        state.globeAutoRotation = false;
       },
       enableGlobeAutoRotation (state) {
-        state.globeAutoRotation = true
+        state.globeAutoRotation = true;
       },
       disableGlobePositionRight (state) {
-        state.globePositionRight = false
+        state.globePositionRight = false;
       },
       enableGlobePositionRight (state) {
-        state.globePositionRight = true
+        state.globePositionRight = true;
       },
       disableNavBackgroundTrans (state) {
-        state.navBackgroundTrans = false
+        state.navBackgroundTrans = false;
       },
       enableNavBackgroundTrans (state) {
-        state.navBackgroundTrans = true
+        state.navBackgroundTrans = true;
       },
       setFilters (state, filters) {
-        state.filters = filters
+        state.filters = filters;
       },
     },
-  })
-}
+  });
+};
 
-export default store
+export default store;

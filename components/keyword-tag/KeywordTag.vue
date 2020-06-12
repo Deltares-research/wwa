@@ -12,7 +12,7 @@ export default {
     keyword: Object,
     active: Boolean,
   },
-}
+};
 </script>
 
 <style>

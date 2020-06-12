@@ -29,7 +29,7 @@ export default {
     return {
       isIntersected: false,
       observer: null,
-    }
+    };
   },
   mounted () {
     if (
@@ -37,11 +37,11 @@ export default {
       'IntersectionObserverEntry' in window &&
       'intersectionRatio' in window.IntersectionObserverEntry.prototype
     ) {
-      this.observe()
+      this.observe();
     } else {
-      this.isIntersected = true
+      this.isIntersected = true;
     }
-    window.addEventListener('beforeprint', this.onPrint)
+    window.addEventListener('beforeprint', this.onPrint);
   },
   beforeDestroy () {
     if (
@@ -49,30 +49,30 @@ export default {
       'IntersectionObserverEntry' in window &&
       'intersectionRatio' in window.IntersectionObserverEntry.prototype
     ) {
-      this.unobserve()
+      this.unobserve();
     }
   },
   methods: {
     observe () {
-      const { rootMargin, threshold } = this
-      const config = { root: undefined, rootMargin, threshold }
-      this.observer = new IntersectionObserver(this.onIntersection, config)
-      this.observer.observe(this.$el)
+      const { rootMargin, threshold } = this;
+      const config = { root: undefined, rootMargin, threshold };
+      this.observer = new IntersectionObserver(this.onIntersection, config);
+      this.observer.observe(this.$el);
     },
     onIntersection (entries, observer) {
-      this.isIntersected = entries.some(entry => entry.intersectionRatio > 0)
+      this.isIntersected = entries.some(entry => entry.intersectionRatio > 0);
       if (this.isIntersected) {
-        this.unobserve()
+        this.unobserve();
       }
     },
     unobserve () {
-      this.observer.unobserve(this.$el)
+      this.observer.unobserve(this.$el);
     },
     onPrint () {
-      this.isIntersected = true
+      this.isIntersected = true;
     },
   },
-}
+};
 </script>
 
 <style>

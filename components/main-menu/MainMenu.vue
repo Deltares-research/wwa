@@ -35,9 +35,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
-import MobileMenu from '~/components/mobile-menu/MobileMenu'
+import MobileMenu from '~/components/mobile-menu/MobileMenu';
 
 export default {
   components: { MobileMenu },
@@ -45,17 +45,17 @@ export default {
     variant: {
       type: String,
       validator (val) {
-        return (val === 'dark' || val === 'light')
+        return (val === 'dark' || val === 'light');
       },
       default () {
-        return 'dark'
+        return 'dark';
       },
     },
   },
   computed: {
     ...mapState(['navBackgroundTrans']),
   },
-}
+};
 </script>
 
 <style>

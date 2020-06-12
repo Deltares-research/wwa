@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import sortBy from 'lodash/fp/sortBy'
+import sortBy from 'lodash/fp/sortBy';
 
 export default {
   props: {
@@ -69,7 +69,7 @@ export default {
       type: String,
       default: '',
       validator (value) {
-        return ['', 'newest'].indexOf(value) !== -1
+        return ['', 'newest'].indexOf(value) !== -1;
       },
     },
     limit: {
@@ -82,37 +82,37 @@ export default {
   },
   computed: {
     newestChapters () {
-      return sortBy(['updatedAt'], this.chapters).reverse()
+      return sortBy(['updatedAt'], this.chapters).reverse();
     },
     sortedChapters () {
       switch (this.sorted) {
         case 'newest':
-          return this.newestChapters
+          return this.newestChapters;
         default:
-          return this.chapters
+          return this.chapters;
       }
     },
     limitedChapters () {
-      return this.sortedChapters.filter((_, index) => index + 1 <= this.limit)
+      return this.sortedChapters.filter((_, index) => index + 1 <= this.limit);
     },
   },
   methods: {
     chapterTheme (chapter) {
       try {
-        return chapter.theme.slug
+        return chapter.theme.slug;
       } catch (e) {
-        return 'too-dirty'
+        return 'too-dirty';
       }
     },
     coverWidth (cover, maxElementHeight) {
-      const heigthFactor = maxElementHeight / cover.value.height
-      return cover.value.width * heigthFactor
+      const heigthFactor = maxElementHeight / cover.value.height;
+      return cover.value.width * heigthFactor;
     },
     coverPath (chapter) {
-      return `${chapter.cover.imgixHost}${chapter.cover.value.path}?auto=compress`
+      return `${chapter.cover.imgixHost}${chapter.cover.value.path}?auto=compress`;
     },
   },
-}
+};
 </script>
 
 <style>

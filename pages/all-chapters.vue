@@ -32,7 +32,7 @@
 
 <script>
   import fetchContent from '~/lib/fetch-content';
-  import PageComponent from '~/components/page-component/PageComponent'
+  import PageComponent from '~/components/page-component/PageComponent';
 
   export default {
     layout: 'static-page',
@@ -42,7 +42,7 @@
     head() {
       return {
         meta: [ { name: 'robots', content: 'noindex' } ],
-      }
+      };
     },
     asyncData () {
       return fetchContent(
@@ -72,9 +72,9 @@
               }
             }
           `,
-      )
+      );
     },
-  }
+  };
 </script>
 
 <style>

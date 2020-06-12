@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import FilterTag from '~/components/filter-tag/FilterTag'
+import FilterTag from '~/components/filter-tag/FilterTag';
 
 export default {
   components: {
@@ -97,7 +97,7 @@ export default {
     partner: Object,
     theme: Object,
   },
-}
+};
 </script>
 
 <style>

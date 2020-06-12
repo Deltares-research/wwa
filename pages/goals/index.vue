@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import BookHeader from '~/components/book-header/BookHeader'
+import BookHeader from '~/components/book-header/BookHeader';
 
 export default {
   layout: 'globe',
@@ -17,7 +17,7 @@ export default {
   data () {
     return {
       title: 'Goals',
-    }
+    };
   },
-}
+};
 </script>

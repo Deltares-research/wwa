@@ -21,7 +21,7 @@ export default {
     title: String,
     titleIsOptional: Boolean,
   },
-}
+};
 </script>
 
 <style>

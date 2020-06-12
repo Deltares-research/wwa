@@ -118,7 +118,7 @@
         htmlAttrs: {
           lang: params.language,
         },
-      }
+      };
     },
     async asyncData({ params }) {
       const query = `
@@ -163,14 +163,14 @@
             }
           }
         }
-      `
+      `;
 
       return {
         ...await fetchContent(query),
         params,
-      }
+      };
     },
-  }
+  };
 </script>
 
 <style>

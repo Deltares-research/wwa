@@ -30,18 +30,18 @@ export default {
     },
     pages: {
       validator (pages) {
-        return pages.every(page => (page.slug && page.title))
+        return pages.every(page => (page.slug && page.title));
       },
     },
   },
   watch: {
     '$route' (to, from) {
       if ((to.path === from.path) && (to.hash === '#top')) {
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
       }
     },
   },
-}
+};
 </script>
 
 <style>

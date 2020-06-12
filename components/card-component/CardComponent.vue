@@ -21,7 +21,7 @@ export default {
     theme: Object,
     title: String,
   },
-}
+};
 </script>
 
 <style>

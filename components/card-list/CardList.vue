@@ -34,19 +34,19 @@
 </template>
 
 <script>
-import CardComponent from '~/components/card-component/CardComponent'
+import CardComponent from '~/components/card-component/CardComponent';
 export default {
   data () {
     return {
       animationDuration: 3000,
-    }
+    };
   },
   props: {
     cards: Array,
     subtitle: {
       type: String,
       default () {
-        return ''
+        return '';
       },
     },
   },
@@ -57,7 +57,7 @@ export default {
   methods: {
   },
   components: { CardComponent },
-}
+};
 </script>
 
 <style>

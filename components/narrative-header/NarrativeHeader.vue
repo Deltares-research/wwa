@@ -104,25 +104,25 @@ export default {
     coverPath () {
       return this.chapter && this.chapter.cover
         ? `${this.chapter.cover.imgixHost}${this.chapter.cover.value.path}`
-        : ''
+        : '';
     },
     displayNavigationList () {
       return this.showNavigation !== null
         ? this.showNavigation
-        : !this.condensed
+        : !this.condensed;
     },
   },
   methods: {
     setShowNavigation (value) {
       this.showNavigation = value === null
         ? this.condensed
-        : !value
+        : !value;
     },
     goBack () {
-      window.history.go(-1)
+      window.history.go(-1);
     },
   },
-}
+};
 </script>
 
 <style>

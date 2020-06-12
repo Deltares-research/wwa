@@ -26,7 +26,7 @@
 
 
 <script>
-import LazyMedia from '~/components/lazy-media/LazyMedia'
+import LazyMedia from '~/components/lazy-media/LazyMedia';
 
 export default {
   props: {
@@ -38,13 +38,13 @@ export default {
   data () {
     return {
       isLoaded: false,
-    }
+    };
   },
   components: { LazyMedia },
   methods: {
     onLoad () {
-      this.isLoaded = true
+      this.isLoaded = true;
     },
   },
-}
+};
 </script>

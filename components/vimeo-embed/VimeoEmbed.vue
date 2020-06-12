@@ -42,7 +42,7 @@ export default {
     url: String,
     vimeoId: String,
   },
-}
+};
 </script>
 
 <style>

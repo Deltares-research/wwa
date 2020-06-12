@@ -45,8 +45,8 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import ChapterList from '~/components/chapter-list/ChapterList'
+import Vue from 'vue';
+import ChapterList from '~/components/chapter-list/ChapterList';
 
 export default {
   components: { ChapterList },
@@ -57,14 +57,14 @@ export default {
     bookLimitMap: {},
   }),
   mounted () {
-    this.books.forEach(book => Vue.set(this.bookLimitMap, book.slug, 3))
+    this.books.forEach(book => Vue.set(this.bookLimitMap, book.slug, 3));
   },
   computed: {
     hasSlotContent () {
-      return this.$scopedSlots.hasOwnProperty('default')
+      return this.$scopedSlots.hasOwnProperty('default');
     },
   },
-}
+};
 </script>
 
 <style>

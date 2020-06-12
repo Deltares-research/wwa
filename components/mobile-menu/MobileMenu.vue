@@ -91,14 +91,14 @@ export default {
     variant: {
       type: String,
       validator (val) {
-        return (val === 'dark' || val === 'light')
+        return (val === 'dark' || val === 'light');
       },
       default () {
-        return 'dark'
+        return 'dark';
       },
     },
   },
-}
+};
 </script>
 
 <style>

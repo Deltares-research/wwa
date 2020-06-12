@@ -6,6 +6,8 @@
 
 <script>
 const apiKey = 'pk.eyJ1Ijoic2lnZ3lmIiwiYSI6ImNqZGsybjA4dTFvNnMzMnFvNXNkdXpiYXAifQ.cXeF4BQA1dKV6L--GI2Q_A'
+import mapboxgl from 'mapbox-gl'
+import mapboxglStyle from 'mapbox-gl/dist/mapbox-gl.css'
 
 export default {
   props: {

@@ -36,7 +36,4 @@ module.exports = {
     'vue/v-bind-style': 'off',
     'vue/v-on-style': 'off',
   },
-  globals: {
-    mapboxgl: true,
-  }
 }

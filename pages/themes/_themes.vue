@@ -2,7 +2,10 @@
   <div class="invert">
     <div class="layout-section">
       <div class="layout-section__container">
-        <book-header :title="title" :body="htmlBody" />
+        <book-header
+          :title="title"
+          :body="htmlBody"
+        />
       </div>
     </div>
     <div
@@ -10,7 +13,11 @@
       :class="`layout-section--theme-${slug}-active`"
     >
       <div class="layout-section__container">
-        <chapter-list :chapters="entries" sorted="newest" :limit="32" />
+        <chapter-list
+          :chapters="entries"
+          sorted="newest"
+          :limit="32"
+        />
       </div>
     </div>
   </div>

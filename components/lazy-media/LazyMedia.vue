@@ -1,8 +1,14 @@
 <template>
   <div>
     <slot v-if="isIntersected" />
-    <slot v-if="isIntersected" name="content" />
-    <slot v-if="!isIntersected" name="placeholder" />
+    <slot
+      v-if="isIntersected"
+      name="content"
+    />
+    <slot
+      v-if="!isIntersected"
+      name="placeholder"
+    />
   </div>
 </template>
 

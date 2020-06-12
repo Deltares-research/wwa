@@ -6,7 +6,7 @@
       :graphs="page.graphs"
       :title="page.title"
       :video="page.video"
-      :mapboxStyle="page.mapboxStyle"
+      :mapbox-style="page.mapboxStyle"
       :links="page.links"
       :partner="page.partner"
       :influences="page.influences"
@@ -14,7 +14,8 @@
       :methodologies="page.methodologies"
       :keywords="page.keywords"
       :storyteller="page.storyteller"
-      :theme="page.theme" />
+      :theme="page.theme"
+    />
   </article>
 </template>
 

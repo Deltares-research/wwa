@@ -1,14 +1,17 @@
 <template>
   <div class="filter-keywords">
-      <ul class="list--inline filter-keywords__list">
-        <li
-          v-for="keyword in keywords"
-          :key="keyword.slug"
-          @click="handleKeywordClick(keyword.slug)"
-        >
-          <keyword-tag :keyword="keyword" :active="activeKeywords.indexOf(keyword.slug) !== -1"/>
-        </li>
-      </ul>
+    <ul class="list--inline filter-keywords__list">
+      <li
+        v-for="keyword in keywords"
+        :key="keyword.slug"
+        @click="handleKeywordClick(keyword.slug)"
+      >
+        <keyword-tag
+          :keyword="keyword"
+          :active="activeKeywords.indexOf(keyword.slug) !== -1"
+        />
+      </li>
+    </ul>
   </div>
 </template>
 

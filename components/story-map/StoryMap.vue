@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div data-story-map class="story-map"></div>
+    <div
+      data-story-map
+      class="story-map"
+    />
   </div>
 </template>
 

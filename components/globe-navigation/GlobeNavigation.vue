@@ -37,7 +37,7 @@
               :title="currentFilter.title"
               :url="`/${activeFilterSlug}/${currentFilter.slug}`"
               :icon="currentFilter.icon"
-              :isSelected="currentFilter.slug === activeFilterItemSlug"
+              :is-selected="currentFilter.slug === activeFilterItemSlug"
             />
           </li>
         </ul>

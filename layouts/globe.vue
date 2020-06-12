@@ -2,7 +2,10 @@
   <main>
     <main-menu variant="dark" />
 
-    <transition name="fadeIn" mode="out-in">
+    <transition
+      name="fadeIn"
+      mode="out-in"
+    >
       <globe-component
         :is="GlobeComponent"
         class="globe-component"
@@ -18,7 +21,7 @@
         />
       </transition>
 
-      <nuxt/>
+      <nuxt />
     </div>
   </main>
 </template>

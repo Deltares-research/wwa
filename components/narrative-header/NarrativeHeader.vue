@@ -1,11 +1,28 @@
 <template>
   <header class="narrative-header__container">
-    <div class="narrative-header" :class="{'narrative-header--condensed': condensed}">
+    <div
+      class="narrative-header"
+      :class="{'narrative-header--condensed': condensed}"
+    >
       <div class="narrative-header__content">
-        <img v-if="coverPath" class="narrative-header__cover" :src="coverPath" />
-        <button class="narrative-header__back" @click="goBack" v-if="!condensed">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
-            <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/>
+        <img
+          v-if="coverPath"
+          class="narrative-header__cover"
+          :src="coverPath"
+        >
+        <button
+          class="narrative-header__back"
+          @click="goBack"
+          v-if="!condensed"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="#fff"
+          >
+            <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" />
           </svg>
           back
         </button>
@@ -18,9 +35,19 @@
           @click="setShowNavigation(showNavigation)"
         >
           In this chapter
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="narrative-header__toggle-icon" :class="{'narrative-header__toggle-icon--active': displayNavigationList}">
-            <path d="M7 10l5 5 5-5z"/>
-            <path d="M0 0h24v24H0z" fill="none"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            class="narrative-header__toggle-icon"
+            :class="{'narrative-header__toggle-icon--active': displayNavigationList}"
+          >
+            <path d="M7 10l5 5 5-5z" />
+            <path
+              d="M0 0h24v24H0z"
+              fill="none"
+            />
           </svg>
         </button>
         <nav
@@ -36,8 +63,11 @@
               :key="`${page.slug}-${index}`"
               @click="setShowNavigation(showNavigation)"
             >
-              <button class="narrative-header__link" @click="$emit('selectLink', page.slug)" >
-                <span class="narrative-header__link-index" >{{ index+1 }}.</span>&nbsp;&nbsp;{{ page.title }}
+              <button
+                class="narrative-header__link"
+                @click="$emit('selectLink', page.slug)"
+              >
+                <span class="narrative-header__link-index">{{ index+1 }}.</span>&nbsp;&nbsp;{{ page.title }}
               </button>
             </li>
           </ol>

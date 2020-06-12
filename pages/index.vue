@@ -3,13 +3,21 @@
     <div data-hero-hide-trigger />
     <hero-header
       :body="body"
-      :showHeroHeader="showHeroHeader"
-      v-on:hideHeroHeader="showHeroHeader = false"
+      :show-hero-header="showHeroHeader"
+      @:hideHeroHeader="showHeroHeader = false"
     />
 
     <div class="globe-section layout-section">
-      <book-list class="layout-section__container" :books="books">
-        <chapter-list slot-scope="{ chapters, limit }" :chapters="chapters" sorted="newest" :limit="limit" />
+      <book-list
+        class="layout-section__container"
+        :books="books"
+      >
+        <chapter-list
+          slot-scope="{ chapters, limit }"
+          :chapters="chapters"
+          sorted="newest"
+          :limit="limit"
+        />
       </book-list>
     </div>
   </div>

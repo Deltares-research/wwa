@@ -4,7 +4,7 @@
     <scroll-indicator
       v-if="pages.length > 1"
       :pages="pages"
-      :activePage="activePage"
+      :active-page="activePage"
     />
     <div class="chapter chapter-column">
       <narrative-header
@@ -24,8 +24,8 @@
         :class="['chapter__page', `chapter__page--${index}`]"
       />
       <narrative-footer
-        :previousLink="chapter.previousChapter"
-        :nextLink="chapter.nextChapter"
+        :previous-link="chapter.previousChapter"
+        :next-link="chapter.nextChapter"
         :related="chapter.related"
       />
     </div>

@@ -1,11 +1,18 @@
 <template>
   <ul class="title-list list--inline">
-    <li class="h1 title-list__item" v-for="item in titles" :key="item.slug">
-      <nuxt-link v-if="active.every(t => t.slug !== item.slug)" :to="item.path">
-        <span class="sr-only">Go to book</span> {{item.title}}
+    <li
+      class="h1 title-list__item"
+      v-for="item in titles"
+      :key="item.slug"
+    >
+      <nuxt-link
+        v-if="active.every(t => t.slug !== item.slug)"
+        :to="item.path"
+      >
+        <span class="sr-only">Go to book</span> {{ item.title }}
       </nuxt-link>
       <span v-else-if="!exclude">
-        {{item.title}}
+        {{ item.title }}
       </span>
     </li>
   </ul>

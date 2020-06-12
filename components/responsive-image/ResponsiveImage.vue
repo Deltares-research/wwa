@@ -7,15 +7,20 @@
       slot="content"
     >
       <transition name="fade">
-        <img :src="src" v-show="isLoaded" :alt="alt" width="100%"  @load="onLoad" />
+        <img
+          :src="src"
+          v-show="isLoaded"
+          :alt="alt"
+          width="100%"
+          @load="onLoad"
+        >
       </transition>
     </picture>
     <div
       class="lazy-placeholder fixed-ratio"
       slot="placeholder"
       :style="`padding-bottom:${Math.round(srcHeight/srcWidth * 10000)/100}%`"
-    >
-    </div>
+    />
   </lazy-media>
 </template>
 

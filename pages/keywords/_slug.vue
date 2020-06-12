@@ -4,14 +4,32 @@
       <div class="layout-section__container">
         <book-header title="Keywords" />
         <ul class="keywords__list list--inline">
-          <li v-for="keyword in activeKeywords" :key="keyword.slug">
-            <filter-tag :title="keyword.title" :url="keyword.unsetLink" :isRemovable="true" />
+          <li
+            v-for="keyword in activeKeywords"
+            :key="keyword.slug"
+          >
+            <filter-tag
+              :title="keyword.title"
+              :url="keyword.unsetLink"
+              :is-removable="true"
+            />
           </li>
           <li>
-            <select class="keywords__dropdown" @change="updatePath">
-              <option disabled selected>Select new keyword to add</option>
-              <option v-for="keyword in availableKeywords" :key="keyword.slug"
-                :value="keyword.slug">
+            <select
+              class="keywords__dropdown"
+              @change="updatePath"
+            >
+              <option
+                disabled
+                selected
+              >
+                Select new keyword to add
+              </option>
+              <option
+                v-for="keyword in availableKeywords"
+                :key="keyword.slug"
+                :value="keyword.slug"
+              >
                 {{ keyword.title }}
               </option>
             </select>
@@ -21,7 +39,11 @@
     </div>
     <div class="layout-section">
       <div class="layout-section__container">
-        <chapter-list :chapters="results" sorted="newest" :limit="20" />
+        <chapter-list
+          :chapters="results"
+          sorted="newest"
+          :limit="20"
+        />
       </div>
     </div>
   </div>

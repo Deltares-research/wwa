@@ -1,15 +1,25 @@
 <template>
   <div>
     <button
-        class="mobile-menu__toggle"
-        :class="`mobile-menu__toggle--${variant}`"
-        @click="showMobileMenu = true"
+      class="mobile-menu__toggle"
+      :class="`mobile-menu__toggle--${variant}`"
+      @click="showMobileMenu = true"
+    >
+      <span class="sr-only">Open main menu</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="#ffffff"
+        aria-hidden="true"
       >
-        <span class="sr-only">Open main menu</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true">
-          <path d="M0 0h24v24H0z" fill="none"/>
-          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-        </svg>
+        <path
+          d="M0 0h24v24H0z"
+          fill="none"
+        />
+        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+      </svg>
     </button>
     <nav
       class="mobile-menu"
@@ -20,9 +30,19 @@
         @click="showMobileMenu = false"
       >
         <span class="sr-only">Close slide menu</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true">
-          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-          <path d="M0 0h24v24H0z" fill="none"/>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="#ffffff"
+          aria-hidden="true"
+        >
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+          <path
+            d="M0 0h24v24H0z"
+            fill="none"
+          />
         </svg>
       </button>
       <ul class="mobile-menu__list">
@@ -34,7 +54,7 @@
           >
             Home
           </nuxt-link>
-        <li class="mobile-menu__list-item">
+        </li><li class="mobile-menu__list-item">
           <nuxt-link
             class="menu__item menu__item--display-block menu__item--submit h3"
             to="/submit-a-story"
@@ -58,8 +78,7 @@
       class="mobile-menu__backdrop"
       :class="{ 'mobile-menu__backdrop--active': showMobileMenu }"
       @click="showMobileMenu = false"
-    >
-    </div>
+    />
   </div>
 </template>
 

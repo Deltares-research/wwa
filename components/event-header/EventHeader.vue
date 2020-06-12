@@ -6,7 +6,10 @@
     </h1>
     <nav class="language-switch">
       <ul class="language-switch__list">
-        <li v-for="{ locale } in _allNameLocales" :key="locale">
+        <li
+          v-for="{ locale } in _allNameLocales"
+          :key="locale"
+        >
           <nuxt-link
             class="language-switch__link"
             :class="{ 'language-switch__link--active': route.params.language === locale }"

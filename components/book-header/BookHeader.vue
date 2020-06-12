@@ -10,8 +10,7 @@
     <p
       v-if="body"
       v-html="body"
-    >
-    </p>
+    />
   </div>
 </template>
 

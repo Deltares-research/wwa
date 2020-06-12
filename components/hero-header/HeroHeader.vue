@@ -6,10 +6,14 @@
     role="button"
   >
     <div class="hero-header__container">
-      <h1 class="hero-header__title" >
-        World Water <br /> Atlas
+      <h1 class="hero-header__title">
+        World Water <br> Atlas
       </h1>
-      <section v-if="body.length > 0" class="hero-header__intro" v-html="body" ></section>
+      <section
+        v-if="body.length > 0"
+        class="hero-header__intro"
+        v-html="body"
+      />
     </div>
   </header>
 </template>

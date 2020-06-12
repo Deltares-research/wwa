@@ -1,6 +1,6 @@
 <template>
   <div class="globe-container">
-    <div class="globe"></div>
+    <div class="globe" />
   </div>
 </template>
 

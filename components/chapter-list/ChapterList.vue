@@ -1,11 +1,19 @@
 <template>
   <div class="chapter-list">
     <ul class="chapter-list__list">
-      <li class="chapter-list__item" v-for="chapter in limitedChapters" :key="chapter.slug">
+      <li
+        class="chapter-list__item"
+        v-for="chapter in limitedChapters"
+        :key="chapter.slug"
+      >
         <nuxt-link
           class="chapter-list__item-link"
-          :to="chapter.path">
-          <span class="chapter-list__cover" :class="{'chapter-list__cover--fallback': !chapter.cover}">
+          :to="chapter.path"
+        >
+          <span
+            class="chapter-list__cover"
+            :class="{'chapter-list__cover--fallback': !chapter.cover}"
+          >
             <picture v-if="chapter.cover">
               <source
                 :srcset="`${coverPath(chapter)}&w=280&h=158&fit=crop 280w,
@@ -37,9 +45,9 @@
               v-else
               :src="`/assets/${chapterTheme(chapter)}.svg`"
               role="presentation"
-              />
+            >
           </span>
-          <span class="chapter-list__gradient"/>
+          <span class="chapter-list__gradient" />
           <span class="chapter-list__item-content">{{ chapter.title }}</span>
         </nuxt-link>
         <div class="chapter-list__focus-highlight" />

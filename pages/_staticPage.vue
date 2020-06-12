@@ -1,22 +1,32 @@
 
 <template>
   <article class="static-page">
-    <section v-if="video" class="static-page__video static-page__fixed-ratio"
-      v-bind:style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`">
-      <iframe class="static-page__video" allowfullscreen="allowfullscreen"
-        :src="`//www.${video.provider}.com/embed/${video.providerUid}`" width="100%" height="100%">
-      </iframe>
+    <section
+      v-if="video"
+      class="static-page__video static-page__fixed-ratio"
+      :style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`"
+    >
+      <iframe
+        class="static-page__video"
+        allowfullscreen="allowfullscreen"
+        :src="`//www.${video.provider}.com/embed/${video.providerUid}`"
+        width="100%"
+        height="100%"
+      />
     </section>
-    <h1>{{title}}</h1>
-    <section v-html="htmlBody">
-    </section>
-    <figure v-for="image in images" :key="image.id">
+    <h1>{{ title }}</h1>
+    <section v-html="htmlBody" />
+    <figure
+      v-for="image in images"
+      :key="image.id"
+    >
       <lazy-image
-      :srcWidth="image.value.width"
-      :srcHeight="image.value.height"
-      :src="`${image.imgixHost}${image.value.path}?auto=compress&w=640&q=65`"
-      :alt="image.value.alt"
-      width=100% />
+        :src-width="image.value.width"
+        :src-height="image.value.height"
+        :src="`${image.imgixHost}${image.value.path}?auto=compress&w=640&q=65`"
+        :alt="image.value.alt"
+        width="100%"
+      />
       <figcaption>{{ image.value.title }}</figcaption>
     </figure>
   </article>

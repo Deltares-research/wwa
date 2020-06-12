@@ -1,7 +1,7 @@
 <template>
   <main class="layout layout--static-page">
     <main-menu variant="light" />
-    <nuxt/>
+    <nuxt />
   </main>
 </template>
 <script>

@@ -2,12 +2,19 @@
   <div class="invert">
     <div class="layout-section">
       <div class="layout-section__container">
-        <book-header :title="title" :body="body" />
+        <book-header
+          :title="title"
+          :body="body"
+        />
       </div>
     </div>
     <div class="layout-section">
       <div class="layout-section__container">
-        <chapter-list :chapters="chapters" sorted="newest" :limit="9" />
+        <chapter-list
+          :chapters="chapters"
+          sorted="newest"
+          :limit="9"
+        />
       </div>
     </div>
   </div>

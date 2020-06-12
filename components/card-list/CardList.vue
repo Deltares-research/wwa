@@ -1,14 +1,27 @@
 <template>
   <div class="card-list">
-    <header class="card-list__header" v-show="$slots.header">
-      <slot name="header"></slot>
+    <header
+      class="card-list__header"
+      v-show="$slots.header"
+    >
+      <slot name="header" />
     </header>
-    <transition-group v-if="cards" class="card-list__list" name="slideUp" tag="ul" appear disappear :duration="animationDuration">
-      <li v-for="card in cards"
+    <transition-group
+      v-if="cards"
+      class="card-list__list"
+      name="slideUp"
+      tag="ul"
+      appear
+      disappear
+      :duration="animationDuration"
+    >
+      <li
+        v-for="card in cards"
         :key="card.slug"
         :id="card.slug"
         class="card-list__item"
-        data-list-item>
+        data-list-item
+      >
         <card-component
           :subtitle="(card.book) ? card.book.title : subtitle"
           :title="card.title"
@@ -18,7 +31,6 @@
       </li>
     </transition-group>
   </div>
-
 </template>
 
 <script>

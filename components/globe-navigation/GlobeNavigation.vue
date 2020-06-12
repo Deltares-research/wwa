@@ -27,7 +27,7 @@
         </ul>
       </div>
       <section>
-        <ul class="globe-navigation__tags list--inline">
+        <ul class="list--inline">
           <li
             v-for="currentFilter in currentFilters"
             :key="currentFilter.slug"
@@ -219,13 +219,7 @@ li.globe-navigation__tab--selected {
   color: var(--ui--blue--light);
 }
 
-.globe-navigation__tags {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 li.globe-navigation__tag {
-  flex: 0 1 auto;
   margin-bottom: .5rem;
 }
 

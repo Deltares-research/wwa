@@ -39,6 +39,10 @@ export default {
   border-radius: 5px;
 }
 
+.filter-tag:hover {
+  color: var(--ui--white);
+}
+
 @media (min-width: 600px) {
   .filter-tag {
     font-size: 1rem;
@@ -66,6 +70,6 @@ export default {
 .filter-tag__icon {
   display: block;
   margin-right: .5rem;
-  width: 1.3rem;
+  height: 1.3rem;
 }
 </style>

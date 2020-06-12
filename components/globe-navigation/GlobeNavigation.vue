@@ -75,11 +75,30 @@ export default {
     }
   },
   mounted () {
-    this.tabsList = this.$refs.tabsList
-    this.tabLinks = this.$refs.tabLink
-    this.tabsList.addEventListener('mousedown', this.handleDrag)
+    const mediaQuery = window.matchMedia("(max-width: 950px)")
+
+    if(mediaQuery.matches) {
+      this.enableDrag()
+    }
+
+    mediaQuery.addListener(this.handleWindowResize)
   },
   methods: {
+    handleWindowResize (matchList) {
+      if(matchList.matches) {
+        this.enableDrag()
+      } else {
+        this.disableDrag()
+      }
+    },
+    enableDrag () {
+      this.tabsList = this.$refs.tabsList
+      this.tabLinks = this.$refs.tabLink
+      this.tabsList.addEventListener('mousedown', this.handleDrag)
+    },
+    disableDrag () {
+      this.tabsList.removeEventListener('mousedown', this.handleDrag)
+    },
     handleDrag (event) {
       this.tabsList.style.cursor = 'grabbing'
       this.tabsList.style.userSelect = 'none'
@@ -89,10 +108,10 @@ export default {
         x: event.clientX
       }
 
-      document.addEventListener('mousemove', this.handleMouseMove)
-      document.addEventListener('mouseup', this.handleMouseUp)
+      document.addEventListener('mousemove', this.handleDragMouseMove)
+      document.addEventListener('mouseup', this.handleDragMouseUp)
     },
-    handleMouseMove (event) {
+    handleDragMouseMove (event) {
       this.tabLinks.forEach(tabLink => {
         tabLink.$el.style.pointerEvents = 'none'
       })
@@ -100,15 +119,15 @@ export default {
       const dx = event.clientX - this.position.x
       this.tabsList.scrollLeft = this.position.left - dx
     },
-    handleMouseUp () {
+    handleDragMouseUp () {
       this.tabsList.removeAttribute('style')
 
       this.tabLinks.forEach(tabLink => {
         tabLink.$el.removeAttribute('style')
       })
 
-      document.removeEventListener('mousemove', this.handleMouseMove)
-      document.removeEventListener('mouseup', this.handleMouseUp)
+      document.removeEventListener('mousemove', this.handleDragMouseMove)
+      document.removeEventListener('mouseup', this.handleDragMouseUp)
     }
   }
 }

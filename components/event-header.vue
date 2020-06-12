@@ -15,7 +15,7 @@
             :lang="locale"
             :to="{ name: route.name, params: { ...route.params, language: locale } }"
           >
-            {{ locale }}
+            {{ getNativeName(locale) }}
           </nuxt-link>
         </li>
       </ul>
@@ -24,7 +24,12 @@
 </template>
 
 <script>
+  import ISO6391 from 'iso-639-1';
+
   export default {
+    methods: {
+      getNativeName: ISO6391.getNativeName,
+    },
     props: {
       name: String,
       location: String,

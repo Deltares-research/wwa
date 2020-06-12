@@ -87,7 +87,7 @@
         htmlAttrs: {
           lang: params.language,
         },
-      };
+      }
     },
     async asyncData({ params }) {
       const query = `
@@ -132,19 +132,19 @@
             }
           }
         }
-      `;
+      `
 
       return {
         ...await fetchContent(query),
         params,
-      };
+      }
     },
   }
 </script>
 
 <style>
   .event-hero__body {
-    background: var(--yl-gn-bu--1-5);
+    background: var(--ui--text--light);
     color: var(--ui--blue);
     padding: 1.4rem;
   }

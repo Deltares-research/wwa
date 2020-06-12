@@ -1,44 +1,21 @@
 <template>
-  <div class="event">
-    <header class="event-header">
-      <div class="event-header__intro">
-        <h1 class="event__name">
-          <span class="event__location">{{ event.location }}</span>
-          {{ event.name }}
-        </h1>
-        <nav class="language-switch">
-          <ul class="language-switch__list">
-            <li
-              v-for="{ locale } in event._allNameLocales"
-              :key="locale"
-            >
-              <nuxt-link
-                class="language-switch__link"
-                :class="{ 'language-switch__link--active': params.language === locale }"
-                rel="alternate"
-                :hreflang="locale"
-                :lang="locale"
-                :to="`/${locale}/events/${params.event}`"
-              >
-                {{ locale }}
-              </nuxt-link>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <div class="event-header__body">
-        <h2 class="event-header__copy">
-          <span class="event-header__date">
+  <div>
+    <header>
+      <event-header v-bind="event" />
+      <div class="event-hero__body">
+        <h2 class="event-hero__copy">
+          <span class="event-hero__date">
             <time :datetime="event.startDate">{{ new Date(event.startDate).getDate() }}</time>  -
             <time :datetime="event.endDate">{{ new Date(event.endDate).getDate() }}</time>
             July 2020 ({{ event.timezone }})
           </span>
-          <span class="event-header__title">
+          <span class="event-hero__title">
             {{ event.location }} {{ event.name }}
           </span>
         </h2>
       </div>
     </header>
+
     <main class="event__body">
       <aside class="wwa-mention">
         <img class="wwa-mention__image" src="/favicon-96x96.png" width="32" height="32" alt="">
@@ -99,14 +76,18 @@
 
 <script>
   import fetchContent from '~/lib/fetch-content';
+  import eventHeader from '~/components/event-header';
 
   export default {
+    components: {
+      eventHeader,
+    },
     head ({ params }) {
       return {
         htmlAttrs: {
           lang: params.language,
-        }
-      }
+        },
+      };
     },
     async asyncData({ params }) {
       const query = `
@@ -156,57 +137,28 @@
       return {
         ...await fetchContent(query),
         params,
-      }
-    }
+      };
+    },
   }
 </script>
 
 <style>
-  .event {
-    color: var(--ui--white);
-  }
-
-  .event-header {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .event-header__intro {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 1rem;
-    background-color: var(--ui--black);
-  }
-
-  .event__name {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    font-size: 1rem;
-  }
-
-  .event__location {
-    display: block;
-    color: var(--yl-gn-bu--2-5);
-  }
-
-  .event-header__body {
+  .event-hero__body {
     background: var(--yl-gn-bu--1-5);
     color: var(--ui--blue);
     padding: 1.4rem;
   }
 
-  .event-header__copy {
+  .event-hero__copy {
     display: flex;
     flex-direction: column;
   }
 
-  .event-header__date {
+  .event-hero__date {
     font-weight: normal;
   }
 
-  .event-header__title {
+  .event-hero__title {
     font-size: 1.8rem;
   }
 
@@ -277,21 +229,5 @@
 
   .speaker-card__copy {
     margin-left: 1rem;
-  }
-
-  .language-switch__list {
-    display: flex;
-    list-style-type: none;
-  }
-
-  .language-switch__link {
-    border-radius: 0.3rem;
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-  }
-
-  .language-switch__link--active {
-    background-color: var(--ui--blue--bg);
-    font-weight: 500;
   }
 </style>

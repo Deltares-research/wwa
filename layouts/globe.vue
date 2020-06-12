@@ -1,16 +1,25 @@
 <template>
-  <main class="layout">
-    <main-menu class="globe-spacing" variant="dark" />
+  <main>
+    <main-menu variant="dark" />
 
     <transition name="fadeIn" mode="out-in">
-      <globe-component :is="GlobeComponent" class="globe-component" :class="{ 'globe-component--right': globePositionRight }"/>
+      <globe-component
+        :is="GlobeComponent"
+        class="globe-component"
+        :class="{ 'globe-component--right': globePositionRight }"
+      />
     </transition>
 
-    <transition name="fadeIn">
-      <globe-navigation v-if="!globePositionRight && !isFilterPage" />
-    </transition>
+    <div class="globe-spacing">
+      <transition name="fadeIn">
+        <globe-navigation
+          v-if="!globePositionRight && !isFilterPage"
+          ref="globeNavigation"
+        />
+      </transition>
 
-    <nuxt/>
+      <nuxt/>
+    </div>
   </main>
 </template>
 <script>
@@ -48,7 +57,7 @@ export default {
 }
 
 .globe-spacing {
-  margin-bottom: 75vh;
+  margin-top: 75vh;
 }
 
 @media only screen and (min-width: 1024px) {

@@ -36,11 +36,10 @@ const exportScope = process.env.DATO_EXPORT
 const contentBasePath = '/narratives'
 
 module.exports = (dato, root, i18n) => {
-  const { body, videoHighlights } = dato.home
+  const { body } = dato.home
 
   root.createDataFile(`static/data/home.json`, 'json', {
-    body,
-    videoHighlights: videoHighlights.map(pick(['title', 'video', 'url', 'body']))
+    body
   })
 
   switch (exportScope) {
@@ -225,12 +224,12 @@ function generateFilters (dato, root, i18n) {
   const filters = dato.app.filters.map(filter => {
     return {
       title: filter.title,
-      shortTitle: filter.shortTitle,
       slug: filter.slug,
       filterItems: filter.filterItems.map(filterItem => {
         return {
           title: filterItem.title,
-          slug: filterItem.slug
+          slug: filterItem.slug,
+          icon: filterItem.icon
         }
       })
     }
@@ -292,7 +291,7 @@ function getBooks (dato) {
   return dato.books
     .filter(filterPublished)
     .map(book => {
-      const { body, slug, title } = book
+      const { body, slug, icon, title } = book
       const path = `${contentBasePath}/${slug}`
       const chapters = getChapters(dato, book)
         .filter(filterPublished)
@@ -306,7 +305,7 @@ function getBooks (dato) {
       const goals = collectUniqueTags(chapters, 'goals')
       const methodologies = collectUniqueTags(chapters, 'methodologies')
       const keywords = collectUniqueTags(chapters, 'keywords')
-      return { body, chapters, influences, goals, methodologies, keywords, path, slug, title, theme }
+      return { body, chapters, influences, goals, methodologies, keywords, path, slug, icon, title, theme }
     })
 }
 
@@ -500,9 +499,9 @@ function getPages (dato, chapterRef) {
 function getInfluences (dato) {
   const influences = dato.influences
   return influences.map(influence => {
-    const { body, slug, title } = influence
+    const { body, slug, icon, title } = influence
     const path = `/influences/${slug}`
-    return { body, path, slug, title }
+    return { body, path, slug, icon, title }
   })
 }
 
@@ -515,9 +514,9 @@ function getInfluences (dato) {
 function getGoals (dato) {
   const goals = dato.goals
   return goals.map(goal => {
-    const { body, slug, title } = goal
+    const { body, slug, icon, title } = goal
     const path = `/goals/${slug}`
-    return { body, path, slug, title }
+    return { body, path, slug, icon, title }
   })
 }
 
@@ -530,9 +529,9 @@ function getGoals (dato) {
 function getMethodologies (dato) {
   const methodologies = dato.methodologies
   return methodologies.map(goal => {
-    const { body, slug, title } = goal
+    const { body, slug, icon, title } = goal
     const path = `/methodologies/${slug}`
-    return { body, path, slug, title }
+    return { body, path, slug, icon, title }
   })
 }
 
@@ -545,9 +544,9 @@ function getMethodologies (dato) {
 function getThemes (dato) {
   const themes = dato.themes
   return themes.map(theme => {
-    const { body, slug, title } = theme
+    const { body, slug, icon, title } = theme
     const path = `/themes/${slug}`
-    return { body, path, slug, title }
+    return { body, path, slug, icon, title }
   })
 }
 

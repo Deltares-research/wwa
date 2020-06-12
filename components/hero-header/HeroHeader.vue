@@ -48,7 +48,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  width: calc(100vw - 40px);
+  width: 100vw;
   height: 130%;
   opacity: 0.75;
   background-image: linear-gradient(to bottom, #00002a, #00002a 52%, rgba(0, 0, 42, 0));

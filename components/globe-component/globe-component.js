@@ -10,7 +10,6 @@ import { nest } from 'd3-collection'
 import { mean } from 'd3-array'
 
 import { GLOBE_RADIUS } from './constants'
-import Glow from './glow'
 import Water from './water'
 import Avatar from './avatar'
 import Particles from './particles'
@@ -395,7 +394,7 @@ export default {
 
       renderer.setPixelRatio(window.devicePixelRatio)
       renderer.setSize(window.innerWidth, window.innerHeight)
-      renderer.setClearColor(0x00002A)
+      renderer.setClearColor(0x000226)
 
       // append the globe canvas to our mounted element
       this.globeElement.appendChild(renderer.domElement)
@@ -420,9 +419,6 @@ export default {
 
       this.water = new Water()
       globe.add(this.water.mesh)
-
-      const glow = new Glow(this.camera)
-      globe.add(glow.mesh)
 
       // get the baseUrl
       this.avatar = new Avatar(base)

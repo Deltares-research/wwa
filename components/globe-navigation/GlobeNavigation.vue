@@ -1,31 +1,44 @@
 <template>
   <div class="globe-navigation layout-section">
     <div class="layout-section__container">
-      <ul class="list--inline">
-        <li
-          v-for="filter in filters"
-          :key="filter.slug"
+      <h1 class="globe-navigation__header">
+        Explore Atlas by
+      </h1>
+
+      <div class="globe-navigation__tabs">
+        <ul
+          class="globe-navigation__tabs-list list--inline"
+          ref="tabsList"
         >
-          <nuxt-link
-            :to="`/${filter.slug}`"
+          <li
+            v-for="filter in filters"
+            :key="filter.slug"
+            class="globe-navigation__tab"
             :class="{ 'globe-navigation__tab--selected' : filter.slug === activeFilterSlug }"
           >
-            {{ filter.title }}
-          </nuxt-link>
-        </li>
-      </ul>
+            <nuxt-link
+              :to="`/${filter.slug}`"
+              class="globe-navigation__tab-link"
+              ref="tabLink"
+            >
+              {{ filter.title }}
+            </nuxt-link>
+          </li>
+        </ul>
+      </div>
       <section>
         <ul class="list--inline">
           <li
             v-for="currentFilter in currentFilters"
             :key="currentFilter.slug"
+            class="globe-navigation__tag"
           >
-            <nuxt-link
-              :to="`/${activeFilterSlug}/${currentFilter.slug}`"
-              :class="{ 'globe-navigation__link--selected' : currentFilter.slug === activeFilterItemSlug }"
-            >
-              {{ currentFilter.title }}
-            </nuxt-link>
+            <filter-tag
+              :title="currentFilter.title"
+              :url="`/${activeFilterSlug}/${currentFilter.slug}`"
+              :icon="currentFilter.icon"
+              :isSelected="currentFilter.slug === activeFilterItemSlug"
+            />
           </li>
         </ul>
       </section>
@@ -34,12 +47,19 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
+import FilterTag from '~/components/filter-tag/FilterTag'
 import { mapState } from 'vuex'
 
 export default {
+  components: {
+    FilterTag
+  },
   data () {
     return {
-      currentTab: null
+      position: null,
+      tabsList: null,
+      tabLinks: null
     }
   },
   computed: {
@@ -56,71 +76,157 @@ export default {
       return activeFilters ? activeFilters.filterItems : []
     }
   },
-  watch:{
-    $route (){
-      this.updateRouteInfo()
-    }
+  mounted () {
+    this.tabsList = this.$refs.tabsList
+    this.tabLinks = this.$refs.tabLink
+
+    this.handleResize()
+
+    window.addEventListener('resize', debounce(this.handleResize), 1000)
   },
   methods: {
-    selectTab (id) {
-      this.currentTab = id
-    },
-    keyboardNavigation (slug, event) {
-      const numberOfTabs = this.$refs.tab.length
-      const index = this.$refs.tab.indexOf(event.srcElement)
-      const keyDirection = event.which === 37 ? index - 1 : event.which === 39 ? index + 1 : event.which === 40 ? 'down' : null
+    handleResize () {
+      const elementWidth = this.tabsList.offsetWidth
+      const contentWidth = this.tabsList.scrollWidth
 
-      if(keyDirection !== null) {
-        if(keyDirection === 'down') {
-          this.$refs.panel[index].focus()
-        } else if (keyDirection >= 0 && keyDirection < numberOfTabs) {
-          this.currentTab = this.$refs.tab[keyDirection].id
-          this.$refs.tab[keyDirection].focus()
-        }
+      if (contentWidth > elementWidth) {
+        this.tabsList.addEventListener('mousedown', this.handleDrag)
+      } else {
+        this.tabsList.removeEventListener('mousedown', this.handleDrag)
       }
     },
-    updateRouteInfo () {
-      this.currentTab = this.activeFilterSlug ? `tab-${this.activeFilterSlug}` : 'tab-themes'
+    handleDrag (event) {
+      this.tabsList.style.cursor = 'grabbing'
+      this.tabsList.style.userSelect = 'none'
+
+      this.position = {
+        left: this.tabsList.scrollLeft,
+        x: event.clientX
+      }
+
+      document.addEventListener('mousemove', this.handleDragMouseMove)
+      document.addEventListener('mouseup', this.handleDragMouseUp)
+    },
+    handleDragMouseMove (event) {
+      this.tabLinks.forEach(tabLink => {
+        tabLink.$el.style.pointerEvents = 'none'
+      })
+
+      const dx = event.clientX - this.position.x
+      this.tabsList.scrollLeft = this.position.left - dx
+    },
+    handleDragMouseUp () {
+      this.tabsList.removeAttribute('style')
+
+      this.tabLinks.forEach(tabLink => {
+        tabLink.$el.removeAttribute('style')
+      })
+
+      document.removeEventListener('mousemove', this.handleDragMouseMove)
+      document.removeEventListener('mouseup', this.handleDragMouseUp)
     }
-  },
-  mounted () {
-    this.updateRouteInfo()
   }
 }
 </script>
 
 <style>
+:root {
+  --gradient-size: 20px;
+}
+
 .globe-navigation {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.globe-navigation__header {
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.globe-navigation__tabs {
+  position: relative;
+  margin: 0 calc(-1 * var(--gradient-size));
+}
+
+.globe-navigation__tabs:before,
+.globe-navigation__tabs:after {
+  content: '';
   z-index: 1;
   position: absolute;
-  left: 0;
-  top: 60vh;
-  background: red;
-}
-
-.globe-navigation__title--mobile {
   display: block;
+  top: 0;
+  width: var(--gradient-size);
+  height: 100%;
 }
 
-.globe-navigation__title--desktop {
+.globe-navigation__tabs:before {
+  left: 0;
+  background: linear-gradient(90deg, #000127 29.17%, rgba(0, 1, 39, 0) 100%);
+}
+
+.globe-navigation__tabs:after {
+  right: 0;
+  background: linear-gradient(270deg, #000127 29.17%, rgba(0, 1, 39, 0) 100%);
+}
+
+.globe-navigation__tabs-list {
+  position: relative;
+  justify-content: space-between;
+  display: flex;
+  padding: 1rem var(--gradient-size);
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none
+}
+
+.globe-navigation__tabs-list::-webkit-scrollbar {
   display: none;
 }
 
-.globe-navigation__tab--selected {
-  font-weight: bold;
+li.globe-navigation__tab {
+  flex-shrink: 0;
+  margin-right: 2rem;
+  padding-bottom: .25rem;
+  border-bottom: 2px solid transparent;
 }
 
-.globe-navigation__link--selected {
-  border: 1px solid blue;
+li.globe-navigation__tab:last-child {
+  padding-right: var(--gradient-size);
 }
 
-@media (min-width: 768px) {
-  .globe-navigation__title--mobile {
-    display: none;
+li.globe-navigation__tab--selected {
+  border-bottom: 2px solid var(--ui--blue--light);
+}
+
+.globe-navigation__tab-link {
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+@media (min-width: 600px) {
+  .globe-navigation__tab-link {
+    font-size: 1.25rem;
   }
+}
 
-  .globe-navigation__title--desktop {
-    display: block;
+.globe-navigation__tab--selected .globe-navigation__tab-link {
+  font-weight: bold;
+  color: var(--ui--blue--light);
+}
+
+.globe-navigation__tab--selected .globe-navigation__tab-link:hover {
+  color: var(--ui--blue--light);
+}
+
+li.globe-navigation__tag {
+  margin-bottom: .5rem;
+}
+
+@media (min-width: 600px) {
+  li.globe-navigation__tag {
+    margin-right: .75rem;
+    margin-bottom: .75rem;
   }
 }
 </style>

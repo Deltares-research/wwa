@@ -7,7 +7,6 @@
       v-on:hideHeroHeader="showHeroHeader = false"
     />
 
-    <video-highlights :videoHighlights="videoHighlights" />
     <div class="globe-section layout-section">
       <book-list class="layout-section__container" :books="books">
         <chapter-list slot-scope="{ chapters, limit }" :chapters="chapters" sorted="newest" :limit="limit" />
@@ -25,11 +24,10 @@ import home from '~/static/data/home.json'
 import BookList from '~/components/book-list/BookList'
 import ChapterList from '~/components/chapter-list/ChapterList'
 import HeroHeader from '~/components/hero-header/HeroHeader'
-import VideoHighlights from '~/components/video-highlights/VideoHighlights'
 
 export default {
   layout: 'globe',
-  components: { BookList, ChapterList, HeroHeader, VideoHighlights },
+  components: { BookList, ChapterList, HeroHeader },
   async asyncData (context) {
     const books = await loadData(context, { book: 'index' })
 
@@ -56,7 +54,6 @@ export default {
   data: function () {
     return {
       body: marked(home.body),
-      videoHighlights: home.videoHighlights,
       slug: '',
       showHeroHeader: true
     }
@@ -103,7 +100,7 @@ export default {
 
 <style>
 .globe-section {
-  background-color: rgba(0,0,42,.85);
+  background-color: var(--ui--bg--dark-opaque);
   padding-top: 1rem;
 }
 

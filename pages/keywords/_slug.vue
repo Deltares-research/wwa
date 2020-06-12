@@ -5,12 +5,10 @@
         <book-header title="Keywords" />
         <ul class="keywords__list list--inline">
           <li v-for="keyword in activeKeywords" :key="keyword.slug">
-            <nuxt-link class="tag tag--removable" :to="keyword.unsetLink">
-              <span class="sr-only">remove </span>{{ keyword.title }}
-            </nuxt-link>
+            <filter-tag :title="keyword.title" :url="keyword.unsetLink" :isRemovable="true" />
           </li>
           <li>
-            <select class="tag tag--control" @change="updatePath">
+            <select class="keywords__dropdown" @change="updatePath">
               <option disabled selected>Select new keyword to add</option>
               <option v-for="keyword in availableKeywords" :key="keyword.slug"
                 :value="keyword.slug">
@@ -21,7 +19,7 @@
         </ul>
       </div>
     </div>
-    <div class="layout-section layout-section--gradient">
+    <div class="layout-section">
       <div class="layout-section__container">
         <chapter-list :chapters="results" sorted="newest" :limit="20" />
       </div>
@@ -33,6 +31,7 @@
 import allKeywords from '~/static/data/keywords/index.json'
 import BookHeader from '~/components/book-header/BookHeader'
 import ChapterList from '~/components/chapter-list/ChapterList'
+import FilterTag from '~/components/filter-tag/FilterTag'
 import loadData from '~/lib/load-data'
 import { unionByProp } from '~/lib/set-operations'
 
@@ -52,7 +51,7 @@ export default {
     return { allKeywords }
   },
   components: {
-    BookHeader, ChapterList
+    BookHeader, ChapterList, FilterTag
   },
   computed: {
     activeKeywords () {
@@ -91,7 +90,28 @@ export default {
 
 <style>
 .keywords__list {
-  margin-top: -3rem;
   margin-bottom: 2rem;
+}
+
+.keywords__dropdown {
+  color: var(--ui--text);
+  background-color: var(--booklet--neutral);
+  display: inline-block;
+  border-radius: 1rem;
+  padding: .25rem 1rem .375rem 1rem;
+  margin: .25em 1px .25em -1px;
+  appearance: none;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--ui--text--invert);
+  background-color: transparent;
+  border: none;
+  transition: color .25s;
+  cursor: pointer;
+}
+
+.keywords__dropdown:hover {
+  color: var(--ui--text--light);
 }
 </style>

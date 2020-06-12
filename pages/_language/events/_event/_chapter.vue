@@ -12,8 +12,8 @@
 </template>
 
 <script>
-  import fetchContent from '~/lib/fetch-content';
-  import eventHeader from '~/components/event-header';
+  import fetchContent from '~/lib/fetch-content'
+  import eventHeader from '~/components/event-header'
 
   export default {
     components: {
@@ -24,7 +24,7 @@
         htmlAttrs: {
           lang: params.language,
         },
-      };
+      }
     },
     async asyncData({ params }) {
       const query = `
@@ -42,12 +42,12 @@
             }
           }
         }
-      `;
+      `
 
       return {
         ...await fetchContent(query),
         params,
-      };
+      }
     },
   }
 </script>

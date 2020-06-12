@@ -219,7 +219,7 @@
   }
 
   .speaker-card {
-    background-color: var(--yl-gn-bu--3-5);
+    background-color: var(--ui--blue--light);
     padding: 1rem;
   }
 

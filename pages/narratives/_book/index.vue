@@ -16,7 +16,6 @@
 <script>
 import BookHeader from '~/components/book-header/BookHeader'
 import ChapterList from '~/components/chapter-list/ChapterList'
-import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
 import loadData from '~/lib/load-data'
 import marked from '~/lib/marked'
 
@@ -37,6 +36,6 @@ export default {
     this.$store.commit('replaceTheme', this.theme.slug)
     this.$store.commit('disableGlobeAutoRotation')
   },
-  components: { BookHeader, ChapterList, NarrativeHeader }
+  components: { BookHeader, ChapterList, }
 }
 </script>

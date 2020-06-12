@@ -18,7 +18,6 @@ module.exports = {
     'no-prototype-builtins': ['off'],
     'no-unused-vars': ['off'],
     'no-case-declarations': ['off'],
-    'vue/no-unused-components': ['off'],
   },
   globals: {
     mapboxgl: true,

@@ -47,11 +47,6 @@ export default {
   components: {
     FilterTag
   },
-  data () {
-    return {
-      currentTab: null
-    }
-  },
   computed: {
     ...mapState(['filters']),
     activeFilterSlug () {
@@ -66,35 +61,8 @@ export default {
       return activeFilters ? activeFilters.filterItems : []
     }
   },
-  watch:{
-    $route (){
-      this.updateRouteInfo()
-    }
-  },
-  methods: {
-    selectTab (id) {
-      this.currentTab = id
-    },
-    keyboardNavigation (slug, event) {
-      const numberOfTabs = this.$refs.tab.length
-      const index = this.$refs.tab.indexOf(event.srcElement)
-      const keyDirection = event.which === 37 ? index - 1 : event.which === 39 ? index + 1 : event.which === 40 ? 'down' : null
-
-      if(keyDirection !== null) {
-        if(keyDirection === 'down') {
-          this.$refs.panel[index].focus()
-        } else if (keyDirection >= 0 && keyDirection < numberOfTabs) {
-          this.currentTab = this.$refs.tab[keyDirection].id
-          this.$refs.tab[keyDirection].focus()
-        }
-      }
-    },
-    updateRouteInfo () {
-      this.currentTab = this.activeFilterSlug ? `tab-${this.activeFilterSlug}` : 'tab-themes'
-    }
-  },
   mounted () {
-    this.updateRouteInfo()
+    //
   }
 }
 </script>

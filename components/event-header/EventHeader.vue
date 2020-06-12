@@ -60,7 +60,7 @@
 
   .event-header__location {
     display: block;
-    color: var(--yl-gn-bu--2-5);
+    color: var(--ui--blue--light);
   }
 
   .language-switch__list {

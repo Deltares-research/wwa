@@ -5,21 +5,27 @@
         Explore Atlas by
       </h1>
 
-      <ul class="globe-navigation__tabs list--inline">
-        <li
-          v-for="filter in filters"
-          :key="filter.slug"
-          class="globe-navigation__tab"
-          :class="{ 'globe-navigation__tab--selected' : filter.slug === activeFilterSlug }"
+      <div class="globe-navigation__tabs">
+        <ul
+          class="globe-navigation__tabs-list list--inline"
+          ref="tabsList"
         >
-          <nuxt-link
-            :to="`/${filter.slug}`"
-            class="globe-navigation__tab-link"
+          <li
+            v-for="filter in filters"
+            :key="filter.slug"
+            class="globe-navigation__tab"
+            :class="{ 'globe-navigation__tab--selected' : filter.slug === activeFilterSlug }"
           >
-            {{ filter.title }}
-          </nuxt-link>
-        </li>
-      </ul>
+            <nuxt-link
+              :to="`/${filter.slug}`"
+              class="globe-navigation__tab-link"
+              ref="tabLink"
+            >
+              {{ filter.title }}
+            </nuxt-link>
+          </li>
+        </ul>
+      </div>
       <section>
         <ul class="list--inline">
           <li
@@ -47,6 +53,13 @@ export default {
   components: {
     FilterTag
   },
+  data () {
+    return {
+      position: null,
+      tabsList: null,
+      tabLinks: null
+    }
+  },
   computed: {
     ...mapState(['filters']),
     activeFilterSlug () {
@@ -62,12 +75,50 @@ export default {
     }
   },
   mounted () {
-    //
+    this.tabsList = this.$refs.tabsList
+    this.tabLinks = this.$refs.tabLink
+    this.tabsList.addEventListener('mousedown', this.handleDrag)
+  },
+  methods: {
+    handleDrag (event) {
+      this.tabsList.style.cursor = 'grabbing'
+      this.tabsList.style.userSelect = 'none'
+
+      this.position = {
+        left: this.tabsList.scrollLeft,
+        x: event.clientX
+      }
+
+      document.addEventListener('mousemove', this.handleMouseMove)
+      document.addEventListener('mouseup', this.handleMouseUp)
+    },
+    handleMouseMove (event) {
+      this.tabLinks.forEach(tabLink => {
+        tabLink.$el.style.pointerEvents = 'none'
+      })
+
+      const dx = event.clientX - this.position.x
+      this.tabsList.scrollLeft = this.position.left - dx
+    },
+    handleMouseUp () {
+      this.tabsList.removeAttribute('style')
+
+      this.tabLinks.forEach(tabLink => {
+        tabLink.$el.removeAttribute('style')
+      })
+
+      document.removeEventListener('mousemove', this.handleMouseMove)
+      document.removeEventListener('mouseup', this.handleMouseUp)
+    }
   }
 }
 </script>
 
 <style>
+:root {
+  --gradient-size: 20px;
+}
+
 .globe-navigation {
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -80,10 +131,44 @@ export default {
 }
 
 .globe-navigation__tabs {
+  position: relative;
+  margin: 0 calc(-1 * var(--gradient-size));
+}
+
+.globe-navigation__tabs:before,
+.globe-navigation__tabs:after {
+  content: '';
+  z-index: 1;
+  position: absolute;
+  display: block;
+  top: 0;
+  width: var(--gradient-size);
+  height: 100%;
+}
+
+.globe-navigation__tabs:before {
+  left: 0;
+  background: linear-gradient(90deg, #000127 29.17%, rgba(0, 1, 39, 0) 100%);
+}
+
+.globe-navigation__tabs:after {
+  right: 0;
+  background: linear-gradient(270deg, #000127 29.17%, rgba(0, 1, 39, 0) 100%);
+}
+
+.globe-navigation__tabs-list {
+  position: relative;
   justify-content: space-between;
   display: flex;
   margin-bottom: 1rem;
+  padding: 0 var(--gradient-size);
   overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none
+}
+
+.globe-navigation__tabs-list::-webkit-scrollbar {
+  display: none;
 }
 
 li.globe-navigation__tab {
@@ -91,6 +176,10 @@ li.globe-navigation__tab {
   margin-right: 2rem;
   padding-bottom: .25rem;
   border-bottom: 2px solid transparent;
+}
+
+li.globe-navigation__tab:last-child {
+  padding-right: var(--gradient-size);
 }
 
 li.globe-navigation__tab--selected {

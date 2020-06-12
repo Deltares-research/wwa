@@ -33,7 +33,7 @@
     props: {
       name: String,
       location: String,
-      _allNameLocales: Array,
+      _allNameLocales: Array, // eslint-disable-line vue/prop-name-casing
     },
     data({ $route }) {
       return { route: $route };

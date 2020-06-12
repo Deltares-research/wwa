@@ -27,16 +27,17 @@
         </ul>
       </div>
       <section>
-        <ul class="list--inline">
+        <ul class="globe-navigation__tags list--inline">
           <li
             v-for="currentFilter in currentFilters"
             :key="currentFilter.slug"
+            class="globe-navigation__tag"
           >
             <filter-tag
               :title="currentFilter.title"
               :url="`/${activeFilterSlug}/${currentFilter.slug}`"
+              :icon="currentFilter.icon"
               :isSelected="currentFilter.slug === activeFilterItemSlug"
-              class="globe-navigation__tag"
             />
           </li>
         </ul>
@@ -85,7 +86,6 @@ export default {
   },
   methods: {
     handleResize () {
-      console.log('handleResize')
       const elementWidth = this.tabsList.offsetWidth
       const contentWidth = this.tabsList.scrollWidth
 
@@ -219,13 +219,20 @@ li.globe-navigation__tab--selected {
   color: var(--ui--blue--light);
 }
 
-.globe-navigation__tag {
+.globe-navigation__tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+li.globe-navigation__tag {
+  flex: 0 1 auto;
   margin-bottom: .5rem;
 }
 
 @media (min-width: 600px) {
-  .globe-navigation__tag {
-    margin: 0 .3rem .8rem 0;
+  li.globe-navigation__tag {
+    margin-right: .75rem;
+    margin-bottom: .75rem;
   }
 }
 </style>

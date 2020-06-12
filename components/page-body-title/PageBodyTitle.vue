@@ -14,14 +14,14 @@
 
     <div class="page-body-title__keywords" v-if="keywords && keywords.length || influences && influences.length || methodologies && methodologies.length">
       <ul class="list--inline">
-        <li v-for="link in keywords" :key="`keyword-${link.slug}`">
-          <nuxt-link class="tag" :to="link.path">{{ link.title }}</nuxt-link>
+        <li v-for="link in keywords" :key="`keyword-${link.slug}`" class="page-body-title__keyword">
+          <filter-tag :title="link.title" :url="link.path" />
         </li>
-        <li v-for="link in methodologies" :key="`methodology-${link.slug}`">
-          <nuxt-link class="tag" :to="link.path">{{ link.title }}</nuxt-link>
+        <li v-for="link in methodologies" :key="`methodology-${link.slug}`" class="page-body-title__keyword">
+          <filter-tag :title="link.title" :url="link.path" />
         </li>
-        <li v-for="link in influences" :key="`influence-${link.slug}`">
-          <nuxt-link :to="link.path" :class="`tag tag--influence tag--${link.slug}`">{{ link.title }}</nuxt-link>
+        <li v-for="link in influences" :key="`influence-${link.slug}`" class="page-body-title__keyword">
+          <filter-tag :title="link.title" :url="link.path" />
         </li>
       </ul>
     </div>
@@ -43,7 +43,12 @@
 </template>
 
 <script>
+import FilterTag from '~/components/filter-tag/FilterTag'
+
 export default {
+  components: {
+    FilterTag
+  },
   props: {
     pageTitle: String,
     influences: Array,
@@ -67,6 +72,10 @@ export default {
 
 .page-body-title__keywords {
   margin-bottom: 1rem;
+}
+
+.page-body-title__keyword {
+  margin-bottom: .5rem;
 }
 
 @media (min-width: 768px) {

@@ -45,11 +45,11 @@ export default {
           return loadData(context,
             {
               chapter: {
-                path: `books/${book.slug}/chapters/${chapter.slug}/index.json`
-              }
+                path: `books/${book.slug}/chapters/${chapter.slug}/index.json`,
+              },
             })
         })
-      })
+      }),
     ])
 
     const chaptersFlattend = flattenDeep(chaptersNested)
@@ -63,7 +63,7 @@ export default {
     return {
       body: marked(home.body),
       slug: '',
-      showHeroHeader: true
+      showHeroHeader: true,
     }
   },
   mounted () {
@@ -92,7 +92,7 @@ export default {
       const observer = new IntersectionObserver(trackVisibility, {
         // No explicit root, we want the viewport
         rootMargin: '0% 0% 0% 0%',
-        thresholds: 0
+        thresholds: 0,
       })
       const triggerElement = this.$el.querySelector('[data-hero-hide-trigger]')
       observer.observe(triggerElement)
@@ -101,8 +101,8 @@ export default {
       const element = document.getElementById(slug)
       const domRect = element.getBoundingClientRect()
       window.scrollBy({ top: domRect.y - 100, behavior: 'smooth' })
-    }
-  }
+    },
+  },
 }
 </script>
 

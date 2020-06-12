@@ -25,7 +25,7 @@ class Particles {
 
     this.uniforms = {
       time: { value: 0 },
-      pointSize: { value: 10.0 }
+      pointSize: { value: 10.0 },
     }
 
     this.material = new THREE.ShaderMaterial({
@@ -33,7 +33,7 @@ class Particles {
       vertexShader: require('./glsl/dot.vert.glsl'),
       fragmentShader: require('./glsl/dot.frag.glsl'),
       depthTest: true,
-      vertexColors: true
+      vertexColors: true,
     })
 
     this.geometry = new THREE.BufferGeometry()

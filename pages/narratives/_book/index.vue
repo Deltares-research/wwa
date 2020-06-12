@@ -36,13 +36,13 @@ export default {
   computed: {
     htmlBody () {
       return marked(this.body)
-    }
+    },
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.chapters)
     this.$store.commit('replaceTheme', this.theme.slug)
     this.$store.commit('disableGlobeAutoRotation')
   },
-  components: { BookHeader, ChapterList, }
+  components: { BookHeader, ChapterList },
 }
 </script>

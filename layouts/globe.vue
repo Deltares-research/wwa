@@ -37,7 +37,7 @@ export default {
   },
   beforeCreate () {
     this.GlobeComponent = () => ({
-      component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue')
+      component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue'),
     })
   },
   components: { MainMenu, GlobeNavigation },
@@ -45,8 +45,8 @@ export default {
     ...mapState(['globePositionRight']),
     isFilterPage () {
       return this.$route.name === 'keywords-slug'
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -39,20 +39,20 @@ export default {
       entries,
       title,
       body,
-      themes: await themes
+      themes: await themes,
     }
   },
   computed: {
     htmlBody () {
       return marked(this.body)
-    }
+    },
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.entries)
     this.$store.commit('replaceTheme', this.$route.params.themes)
     this.$store.commit('enableGlobeAutoRotation')
   },
-  components: { BookHeader, ChapterList }
+  components: { BookHeader, ChapterList },
 }
 </script>
 

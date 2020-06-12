@@ -46,7 +46,7 @@ const mapAllEventsToRedirects = (allEvents) => (
       ...event._allNameLocales
         .filter(({ locale }) => locale !== 'en')
         .map(({ locale }) =>
-          `/events/${event.slug} /${locale}/events/${event.slug} 302 Language=${locale}`
+          `/events/${event.slug} /${locale}/events/${event.slug} 302 Language=${locale}`,
         ),
       `/events/${event.slug} /en/events/${event.slug} 302`,
     ])
@@ -62,12 +62,12 @@ const mapAllEventsToRoutes = (allEvents) => (
           `${item.locale}/events/${event.slug}`,
           ...event.sections.map(section =>
             section.chapters.map(({ slug }) =>
-              `${item.locale}/events/${event.slug}/${slug}`
-            )
+              `${item.locale}/events/${event.slug}/${slug}`,
+            ),
           )
           .flat(),
         ])
-        .flat()
+        .flat(),
     )
     .flat()
 )
@@ -77,13 +77,13 @@ const postcss = {
     'postcss-import': {},
     'postcss-calc': {},
     'postcss-custom-properties': {},
-  }
+  },
 }
 
 const routerBase = {
   router: {
-    base: '/'
-  }
+    base: '/',
+  },
 }
 
 const env = {
@@ -102,7 +102,7 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'World Water Atlas' },
-      { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' }
+      { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' },
     ],
     link: [
       { rel: 'apple-touch-icon', sizes: '57x57', href: '/apple-icon-57x57.png' },
@@ -117,13 +117,13 @@ module.exports = {
       { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/android-icon-192x192.png' },
       { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
       { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicon-96x96.png' },
-      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' }
-    ]
+      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+    ],
   },
 
   plugins: [
     { src: '~/plugins/smoothscroll', ssr: false },
-    { src: '~/plugins/ga.js', ssr: false }
+    { src: '~/plugins/ga.js', ssr: false },
   ],
 
   router: {
@@ -135,7 +135,7 @@ module.exports = {
       ) {
         return { x: 0, y: 0 }
       }
-    }
+    },
   },
 
   build: {
@@ -151,8 +151,8 @@ module.exports = {
         removeEmptyAttributes: true,
         removeRedundantAttributes: true,
         trimCustomFragments: true,
-        useShortDoctype: true
-      }
+        useShortDoctype: true,
+      },
     },
     extend (config, context) {
       if (context.isDev && context.isClient) {
@@ -160,13 +160,13 @@ module.exports = {
           enforce: "pre",
           test: /\.(js|vue)$/,
           loader: "eslint-loader",
-          exclude: /(node_modules)/
+          exclude: /(node_modules)/,
         })
       }
 
       config.module.rules.push({
         test: /\.glsl$/,
-        loader: 'webpack-glsl-loader'
+        loader: 'webpack-glsl-loader',
       })
     },
     // Create separate css file
@@ -180,7 +180,7 @@ module.exports = {
         .then(({ allEvents }) => {
           fs.writeFileSync(
             path.join('dist', '_redirects'),
-            mapAllEventsToRedirects(allEvents)
+            mapAllEventsToRedirects(allEvents),
           );
 
           return books
@@ -194,6 +194,6 @@ module.exports = {
             .map(item => item.path)
             .concat(mapAllEventsToRoutes(allEvents));
         })
-    }
-  }
+    },
+  },
 }

@@ -23,13 +23,13 @@ export default {
   props: {
     body: {
       type: String,
-      default: ''
+      default: '',
     },
     showHeroHeader: {
       type: Boolean,
-      default: true
-    }
-  }
+      default: true,
+    },
+  },
 }
 </script>
 

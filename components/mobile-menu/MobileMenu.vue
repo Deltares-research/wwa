@@ -85,7 +85,7 @@
 <script>
 export default {
   data: () => ({
-    showMobileMenu: false
+    showMobileMenu: false,
   }),
   props: {
     variant: {
@@ -95,9 +95,9 @@ export default {
       },
       default () {
         return 'dark'
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>
 

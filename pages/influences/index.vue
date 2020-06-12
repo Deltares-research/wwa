@@ -16,8 +16,8 @@ export default {
   components: { BookHeader },
   data () {
     return {
-      title: 'Influences'
+      title: 'Influences',
     }
-  }
+  },
 }
 </script>

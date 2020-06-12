@@ -20,10 +20,10 @@ import KeywordTag from '~/components/keyword-tag/KeywordTag'
 
 export default {
   props: {
-    keywords: Array
+    keywords: Array,
   },
   data: () => ({
-    activeKeywords: []
+    activeKeywords: [],
   }),
   components: { KeywordTag },
   mounted () {
@@ -57,8 +57,8 @@ export default {
           this.activeKeywords.push(keyword.slug)
         }
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

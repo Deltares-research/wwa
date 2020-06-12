@@ -47,14 +47,14 @@ export default {
   computed: {
     htmlBody () {
       return marked(this.body)
-    }
+    },
   },
   components: {
-    lazyImage
+    lazyImage,
   },
   mounted () {
     this.$store.commit('disableInteraction')
-  }
+  },
 }
 </script>
 <style>

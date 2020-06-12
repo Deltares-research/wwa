@@ -42,19 +42,19 @@ export default {
       activeMethodologies,
       title,
       body,
-      results
+      results,
     }
   },
   computed: {
     htmlBody () {
       return marked(this.body)
-    }
+    },
   },
   mounted () {
     this.$store.commit('replaceTheme', 'too-much')
     this.$store.commit('replaceFeatures', this.results)
     this.$store.commit('enableGlobeAutoRotation')
   },
-  components: { BookHeader, ChapterList }
+  components: { BookHeader, ChapterList },
 }
 </script>

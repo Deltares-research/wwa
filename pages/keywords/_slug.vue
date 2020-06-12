@@ -66,14 +66,14 @@ export default {
 
     return {
       keywords,
-      results
+      results,
     }
   },
   data () {
     return { allKeywords }
   },
   components: {
-    BookHeader, ChapterList, FilterTag
+    BookHeader, ChapterList, FilterTag,
   },
   computed: {
     activeKeywords () {
@@ -94,7 +94,7 @@ export default {
         .filter(keyword => this.activeKeywords.every(active => active.slug !== keyword.slug))
 
       return (availableKeywords.length) ? availableKeywords : this.allKeywords
-    }
+    },
   },
   mounted () {
     this.$store.commit('replaceTheme', 'too-much')
@@ -105,8 +105,8 @@ export default {
       const keywordSlug = event.target.value
       const currentSlug = this.keywords.map(kewyord => kewyord.slug).join('+')
       this.$router.push(`/keywords/${(currentSlug) ? currentSlug + '+' : ''}${keywordSlug}`)
-    }
-  }
+    },
+  },
 }
 </script>
 

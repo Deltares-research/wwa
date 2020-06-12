@@ -7,7 +7,7 @@ class Water {
     this.geometry = new THREE.SphereGeometry(GLOBE_RADIUS - 0.02, 64, 64)
 
     this.uniforms = {
-      time: { value: 0 }
+      time: { value: 0 },
     }
 
     // https://shaderfrog.com/app/view/2113
@@ -22,7 +22,7 @@ class Water {
     this.material = new THREE.MeshPhongMaterial({
       color: 0x003355,
       transparent: true,
-      opacity: 0.9
+      opacity: 0.9,
     })
 
     this.mesh = new THREE.Mesh(this.geometry, this.material)

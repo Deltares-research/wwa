@@ -16,11 +16,11 @@ export default {
   props: {
     mapboxStyle: {
       type: String,
-      default: 'mapbox://styles/mapbox/satellite-v9'
+      default: 'mapbox://styles/mapbox/satellite-v9',
     },
     wmsLayer: String,
     center: Array,
-    zoom: Number
+    zoom: Number,
   },
   mounted () {
     if (!mapboxgl) { return }
@@ -28,12 +28,12 @@ export default {
     const mapElement = this.$el.querySelector('[data-story-map]')
     const map = new mapboxgl.Map({
       container: mapElement,
-      style: this.mapboxStyle
+      style: this.mapboxStyle,
     })
     map.scrollZoom.disable()
     map.addControl(new mapboxgl.NavigationControl())
     return map
-  }
+  },
 }
 </script>
 

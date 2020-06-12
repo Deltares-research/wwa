@@ -53,13 +53,13 @@ import { mapState } from 'vuex'
 
 export default {
   components: {
-    FilterTag
+    FilterTag,
   },
   data () {
     return {
       position: null,
       tabsList: null,
-      tabLinks: null
+      tabLinks: null,
     }
   },
   computed: {
@@ -74,7 +74,7 @@ export default {
     currentFilters () {
       const activeFilters = this.filters.find(filter => filter.slug === this.activeFilterSlug)
       return activeFilters ? activeFilters.filterItems : []
-    }
+    },
   },
   mounted () {
     this.tabsList = this.$refs.tabsList
@@ -101,7 +101,7 @@ export default {
 
       this.position = {
         left: this.tabsList.scrollLeft,
-        x: event.clientX
+        x: event.clientX,
       }
 
       document.addEventListener('mousemove', this.handleDragMouseMove)
@@ -124,8 +124,8 @@ export default {
 
       document.removeEventListener('mousemove', this.handleDragMouseMove)
       document.removeEventListener('mouseup', this.handleDragMouseUp)
-    }
-  }
+    },
+  },
 }
 </script>
 

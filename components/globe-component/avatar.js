@@ -23,7 +23,7 @@ class Avatar {
       marker.offsetLocation = {
         lon: marker.location.lon,
         lat: marker.location.lat,
-        zoom: marker.location.zoom
+        zoom: marker.location.zoom,
       }
     })
 
@@ -75,7 +75,7 @@ class Avatar {
       sizeAttenuation: false,
       size: 50.0,
       transparent: true,
-      depthWrite: false
+      depthWrite: false,
     }
 
     this.offsetOverlappingMarkers()

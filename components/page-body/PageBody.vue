@@ -144,14 +144,14 @@ export default {
     theme: Object,
     sizeLimit: {
       type: Number,
-      default: 3 * 16
-    }
+      default: 3 * 16,
+    },
   },
   components: { PageBodyTitle, StoryMap, ResponsiveImage, ResponsiveVideo },
   computed: {
     htmlBody () {
       return renderMarkedContent(this.body)
-    }
+    },
   },
   methods: {
     scaleMaxToSize: function (imgObj, sizeLimit) {
@@ -160,8 +160,8 @@ export default {
       }
       const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height)
       return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) }
-    }
-  }
+    },
+  },
 }
 </script>
 

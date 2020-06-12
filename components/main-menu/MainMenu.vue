@@ -49,12 +49,12 @@ export default {
       },
       default () {
         return 'dark'
-      }
-    }
+      },
+    },
   },
   computed: {
-    ...mapState(['navBackgroundTrans'])
-  }
+    ...mapState(['navBackgroundTrans']),
+  },
 }
 </script>
 

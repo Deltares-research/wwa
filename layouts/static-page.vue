@@ -8,6 +8,6 @@
 import MainMenu from '~/components/main-menu/MainMenu'
 
 export default {
-  components: { MainMenu }
+  components: { MainMenu },
 }
 </script>

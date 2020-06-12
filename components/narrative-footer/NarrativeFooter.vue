@@ -77,17 +77,17 @@ export default {
   props: {
     previousLink: {
       type: Object,
-      required: false
+      required: false,
     },
     nextLink: {
       type: Object,
-      required: false
+      required: false,
     },
     related: {
       type: Array,
-      default: () => []
-    }
-  }
+      default: () => [],
+    },
+  },
 }
 </script>
 

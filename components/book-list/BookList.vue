@@ -54,7 +54,7 @@ export default {
     books: Array,
   },
   data: () => ({
-    bookLimitMap: {}
+    bookLimitMap: {},
   }),
   mounted () {
     this.books.forEach(book => Vue.set(this.bookLimitMap, book.slug, 3))
@@ -62,8 +62,8 @@ export default {
   computed: {
     hasSlotContent () {
       return this.$scopedSlots.hasOwnProperty('default')
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -10,8 +10,8 @@
 export default {
   props: {
     keyword: Object,
-    active: Boolean
-  }
+    active: Boolean,
+  },
 }
 </script>
 

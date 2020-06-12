@@ -24,11 +24,11 @@ import PageBody from '~/components/page-body/PageBody'
 
 export default {
   props: {
-    page: { type: Object }
+    page: { type: Object },
   },
   components: {
-    PageBody
-  }
+    PageBody,
+  },
 }
 </script>
 

@@ -35,7 +35,7 @@ function backup (client) {
                 })
               },
               Promise.resolve())
-          }
+          },
         )
     })
   console.info('Done!')

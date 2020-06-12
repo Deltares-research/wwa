@@ -82,23 +82,23 @@ export default {
   props: {
     chapter: {
       type: Object,
-      required: false
+      required: false,
     },
     pages: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     condensed: {
       type: Boolean,
-      default: false
+      default: false,
     },
     activePage: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data: () => ({
-    showNavigation: false
+    showNavigation: false,
   }),
   computed: {
     coverPath () {
@@ -110,7 +110,7 @@ export default {
       return this.showNavigation !== null
         ? this.showNavigation
         : !this.condensed
-    }
+    },
   },
   methods: {
     setShowNavigation (value) {
@@ -120,8 +120,8 @@ export default {
     },
     goBack () {
       window.history.go(-1)
-    }
-  }
+    },
+  },
 }
 </script>
 

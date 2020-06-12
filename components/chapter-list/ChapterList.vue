@@ -63,22 +63,22 @@ export default {
   props: {
     chapters: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     sorted: {
       type: String,
       default: '',
       validator (value) {
         return ['', 'newest'].indexOf(value) !== -1
-      }
+      },
     },
     limit: {
       type: Number,
-      default: -1 // default all?
+      default: -1, // default all?
     },
     theme: {
-      type: String
-    }
+      type: String,
+    },
   },
   computed: {
     newestChapters () {
@@ -94,7 +94,7 @@ export default {
     },
     limitedChapters () {
       return this.sortedChapters.filter((_, index) => index + 1 <= this.limit)
-    }
+    },
   },
   methods: {
     chapterTheme (chapter) {
@@ -110,8 +110,8 @@ export default {
     },
     coverPath (chapter) {
       return `${chapter.cover.imgixHost}${chapter.cover.value.path}?auto=compress`
-    }
-  }
+    },
+  },
 }
 </script>
 

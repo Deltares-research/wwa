@@ -13,7 +13,7 @@ const store = () => {
       globeAutoRotation: true,
       globePositionRight: false,
       navBackgroundTrans: false,
-      filters: []
+      filters: [],
     },
     mutations: {
       activateFeature (state, feature) {
@@ -69,8 +69,8 @@ const store = () => {
       },
       setFilters (state, filters) {
         state.filters = filters
-      }
-    }
+      },
+    },
   })
 }
 

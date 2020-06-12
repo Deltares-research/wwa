@@ -25,9 +25,9 @@ export default {
     active: Array,
     exclude: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 }
 </script>
 

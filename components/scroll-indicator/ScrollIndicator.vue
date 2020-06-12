@@ -26,21 +26,21 @@
 export default {
   props: {
     activePage: {
-      type: Object
+      type: Object,
     },
     pages: {
       validator (pages) {
         return pages.every(page => (page.slug && page.title))
-      }
-    }
+      },
+    },
   },
   watch: {
     '$route' (to, from) {
       if ((to.path === from.path) && (to.hash === '#top')) {
         window.scrollTo(0, 0)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

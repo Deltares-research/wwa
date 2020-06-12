@@ -771,7 +771,7 @@ Object.defineProperties(OrbitControls.prototype, {
     get: function () {
       console.warn('OrbitControls: .center has been renamed to .target')
       return this.target
-    }
+    },
 
   },
 
@@ -787,7 +787,7 @@ Object.defineProperties(OrbitControls.prototype, {
     set: function (value) {
       console.warn('OrbitControls: .noZoom has been deprecated. Use .enableZoom instead.')
       this.enableZoom = !value
-    }
+    },
 
   },
 
@@ -801,7 +801,7 @@ Object.defineProperties(OrbitControls.prototype, {
     set: function (value) {
       console.warn('OrbitControls: .noRotate has been deprecated. Use .enableRotate instead.')
       this.enableRotate = !value
-    }
+    },
 
   },
 
@@ -815,7 +815,7 @@ Object.defineProperties(OrbitControls.prototype, {
     set: function (value) {
       console.warn('OrbitControls: .noPan has been deprecated. Use .enablePan instead.')
       this.enablePan = !value
-    }
+    },
 
   },
 
@@ -829,7 +829,7 @@ Object.defineProperties(OrbitControls.prototype, {
     set: function (value) {
       console.warn('OrbitControls: .noKeys has been deprecated. Use .enableKeys instead.')
       this.enableKeys = !value
-    }
+    },
 
   },
 
@@ -843,7 +843,7 @@ Object.defineProperties(OrbitControls.prototype, {
     set: function (value) {
       console.warn('OrbitControls: .staticMoving has been deprecated. Use .enableDamping instead.')
       this.enableDamping = !value
-    }
+    },
 
   },
 
@@ -857,12 +857,12 @@ Object.defineProperties(OrbitControls.prototype, {
     set: function (value) {
       console.warn('OrbitControls: .dynamicDampingFactor has been renamed. Use .dampingFactor instead.')
       this.dampingFactor = value
-    }
+    },
 
-  }
+  },
 
 })
 
 export {
-  OrbitControls
+  OrbitControls,
 }

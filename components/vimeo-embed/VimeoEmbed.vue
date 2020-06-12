@@ -40,8 +40,8 @@ export default {
     title: String,
     description: String,
     url: String,
-    vimeoId: String
-  }
+    vimeoId: String,
+  },
 }
 </script>
 

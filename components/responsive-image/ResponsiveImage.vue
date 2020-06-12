@@ -33,18 +33,18 @@ export default {
     srcWidth: Number,
     srcHeight: Number,
     alt: String,
-    src: String
+    src: String,
   },
   data () {
     return {
-      isLoaded: false
+      isLoaded: false,
     }
   },
   components: { LazyMedia },
   methods: {
     onLoad () {
       this.isLoaded = true
-    }
-  }
+    },
+  },
 }
 </script>

@@ -19,8 +19,8 @@ export default {
     slug: String,
     subtitle: String,
     theme: Object,
-    title: String
-  }
+    title: String,
+  },
 }
 </script>
 

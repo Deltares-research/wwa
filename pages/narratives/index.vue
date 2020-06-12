@@ -16,8 +16,8 @@ export default {
   components: { BookHeader },
   data () {
     return {
-      title: 'Topics'
+      title: 'Topics',
     }
-  }
+  },
 }
 </script>

@@ -39,18 +39,18 @@ export default {
     videoWidth: Number,
     videoHeight: Number,
     videoProvider: String,
-    videoProviderUid: String
+    videoProviderUid: String,
   },
   data () {
     return {
-      isLoaded: false
+      isLoaded: false,
     }
   },
   components: { LazyMedia },
   methods: {
     onLoad () {
       this.isLoaded = true
-    }
-  }
+    },
+  },
 }
 </script>

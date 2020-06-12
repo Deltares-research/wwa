@@ -38,7 +38,7 @@ import CardComponent from '~/components/card-component/CardComponent'
 export default {
   data () {
     return {
-      animationDuration: 3000
+      animationDuration: 3000,
     }
   },
   props: {
@@ -47,8 +47,8 @@ export default {
       type: String,
       default () {
         return ''
-      }
-    }
+      },
+    },
   },
   mounted () {
   },
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
   },
-  components: { CardComponent }
+  components: { CardComponent },
 }
 </script>
 

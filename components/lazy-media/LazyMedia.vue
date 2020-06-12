@@ -18,17 +18,17 @@ export default {
   props: {
     rootMargin: {
       type: String,
-      default: '0px 0px 0px 0px'
+      default: '0px 0px 0px 0px',
     },
     threshold: {
       type: [Number, Array],
-      default: 0
-    }
+      default: 0,
+    },
   },
   data () {
     return {
       isIntersected: false,
-      observer: null
+      observer: null,
     }
   },
   mounted () {
@@ -70,8 +70,8 @@ export default {
     },
     onPrint () {
       this.isIntersected = true
-    }
-  }
+    },
+  },
 }
 </script>
 

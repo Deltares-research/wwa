@@ -50,7 +50,7 @@ export default {
     return {
       activePage: null,
       scrollIntoViewSupport: false,
-      headerCondensed: false
+      headerCondensed: false,
     }
   },
   mounted () {
@@ -76,7 +76,7 @@ export default {
     NarrativeFooter,
     NarrativeHeader,
     PageComponent,
-    ScrollIndicator
+    ScrollIndicator,
   },
   methods: {
     observeIntersectingChildren () {
@@ -91,7 +91,7 @@ export default {
       const observer = new IntersectionObserver(trackVisibility, {
         // No explicit root, we want the viewport
         rootMargin: '-70% 0% -20% 0%',
-        thresholds: 0
+        thresholds: 0,
       })
       const pageComponentsArray = [].slice.call(this.$el.querySelectorAll('[data-page-component]'))
       pageComponentsArray.forEach(el => observer.observe(el))
@@ -105,7 +105,7 @@ export default {
       const observer = new IntersectionObserver(trackVisibility, {
         // No explicit root, we want the viewport
         rootMargin: '0% 0% 0% 0%',
-        thresholds: 0
+        thresholds: 0,
       })
       const triggerElement = this.$el.querySelector('[data-scrolled-to-top-trigger]')
       observer.observe(triggerElement)
@@ -129,7 +129,7 @@ export default {
       if (isVisible) {
         this.updateActivePage(entry.target.id)
       }
-    }
+    },
   },
   watch: {
     '$route' (to, from) {
@@ -141,8 +141,8 @@ export default {
       const path = this.$route.path.replace(/^\/\//, '/') // remove leading slash to maintain router base
       history.replaceState({}, 'page', `${path}#${this.activePage.slug}`)
       this.$store.commit('activateFeature', activePage)
-    }
-  }
+    },
+  },
 }
 </script>
 

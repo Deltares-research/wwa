@@ -16,8 +16,8 @@ export default {
   components: { BookHeader },
   data () {
     return {
-      title: 'Methodologies'
+      title: 'Methodologies',
     }
-  }
+  },
 }
 </script>

@@ -39,7 +39,7 @@ module.exports = (dato, root, i18n) => {
   const { body } = dato.home
 
   root.createDataFile(`static/data/home.json`, 'json', {
-    body
+    body,
   })
 
   switch (exportScope) {
@@ -229,9 +229,9 @@ function generateFilters (dato, root, i18n) {
         return {
           title: filterItem.title,
           slug: filterItem.slug,
-          icon: filterItem.icon
+          icon: filterItem.icon,
         }
-      })
+      }),
     }
   })
   root.createDataFile(`static/data/filters.json`, 'json', filters)
@@ -330,7 +330,7 @@ function getChapters (dato, bookRef) {
         path: `${contentBasePath}/${parentBook.slug}`,
         slug: parentBook.slug,
         title: parentBook.title,
-        theme: parentBook.theme
+        theme: parentBook.theme,
       }
       const path = `${book.path}/${slug}`
       const pages = getPages(dato, chapter)
@@ -362,7 +362,7 @@ function getChapters (dato, bookRef) {
             ...item,
             bookTitle: item.parent.title,
             path: `${contentBasePath}/${item.parent.slug}/${item.slug}`,
-            cover: item.cover ? item.cover : getChapterCover(item.pages)
+            cover: item.cover ? item.cover : getChapterCover(item.pages),
           }))
           .map(({ pages, parent, ...chapter }) => chapter)
 
@@ -386,7 +386,7 @@ function getChapters (dato, bookRef) {
         createdAt,
         updatedAt,
         cover: cover || coverFallback,
-        related
+        related,
       }
     })
     .filter(Boolean) // Filter falsy chapters (return false)
@@ -414,40 +414,40 @@ function getPages (dato, chapterRef) {
       const influences = (page.influence) ? page.influence.map(tag => ({
         title: tag.title,
         slug: tag.slug,
-        path: `/influences/${tag.slug}`
+        path: `/influences/${tag.slug}`,
       })) : []
       const goals = (page.goal) ? page.goal.map(tag => ({
         title: tag.title,
         slug: tag.slug,
-        path: `/goals/${tag.slug}`
+        path: `/goals/${tag.slug}`,
       })) : []
       const methodologies = (page.methodology) ? page.methodology.map(tag => ({
         title: tag.title,
         slug: tag.slug,
-        path: `/methodologies/${tag.slug}`
+        path: `/methodologies/${tag.slug}`,
       })) : []
       const theme = (page.theme) ? {
         title: page.theme.title,
         slug: page.theme.slug,
-        path: `/themes/${page.theme.slug}`
+        path: `/themes/${page.theme.slug}`,
       } : null
       const location = (page.location) ? {
         lat: page.location.latitude,
         lon: page.location.longitude,
-        zoom: page.zoomlevel
+        zoom: page.zoomlevel,
       } : null
       const parentChapter = chapterRef || getParent(dato, page)
       const parentBook = getParent(dato, parentChapter) || {}
       const book = (parentBook) ? {
         path: `${contentBasePath}/${parentBook.slug}`,
         slug: parentBook.slug,
-        title: parentBook.title
+        title: parentBook.title,
       } : {}
       const chapter = {
         path: `${book.path}/${parentChapter.slug}`,
         slug: parentChapter.slug,
         title: parentChapter.title,
-        type: parentChapter.chapterType
+        type: parentChapter.chapterType,
       }
       const path = `${chapter.path}#${slug}`
       const links = (page.links) ? page.links.split('\n')
@@ -456,7 +456,7 @@ function getPages (dato, chapterRef) {
           const path = (link.match(/\((.*)\)/)) ? link.match(/\((.*)\)/)[1] : null
           return {
             title: title,
-            path: path
+            path: path,
           }
         }) : null
       return {
@@ -476,16 +476,16 @@ function getPages (dato, chapterRef) {
         slug,
         storyteller: {
           avatar: page.storytellerAvatar,
-          name: page.storyteller
+          name: page.storyteller,
         },
         partner: {
           logo: page.partnerLogo,
-          name: page.partnerName
+          name: page.partnerName,
         },
         theme,
         title,
         video,
-        mapboxStyle
+        mapboxStyle,
       }
     })
 }
@@ -562,14 +562,14 @@ function collectPagesByKeyword (pages) {
       const { book, chapter, keywords, location, influences, goals, path, slug, storyteller, theme, title } = page
       return {
         tags: page.keywords,
-        page: { book, chapter, keywords, location, influences, goals, path, slug, storyteller, theme, title }
+        page: { book, chapter, keywords, location, influences, goals, path, slug, storyteller, theme, title },
       }
     })
     .filter(match => Boolean(match.tags)) // filter falsy (false, undefined, '')
     .map(match => match.tags.map(tag => {
       return {
         tag: tag,
-        page: match.page
+        page: match.page,
       }
     }))
     .reduce((a, b) => a.concat(b), []) // Flat array of keywords
@@ -578,7 +578,7 @@ function collectPagesByKeyword (pages) {
         title: match.tag.title,
         slug: match.tag.slug,
         path: match.tag.path,
-        entries: []
+        entries: [],
       }
       tags[match.tag.slug].entries.push(match.page)
       return tags
@@ -634,7 +634,7 @@ function getParent (dato, child) {
   }
 
   const parents = dato[`${parentType}s`].filter(parent => parent[`${childType}s`].some(
-    childFromParent => childFromParent.id === child.id
+    childFromParent => childFromParent.id === child.id,
   ))
   return (parents) ? parents[0] : undefined
 }
@@ -698,7 +698,7 @@ function tagStringToLinkObjects (tagString, tagType) {
     return {
       title: string.toLowerCase(),
       slug: slug,
-      path: `/${tagType}/${slug}`
+      path: `/${tagType}/${slug}`,
     }
   }) : undefined
 }

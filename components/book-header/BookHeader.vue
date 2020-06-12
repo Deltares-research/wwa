@@ -19,8 +19,8 @@ export default {
   props: {
     body: String,
     title: String,
-    titleIsOptional: Boolean
-  }
+    titleIsOptional: Boolean,
+  },
 }
 </script>
 

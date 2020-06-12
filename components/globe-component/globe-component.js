@@ -29,11 +29,11 @@ export default {
       scene: null,
       controls: {
         minDistance: 5.3,
-        maxDistance: 50
+        maxDistance: 50,
       },
       connections: [],
       message: '',
-      cameraDistance: 40
+      cameraDistance: 40,
     }
   },
   mounted () {
@@ -79,7 +79,7 @@ export default {
     // window is the event handler fo resize, so we need to subscribe to it
     window.addEventListener(
       'resize',
-      this.handleResize
+      this.handleResize,
     )
 
     autoPlay(true)
@@ -87,13 +87,13 @@ export default {
     this.renderer.domElement.addEventListener(
       'mousemove',
       this.handleMouseMove,
-      false
+      false,
     )
 
     this.renderer.domElement.addEventListener(
       'click',
       this.handleClick,
-      false
+      false,
     )
 
     this.activateFeature(this.activeFeature)
@@ -126,7 +126,7 @@ export default {
     },
     cameraDistance (val) {
       this.updateAvatarPositions()
-    }
+    },
   },
   computed: {
     ...mapState({
@@ -135,7 +135,7 @@ export default {
       zoom: state => state.zoom,
       rotate: state => state.rotate,
       theme: state => state.theme,
-      globeAutoRotation: state => state.globeAutoRotation
+      globeAutoRotation: state => state.globeAutoRotation,
     }),
     containerSize: {
       get () {
@@ -144,12 +144,12 @@ export default {
         if (this.globeContainerElement != null) {
           size = [
             this.globeContainerElement.clientWidth,
-            this.globeContainerElement.clientHeight
+            this.globeContainerElement.clientHeight,
           ]
         }
         return size
       },
-      cache: false
+      cache: false,
     },
     globeContainerElement: {
       // lookup the globe element
@@ -157,7 +157,7 @@ export default {
         let el = this.$el
         return el
       },
-      cache: false
+      cache: false,
     },
     globeElement: {
       // lookup the globe element
@@ -168,8 +168,8 @@ export default {
         }
         return el
       },
-      cache: false
-    }
+      cache: false,
+    },
   },
   methods: {
     activateFeature (feature) {
@@ -184,12 +184,12 @@ export default {
         return {
           from: {
             lat: feature.location.lat,
-            lon: feature.location.lon
+            lon: feature.location.lon,
           },
           to: {
             lat: d.location.lat,
-            lon: d.location.lon
-          }
+            lon: d.location.lon,
+          },
         }
       })
 
@@ -389,7 +389,7 @@ export default {
       const renderer = new THREE.WebGLRenderer({
         alpha: false,
         antialias: true,
-        autoClear: false
+        autoClear: false,
       })
 
       renderer.setPixelRatio(window.devicePixelRatio)
@@ -493,6 +493,6 @@ export default {
       this.particles.uniforms.time.value += 0.4
 
       this.renderer.render(this.scene, this.camera)
-    }
-  }
+    },
+  },
 }

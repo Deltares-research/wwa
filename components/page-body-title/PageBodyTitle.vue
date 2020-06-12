@@ -85,7 +85,7 @@ import FilterTag from '~/components/filter-tag/FilterTag'
 
 export default {
   components: {
-    FilterTag
+    FilterTag,
   },
   props: {
     pageTitle: String,
@@ -95,8 +95,8 @@ export default {
     keywords: Array,
     storyteller: Object,
     partner: Object,
-    theme: Object
-  }
+    theme: Object,
+  },
 }
 </script>
 

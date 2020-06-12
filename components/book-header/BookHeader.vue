@@ -10,8 +10,7 @@
     <p
       v-if="body"
       v-html="body"
-    >
-    </p>
+    />
   </div>
 </template>
 
@@ -20,9 +19,9 @@ export default {
   props: {
     body: String,
     title: String,
-    titleIsOptional: Boolean
-  }
-}
+    titleIsOptional: Boolean,
+  },
+};
 </script>
 
 <style>

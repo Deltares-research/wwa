@@ -1,7 +1,13 @@
 <template>
   <section class="page-body-title">
     <div class="page-body-title__theme">
-      <img v-if="theme && theme.slug" class="theme-icon page-body-title__theme-icon" :src="`/assets/${theme.slug}.png`" width="48" height="48" />
+      <img
+        v-if="theme && theme.slug"
+        class="theme-icon page-body-title__theme-icon"
+        :src="`/assets/${theme.slug}.png`"
+        width="48"
+        height="48"
+      >
     </div>
 
     <div class="page-body-title__storyteller">
@@ -10,32 +16,64 @@
       </span>
     </div>
 
-    <h1 class="page-body-title__title">{{ pageTitle }}</h1>
+    <h1 class="page-body-title__title">
+      {{ pageTitle }}
+    </h1>
 
-    <div class="page-body-title__keywords" v-if="keywords && keywords.length || influences && influences.length || methodologies && methodologies.length">
+    <div
+      class="page-body-title__keywords"
+      v-if="keywords && keywords.length || influences && influences.length || methodologies && methodologies.length"
+    >
       <ul class="list--inline">
-        <li v-for="link in keywords" :key="`keyword-${link.slug}`" class="page-body-title__keyword">
-          <filter-tag :title="link.title" :url="link.path" />
+        <li
+          v-for="link in keywords"
+          :key="`keyword-${link.slug}`"
+          class="page-body-title__keyword"
+        >
+          <filter-tag
+            :title="link.title"
+            :url="link.path"
+          />
         </li>
-        <li v-for="link in methodologies" :key="`methodology-${link.slug}`" class="page-body-title__keyword">
-          <filter-tag :title="link.title" :url="link.path" />
+        <li
+          v-for="link in methodologies"
+          :key="`methodology-${link.slug}`"
+          class="page-body-title__keyword"
+        >
+          <filter-tag
+            :title="link.title"
+            :url="link.path"
+          />
         </li>
-        <li v-for="link in influences" :key="`influence-${link.slug}`" class="page-body-title__keyword">
-          <filter-tag :title="link.title" :url="link.path" />
+        <li
+          v-for="link in influences"
+          :key="`influence-${link.slug}`"
+          class="page-body-title__keyword"
+        >
+          <filter-tag
+            :title="link.title"
+            :url="link.path"
+          />
         </li>
       </ul>
     </div>
-    <div class="page-body-title__goals" v-if="goals && goals.length">
+    <div
+      class="page-body-title__goals"
+      v-if="goals && goals.length"
+    >
       <ul class="list--inline">
-        <li v-for="link in goals" :key="link.slug">
-            <nuxt-link
-              class="sdg-tag"
-              :style="{ backgroundImage: `url('/assets/E_SDG-goals_icons-individual-rgb-${link.slug.slice(0,2)}.png')` }"
-              :to="link.path"
-              :title="link.title"
-              >
-              <span class="sr-only">{{ link.title }}</span>
-            </nuxt-link>
+        <li
+          v-for="link in goals"
+          :key="link.slug"
+        >
+          <nuxt-link
+            class="sdg-tag"
+            :style="{ backgroundImage: `url('/assets/E_SDG-goals_icons-individual-rgb-${link.slug.slice(0,2)}.png')` }"
+            :to="link.path"
+            :title="link.title"
+          >
+            <span class="sr-only">{{ link.title }}</span>
+          </nuxt-link>
         </li>
       </ul>
     </div>
@@ -43,11 +81,11 @@
 </template>
 
 <script>
-import FilterTag from '~/components/filter-tag/FilterTag'
+import FilterTag from '~/components/filter-tag/FilterTag';
 
 export default {
   components: {
-    FilterTag
+    FilterTag,
   },
   props: {
     pageTitle: String,
@@ -57,9 +95,9 @@ export default {
     keywords: Array,
     storyteller: Object,
     partner: Object,
-    theme: Object
-  }
-}
+    theme: Object,
+  },
+};
 </script>
 
 <style>

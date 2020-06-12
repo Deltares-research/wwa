@@ -1,11 +1,19 @@
 <template>
   <main>
-    <ul class="all-chapters__list" v-for="chapter in allChapters" :key="chapter.id">
+    <ul
+      class="all-chapters__list"
+      v-for="chapter in allChapters"
+      :key="chapter.id"
+    >
       <li>
         <article class="chapter-overview">
           <div class="all-chapters__meta">
-            <h2 class="all-chapters__title">{{ chapter.title }}</h2>
-            <p v-if="chapter.body">{{ chapter.body }}</p>
+            <h2 class="all-chapters__title">
+              {{ chapter.title }}
+            </h2>
+            <p v-if="chapter.body">
+              {{ chapter.body }}
+            </p>
           </div>
 
           <page-component
@@ -24,7 +32,7 @@
 
 <script>
   import fetchContent from '~/lib/fetch-content';
-  import PageComponent from '~/components/page-component/PageComponent'
+  import PageComponent from '~/components/page-component/PageComponent';
 
   export default {
     layout: 'static-page',
@@ -34,7 +42,7 @@
     head() {
       return {
         meta: [ { name: 'robots', content: 'noindex' } ],
-      }
+      };
     },
     asyncData () {
       return fetchContent(
@@ -63,10 +71,10 @@
                 }
               }
             }
-          `
-      )
-    }
-  }
+          `,
+      );
+    },
+  };
 </script>
 
 <style>

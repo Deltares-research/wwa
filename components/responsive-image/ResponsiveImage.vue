@@ -7,39 +7,44 @@
       slot="content"
     >
       <transition name="fade">
-        <img :src="src" v-show="isLoaded" :alt="alt" width="100%"  @load="onLoad" />
+        <img
+          :src="src"
+          v-show="isLoaded"
+          :alt="alt"
+          width="100%"
+          @load="onLoad"
+        >
       </transition>
     </picture>
     <div
       class="lazy-placeholder fixed-ratio"
       slot="placeholder"
       :style="`padding-bottom:${Math.round(srcHeight/srcWidth * 10000)/100}%`"
-    >
-    </div>
+    />
   </lazy-media>
 </template>
 
 
 <script>
-import LazyMedia from '~/components/lazy-media/LazyMedia'
+import LazyMedia from '~/components/lazy-media/LazyMedia';
 
 export default {
   props: {
     srcWidth: Number,
     srcHeight: Number,
     alt: String,
-    src: String
+    src: String,
   },
   data () {
     return {
-      isLoaded: false
-    }
+      isLoaded: false,
+    };
   },
   components: { LazyMedia },
   methods: {
     onLoad () {
-      this.isLoaded = true
-    }
-  }
-}
+      this.isLoaded = true;
+    },
+  },
+};
 </script>

@@ -1,8 +1,10 @@
 <template>
   <article class="card-component">
     <nuxt-link :to="path">
-      <p class="subtitle h3">{{ subtitle }}</p>
-      <h2>{{title}}</h2>
+      <p class="subtitle h3">
+        {{ subtitle }}
+      </p>
+      <h2>{{ title }}</h2>
     </nuxt-link>
   </article>
 </template>
@@ -17,9 +19,9 @@ export default {
     slug: String,
     subtitle: String,
     theme: Object,
-    title: String
-  }
-}
+    title: String,
+  },
+};
 </script>
 
 <style>

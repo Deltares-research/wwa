@@ -37,7 +37,7 @@
               :title="currentFilter.title"
               :url="`/${activeFilterSlug}/${currentFilter.slug}`"
               :icon="currentFilter.icon"
-              :isSelected="currentFilter.slug === activeFilterItemSlug"
+              :is-selected="currentFilter.slug === activeFilterItemSlug"
             />
           </li>
         </ul>
@@ -47,86 +47,86 @@
 </template>
 
 <script>
-import debounce from 'lodash/debounce'
-import FilterTag from '~/components/filter-tag/FilterTag'
-import { mapState } from 'vuex'
+import debounce from 'lodash/debounce';
+import FilterTag from '~/components/filter-tag/FilterTag';
+import { mapState } from 'vuex';
 
 export default {
   components: {
-    FilterTag
+    FilterTag,
   },
   data () {
     return {
       position: null,
       tabsList: null,
-      tabLinks: null
-    }
+      tabLinks: null,
+    };
   },
   computed: {
     ...mapState(['filters']),
     activeFilterSlug () {
-      const slug = this.$route.path.split('/')[1] ? this.$route.path.split('/')[1] : this.filters[0].slug
-      return slug
+      const slug = this.$route.path.split('/')[1] ? this.$route.path.split('/')[1] : this.filters[0].slug;
+      return slug;
     },
     activeFilterItemSlug () {
-      return this.$route.path.split('/')[2]
+      return this.$route.path.split('/')[2];
     },
     currentFilters () {
-      const activeFilters = this.filters.find(filter => filter.slug === this.activeFilterSlug)
-      return activeFilters ? activeFilters.filterItems : []
-    }
+      const activeFilters = this.filters.find(filter => filter.slug === this.activeFilterSlug);
+      return activeFilters ? activeFilters.filterItems : [];
+    },
   },
   mounted () {
-    this.tabsList = this.$refs.tabsList
-    this.tabLinks = this.$refs.tabLink
+    this.tabsList = this.$refs.tabsList;
+    this.tabLinks = this.$refs.tabLink;
 
-    this.handleResize()
+    this.handleResize();
 
-    window.addEventListener('resize', debounce(this.handleResize), 1000)
+    window.addEventListener('resize', debounce(this.handleResize), 1000);
   },
   methods: {
     handleResize () {
-      const elementWidth = this.tabsList.offsetWidth
-      const contentWidth = this.tabsList.scrollWidth
+      const elementWidth = this.tabsList.offsetWidth;
+      const contentWidth = this.tabsList.scrollWidth;
 
       if (contentWidth > elementWidth) {
-        this.tabsList.addEventListener('mousedown', this.handleDrag)
+        this.tabsList.addEventListener('mousedown', this.handleDrag);
       } else {
-        this.tabsList.removeEventListener('mousedown', this.handleDrag)
+        this.tabsList.removeEventListener('mousedown', this.handleDrag);
       }
     },
     handleDrag (event) {
-      this.tabsList.style.cursor = 'grabbing'
-      this.tabsList.style.userSelect = 'none'
+      this.tabsList.style.cursor = 'grabbing';
+      this.tabsList.style.userSelect = 'none';
 
       this.position = {
         left: this.tabsList.scrollLeft,
-        x: event.clientX
-      }
+        x: event.clientX,
+      };
 
-      document.addEventListener('mousemove', this.handleDragMouseMove)
-      document.addEventListener('mouseup', this.handleDragMouseUp)
+      document.addEventListener('mousemove', this.handleDragMouseMove);
+      document.addEventListener('mouseup', this.handleDragMouseUp);
     },
     handleDragMouseMove (event) {
       this.tabLinks.forEach(tabLink => {
-        tabLink.$el.style.pointerEvents = 'none'
-      })
+        tabLink.$el.style.pointerEvents = 'none';
+      });
 
-      const dx = event.clientX - this.position.x
-      this.tabsList.scrollLeft = this.position.left - dx
+      const dx = event.clientX - this.position.x;
+      this.tabsList.scrollLeft = this.position.left - dx;
     },
     handleDragMouseUp () {
-      this.tabsList.removeAttribute('style')
+      this.tabsList.removeAttribute('style');
 
       this.tabLinks.forEach(tabLink => {
-        tabLink.$el.removeAttribute('style')
-      })
+        tabLink.$el.removeAttribute('style');
+      });
 
-      document.removeEventListener('mousemove', this.handleDragMouseMove)
-      document.removeEventListener('mouseup', this.handleDragMouseUp)
-    }
-  }
-}
+      document.removeEventListener('mousemove', this.handleDragMouseMove);
+      document.removeEventListener('mouseup', this.handleDragMouseUp);
+    },
+  },
+};
 </script>
 
 <style>

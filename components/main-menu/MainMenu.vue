@@ -1,11 +1,31 @@
 <template>
-  <nav :class="[`main-menu main-menu--${variant}`, { 'main-menu--transparent' : navBackgroundTrans }]">
-    <div class="main-menu__container">
-      <div class="main-menu__section main-menu__section--no-padding">
-        <nuxt-link :class="`menu__item menu__item--home ${(variant === 'light') ? 'menu__item--dark-background' : ''}`" to="/" title="Go home">
-          <span class="sr-only">Return to the homepage</span>
-          <span class="main-menu__go-home-text">World Water<br/>Atlas</span>
-        </nuxt-link>
+  <div class="menu">
+    <nav :class="[`main-menu main-menu--${variant}`, { 'main-menu--transparent' : navBackgroundTrans }]">
+      <div class="main-menu__container">
+        <div class="main-menu__section main-menu__section--no-padding">
+          <nuxt-link
+            :class="`menu__item menu__item--home ${(variant === 'light') ? 'menu__item--dark-background' : ''}`"
+            to="/"
+            title="Go home"
+          >
+            <span class="sr-only">Return to the homepage</span>
+            <span class="main-menu__go-home-text">World Water<br>Atlas</span>
+          </nuxt-link>
+        </div>
+        <div class="main-menu__section main-menu__section--align-right">
+          <nuxt-link
+            :class="`menu__item menu__item--about h3 ${(variant === 'dark') ? 'invert' : ''}`"
+            to="/about"
+          >
+            About
+          </nuxt-link>
+          <nuxt-link
+            :class="`menu__item menu__item--submit h3 ${(variant === 'dark') ? 'invert' : ''}`"
+            to="/submit-a-story"
+          >
+            Submit a story
+          </nuxt-link>
+        </div>
       </div>
       <div class="main-menu__section main-menu__section--align-right">
         <nuxt-link :class="`menu__item menu__item--about h3 ${(variant === 'dark') ? 'invert' : ''}`"
@@ -22,24 +42,24 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   props: {
     variant: {
       type: String,
       validator (val) {
-        return (val === 'dark' || val === 'light')
+        return (val === 'dark' || val === 'light');
       },
       default () {
-        return 'dark'
-      }
-    }
+        return 'dark';
+      },
+    },
   },
   computed: {
-    ...mapState(['navBackgroundTrans'])
-  }
-}
+    ...mapState(['navBackgroundTrans']),
+  },
+};
 </script>
 
 <style>

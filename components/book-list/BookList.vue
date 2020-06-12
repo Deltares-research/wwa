@@ -6,16 +6,38 @@
       :id="book.slug"
     >
       <h2 class="book-list__book-title">
-        <nuxt-link class="book-list__book-title-link" :to="book.path">{{ book.title }}</nuxt-link>
+        <nuxt-link
+          class="book-list__book-title-link"
+          :to="book.path"
+        >
+          {{ book.title }}
+        </nuxt-link>
       </h2>
-      <slot v-if="hasSlotContent" :chapters="book.chapters" :limit="bookLimitMap[book.slug]"/>
-      <chapter-list v-else :chapters="book.chapters" :limit="bookLimitMap[book.slug]"/>
+      <slot
+        v-if="hasSlotContent"
+        :chapters="book.chapters"
+        :limit="bookLimitMap[book.slug]"
+      />
+      <chapter-list
+        v-else
+        :chapters="book.chapters"
+        :limit="bookLimitMap[book.slug]"
+      />
       <nuxt-link
         class="book-list__more"
         :to="book.path"
       >
         <span class="book-list__more-content">
-          {{ book.title }} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="book-list__more-chevron"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+          {{ book.title }} <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            class="book-list__more-chevron"
+          ><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /><path
+            d="M0 0h24v24H0z"
+            fill="none"
+          /></svg>
         </span>
       </nuxt-link>
     </li>
@@ -23,24 +45,26 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import ChapterList from '~/components/chapter-list/ChapterList'
+import Vue from 'vue';
+import ChapterList from '~/components/chapter-list/ChapterList';
 
 export default {
   components: { ChapterList },
-  props: ['books'],
+  props: {
+    books: Array,
+  },
   data: () => ({
-    bookLimitMap: {}
+    bookLimitMap: {},
   }),
   mounted () {
-    this.books.forEach(book => Vue.set(this.bookLimitMap, book.slug, 3))
+    this.books.forEach(book => Vue.set(this.bookLimitMap, book.slug, 3));
   },
   computed: {
     hasSlotContent () {
-      return this.$scopedSlots.hasOwnProperty('default')
-    }
-  }
-}
+      return this.$scopedSlots.hasOwnProperty('default');
+    },
+  },
+};
 </script>
 
 <style>

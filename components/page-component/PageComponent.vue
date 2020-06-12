@@ -6,7 +6,7 @@
       :graphs="page.graphs"
       :title="page.title"
       :video="page.video"
-      :mapboxStyle="page.mapboxStyle"
+      :mapbox-style="page.mapboxStyle"
       :links="page.links"
       :partner="page.partner"
       :influences="page.influences"
@@ -14,21 +14,22 @@
       :methodologies="page.methodologies"
       :keywords="page.keywords"
       :storyteller="page.storyteller"
-      :theme="page.theme" />
+      :theme="page.theme"
+    />
   </article>
 </template>
 
 <script>
-import PageBody from '~/components/page-body/PageBody'
+import PageBody from '~/components/page-body/PageBody';
 
 export default {
   props: {
-    page: { type: Object }
+    page: { type: Object },
   },
   components: {
-    PageBody
-  }
-}
+    PageBody,
+  },
+};
 </script>
 
 <style>

@@ -2,14 +2,21 @@
   <nav class="scroll-indicator">
     <ul>
       <li class="to-top">
-      <nuxt-link to="#top">
+        <nuxt-link to="#top">
           <span class="scroll-indicator__label sr-only">Back to top</span>
         </nuxt-link>
       </li>
-      <li v-for="(page, index) in pages" :key="`${page.slug}-${index}`"
-        :class="`${(activePage && page.slug === activePage.slug) ? 'active' : ''}`">
-        <nuxt-link :to="`#${page.slug}`" :title="page.title">
-          <span class="scroll-indicator__label sr-only">{{ page.title }}</span></nuxt-link>
+      <li
+        v-for="(page, index) in pages"
+        :key="`${page.slug}-${index}`"
+        :class="`${(activePage && page.slug === activePage.slug) ? 'active' : ''}`"
+      >
+        <nuxt-link
+          :to="`#${page.slug}`"
+          :title="page.title"
+        >
+          <span class="scroll-indicator__label sr-only">{{ page.title }}</span>
+        </nuxt-link>
       </li>
     </ul>
   </nav>
@@ -19,22 +26,22 @@
 export default {
   props: {
     activePage: {
-      type: Object
+      type: Object,
     },
     pages: {
       validator (pages) {
-        return pages.every(page => (page.slug && page.title))
-      }
-    }
+        return pages.every(page => (page.slug && page.title));
+      },
+    },
   },
   watch: {
     '$route' (to, from) {
       if ((to.path === from.path) && (to.hash === '#top')) {
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>

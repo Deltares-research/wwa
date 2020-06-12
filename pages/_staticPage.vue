@@ -1,51 +1,61 @@
 
 <template>
   <article class="static-page">
-    <section v-if="video" class="static-page__video static-page__fixed-ratio"
-      v-bind:style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`">
-      <iframe class="static-page__video" allowfullscreen="allowfullscreen"
-        :src="`//www.${video.provider}.com/embed/${video.providerUid}`" width="100%" height="100%">
-      </iframe>
+    <section
+      v-if="video"
+      class="static-page__video static-page__fixed-ratio"
+      :style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`"
+    >
+      <iframe
+        class="static-page__video"
+        allowfullscreen="allowfullscreen"
+        :src="`//www.${video.provider}.com/embed/${video.providerUid}`"
+        width="100%"
+        height="100%"
+      />
     </section>
-    <h1>{{title}}</h1>
-    <section v-html="htmlBody">
-    </section>
-    <figure v-for="image in images" :key="image.id">
+    <h1>{{ title }}</h1>
+    <section v-html="htmlBody" />
+    <figure
+      v-for="image in images"
+      :key="image.id"
+    >
       <lazy-image
-      :srcWidth="image.value.width"
-      :srcHeight="image.value.height"
-      :src="`${image.imgixHost}${image.value.path}?auto=compress&w=640&q=65`"
-      :alt="image.value.alt"
-      width=100% />
+        :src-width="image.value.width"
+        :src-height="image.value.height"
+        :src="`${image.imgixHost}${image.value.path}?auto=compress&w=640&q=65`"
+        :alt="image.value.alt"
+        width="100%"
+      />
       <figcaption>{{ image.value.title }}</figcaption>
     </figure>
   </article>
 </template>
 
 <script>
-import loadData from '~/lib/load-data'
-import lazyImage from '~/components/lazy-media/LazyMedia'
-import marked from '~/lib/custom-marked'
+import loadData from '~/lib/load-data';
+import lazyImage from '~/components/lazy-media/LazyMedia';
+import marked from '~/lib/custom-marked';
 
 export default {
   layout: 'static-page',
   async asyncData (context) {
-    const { title, body, images, video } = await loadData(context, context.params)
+    const { title, body, images, video } = await loadData(context, context.params);
 
-    return { title, body, images, video }
+    return { title, body, images, video };
   },
   computed: {
     htmlBody () {
-      return marked(this.body)
-    }
+      return marked(this.body);
+    },
   },
   components: {
-    lazyImage
+    lazyImage,
   },
   mounted () {
-    this.$store.commit('disableInteraction')
-  }
-}
+    this.$store.commit('disableInteraction');
+  },
+};
 </script>
 <style>
 .static-page {

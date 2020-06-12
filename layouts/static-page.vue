@@ -1,13 +1,13 @@
 <template>
   <main class="layout layout--static-page">
     <main-menu variant="light" />
-    <nuxt/>
+    <nuxt />
   </main>
 </template>
 <script>
-import MainMenu from '~/components/main-menu/MainMenu'
+import MainMenu from '~/components/main-menu/MainMenu';
 
 export default {
-  components: { MainMenu }
-}
+  components: { MainMenu },
+};
 </script>

@@ -1,11 +1,19 @@
 <template>
   <div class="chapter-list">
     <ul class="chapter-list__list">
-      <li class="chapter-list__item" v-for="chapter in limitedChapters" :key="chapter.slug">
+      <li
+        class="chapter-list__item"
+        v-for="chapter in limitedChapters"
+        :key="chapter.slug"
+      >
         <nuxt-link
           class="chapter-list__item-link"
-          :to="chapter.path">
-          <span class="chapter-list__cover" :class="{'chapter-list__cover--fallback': !chapter.cover}">
+          :to="chapter.path"
+        >
+          <span
+            class="chapter-list__cover"
+            :class="{'chapter-list__cover--fallback': !chapter.cover}"
+          >
             <picture v-if="chapter.cover">
               <source
                 :srcset="`${coverPath(chapter)}&w=280&h=158&fit=crop 280w,
@@ -37,9 +45,9 @@
               v-else
               :src="`/assets/${chapterTheme(chapter)}.svg`"
               role="presentation"
-              />
+            >
           </span>
-          <span class="chapter-list__gradient"/>
+          <span class="chapter-list__gradient" />
           <span class="chapter-list__item-content">{{ chapter.title }}</span>
         </nuxt-link>
         <div class="chapter-list__focus-highlight" />
@@ -49,62 +57,62 @@
 </template>
 
 <script>
-import sortBy from 'lodash/fp/sortBy'
+import sortBy from 'lodash/fp/sortBy';
 
 export default {
   props: {
     chapters: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     sorted: {
       type: String,
       default: '',
       validator (value) {
-        return ['', 'newest'].indexOf(value) !== -1
-      }
+        return ['', 'newest'].indexOf(value) !== -1;
+      },
     },
     limit: {
       type: Number,
-      default: -1 // default all?
+      default: -1, // default all?
     },
     theme: {
-      type: String
-    }
+      type: String,
+    },
   },
   computed: {
     newestChapters () {
-      return sortBy(['updatedAt'], this.chapters).reverse()
+      return sortBy(['updatedAt'], this.chapters).reverse();
     },
     sortedChapters () {
       switch (this.sorted) {
         case 'newest':
-          return this.newestChapters
+          return this.newestChapters;
         default:
-          return this.chapters
+          return this.chapters;
       }
     },
     limitedChapters () {
-      return this.sortedChapters.filter((_, index) => index + 1 <= this.limit)
-    }
+      return this.sortedChapters.filter((_, index) => index + 1 <= this.limit);
+    },
   },
   methods: {
     chapterTheme (chapter) {
       try {
-        return chapter.theme.slug
+        return chapter.theme.slug;
       } catch (e) {
-        return 'too-dirty'
+        return 'too-dirty';
       }
     },
     coverWidth (cover, maxElementHeight) {
-      const heigthFactor = maxElementHeight / cover.value.height
-      return cover.value.width * heigthFactor
+      const heigthFactor = maxElementHeight / cover.value.height;
+      return cover.value.width * heigthFactor;
     },
     coverPath (chapter) {
-      return `${chapter.cover.imgixHost}${chapter.cover.value.path}?auto=compress`
-    }
-  }
-}
+      return `${chapter.cover.imgixHost}${chapter.cover.value.path}?auto=compress`;
+    },
+  },
+};
 </script>
 
 <style>

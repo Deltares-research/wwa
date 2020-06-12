@@ -2,84 +2,129 @@
   <div>
     <section class="page-body">
       <page-body-title
-        :pageTitle="title"
+        :page-title="title"
         :influences="influences"
         :goals="goals"
         :methodologies="methodologies"
         :keywords="keywords"
         :storyteller="storyteller"
-        :theme="theme" />
-      <section v-if="htmlBody" class="page-body__body" v-html="htmlBody"></section>
+        :theme="theme"
+      />
+      <section
+        v-if="htmlBody"
+        class="page-body__body"
+        v-html="htmlBody"
+      />
     </section>
 
-    <section v-if="images && images.length" class="page-body__images">
-      <figure v-for="image in images" :key="image.id" class="page-body__figure">
+    <section
+      v-if="images && images.length"
+      class="page-body__images"
+    >
+      <figure
+        v-for="image in images"
+        :key="image.id"
+        class="page-body__figure"
+      >
         <responsive-image
           class="page-body__lazy-image"
           :src="`${image.url || `${image.imgixHost}${image.value.path}`}?auto=compress&w=640&q=65`"
-          :srcWidth="image.width || image.value && image.value.width"
-          :srcHeight="image.height || image.value && image.value.height"
+          :src-width="image.width || image.value && image.value.width"
+          :src-height="image.height || image.value && image.value.height"
           :alt="image.alt || image.value && image.value.alt"
-          width=100% />
-        <figcaption class="page-body__asset-placeholder">{{ image.title || image.value && image.value.title }}</figcaption>
+          width="100%"
+        />
+        <figcaption class="page-body__asset-placeholder">
+          {{ image.title || image.value && image.value.title }}
+        </figcaption>
       </figure>
     </section>
 
-    <section v-if="graphs && graphs.length" class="page-body__graphs">
-      <figure v-for="graph in graphs" :key="graph.id" class="page-body__figure">
+    <section
+      v-if="graphs && graphs.length"
+      class="page-body__graphs"
+    >
+      <figure
+        v-for="graph in graphs"
+        :key="graph.id"
+        class="page-body__figure"
+      >
         <responsive-image
           class="page-body__lazy-image"
           :src="`${graph.imgixHost}${graph.value.path}?auto=compress&w=640&q=65`"
-          :srcWidth="graph.value.width"
-          :srcHeight="graph.value.height"
+          :src-width="graph.value.width"
+          :src-height="graph.value.height"
           :alt="graph.value.alt"
-          width=100% />
-        <figcaption class="page-body__asset-placeholder">{{ graph.value.title }}</figcaption>
+          width="100%"
+        />
+        <figcaption class="page-body__asset-placeholder">
+          {{ graph.value.title }}
+        </figcaption>
       </figure>
     </section>
 
-    <section v-if="video" class="page-body__video page-body__figure">
+    <section
+      v-if="video"
+      class="page-body__video page-body__figure"
+    >
       <responsive-video
         class="page-body__lazy-video"
-        :videoWidth="video.width"
-        :videoHeight="video.height"
-        :videoProvider="video.provider"
-        :videoProviderUid="video.providerUid"
+        :video-width="video.width"
+        :video-height="video.height"
+        :video-provider="video.provider"
+        :video-provider-uid="video.providerUid"
       />
-      <div class="page-body__asset-placeholder"></div>
+      <div class="page-body__asset-placeholder" />
     </section>
 
-    <section v-if="mapboxStyle" class="page-body__map page-body__figure">
-      <story-map :mapbox-style="mapboxStyle"></story-map>
-      <div class="page-body__asset-placeholder"></div>
+    <section
+      v-if="mapboxStyle"
+      class="page-body__map page-body__figure"
+    >
+      <story-map :mapbox-style="mapboxStyle" />
+      <div class="page-body__asset-placeholder" />
     </section>
 
     <section class="page-body">
       <section class="page-body__footer">
-        <ul v-if="links" class="page-body__links">
-          <li v-for="(link, index) in links" :key="`${link.title}-${index}`">
-            <a target="_blank" :href="link.path">{{ link.title }}</a>
+        <ul
+          v-if="links"
+          class="page-body__links"
+        >
+          <li
+            v-for="(link, index) in links"
+            :key="`${link.title}-${index}`"
+          >
+            <a
+              target="_blank"
+              :href="link.path"
+            >{{ link.title }}</a>
           </li>
         </ul>
         <div class="page-body__footer--partner">
           <p v-if="partner && partner.name">
             Created in partnership with:
-            <img v-if="partner.logo && partner.logo.imgixHost" :src="`${partner.logo.imgixHost}${partner.logo.value.path}?auto=compress&w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`" class="page-body__partner-img" :width="scaleMaxToSize(partner.logo, sizeLimit).w" :height="scaleMaxToSize(partner.logo, sizeLimit).h">
+            <img
+              v-if="partner.logo && partner.logo.imgixHost"
+              :src="`${partner.logo.imgixHost}${partner.logo.value.path}?auto=compress&w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`"
+              class="page-body__partner-img"
+              :width="scaleMaxToSize(partner.logo, sizeLimit).w"
+              :height="scaleMaxToSize(partner.logo, sizeLimit).h"
+            >
             {{ partner.name }}
           </p>
         </div>
       </section>
-
     </section>
   </div>
 </template>
 
 <script>
-import PageBodyTitle from '~/components/page-body-title/PageBodyTitle'
-import StoryMap from '~/components/story-map/StoryMap'
-import renderMarkedContent from '~/lib/custom-marked'
-import ResponsiveImage from '~/components/responsive-image/ResponsiveImage'
-import ResponsiveVideo from '~/components/responsive-video/ResponsiveVideo'
+import PageBodyTitle from '~/components/page-body-title/PageBodyTitle';
+import StoryMap from '~/components/story-map/StoryMap';
+import renderMarkedContent from '~/lib/custom-marked';
+import ResponsiveImage from '~/components/responsive-image/ResponsiveImage';
+import ResponsiveVideo from '~/components/responsive-video/ResponsiveVideo';
 
 export default {
   props: {
@@ -99,25 +144,25 @@ export default {
     theme: Object,
     sizeLimit: {
       type: Number,
-      default: 3 * 16
-    }
+      default: 3 * 16,
+    },
   },
   components: { PageBodyTitle, StoryMap, ResponsiveImage, ResponsiveVideo },
   computed: {
     htmlBody () {
-      return renderMarkedContent(this.body)
-    }
+      return renderMarkedContent(this.body);
+    },
   },
   methods: {
     scaleMaxToSize: function (imgObj, sizeLimit) {
       if (!imgObj.value.width) {
-        return { h: Math.round(sizeLimit), w: Math.round(sizeLimit) }
+        return { h: Math.round(sizeLimit), w: Math.round(sizeLimit) };
       }
-      const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height)
-      return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) }
-    }
-  }
-}
+      const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height);
+      return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) };
+    },
+  },
+};
 </script>
 
 <style>

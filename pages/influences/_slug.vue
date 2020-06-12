@@ -2,52 +2,59 @@
   <div class="invert">
     <div class="layout-section">
       <div class="layout-section__container">
-        <book-header :title="title" :body="htmlBody" />
+        <book-header
+          :title="title"
+          :body="htmlBody"
+        />
       </div>
     </div>
     <div class="layout-section">
       <div class="layout-section__container">
-        <chapter-list :chapters="results" sorted="newest" :limit="20" />
+        <chapter-list
+          :chapters="results"
+          sorted="newest"
+          :limit="20"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import BookHeader from '~/components/book-header/BookHeader'
-import ChapterList from '~/components/chapter-list/ChapterList'
-import loadData from '~/lib/load-data'
-import marked from '~/lib/marked'
-import allInfluences from '~/static/data/influences/index.json'
+import BookHeader from '~/components/book-header/BookHeader';
+import ChapterList from '~/components/chapter-list/ChapterList';
+import loadData from '~/lib/load-data';
+import marked from '~/lib/marked';
+import allInfluences from '~/static/data/influences/index.json';
 
 export default {
   layout: 'globe',
   async asyncData (context) {
-    const { params } = context
-    const influencesFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : []
-    const { results = [], title, body } = (influencesFromUrl) ? await loadData(context, { influences: influencesFromUrl }) : {}
+    const { params } = context;
+    const influencesFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : [];
+    const { results = [], title, body } = (influencesFromUrl) ? await loadData(context, { influences: influencesFromUrl }) : {};
     // Build active influences objects from url
     const activeInfluences = allInfluences
-      .filter(tag => influencesFromUrl.some(active => active === tag.slug))
+      .filter(tag => influencesFromUrl.some(active => active === tag.slug));
 
     return {
       influences: allInfluences,
       activeInfluences,
       title,
       body,
-      results
-    }
+      results,
+    };
   },
   computed: {
     htmlBody () {
-      return marked(this.body)
-    }
+      return marked(this.body);
+    },
   },
   mounted () {
-    this.$store.commit('replaceTheme', 'too-much')
-    this.$store.commit('replaceFeatures', this.results)
-    this.$store.commit('enableGlobeAutoRotation')
+    this.$store.commit('replaceTheme', 'too-much');
+    this.$store.commit('replaceFeatures', this.results);
+    this.$store.commit('enableGlobeAutoRotation');
   },
-  components: { BookHeader, ChapterList }
-}
+  components: { BookHeader, ChapterList },
+};
 </script>

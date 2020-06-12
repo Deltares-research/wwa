@@ -1,26 +1,26 @@
 const fs = require('fs');
 const path = require('path');
-const dotenv = require('dotenv-safe')
-const fetchContent = require('./lib/fetch-content').default
+const dotenv = require('dotenv-safe');
+const fetchContent = require('./lib/fetch-content').default;
 
-const books = require('./static/data/books/index.json')
-const themes = require('./static/data/themes/index.json')
-const goals = require('./static/data/goals/index.json')
-const methodologies = require('./static/data/methodologies/index.json')
-const influences = require('./static/data/influences/index.json')
-const keywords = require('./static/data/keywords/index.json')
-const staticPages = require('./static/data/static-pages/index.json')
+const books = require('./static/data/books/index.json');
+const themes = require('./static/data/themes/index.json');
+const goals = require('./static/data/goals/index.json');
+const methodologies = require('./static/data/methodologies/index.json');
+const influences = require('./static/data/influences/index.json');
+const keywords = require('./static/data/keywords/index.json');
+const staticPages = require('./static/data/static-pages/index.json');
 
-dotenv.config()
+dotenv.config();
 
 const chapters = books
   .reduce((chapters, book) => {
     const bookChapters = book.chapters.map(chapter => {
-      chapter.book = { slug: book.slug }
-      return chapter
-    })
-    return chapters.concat(bookChapters)
-  }, [])
+      chapter.book = { slug: book.slug };
+      return chapter;
+    });
+    return chapters.concat(bookChapters);
+  }, []);
 
 const fetchAllEvents = () => fetchContent(`
   {
@@ -46,7 +46,7 @@ const mapAllEventsToRedirects = (allEvents) => (
       ...event._allNameLocales
         .filter(({ locale }) => locale !== 'en')
         .map(({ locale }) =>
-          `/events/${event.slug} /${locale}/events/${event.slug} 302 Language=${locale}`
+          `/events/${event.slug} /${locale}/events/${event.slug} 302 Language=${locale}`,
         ),
       `/events/${event.slug} /en/events/${event.slug} 302`,
     ])
@@ -62,35 +62,35 @@ const mapAllEventsToRoutes = (allEvents) => (
           `${item.locale}/events/${event.slug}`,
           ...event.sections.map(section =>
             section.chapters.map(({ slug }) =>
-              `${item.locale}/events/${event.slug}/${slug}`
-            )
+              `${item.locale}/events/${event.slug}/${slug}`,
+            ),
           )
           .flat(),
         ])
-        .flat()
+        .flat(),
     )
     .flat()
-)
+);
 
 const postcss = {
   plugins: {
     'postcss-import': {},
     'postcss-calc': {},
     'postcss-custom-properties': {},
-  }
-}
+  },
+};
 
 const routerBase = {
   router: {
-    base: '/'
-  }
-}
+    base: '/',
+  },
+};
 
 const env = {
   // Allow to choose a baseurl (should only be used during generate)
   baseUrl: process.env.BASE_URL || 'http://localhost:3000',
   DATO_API_TOKEN: process.env.DATO_API_TOKEN ,
-}
+};
 
 module.exports = {
   css: [
@@ -102,7 +102,7 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'World Water Atlas' },
-      { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' }
+      { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' },
     ],
     link: [
       { rel: 'apple-touch-icon', sizes: '57x57', href: '/apple-icon-57x57.png' },
@@ -117,13 +117,13 @@ module.exports = {
       { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/android-icon-192x192.png' },
       { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
       { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicon-96x96.png' },
-      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' }
-    ]
+      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+    ],
   },
 
   plugins: [
     { src: '~/plugins/smoothscroll', ssr: false },
-    { src: '~/plugins/ga.js', ssr: false }
+    { src: '~/plugins/ga.js', ssr: false },
   ],
 
   router: {
@@ -133,9 +133,9 @@ module.exports = {
         (to.name !== 'themes-theme') &&
         (from.name !== 'themes-theme' || from.name !== 'index')
       ) {
-        return { x: 0, y: 0 }
+        return { x: 0, y: 0 };
       }
-    }
+    },
   },
 
   build: {
@@ -151,8 +151,8 @@ module.exports = {
         removeEmptyAttributes: true,
         removeRedundantAttributes: true,
         trimCustomFragments: true,
-        useShortDoctype: true
-      }
+        useShortDoctype: true,
+      },
     },
     extend (config, context) {
       if (context.isDev && context.isClient) {
@@ -160,14 +160,14 @@ module.exports = {
           enforce: "pre",
           test: /\.(js|vue)$/,
           loader: "eslint-loader",
-          exclude: /(node_modules)/
-        })
+          exclude: /(node_modules)/,
+        });
       }
 
       config.module.rules.push({
         test: /\.glsl$/,
-        loader: 'webpack-glsl-loader'
-      })
+        loader: 'webpack-glsl-loader',
+      });
     },
     // Create separate css file
     extractCSS: true,
@@ -180,7 +180,7 @@ module.exports = {
         .then(({ allEvents }) => {
           fs.writeFileSync(
             path.join('dist', '_redirects'),
-            mapAllEventsToRedirects(allEvents)
+            mapAllEventsToRedirects(allEvents),
           );
 
           return books
@@ -193,7 +193,7 @@ module.exports = {
             .concat(staticPages)
             .map(item => item.path)
             .concat(mapAllEventsToRoutes(allEvents));
-        })
-    }
-  }
-}
+        });
+    },
+  },
+};

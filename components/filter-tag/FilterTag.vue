@@ -21,9 +21,9 @@ export default {
     url: String,
     icon: Object,
     isSelected: Boolean,
-    isRemovable: Boolean
-  }
-}
+    isRemovable: Boolean,
+  },
+};
 </script>
 
 <style>

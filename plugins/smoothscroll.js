@@ -1,3 +1,3 @@
-import SmoothScroll from 'smoothscroll-polyfill'
+import SmoothScroll from 'smoothscroll-polyfill';
 
-SmoothScroll.polyfill()
+SmoothScroll.polyfill();

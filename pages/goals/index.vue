@@ -9,15 +9,15 @@
 </template>
 
 <script>
-import BookHeader from '~/components/book-header/BookHeader'
+import BookHeader from '~/components/book-header/BookHeader';
 
 export default {
   layout: 'globe',
   components: { BookHeader },
   data () {
     return {
-      title: 'Goals'
-    }
-  }
-}
+      title: 'Goals',
+    };
+  },
+};
 </script>

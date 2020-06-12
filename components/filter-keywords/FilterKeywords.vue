@@ -1,62 +1,65 @@
 <template>
   <div class="filter-keywords">
-      <ul class="list--inline filter-keywords__list">
-        <li
-          v-for="keyword in keywords"
-          :key="keyword.slug"
-          @click="handleKeywordClick(keyword.slug)"
-        >
-          <keyword-tag :keyword="keyword" :active="activeKeywords.indexOf(keyword.slug) !== -1"/>
-        </li>
-      </ul>
+    <ul class="list--inline filter-keywords__list">
+      <li
+        v-for="keyword in keywords"
+        :key="keyword.slug"
+        @click="handleKeywordClick(keyword.slug)"
+      >
+        <keyword-tag
+          :keyword="keyword"
+          :active="activeKeywords.indexOf(keyword.slug) !== -1"
+        />
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-import KeywordTag from '~/components/keyword-tag/KeywordTag'
+import KeywordTag from '~/components/keyword-tag/KeywordTag';
 
 export default {
   props: {
-    keywords: Array
+    keywords: Array,
   },
   data: () => ({
-    activeKeywords: []
+    activeKeywords: [],
   }),
   components: { KeywordTag },
   mounted () {
-    this.setAllKeywordsActive()
+    this.setAllKeywordsActive();
   },
   methods: {
     handleKeywordClick (slug) {
       if (this.activeKeywords.length === this.keywords.length) {
-        this.activeKeywords = this.activeKeywords.filter(keyword => keyword === slug)
-        this.$emit('change', this.activeKeywords)
-        return
+        this.activeKeywords = this.activeKeywords.filter(keyword => keyword === slug);
+        this.$emit('change', this.activeKeywords);
+        return;
       }
 
       if (this.activeKeywords.length === 1 && this.activeKeywords[0] === slug) {
-        this.setAllKeywordsActive()
-        this.$emit('change', this.activeKeywords)
-        return
+        this.setAllKeywordsActive();
+        this.$emit('change', this.activeKeywords);
+        return;
       }
 
-      const keywordIndex = this.activeKeywords.indexOf(slug)
+      const keywordIndex = this.activeKeywords.indexOf(slug);
       if (keywordIndex === -1) {
-        this.activeKeywords.push(slug)
+        this.activeKeywords.push(slug);
       } else {
-        this.activeKeywords = this.activeKeywords.filter(keyword => keyword !== slug)
+        this.activeKeywords = this.activeKeywords.filter(keyword => keyword !== slug);
       }
-      this.$emit('change', this.activeKeywords)
+      this.$emit('change', this.activeKeywords);
     },
     setAllKeywordsActive () {
       this.keywords.forEach(keyword => {
         if (this.activeKeywords.indexOf(keyword.slug) === -1) {
-          this.activeKeywords.push(keyword.slug)
+          this.activeKeywords.push(keyword.slug);
         }
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
 
 <style>

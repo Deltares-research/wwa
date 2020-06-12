@@ -1,9 +1,8 @@
 <template>
   <button
     :class="`tag tag--influence tag--${keyword.slug} keyword-tag ${active ? 'keyword-tag--active' : ''}`"
-
   >
-    <span class="sr-only">remove </span>{{keyword.title }}
+    <span class="sr-only">remove </span>{{ keyword.title }}
   </button>
 </template>
 
@@ -11,9 +10,9 @@
 export default {
   props: {
     keyword: Object,
-    active: Boolean
-  }
-}
+    active: Boolean,
+  },
+};
 </script>
 
 <style>

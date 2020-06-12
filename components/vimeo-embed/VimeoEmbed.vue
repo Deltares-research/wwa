@@ -52,7 +52,7 @@ export default {
   height: 0;
   overflow: hidden;
   max-width: 100%;
-  background: var(--ui--black);
+  background: var(--ui--black-almost);
   overflow: hidden;
   z-index: 0;
 }

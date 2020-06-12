@@ -67,10 +67,9 @@ export default {
     };
   },
   mounted () {
-    this.$store.commit('replaceFeatures', this.markers);
-    this.$store.commit('enableInteraction');
-    this.$store.commit('enableGlobeAutoRotation');
-    this.$store.commit('enableNavBackgroundTrans');
+    this.$store.commit('replaceFeatures', this.markers)
+    this.$store.commit('enableInteraction')
+    this.$store.commit('enableGlobeAutoRotation')
     if (
       'IntersectionObserver' in window &&
       'IntersectionObserverEntry' in window &&
@@ -78,9 +77,6 @@ export default {
     ) {
       this.observeScrolledToTop();
     }
-  },
-  destroyed () {
-    this.$store.commit('disableNavBackgroundTrans');
   },
   methods: {
     observeScrolledToTop () {

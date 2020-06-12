@@ -357,7 +357,7 @@ export default {
   text-overflow: ellipsis;
   width: calc(100vw - 1rem - (var(--narrative-hearder__navigation-toggle-fixed-size)));
   font-size: 1rem;
-  color: var(--ui--black);
+  color: var(--ui--black-almost);
   min-height: auto;
   font-weight: 500;
   line-height: 1.5rem;

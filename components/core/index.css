@@ -9,7 +9,7 @@
 .layout--static-page {
   width: 100%;
   background-color: var(--ui--white);
-  color: var(--ui--black);
+  color: var(--ui--black-almost);
 }
 
 .layout-section {

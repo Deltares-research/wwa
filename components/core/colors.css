@@ -4,9 +4,9 @@
 
   /* UI colors */
   --ui--white: #fff;
-  --ui--black: #00001e;
+  --ui--black: #000;
+  --ui--black-almost: #00001e;
   --ui--grey: #353535;
-  --ui--white--trans: rgba(255, 255, 255, .75);
   --ui--black--trans: rgba(0, 0, 30, .75);
   --ui--blue:rgba(0,0,48, 1);
   --ui--blue--bg: #4d4c69;

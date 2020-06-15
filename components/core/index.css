@@ -3,7 +3,7 @@
 @import './a11y.css';
 @import './list.css';
 @import './sdg-tag/sdg-tag.css';
-@import './typography/typography.css';
+@import './typography.css';
 @import './animations.css';
 
 .layout--static-page {

@@ -26,6 +26,8 @@ const fetchAllEvents = () => fetchContent(`
   {
     allEvents {
       slug
+      countryCode
+      nativeLocale
 
       _allNameLocales {
         locale
@@ -43,6 +45,7 @@ const fetchAllEvents = () => fetchContent(`
 const mapAllEventsToRedirects = (allEvents) => (
   allEvents
     .map((event) => [
+      `/events/${event.slug} /${event.nativeLocale}/events/${event.slug} 302 Country=${event.countryCode}`,
       ...event._allNameLocales
         .filter(({ locale }) => locale !== 'en')
         .map(({ locale }) =>

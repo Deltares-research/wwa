@@ -11,7 +11,7 @@
     "build": "npm-run-all build:data build:assets",
     "build:app": "cross-env NODE_ENV=production nuxt build",
     "build:data": "npm run data:build",
-    "build:assets": "cpy ./components/*/assets/*.* ./static/assets",
+    "build:assets": "cpy ./components/**/assets/*.* ./static/assets",
     "generate": "cross-env NODE_ENV=production nuxt generate",
     "postgenerate": "cp ./dist/200.html ./dist/index.html",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",

@@ -52,7 +52,8 @@
     "nuxt": "^2.12.2",
     "smoothscroll-polyfill": "^0.4.4",
     "three": "^0.116.1",
-    "three.meshline": "^1.2.0"
+    "three.meshline": "^1.2.0",
+    "typeface-roboto": "0.0.75"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

@@ -95,6 +95,7 @@ const env = {
 module.exports = {
   css: [
     '~/components/core/index.css',
+    'typeface-roboto',
   ],
   head: {
     title: 'World Water Atlas',

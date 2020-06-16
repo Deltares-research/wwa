@@ -10,9 +10,7 @@
       </nuxt-link>
     </div>
 
-    <div class="main-menu__section main-menu__description">
-      {{ description }}
-    </div>
+    <app-description class="main-menu__section main-menu__description" />
 
     <ul class="main-menu__section main-menu__navigation list--inline">
       <li class="main-menu__navigation-item">
@@ -44,7 +42,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import AppDescription from '~/components/app-description/AppDescription';
 
 export default {
   props: {
@@ -58,8 +56,8 @@ export default {
       },
     },
   },
-  computed: {
-    ...mapState(['description']),
+  components: {
+    AppDescription,
   },
 };
 </script>
@@ -95,32 +93,18 @@ export default {
 }
 
 .main-menu__description {
-  flex: 0 1 300px;
-  padding-top: 0;
-  padding-bottom: 0;
-  align-self: center;
-  border-left: 2px solid var(--ui--orange);
-  font-size: .875rem;
+  display: none;
 }
 
-@media (max-width: 599px) {
+@media (min-width: 600px) {
   .main-menu__description {
     display: block;
-    position: absolute;
-    margin-left: 0;
-    top: 5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 290px;
-    font-size: 1rem;
-    font-weight: bold;
-  }
-}
-
-@media (min-width: 768px) {
-  .main-menu__description {
+    flex: 0 1 300px;
     margin-left: 2rem;
     margin-right: auto;
+    padding-top: 0;
+    padding-bottom: 0;
+    align-self: center;
   }
 }
 

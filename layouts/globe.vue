@@ -2,6 +2,8 @@
   <main>
     <main-menu variant="dark" />
 
+    <globe-header />
+
     <transition
       name="fadeIn"
       mode="out-in"
@@ -28,6 +30,7 @@
 <script>
 import { mapState } from 'vuex';
 import MainMenu from '~/components/main-menu/MainMenu';
+import GlobeHeader from '~/components/globe-header/GlobeHeader';
 import GlobeNavigation from '~/components/globe-navigation/GlobeNavigation';
 
 export default {
@@ -41,7 +44,7 @@ export default {
       component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue'),
     });
   },
-  components: { MainMenu, GlobeNavigation },
+  components: { MainMenu, GlobeHeader, GlobeNavigation },
   computed: {
     ...mapState(['globePositionRight']),
     isFilterPage () {
@@ -55,19 +58,25 @@ export default {
 .globe-component {
   position: fixed;
   z-index: -10;
-  top: 1rem;
+  top: 4rem;
   transform: none;
   transition: transform 0.5s ease-in-out;
 }
 
 @media (min-width: 600px) {
   .globe-component {
-    top: 0;
+    top: 1rem;
   }
 }
 
 .globe-spacing {
-  margin-top: 75vh;
+  margin-top: 87vh;
+}
+
+@media (min-width: 600px) {
+  .globe-spacing {
+    margin-top: 80vh;
+  }
 }
 
 @media (min-width: 1024px) {

@@ -9,6 +9,7 @@
         <li
           v-for="{ locale } in _allNameLocales"
           :key="locale"
+          class="language-switch__item"
         >
           <nuxt-link
             class="language-switch__link"
@@ -68,7 +69,12 @@
 
   .language-switch__list {
     display: flex;
+    align-items: center;
     list-style-type: none;
+  }
+
+  .language-switch__item {
+    flex-shrink: 0;
   }
 
   .language-switch__link {
@@ -80,5 +86,15 @@
   .language-switch__link--active {
     background-color: var(--ui--blue--bg);
     font-weight: bold;
+  }
+
+  @media (min-width: 30rem) {
+    .event-header__name {
+      flex-direction: row;
+    }
+
+    .event-header__location {
+      margin-right: 0.4rem;
+    }
   }
 </style>

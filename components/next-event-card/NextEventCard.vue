@@ -1,17 +1,25 @@
 <template>
   <nuxt-link
-    to="/"
+    :to="`/events/${event.slug}`"
     class="next-event-card"
   >
     <span class="next-event-card__title h3">
-      Lorem Ipsum Dolor Sit Amet Lorem Ipsum Dolor Sit
+      {{ event.title }}
     </span>
 
     <span class="next-event-card__description">
-      43 Jul
+      <time :datetime="event.startDate">{{ event.displayDate }}</time>
     </span>
   </nuxt-link>
 </template>
+
+<script>
+export default {
+  props: {
+    event: Object,
+  },
+};
+</script>
 
 <style>
 .next-event-card {
@@ -57,6 +65,5 @@
 
 .next-event-card__description {
   margin-bottom: .25rem;
-  text-transform: uppercase;
 }
 </style>

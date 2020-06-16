@@ -27,6 +27,7 @@
     </div>
   </main>
 </template>
+
 <script>
 import { mapState } from 'vuex';
 import MainMenu from '~/components/main-menu/MainMenu';
@@ -38,6 +39,7 @@ export default {
     const app = await import('~/static/data/app.json');
     store.commit('setFilters', app.default.filters);
     store.commit('setDescription', app.default.description);
+    store.commit('setHighlightedEvent', app.default.highlightedEvent);
   },
   beforeCreate () {
     this.GlobeComponent = () => ({

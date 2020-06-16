@@ -7,6 +7,7 @@ const store = () => {
       activeFeature: null,
       description: '',
       features: [],
+      setHighlightedEvent: null,
       rotate: true,
       zoom: true,
       globeInteraction: true,
@@ -63,6 +64,9 @@ const store = () => {
       },
       setDescription (state, description) {
         state.description = description;
+      },
+      setHighlightedEvent (state, highlightedEvent) {
+        state.highlightedEvent = highlightedEvent;
       },
       setFilters (state, filters) {
         state.filters = filters;

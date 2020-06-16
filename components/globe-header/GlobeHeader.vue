@@ -2,18 +2,25 @@
   <div class="layout-section globe-header">
     <div class="layout-section__container">
       <app-description class="globe-header__description" />
-      <next-event-card class="globe-header__event" />
+      <next-event-card
+        class="globe-header__event"
+        :event="highlightedEvent"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import AppDescription from '~/components/app-description/AppDescription';
 import NextEventCard from '~/components/next-event-card/NextEventCard';
 
 export default {
   components: {
     AppDescription, NextEventCard,
+  },
+  computed: {
+    ...mapState(['highlightedEvent']),
   },
 };
 </script>
@@ -23,6 +30,7 @@ export default {
   position: fixed;
   top: 4rem;
   width: 100%;
+  background: none;
 }
 
 .globe-header__description,

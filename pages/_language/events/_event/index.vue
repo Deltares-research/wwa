@@ -27,13 +27,21 @@
         >
         <p class="wwa-mention__body">
           <span>This contribution is part of</span>
-          <a>The World Water Atlas</a>
+          <a class="wwa-mention__highlight">The World Water Atlas</a>
         </p>
       </aside>
       <section
         v-for="section in internalEvent.sections"
         :key="section.id"
+        class="event-section"
       >
+        <img
+          class="event-section__divider"
+          src="/event-section-wave.svg"
+          width="111"
+          height="35"
+          alt=""
+        >
         <h3 class="event-section__title">
           {{ section.title }}
         </h3>
@@ -213,8 +221,22 @@
     flex-direction: column;
   }
 
+  .wwa-mention__highlight {
+    color: var(--ui--blue--light);
+    font-weight: 500;
+  }
+
+  .event-section {
+    margin-bottom: 2rem;
+  }
+
+  .event-section__divider {
+    margin-bottom: 0.2rem;
+  }
+
   .event-section__title {
     font-size: 2rem;
+    margin-bottom: 1rem;
   }
 
   .event-section__image {

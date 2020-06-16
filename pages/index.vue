@@ -67,7 +67,6 @@ export default {
 
 <style>
 .globe-section {
-  background-color: var(--ui--bg--dark-opaque);
   padding-top: 1rem;
 }
 

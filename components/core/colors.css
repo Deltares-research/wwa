@@ -17,6 +17,7 @@
   --ui--bg--dark-transparent: rgba(1, 0, 42, 0);
   --ui--bg--dark-translucent: rgba(1, 0, 42, 0.75);
   --ui--bg--dark-opaque: #000226;
+  --ui--bg--grey: #080808;
   --ui--text: var(--booklet--text);
   --ui--text--light: #98abba;
   --ui--text--invert: var(--ui--white);

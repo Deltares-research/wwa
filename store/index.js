@@ -5,6 +5,7 @@ const store = () => {
     strict: true,
     state: {
       activeFeature: null,
+      description: '',
       features: [],
       rotate: true,
       zoom: true,
@@ -59,6 +60,9 @@ const store = () => {
       },
       enableGlobePositionRight (state) {
         state.globePositionRight = true;
+      },
+      setDescription (state, description) {
+        state.description = description;
       },
       setFilters (state, filters) {
         state.filters = filters;

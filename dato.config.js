@@ -221,6 +221,8 @@ function generateByKeyword (dato, root, i18n) {
  * @param {i18n} i18n
  */
 function generateFilters (dato, root, i18n) {
+  const description = dato.app.description;
+
   const filters = dato.app.filters.map(filter => {
     return {
       title: filter.title,
@@ -234,7 +236,13 @@ function generateFilters (dato, root, i18n) {
       }),
     };
   });
-  root.createDataFile(`static/data/filters.json`, 'json', filters);
+
+  const app = {
+    description,
+    filters,
+  };
+
+  root.createDataFile(`static/data/app.json`, 'json', app);
 }
 
 /**

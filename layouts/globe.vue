@@ -32,8 +32,9 @@ import GlobeNavigation from '~/components/globe-navigation/GlobeNavigation';
 
 export default {
   async middleware ({ store, redirect }) {
-    const filters = await import('~/static/data/filters.json');
-    store.commit('setFilters', filters.default);
+    const app = await import('~/static/data/app.json');
+    store.commit('setFilters', app.default.filters);
+    store.commit('setDescription', app.default.description);
   },
   beforeCreate () {
     this.GlobeComponent = () => ({
@@ -54,22 +55,28 @@ export default {
 .globe-component {
   position: fixed;
   z-index: -10;
-  top: 0;
+  top: 1rem;
   transform: none;
   transition: transform 0.5s ease-in-out;
+}
+
+@media (min-width: 600px) {
+  .globe-component {
+    top: 0;
+  }
 }
 
 .globe-spacing {
   margin-top: 75vh;
 }
 
-@media only screen and (min-width: 1024px) {
+@media (min-width: 1024px) {
 .globe-component--right {
     transform: translateX(33%);
   }
 }
 
-@media only screen and (min-width: 1440px) {
+@media (min-width: 1440px) {
   .globe-component--right {
     transform: translateX(25%);
   }

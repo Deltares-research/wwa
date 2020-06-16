@@ -58,24 +58,24 @@ export default {
 .globe-component {
   position: fixed;
   z-index: -10;
-  top: 4rem;
+  top: 9rem;
   transform: none;
   transition: transform 0.5s ease-in-out;
 }
 
 @media (min-width: 600px) {
   .globe-component {
-    top: 1rem;
+    top: 5rem;
   }
 }
 
 .globe-spacing {
-  margin-top: 87vh;
+  margin-top: 90vh;
 }
 
 @media (min-width: 600px) {
   .globe-spacing {
-    margin-top: 80vh;
+    margin-top: 85vh;
   }
 }
 

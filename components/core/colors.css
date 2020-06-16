@@ -21,4 +21,5 @@
   --ui--text--light: #98abba;
   --ui--text--invert: var(--ui--white);
   --ui--light-grey: var(--booklet--neutral);
+  --ui--event-gradient: linear-gradient(137deg, #e9e6cf 14.18%, #68d4f5 95.78%);
 }

@@ -38,44 +38,13 @@
   }
 }
 
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/Roboto-Regular-webfont.woff2") format("woff2"),
-       url("/assets/Roboto-Regular-webfont.woff") format("woff");
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/Roboto-Bold-webfont.woff2") format("woff2"),
-       url("/assets/Roboto-Bold-webfont.woff") format("woff");
-  font-weight: bold;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/Roboto-Medium-webfont.woff2") format("woff2"),
-       url("/assets/Roboto-Medium-webfont.woff") format("woff");
-  font-weight: 500;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Roboto";
-  src: url("/assets/Roboto-Italic-webfont.woff2") format("woff2"),
-       url("/assets/Roboto-Italic-webfont.woff") format("woff");
-  font-style: italic;
-  font-display: swap;
-}
-
 p, .p {
   line-height: var(--line-height);
   margin-top: 0;
 }
 
 html {
-  font-family: "Roboto", Roboto, sans-serif;
+  font-family: Roboto, sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   -moz-osx-font-smoothing: grayscale;

@@ -223,13 +223,13 @@ function generateByKeyword (dato, root, i18n) {
 function generateAppData (dato, root, i18n) {
   const description = dato.app.description;
 
-  const highlightedEvent = {
+  const highlightedEvent = dato.app.highlightedEvent ? {
     title: dato.app.highlightedEvent.name,
     slug: dato.app.highlightedEvent.slug,
     startDate: dato.app.highlightedEvent.startDate,
     endDate: dato.app.highlightedEvent.endDate,
     displayDate: dato.app.highlightedEvent.displayDate,
-  };
+  } : null;
 
   const filters = dato.app.filters.map(filter => {
     return {

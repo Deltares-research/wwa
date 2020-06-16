@@ -11,11 +11,17 @@
       <globe-component
         :is="GlobeComponent"
         class="globe-component"
-        :class="{ 'globe-component--right': globePositionRight }"
+        :class="{
+          'globe-component--right': globePositionRight,
+          'globe-component--tall': highlightedEvent,
+        }"
       />
     </transition>
 
-    <div class="globe-spacing">
+    <div
+      :class="{ 'globe-spacing--tall': highlightedEvent }"
+      class="globe-spacing"
+    >
       <transition name="fadeIn">
         <globe-navigation
           v-if="!globePositionRight && !isFilterPage"
@@ -48,7 +54,7 @@ export default {
   },
   components: { MainMenu, GlobeHeader, GlobeNavigation },
   computed: {
-    ...mapState(['globePositionRight']),
+    ...mapState(['globePositionRight', 'highlightedEvent']),
     isFilterPage () {
       return this.$route.name === 'keywords-slug';
     },
@@ -60,23 +66,39 @@ export default {
 .globe-component {
   position: fixed;
   z-index: -10;
-  top: 9rem;
+  top: 4rem;
   transform: none;
   transition: transform 0.5s ease-in-out;
 }
 
+.globe-component--tall {
+  top: 9rem;
+}
+
 @media (min-width: 600px) {
   .globe-component {
+    top: 0rem;
+  }
+
+  .globe-component--tall {
     top: 5rem;
   }
 }
 
 .globe-spacing {
+  margin-top: 83vh;
+}
+
+.globe-spacing--tall {
   margin-top: 90vh;
 }
 
 @media (min-width: 600px) {
   .globe-spacing {
+    margin-top: 73vh;
+  }
+
+  .globe-spacing--tall {
     margin-top: 85vh;
   }
 }

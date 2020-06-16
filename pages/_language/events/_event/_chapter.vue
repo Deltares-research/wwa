@@ -1,7 +1,7 @@
 <template>
   <div class="chapter">
     <header>
-      <event-header v-bind="event" />
+      <event-header v-bind="internalEvent" />
     </header>
 
     <main>
@@ -34,7 +34,7 @@
             body
           }
 
-          event(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
+          internalEvent(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
             name
             location
             _allNameLocales {

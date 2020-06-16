@@ -1,16 +1,16 @@
 <template>
   <div>
     <header>
-      <event-header v-bind="event" />
+      <event-header v-bind="internalEvent" />
       <div class="event-hero__body">
         <h2 class="event-hero__copy">
           <span class="event-hero__date">
-            <time :datetime="event.startDate">{{ new Date(event.startDate).getDate() }}</time>  -
-            <time :datetime="event.endDate">{{ new Date(event.endDate).getDate() }}</time>
-            July 2020 ({{ event.timezone }})
+            <time :datetime="internalEvent.startDate">{{ new Date(internalEvent.startDate).getDate() }}</time>  -
+            <time :datetime="internalEvent.endDate">{{ new Date(internalEvent.endDate).getDate() }}</time>
+            July 2020 ({{ internalEvent.timezone }})
           </span>
           <span class="event-hero__title">
-            {{ event.location }} {{ event.name }}
+            {{ internalEvent.location }} {{ internalEvent.name }}
           </span>
         </h2>
       </div>
@@ -31,13 +31,14 @@
         </p>
       </aside>
       <section
-        v-for="section in event.sections"
+        v-for="section in internalEvent.sections"
         :key="section.id"
       >
         <h3 class="event-section__title">
           {{ section.title }}
         </h3>
         <img
+          v-if="section.image"
           class="event-section__image"
           :src="`${section.image.url}?auto=compress`"
           :alt="section.image.alt"
@@ -75,7 +76,7 @@
       </section>
       <section>
         <ul
-          v-for="speaker in event.speakers"
+          v-for="speaker in internalEvent.speakers"
           :key="speaker.id"
         >
           <li class="speaker-card">
@@ -123,7 +124,7 @@
     async asyncData({ params }) {
       const query = `
         {
-          event(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
+          internalEvent(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
             slug
             name
             location

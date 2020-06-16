@@ -22,9 +22,9 @@ const chapters = books
     return chapters.concat(bookChapters);
   }, []);
 
-const fetchAllEvents = () => fetchContent(`
+const fetchallInternalEvents = () => fetchContent(`
   {
-    allEvents {
+    allInternalEvents {
       slug
       countryCode
       nativeLocale
@@ -42,8 +42,8 @@ const fetchAllEvents = () => fetchContent(`
   }
 `);
 
-const mapAllEventsToRedirects = (allEvents) => (
-  allEvents
+const mapallInternalEventsToRedirects = (allInternalEvents) => (
+  allInternalEvents
     .map((event) => [
       `/events/${event.slug} /${event.nativeLocale}/events/${event.slug} 302 Country=${event.countryCode}`,
       ...event._allNameLocales
@@ -57,8 +57,8 @@ const mapAllEventsToRedirects = (allEvents) => (
     .join('\n')
 );
 
-const mapAllEventsToRoutes = (allEvents) => (
-  allEvents
+const mapallInternalEventsToRoutes = (allInternalEvents) => (
+  allInternalEvents
     .map((event) =>
       event._allNameLocales
         .map((item) => [
@@ -180,11 +180,11 @@ module.exports = {
   env,
   generate: {
     routes () {
-      return fetchAllEvents()
-        .then(({ allEvents }) => {
+      return fetchallInternalEvents()
+        .then(({ allInternalEvents }) => {
           fs.writeFileSync(
             path.join('dist', '_redirects'),
-            mapAllEventsToRedirects(allEvents),
+            mapallInternalEventsToRedirects(allInternalEvents),
           );
 
           return books
@@ -196,7 +196,7 @@ module.exports = {
             .concat(keywords)
             .concat(staticPages)
             .map(item => item.path)
-            .concat(mapAllEventsToRoutes(allEvents));
+            .concat(mapallInternalEventsToRoutes(allInternalEvents));
         });
     },
   },

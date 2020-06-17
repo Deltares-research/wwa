@@ -38,19 +38,17 @@
               >
               <img
                 :src="`${coverPath(chapter)}&w=157&h=232&fit=crop`"
-                role="presentation"
+                alt=""
               >
             </picture>
             <img
               v-else
               :src="`/assets/${chapterTheme(chapter)}.svg`"
-              role="presentation"
+              alt=""
             >
           </span>
-          <span class="chapter-list__gradient" />
           <span class="chapter-list__item-content">{{ chapter.title }}</span>
         </nuxt-link>
-        <div class="chapter-list__focus-highlight" />
       </li>
     </ul>
   </div>
@@ -177,38 +175,13 @@ export default {
 }
 
 .chapter-list__item-link {
-  background-color: var(--ui-light-grey);
-}
-
-.chapter-list__item-link,
-.chapter-list__focus-highlight {
-  text-shadow: none;
-  padding: 20px;
   display: flex;
   align-items: flex-end;
-  text-decoration: none;
-  border-radius: 5px;
-  outline: none;
   overflow: hidden;
-}
-
-.chapter-list__focus-highlight {
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.15s ease-in;
-}
-
-.chapter-list__item-link:hover + .chapter-list__focus-highlight,
-.chapter-list__item-link:focus + .chapter-list__focus-highlight {
-  opacity: 1;
-}
-
-.chapter-list__item-link:hover + .chapter-list__focus-highlight {
-  box-shadow: 0px 0px 50px 0px rgba(152, 171, 186, 0.75);
-}
-
-.chapter-list__item-link:focus + .chapter-list__focus-highlight {
-  box-shadow: 0px 0px 0px 3px rgba(152, 171, 186, 1);
+  padding: 20px;
+  outline: none;
+  background-color: var(--ui-light-grey);
+  text-decoration: none;
 }
 
 .chapter-list__item-link:hover,
@@ -226,27 +199,43 @@ export default {
   transform: scale(3.5);
 }
 
-.chapter-list__gradient {
-  background-image: linear-gradient(to bottom, rgba(1, 0, 42, 0), rgba(1, 0, 42, 0.75));
+.chapter-list__item-link:before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .1);
+}
+
+.chapter-list__item-link:after {
+  content: '';
+  display: block;
   position: absolute;
   top: 25%;
   bottom: -1px;
   left: -1px;
   right: -1px;
   z-index: 0;
-  border-radius: 5px;
+  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 68%, rgba(0, 0, 0, 0.7) 100%);
 }
 
 .chapter-list__item-content {
   z-index: 1;
-  font-size: 1.625rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  line-height: 1.875rem;
+  line-height: 1.2;
+  text-shadow: 1px 1px 1px var(--ui--bg--dark-opaque);
+  word-break: break-word;
+  hyphens: auto;
 }
 
 @media (min-width: 600px) {
   .chapter-list {
-    margin: 0 -16px;
+    margin: 0 -6px;
   }
 
   .chapter-list__list {
@@ -255,25 +244,20 @@ export default {
   }
 
   .chapter-list__item {
-    flex-basis: calc(100% / 3 - 24px);
+    flex-basis: calc(100% / 3 - 14px);
     flex-grow: 0;
   }
 
   .chapter-list__item {
-    margin: 0 12px 24px 12px;
+    margin: 0 7px 14px 7px;
   }
 
   .chapter-list__item:before {
-    padding-top: 148.53%;
-  }
-
-  .chapter-list__item-link {
-    padding: 40px 20px;
+    padding-top: 136%;
   }
 
   .chapter-list__item-content {
-    font-size: 1.7rem;
-    line-height: 2.2rem;
+    font-size: 1.5rem;
   }
 
   .chapter-list__cover-image--horizontal {
@@ -289,22 +273,9 @@ export default {
   }
 }
 
-@media (min-width: 900px) {
-  .chapter-list {
-    margin: 0 -25px;
-  }
-
-  .chapter-list__item {
-    flex-basis: calc(100% / 3 - 50px);
-  }
-
-  .chapter-list__item {
-    margin: 0 25px 25px 25px;
-  }
-
+@media (min-width: 768px) {
   .chapter-list__item-content {
-    font-size: 2rem;
-    line-height: 2.375rem;
+    word-break: normal;
   }
 }
 </style>

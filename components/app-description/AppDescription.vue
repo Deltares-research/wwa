@@ -17,7 +17,7 @@ export default {
 <style>
 .app-description {
   padding-left: .5rem;
-  border-left: 2px solid var(--ui--orange);
+  border-left: 2px solid var(--orange);
   font-size: 1rem;
   font-weight: bold;
 }

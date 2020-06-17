@@ -154,7 +154,7 @@ export default {
   padding-top: 64px;
   z-index: 0;
   width: 100vw;
-  background-color: #dde4eb;
+  background-color: var(--black);
   overflow: hidden;
 }
 
@@ -195,7 +195,7 @@ export default {
   .chapter-column {
     position: relative;
     padding: 0;
-    background-color: var(--ui--white);
+    background-color: var(--white);
   }
 }
 </style>

@@ -116,8 +116,8 @@ export default {
 }
 
 .keywords__dropdown {
-  color: var(--ui--text);
-  background-color: var(--booklet--neutral);
+  color: var(--grey);
+  background-color: var(--grey);
   display: inline-block;
   border-radius: 1rem;
   padding: .25rem 1rem .375rem 1rem;
@@ -126,7 +126,7 @@ export default {
   font-size: 1rem;
   font-weight: bold;
   text-transform: uppercase;
-  color: var(--ui--text--invert);
+  color: var(--white);
   background-color: transparent;
   border: none;
   transition: color .25s;
@@ -134,6 +134,6 @@ export default {
 }
 
 .keywords__dropdown:hover {
-  color: var(--ui--text--light);
+  color: var(--secondary-blue);
 }
 </style>

@@ -33,16 +33,16 @@ export default {
 
 <style>
 .title-list__item {
-  color: var(--ui--text--invert);
+  color: var(--white);
 }
 
 .title-list a {
   text-decoration: none;
   transition: .2s color;
-  color: var(--ui--text--light);
+  color: var(--secondary-blue);
 }
 
 .title-list a:hover {
-  color: var(--ui--text--invert);
+  color: var(--white);
 }
 </style>

@@ -180,7 +180,7 @@ export default {
   overflow: hidden;
   padding: 20px;
   outline: none;
-  background-color: var(--ui-light-grey);
+  background-color: var(--white);
   text-decoration: none;
 }
 
@@ -228,7 +228,7 @@ export default {
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.2;
-  text-shadow: 1px 1px 1px var(--ui--bg--dark-opaque);
+  text-shadow: 1px 1px 1px var(--primary-blue);
   word-break: break-word;
   hyphens: auto;
 }

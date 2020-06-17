@@ -26,9 +26,9 @@ export default {
   display: block;
   padding: .5rem .7rem;
   font-weight: bold;
-  color: var(--ui--blue);
+  color: var(--primary-blue);
   text-decoration: none;
-  background-image: url('/assets/event-wave.svg'), var(--ui--event-gradient);
+  background-image: url('/assets/event-wave.svg'), linear-gradient(137deg, #E9E6CF 14.18%, var(--tertiary-blue) 95.78%);
   background-size: 100% auto;
   background-position: bottom center;
   border-radius: 5px;
@@ -43,7 +43,7 @@ export default {
   height: 30px;
   border-radius: 50%;
   background-image: url('/assets/arrow-right.svg');
-  background-color: var(--ui--white);
+  background-color: var(--white);
   background-position: center;
   background-repeat: no-repeat;
   background-size: 50%;
@@ -51,7 +51,7 @@ export default {
 
 .next-event-card:hover,
 .next-event-card:focus {
-  color: var(--ui--blue);
+  color: var(--primary-blue);
 }
 
 .next-event-card__title,

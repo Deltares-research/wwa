@@ -67,8 +67,8 @@ h6, .h6 {
 }
 
 .invert {
-  color: var(--ui--text--invert);
-  text-shadow: 0 0 2rem var(--ui--black-almost);
+  color: var(--white);
+  text-shadow: 0 0 2rem var(--primary-blue);
 }
 
 h4, .h4,

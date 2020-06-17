@@ -39,7 +39,7 @@
     display: flex;
     margin-right: 1rem;
     margin-left: 1rem;
-    border-top-color: var(--ui--white);
+    border-top-color: var(--white);
     border-top-style: solid;
     border-top-width: 2px;
     padding-top: 1.4rem;
@@ -50,7 +50,7 @@
     display: inline-flex;
     flex-direction: column;
     padding-right: 1rem;
-    border-right-color: var(--ui--white);
+    border-right-color: var(--white);
     border-right-style: solid;
     border-right-width: 1px;
     margin-right: 1rem;
@@ -65,7 +65,7 @@
 
   .event-footer__highlight {
     display: block;
-    color: var(--ui--blue--light);
+    color: var(--tertiary-blue);
     font-weight: 500;
   }
 

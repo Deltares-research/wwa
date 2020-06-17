@@ -197,7 +197,7 @@ li.globe-navigation__tab:last-child {
 }
 
 li.globe-navigation__tab--selected {
-  border-bottom: 2px solid var(--ui--blue--light);
+  border-bottom: 2px solid var(--tertiary-blue);
 }
 
 .globe-navigation__tab-link {
@@ -213,11 +213,11 @@ li.globe-navigation__tab--selected {
 
 .globe-navigation__tab--selected .globe-navigation__tab-link {
   font-weight: bold;
-  color: var(--ui--blue--light);
+  color: var(--tertiary-blue);
 }
 
 .globe-navigation__tab--selected .globe-navigation__tab-link:hover {
-  color: var(--ui--blue--light);
+  color: var(--tertiary-blue);
 }
 
 li.globe-navigation__tag {

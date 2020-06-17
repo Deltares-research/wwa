@@ -156,7 +156,7 @@ export default {
 
 .narrative-header__content:before {
   content: '';
-  background-image: linear-gradient(to bottom, var(--ui--bg--dark-transparent), var(--ui--bg--dark-translucent));
+  background-image: linear-gradient(to bottom, rgba(1, 0, 42, 0), rgba(1, 0, 42, 0.75));
   position: absolute;
   top: 10%;
   bottom: 0;
@@ -168,7 +168,7 @@ export default {
 
 .narrative-header__content:after {
   content: '';
-  background-color: var(--ui--light-grey);
+  background-color: var(--grey);
   position: absolute;
   top: 0;
   left: 0;
@@ -178,7 +178,7 @@ export default {
 }
 
 .narrative-header__title {
-  color: var(--ui--text--invert);
+  color: var(--white);
   font-size: 1.5rem;
   line-height: 1.75rem;
   min-height: 5.25rem;
@@ -191,7 +191,7 @@ export default {
 .narrative-header__back {
   position: relative;
   z-index: 4;
-  color: var(--ui--text--invert);
+  color: var(--white);
   text-transform: uppercase;
   background-color: transparent;
   border: none;
@@ -233,8 +233,8 @@ export default {
   z-index: 5;
   bottom: 0;
   right: 0;
-  background-color: #467388;
-  color: var(--ui--white);
+  background-color: var(--secondary-blue);
+  color: var(--white);
   border: none;
   padding: 8px 1em;
   line-height: 24px;
@@ -247,7 +247,7 @@ export default {
 
 .narrative-header__toggle-icon {
   display: inline-block;
-  fill: var(--ui--white);
+  fill: var(--white);
   transition: transform 200ms ease-in-out;
 }
 
@@ -265,7 +265,7 @@ export default {
   bottom: 0;
   right: 0;
   width: 100%;
-  background-color: var(--ui--white);
+  background-color: var(--white);
   transform: none;
   z-index: 0;
   transition: transform var(--narrative-header-transition-speed) var(--narrative-header-transition-timing-hide);
@@ -298,7 +298,7 @@ export default {
   border-radius: 2em;
   text-decoration: none;
   display: block;
-  color: #467388;
+  color: var(--secondary-blue);
   cursor: pointer;
   border: none;
   width: 100%;
@@ -309,18 +309,18 @@ export default {
 }
 
 .narrative-header__navigation-item--active .narrative-header__link {
-  background-color: #f6f8fa;
-  color: #467388;
+  background-color: var(--white);
+  color: var(--secondary-blue);
   font-weight: bold;
 }
 
 .narrative-header__link:hover {
-  color: #467388;
+  color: var(--secondary-blue);
   text-decoration: underline;
 }
 
 .narrative-header__link-index {
-  color: #000000;
+  color: var(--black);
   font-weight: bold;
 }
 
@@ -357,7 +357,7 @@ export default {
   text-overflow: ellipsis;
   width: calc(100vw - 1rem - (var(--narrative-hearder__navigation-toggle-fixed-size)));
   font-size: 1rem;
-  color: var(--ui--black-almost);
+  color: var(--primary-blue);
   min-height: auto;
   font-weight: 500;
   line-height: 1.5rem;
@@ -385,7 +385,7 @@ export default {
     min-height: auto;
   }
   .narrative-header__content:after {
-    background-color: var(--ui--blue);
+    background-color: var(--primary-blue);
     -webkit-print-color-adjust: exact;
   }
   .narrative-header__content:before {

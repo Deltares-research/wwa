@@ -31,16 +31,16 @@ export default {
   display: flex;
   align-items: center;
   padding: .3rem 1rem .5rem 1rem;
-  background: var(--ui--grey);
+  background: var(--grey);
   font-size: .825rem;
   font-weight: bold;
   text-decoration: none;
-  color: var(--ui--white);
+  color: var(--white);
   border-radius: 5px;
 }
 
 .filter-tag:hover {
-  color: var(--ui--white);
+  color: var(--white);
 }
 
 @media (min-width: 600px) {
@@ -50,13 +50,13 @@ export default {
 }
 
 .filter-tag--selected {
-  background: var(--ui--blue--light);
-  color: var(--ui--black-almost);
+  background: var(--tertiary-blue);
+  color: var(--primary-blue);
 }
 
 .filter-tag--selected:hover,
 .filter-tag--selected:focus {
-  color: var(--ui--black-almost);
+  color: var(--primary-blue);
 }
 
 .filter-tag--removable {

@@ -1,6 +1,6 @@
 .sdg-tag {
-  color: var(--ui--black-almost);
-  background-color: var(--booklet--neutral);
+  color: var(--primary-blue);
+  background-color: var(--grey);
   display: inline-block;
   padding: .5rem;
   margin-bottom: .5rem;

@@ -126,8 +126,8 @@ export default {
   width: 2rem;
   height: 2rem;
   border-radius: 1rem;
-  background-color: var(--ui--black--trans);
-  box-shadow: 2rem 2rem 4rem 4rem var(--ui--black--trans);
+  background-color: var(--black);
+  box-shadow: 2rem 2rem 4rem 4rem var(--black);
   z-index: 1;
   font-size: 2rem;
   text-align: center;

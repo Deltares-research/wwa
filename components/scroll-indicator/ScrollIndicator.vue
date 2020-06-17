@@ -70,7 +70,7 @@ export default {
 }
 .scroll-indicator li {
   opacity: .6;
-  color: var(--ui--white);
+  color: var(--white);
   list-style: none;
   margin: .75rem 0rem;
   padding: 0;
@@ -90,7 +90,7 @@ export default {
   height: .5rem;
   border-radius: .5rem;
   margin-right: .75rem;
-  background-color: var(--ui--white);
+  background-color: var(--white);
 }
 .scroll-indicator .to-top a::before {
   background-color: transparent;

@@ -134,27 +134,27 @@ export default {
 }
 
 .main-menu--dark {
-  background-color: var(--ui--black);
+  background-color: var(--black);
 }
 
 .main-menu--light {
-  background-color: var(--ui--white);
+  background-color: var(--white);
 }
 
 .main-menu--light .main-menu__navigation-link,
 .main-menu--light .main-menu__navigation-link:hover,
 .main-menu--light .main-menu__logo .main-menu__navigation-link,
 .main-menu--light .main-menu__logo .main-menu__navigation-link:hover {
-  color: var(--ui--black-almost);
+  color: var(--primary-blue);
 }
 
 .main-menu--dark .main-menu__navigation-link,
 .main-menu--dark .main-menu__navigation-link:hover {
-  color: var(--ui--white);
+  color: var(--white);
 }
 
 .main-menu--dark .main-menu__logo .main-menu__navigation-link,
 .main-menu--dark .main-menu__logo .main-menu__navigation-link:hover {
-  color: var(--ui--blue--light);
+  color: var(--tertiary-blue);
 }
 </style>

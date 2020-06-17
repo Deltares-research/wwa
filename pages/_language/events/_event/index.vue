@@ -187,8 +187,8 @@
 
 <style>
   .event-hero__body {
-    background: var(--ui--text--light);
-    color: var(--ui--blue);
+    background: var(--secondary-blue);
+    color: var(--primary-blue);
     padding: 1.4rem;
   }
 
@@ -225,7 +225,7 @@
   }
 
   .wwa-mention__highlight {
-    color: var(--ui--blue--light);
+    color: var(--tertiary-blue);
     font-weight: 500;
   }
 
@@ -256,7 +256,7 @@
 
   .chapter-preview {
     display: block;
-    background: var(--ui--blue);
+    background: var(--primary-blue);
   }
 
   .chapter-preview__link {
@@ -276,7 +276,7 @@
   }
 
   .speaker-card {
-    background-color: var(--ui--blue--light);
+    background-color: var(--tertiary-blue);
     padding: 1rem;
   }
 

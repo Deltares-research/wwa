@@ -168,8 +168,8 @@ export default {
 <style>
 .page-body {
   padding: 1.5rem;
-  background-color: var(--ui--bg--white);
-  color: var(--ui--black-almost);
+  background-color: var(--white);
+  color: var(--primary-blue);
 }
 
 .page-body p {
@@ -184,7 +184,7 @@ export default {
 
 .page-body p.intro {
   font-size: 1rem;
-  color: #3f6a7e;
+  color: var(--secondary-blue);
 }
 
 .page-body img {
@@ -209,7 +209,7 @@ export default {
 
 .page-body__asset-placeholder {
   padding: 0.5rem 1.5rem 1rem 1.5rem;
-  background-color: var(--ui--bg--white);
+  background-color: var(--white);
   margin: 0 auto;
 }
 
@@ -220,7 +220,7 @@ export default {
 }
 
 .page-body__footer {
-  color: var(--ui--text--light);
+  color: var(--secondary-blue);
   width: 100%;
   padding: 5px 0;
 }
@@ -253,7 +253,7 @@ export default {
 .fixed-ratio {
   padding: 0;
   position: relative;
-  background-color: var(--ui--text--light);
+  background-color: var(--secondary-blue);
 }
 
 .fixed-ratio > * {

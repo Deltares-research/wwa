@@ -52,7 +52,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem;
-    background-color: var(--ui--black-almost);
+    background-color: var(--primary-blue);
   }
 
   .event-header__name {
@@ -64,7 +64,7 @@
 
   .event-header__location {
     display: block;
-    color: var(--ui--blue--light);
+    color: var(--tertiary-blue);
   }
 
   .language-switch__list {
@@ -84,7 +84,7 @@
   }
 
   .language-switch__link--active {
-    background-color: var(--ui--blue--bg);
+    background-color: var(--grey);
     font-weight: bold;
   }
 

@@ -117,7 +117,7 @@ export default {
 }
 
 .narrative-footer__link:hover {
-  color: var(--or--3-5);
+  color: var(--primary-blue);
 }
 
 .narrative-footer__link::before {
@@ -172,7 +172,7 @@ export default {
   left: 0;
   padding: 1.5rem;
   margin: 0;
-  color: var(--ui--white);
+  color: var(--white);
   font-weight: bold;
   font-size: 1.5rem;
   background-image: linear-gradient(to bottom, rgba(1, 0, 42, 0), rgba(1, 0, 42, 1));

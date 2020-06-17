@@ -1,6 +1,6 @@
 <template>
-  <nuxt-link
-    :to="`/events/${event.slug}`"
+  <a
+    :href="`/events/${event.slug}`"
     class="next-event-card"
   >
     <span class="next-event-card__title h3">
@@ -10,7 +10,7 @@
     <span class="next-event-card__description">
       <time :datetime="event.startDate">{{ event.displayDate }}</time>
     </span>
-  </nuxt-link>
+  </a>
 </template>
 
 <script>

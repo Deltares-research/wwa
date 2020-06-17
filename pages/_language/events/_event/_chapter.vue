@@ -8,16 +8,20 @@
       <h2>{{ chapter.title }}</h2>
       <p>{{ chapter.body }}</p>
     </main>
+
+    <event-footer v-bind="internalEvent" />
   </div>
 </template>
 
 <script>
   import fetchContent from '~/lib/fetch-content';
   import eventHeader from '~/components/event-header/EventHeader';
+  import eventFooter from '~/components/event-footer/EventFooter';
 
   export default {
     components: {
       eventHeader,
+      eventFooter,
     },
     head ({ params }) {
       return {

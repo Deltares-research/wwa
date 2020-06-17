@@ -8,6 +8,7 @@ const store = () => {
       description: '',
       features: [],
       setHighlightedEvent: null,
+      footerLinks: [],
       rotate: true,
       zoom: true,
       globeInteraction: true,
@@ -67,6 +68,9 @@ const store = () => {
       },
       setHighlightedEvent (state, highlightedEvent) {
         state.highlightedEvent = highlightedEvent;
+      },
+      setFooterLinks (state, footerLinks) {
+        state.footerLinks = footerLinks;
       },
       setFilters (state, filters) {
         state.filters = filters;

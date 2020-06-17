@@ -14,8 +14,16 @@
         Name: {{ event.name }}
 
         <div class="event-preview__link">
-          <a v-if="event.url" :href="event.url">{{ event.url }}</a>
-          <nuxt-link v-else :to="`/en/events/${event.slug}`">Go to event page</nuxt-link>
+          <a
+            v-if="event.url"
+            :href="event.url"
+          >{{ event.url }}</a>
+          <nuxt-link
+            v-else
+            :to="`/en/events/${event.slug}`"
+          >
+            Go to event page
+          </nuxt-link>
         </div>
       </li>
     </ol>

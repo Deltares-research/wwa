@@ -2,6 +2,8 @@
   <main>
     <main-menu variant="dark" />
 
+    <globe-header />
+
     <transition
       name="fadeIn"
       mode="out-in"
@@ -9,11 +11,17 @@
       <globe-component
         :is="GlobeComponent"
         class="globe-component"
-        :class="{ 'globe-component--right': globePositionRight }"
+        :class="{
+          'globe-component--right': globePositionRight,
+          'globe-component--tall': highlightedEvent,
+        }"
       />
     </transition>
 
-    <div class="globe-spacing">
+    <div
+      :class="{ 'globe-spacing--tall': highlightedEvent }"
+      class="globe-spacing"
+    >
       <transition name="fadeIn">
         <globe-navigation
           v-if="!globePositionRight && !isFilterPage"
@@ -25,24 +33,28 @@
     </div>
   </main>
 </template>
+
 <script>
 import { mapState } from 'vuex';
 import MainMenu from '~/components/main-menu/MainMenu';
+import GlobeHeader from '~/components/globe-header/GlobeHeader';
 import GlobeNavigation from '~/components/globe-navigation/GlobeNavigation';
 
 export default {
   async middleware ({ store, redirect }) {
-    const filters = await import('~/static/data/filters.json');
-    store.commit('setFilters', filters.default);
+    const app = await import('~/static/data/app.json');
+    store.commit('setFilters', app.default.filters);
+    store.commit('setDescription', app.default.description);
+    store.commit('setHighlightedEvent', app.default.highlightedEvent);
   },
   beforeCreate () {
     this.GlobeComponent = () => ({
       component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue'),
     });
   },
-  components: { MainMenu, GlobeNavigation },
+  components: { MainMenu, GlobeHeader, GlobeNavigation },
   computed: {
-    ...mapState(['globePositionRight']),
+    ...mapState(['globePositionRight', 'highlightedEvent']),
     isFilterPage () {
       return this.$route.name === 'keywords-slug';
     },
@@ -54,22 +66,50 @@ export default {
 .globe-component {
   position: fixed;
   z-index: -10;
-  top: 0;
+  top: 4rem;
   transform: none;
   transition: transform 0.5s ease-in-out;
 }
 
-.globe-spacing {
-  margin-top: 75vh;
+.globe-component--tall {
+  top: 9rem;
 }
 
-@media only screen and (min-width: 1024px) {
+@media (min-width: 600px) {
+  .globe-component {
+    top: 0rem;
+  }
+
+  .globe-component--tall {
+    top: 5rem;
+  }
+}
+
+.globe-spacing {
+  margin-top: 83vh;
+}
+
+.globe-spacing--tall {
+  margin-top: 90vh;
+}
+
+@media (min-width: 600px) {
+  .globe-spacing {
+    margin-top: 73vh;
+  }
+
+  .globe-spacing--tall {
+    margin-top: 85vh;
+  }
+}
+
+@media (min-width: 1024px) {
 .globe-component--right {
     transform: translateX(33%);
   }
 }
 
-@media only screen and (min-width: 1440px) {
+@media (min-width: 1440px) {
   .globe-component--right {
     transform: translateX(25%);
   }

@@ -169,7 +169,7 @@ export default {
 .page-body {
   padding: 1.5rem;
   background-color: var(--ui--bg--white);
-  color: var(--ui--black);
+  color: var(--ui--black-almost);
 }
 
 .page-body p {

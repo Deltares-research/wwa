@@ -51,12 +51,12 @@ export default {
 
 .filter-tag--selected {
   background: var(--ui--blue--light);
-  color: var(--ui--black);
+  color: var(--ui--black-almost);
 }
 
 .filter-tag--selected:hover,
 .filter-tag--selected:focus {
-  color: var(--ui--black);
+  color: var(--ui--black-almost);
 }
 
 .filter-tag--removable {

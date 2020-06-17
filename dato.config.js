@@ -49,8 +49,8 @@ module.exports = (dato, root, i18n) => {
     case 'chapters':
       generateChapters(dato, root, i18n);
       break;
-    case 'filters':
-        generateFilters(dato, root, i18n);
+    case 'app':
+        generateAppData(dato, root, i18n);
         break;
     case 'influences':
       generateByInfluence(dato, root, i18n);
@@ -77,7 +77,7 @@ module.exports = (dato, root, i18n) => {
       generateByGoal(dato, root, i18n);
       generateByMethodology(dato, root, i18n);
       generateByKeyword(dato, root, i18n);
-      generateFilters(dato, root, i18n);
+      generateAppData(dato, root, i18n);
       generateStaticPages(dato, root, i18n);
       generateThemes(dato, root, i18n);
   }
@@ -220,7 +220,17 @@ function generateByKeyword (dato, root, i18n) {
  * @param {Root} root - Project root
  * @param {i18n} i18n
  */
-function generateFilters (dato, root, i18n) {
+function generateAppData (dato, root, i18n) {
+  const description = dato.app.description;
+
+  const highlightedEvent = dato.app.highlightedEvent ? {
+    title: dato.app.highlightedEvent.name,
+    slug: dato.app.highlightedEvent.slug,
+    startDate: dato.app.highlightedEvent.startDate,
+    endDate: dato.app.highlightedEvent.endDate,
+    displayDate: dato.app.highlightedEvent.displayDate,
+  } : null;
+
   const filters = dato.app.filters.map(filter => {
     return {
       title: filter.title,
@@ -234,7 +244,14 @@ function generateFilters (dato, root, i18n) {
       }),
     };
   });
-  root.createDataFile(`static/data/filters.json`, 'json', filters);
+
+  const app = {
+    description,
+    highlightedEvent,
+    filters,
+  };
+
+  root.createDataFile(`static/data/app.json`, 'json', app);
 }
 
 /**

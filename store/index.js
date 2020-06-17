@@ -5,14 +5,15 @@ const store = () => {
     strict: true,
     state: {
       activeFeature: null,
+      description: '',
       features: [],
+      setHighlightedEvent: null,
       rotate: true,
       zoom: true,
       globeInteraction: true,
       theme: 'too-much',
       globeAutoRotation: true,
       globePositionRight: false,
-      navBackgroundTrans: false,
       filters: [],
     },
     mutations: {
@@ -61,11 +62,11 @@ const store = () => {
       enableGlobePositionRight (state) {
         state.globePositionRight = true;
       },
-      disableNavBackgroundTrans (state) {
-        state.navBackgroundTrans = false;
+      setDescription (state, description) {
+        state.description = description;
       },
-      enableNavBackgroundTrans (state) {
-        state.navBackgroundTrans = true;
+      setHighlightedEvent (state, highlightedEvent) {
+        state.highlightedEvent = highlightedEvent;
       },
       setFilters (state, filters) {
         state.filters = filters;

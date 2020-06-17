@@ -1,46 +1,50 @@
 <template>
-  <div class="menu">
-    <nav :class="[`main-menu main-menu--${variant}`, { 'main-menu--transparent' : navBackgroundTrans }]">
-      <div class="main-menu__container">
-        <div class="main-menu__section main-menu__section--no-padding">
-          <nuxt-link
-            :class="`menu__item menu__item--home ${(variant === 'light') ? 'menu__item--dark-background' : ''}`"
-            to="/"
-            title="Go home"
-          >
-            <span class="sr-only">Return to the homepage</span>
-            <span class="main-menu__go-home-text">World Water<br>Atlas</span>
-          </nuxt-link>
-        </div>
-        <div class="main-menu__section main-menu__section--align-right">
-          <nuxt-link
-            :class="`menu__item menu__item--about h3 ${(variant === 'dark') ? 'invert' : ''}`"
-            to="/about"
-          >
-            About
-          </nuxt-link>
-          <nuxt-link
-            :class="`menu__item menu__item--submit h3 ${(variant === 'dark') ? 'invert' : ''}`"
-            to="/submit-a-story"
-          >
-            Submit a story
-          </nuxt-link>
-        </div>
-      </div>
-    </nav>
-    <mobile-menu
-      :variant="variant"
-    />
-  </div>
+  <nav :class="`main-menu main-menu--${variant}`">
+    <div class="main-menu__section main-menu__logo">
+      <nuxt-link
+        class="main-menu__navigation-link"
+        to="/"
+      >
+        World Water<br>
+        Atlas
+      </nuxt-link>
+    </div>
+
+    <app-description class="main-menu__section main-menu__description" />
+
+    <ul class="main-menu__section main-menu__navigation list--inline">
+      <li class="main-menu__navigation-item">
+        <nuxt-link
+          class="main-menu__navigation-link"
+          to="/events"
+        >
+          Events
+        </nuxt-link>
+      </li>
+      <li class="main-menu__navigation-item">
+        <nuxt-link
+          class="main-menu__navigation-link"
+          to="/about"
+        >
+          About
+        </nuxt-link>
+      </li>
+      <li class="main-menu__navigation-item">
+        <nuxt-link
+          class="main-menu__navigation-link"
+          to="/submit-a-story"
+        >
+          Submit story
+        </nuxt-link>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
-import MobileMenu from '~/components/mobile-menu/MobileMenu';
+import AppDescription from '~/components/app-description/AppDescription';
 
 export default {
-  components: { MobileMenu },
   props: {
     variant: {
       type: String,
@@ -52,132 +56,105 @@ export default {
       },
     },
   },
-  computed: {
-    ...mapState(['navBackgroundTrans']),
+  components: {
+    AppDescription,
   },
 };
 </script>
 
 <style>
 .main-menu {
+  display: flex;
+  justify-content: space-between;
   position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  height: auto;
-  color: var(--ui--white);
   z-index: 2;
 }
 
 .main-menu__section {
-  flex: 1 1;
   display: flex;
   align-items: center;
   padding: 0.5rem;
-  min-height: 3rem;
 }
 
-.main-menu__section--no-padding {
-  padding: 0;
+.main-menu__logo {
+  flex: 0 0 auto;
+  font-size: .9rem;
+  font-weight: bold;
+  line-height: 1.2;
 }
 
-.main-menu__section--align-right {
+@media (min-width: 600px) {
+  .main-menu__logo {
+    font-size: 1.3rem;
+  }
+}
+
+.main-menu__description {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .main-menu__description {
+    display: block;
+    flex: 0 1 300px;
+    margin-left: 2rem;
+    margin-right: auto;
+    padding-top: 0;
+    padding-bottom: 0;
+    align-self: center;
+  }
+}
+
+.main-menu__navigation {
   justify-content: flex-end;
+  flex-wrap: wrap;
+  font-size: .75rem;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
-.main-menu__container {
-  position: relative;
-  display: flex;
-  justify-items: center;
+@media (min-width: 600px) {
+  .main-menu__navigation {
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    font-size: .875rem;
+  }
+}
+
+.main-menu__navigation-item {
+  flex: 0 0 auto;
+}
+
+.main-menu__navigation-link {
+  padding: .5rem;
+  text-decoration: none;
 }
 
 .main-menu--dark {
-  background-color: var(--ui--blue);
+  background-color: var(--ui--black);
 }
 
 .main-menu--light {
-  color: var(--ui--black);
-  background-color: var(--ui--white--trans);
+  background-color: var(--ui--white);
 }
 
-.main-menu--transparent {
-  background: transparent;
+.main-menu--light .main-menu__navigation-link,
+.main-menu--light .main-menu__navigation-link:hover,
+.main-menu--light .main-menu__logo .main-menu__navigation-link,
+.main-menu--light .main-menu__logo .main-menu__navigation-link:hover {
+  color: var(--ui--black-almost);
 }
 
-.main-menu__go-home-text {
-  display: inline-block;
-}
-
-.menu__item {
-  display: inline-block;
-  padding: .5rem;
-  transition: .5s opacity;
-  text-decoration: none;
-  color: inherit;
-  z-index: 2;
-}
-
-.menu__item--margin {
-  margin: 0 .5rem;
-}
-
-.menu__item--display-block {
-  display: block;
-}
-
-.menu__item .nuxt-link-active {
-  text-decoration: none;
-}
-
-.menu__item:hover,
-.menu__item:focus,
-.menu__item:active {
-  text-decoration: none;
-  opacity: 1;
-}
-.menu__item--home {
-  text-decoration: none;
-  text-align: left;
-  left:0;
-  top: 0;
-  margin: 0;
-  padding: 0.5em;
-  z-index: 100;
-  font-size: 1.375em;
-  line-height: 1.15;
-  font-weight: 600;
-  opacity: 1;
-  color: var(--ui--white);
-}
-.menu__item--dark-background,
-.menu__item--dark-background:hover {
-  background-color: var(--ui--black--trans);
+.main-menu--dark .main-menu__navigation-link,
+.main-menu--dark .main-menu__navigation-link:hover {
   color: var(--ui--white);
 }
 
-@media (max-width: 799px) {
-  .main-menu__section--align-right {
-    display: none;
-  }
-  .menu__item--home {
-    display: none;
-  }
-}
-
-.menu__item--submit {
-  outline: 1px solid var(--ui--white);
-}
-.menu__item--submit::before {
-  content: '+ '
-}
-
-/*
-* style rules for a minimal print layout
-*/
-
-@media print {
-  .menu {
-    display: none;
-  }
+.main-menu--dark .main-menu__logo .main-menu__navigation-link,
+.main-menu--dark .main-menu__logo .main-menu__navigation-link:hover {
+  color: var(--ui--blue--light);
 }
 </style>

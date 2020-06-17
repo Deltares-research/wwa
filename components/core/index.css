@@ -9,7 +9,7 @@
 .layout--static-page {
   width: 100%;
   background-color: var(--ui--white);
-  color: var(--ui--black);
+  color: var(--ui--black-almost);
 }
 
 .layout-section {
@@ -18,7 +18,7 @@
   position: relative;
   padding: 0 20px;
   width: 100%;
-  background: var(--ui--bg--dark-opaque);
+  background: var(--ui--bg--grey);
 }
 
 .layout-section__container {

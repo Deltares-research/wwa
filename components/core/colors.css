@@ -4,9 +4,10 @@
 
   /* UI colors */
   --ui--white: #fff;
-  --ui--black: #00001e;
+  --ui--black: #000;
+  --ui--orange: #f28d82;
+  --ui--black-almost: #00001e;
   --ui--grey: #353535;
-  --ui--white--trans: rgba(255, 255, 255, .75);
   --ui--black--trans: rgba(0, 0, 30, .75);
   --ui--blue:rgba(0,0,48, 1);
   --ui--blue--bg: #4d4c69;
@@ -16,8 +17,10 @@
   --ui--bg--dark-transparent: rgba(1, 0, 42, 0);
   --ui--bg--dark-translucent: rgba(1, 0, 42, 0.75);
   --ui--bg--dark-opaque: #000226;
+  --ui--bg--grey: #080808;
   --ui--text: var(--booklet--text);
   --ui--text--light: #98abba;
   --ui--text--invert: var(--ui--white);
   --ui--light-grey: var(--booklet--neutral);
+  --ui--event-gradient: linear-gradient(137deg, #e9e6cf 14.18%, #68d4f5 95.78%);
 }

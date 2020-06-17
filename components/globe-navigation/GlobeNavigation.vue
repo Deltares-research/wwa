@@ -137,6 +137,7 @@ export default {
 .globe-navigation {
   padding-top: 1rem;
   padding-bottom: 1rem;
+  background: linear-gradient(180deg, rgba(8, 8, 8, 0) 0%, rgba(8, 8, 8, 1) 100%);
 }
 
 .globe-navigation__header {

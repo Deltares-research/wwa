@@ -52,7 +52,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem;
-    background-color: var(--ui--black);
+    background-color: var(--ui--black-almost);
   }
 
   .event-header__name {

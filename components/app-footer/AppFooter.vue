@@ -9,7 +9,7 @@
       </a>
 
       <nav class="app-footer__navigation">
-        <ul class="list--inline">
+        <ul class="app-footer__navigation-main-list list--inline">
           <li class="app-footer__primary-link-item">
             <nuxt-link
               to="/events"
@@ -26,7 +26,7 @@
               About
             </nuxt-link>
           </li>
-          <li class="app-footer__primary-link-item app-footer__primary-link-item--divider">
+          <li class="app-footer__primary-link-item">
             <nuxt-link
               to="/submit-a-story"
               class="app-footer__link"
@@ -34,6 +34,8 @@
               Submit story
             </nuxt-link>
           </li>
+        </ul>
+        <ul class="list--inline">
           <li
             v-for="link in footerLinks"
             :key="link.slug"
@@ -49,10 +51,7 @@
         </ul>
       </nav>
 
-      <div
-        v-once
-        class="app-footer__copyright"
-      >
+      <div v-once>
         &copy; {{ currentYear }} World Water Atlas
       </div>
     </div>
@@ -81,7 +80,8 @@ export default {
 
 .app-footer__content {
   padding: 2rem 0;
-  border-top: 1px solid var(--white);
+  border-top: 1px solid var(--grey--light);
+  color: var(--grey--light);
 }
 
 .app-footer__logo {
@@ -91,6 +91,13 @@ export default {
   font-weight: 500;
   line-height: 1.25;
   text-decoration: none;
+  color: var(--white);
+}
+
+@media (min-width: 600px) {
+  .app-footer__logo {
+    margin-bottom: 1.5rem;
+  }
 }
 
 .app-footer__logo-highlight {
@@ -109,30 +116,31 @@ export default {
   font-weight: bold;
 }
 
-li.app-footer__primary-link-item {
-  display: inline;
-  text-transform: uppercase;
+@media (min-width: 600px) {
+  .app-footer__navigation {
+    float: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 0;
+    height: 100%;
+    text-align: right;
+  }
 }
 
-li.app-footer__primary-link-item--divider {
+.app-footer__navigation-main-list {
   margin-bottom: .25rem;
 }
 
-li.app-footer__primary-link-item--divider:after {
-  content: "\A";
-  white-space: pre;
+li.app-footer__primary-link-item {
+  text-transform: uppercase;
 }
 
 li.app-footer__secondary-link-item {
-  display: inline;
   font-size: .875rem;
 }
 
 .app-footer__link {
   text-decoration: none;
-}
-
-.app-footer__copyright {
-  color: var(--grey--light);
 }
 </style>

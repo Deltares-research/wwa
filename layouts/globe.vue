@@ -51,7 +51,7 @@ export default {
     store.commit('setFilters', app.default.filters);
     store.commit('setDescription', app.default.description);
     store.commit('setHighlightedEvent', app.default.highlightedEvent);
-    store.commit('setFooterLinks', app.default.footerLinks);
+    store.commit('setNavigationLinks', app.default.navigationLinks);
   },
   beforeCreate () {
     this.GlobeComponent = () => ({

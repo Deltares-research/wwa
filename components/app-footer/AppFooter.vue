@@ -10,34 +10,22 @@
 
       <nav class="app-footer__navigation">
         <ul class="app-footer__navigation-main-list list--inline">
-          <li class="app-footer__primary-link-item">
+          <li
+            v-for="link in navigationLinks.mainNavigation"
+            :key="link.slug"
+            class="app-footer__primary-link-item"
+          >
             <nuxt-link
-              to="/events"
+              :to="`/${link.slug}`"
               class="app-footer__link"
             >
-              Events
-            </nuxt-link>
-          </li>
-          <li class="app-footer__primary-link-item">
-            <nuxt-link
-              to="/about"
-              class="app-footer__link"
-            >
-              About
-            </nuxt-link>
-          </li>
-          <li class="app-footer__primary-link-item">
-            <nuxt-link
-              to="/submit-a-story"
-              class="app-footer__link"
-            >
-              Submit story
+              {{ link.title }}
             </nuxt-link>
           </li>
         </ul>
         <ul class="list--inline">
           <li
-            v-for="link in footerLinks"
+            v-for="link in navigationLinks.subNavigation"
             :key="link.slug"
             class="app-footer__secondary-link-item"
           >
@@ -68,7 +56,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['footerLinks']),
+    ...mapState(['navigationLinks']),
   },
 };
 </script>

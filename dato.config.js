@@ -245,18 +245,34 @@ function generateAppData (dato, root, i18n) {
     };
   });
 
-  const footerLinks = dato.app.footerLinks.map(footerLink => {
-    return {
-      title: footerLink.title,
-      slug: footerLink.slug,
-    };
-  });
+  const navigationLinks = {
+    mainNavigation: [
+      {
+        title: 'Events',
+        slug: 'events',
+      },
+      {
+        title: 'About',
+        slug: 'about',
+      },
+      {
+        title: 'Submit story',
+        slug: 'submit-a-story',
+      },
+    ],
+    subNavigation: dato.app.footerLinks.map(footerLink => {
+      return {
+        title: footerLink.title,
+        slug: footerLink.slug,
+      };
+    }),
+  };
 
   const app = {
     description,
     highlightedEvent,
     filters,
-    footerLinks,
+    navigationLinks,
   };
 
   root.createDataFile(`static/data/app.json`, 'json', app);

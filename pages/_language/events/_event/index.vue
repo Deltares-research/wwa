@@ -1,117 +1,119 @@
 <template>
-  <div>
-    <header>
-      <event-header v-bind="internalEvent" />
-      <div class="event-hero__body">
-        <h2 class="event-hero__copy">
-          <span class="event-hero__date">
-            <time :datetime="internalEvent.startDate">{{ new Date(internalEvent.startDate).getDate() }}</time>  -
-            <time :datetime="internalEvent.endDate">{{ new Date(internalEvent.endDate).getDate() }}</time>
-            July 2020 ({{ internalEvent.timezone }})
-          </span>
-          <span class="event-hero__title">
-            {{ internalEvent.location }} {{ internalEvent.name }}
-          </span>
-        </h2>
-      </div>
-    </header>
+  <div class="layout-section">
+    <div class="layout-section__container">
+      <header>
+        <event-header v-bind="internalEvent" />
+        <div class="event-hero__body">
+          <h2 class="event-hero__copy">
+            <span class="event-hero__date">
+              <time :datetime="internalEvent.startDate">{{ new Date(internalEvent.startDate).getDate() }}</time>  -
+              <time :datetime="internalEvent.endDate">{{ new Date(internalEvent.endDate).getDate() }}</time>
+              July 2020 ({{ internalEvent.timezone }})
+            </span>
+            <span class="event-hero__title">
+              {{ internalEvent.location }} {{ internalEvent.name }}
+            </span>
+          </h2>
+        </div>
+      </header>
 
-    <main class="event__body">
-      <aside class="wwa-mention">
-        <img
-          class="wwa-mention__image"
-          src="/favicon-96x96.png"
-          width="32"
-          height="32"
-          alt=""
-        >
-        <p class="wwa-mention__body">
-          <span>This contribution is part of</span>
-          <a class="wwa-mention__highlight">The World Water Atlas</a>
-        </p>
-      </aside>
-      <section
-        v-for="section in internalEvent.sections"
-        :key="section.id"
-        class="event-section"
-      >
-        <img
-          class="event-section__divider"
-          src="/event-section-wave.svg"
-          width="111"
-          height="35"
-          alt=""
-        >
-        <h3 class="event-section__title">
-          {{ section.title }}
-        </h3>
-        <img
-          v-if="section.image"
-          class="event-section__image"
-          :src="`${section.image.url}?auto=compress`"
-          :alt="section.image.alt"
-          width="320"
-        >
-        <span
-          class="event-section__body"
-          v-html="section.body"
-        />
-        <ul class="event__relevant-chapters">
-          <li
-            class="chapter-preview"
-            v-for="chapter in section.chapters"
-            :key="chapter.slug"
+      <main class="event__body">
+        <aside class="wwa-mention">
+          <img
+            class="wwa-mention__image"
+            src="/favicon-96x96.png"
+            width="32"
+            height="32"
+            alt=""
           >
-            <nuxt-link
-              class="chapter-preview__link"
-              :to="chapter.slug"
-              append
-            >
-              <img
-                class="chapter-preview__image"
-                v-if="chapter.cover"
-                width="200"
-                height="200"
-                :src="`${chapter.cover.url}?auto=compress&w=400`"
-                alt=""
-              >
-              <h4 class="chapter-preview__title">
-                {{ chapter.title }}
-              </h4>
-            </nuxt-link>
-          </li>
-        </ul>
-      </section>
-      <section>
-        <ul
-          v-for="speaker in internalEvent.speakers"
-          :key="speaker.id"
+          <p class="wwa-mention__body">
+            <span>This contribution is part of</span>
+            <a class="wwa-mention__highlight">The World Water Atlas</a>
+          </p>
+        </aside>
+        <section
+          v-for="section in internalEvent.sections"
+          :key="section.id"
+          class="event-section"
         >
-          <li class="speaker-card">
-            <div class="speaker-card__header">
-              <img
-                :src="`${speaker.image.url}?auto=compress&fm=webp&mask=ellipse&w=60`"
-                width="60"
-                height="60"
-                alt=""
+          <img
+            class="event-section__divider"
+            src="/event-section-wave.svg"
+            width="111"
+            height="35"
+            alt=""
+          >
+          <h3 class="event-section__title">
+            {{ section.title }}
+          </h3>
+          <img
+            v-if="section.image"
+            class="event-section__image"
+            :src="`${section.image.url}?auto=compress`"
+            :alt="section.image.alt"
+            width="320"
+          >
+          <span
+            class="event-section__body"
+            v-html="section.body"
+          />
+          <ul class="event__relevant-chapters">
+            <li
+              class="chapter-preview"
+              v-for="chapter in section.chapters"
+              :key="chapter.slug"
+            >
+              <nuxt-link
+                class="chapter-preview__link"
+                :to="chapter.slug"
+                append
               >
-              <div class="speaker-card__copy">
-                <h4 class="speaker-card__name">
-                  {{ speaker.name }}
+                <img
+                  class="chapter-preview__image"
+                  v-if="chapter.cover"
+                  width="200"
+                  height="200"
+                  :src="`${chapter.cover.url}?auto=compress&w=400`"
+                  alt=""
+                >
+                <h4 class="chapter-preview__title">
+                  {{ chapter.title }}
                 </h4>
-                <p class="speaker-card__organization">
-                  {{ speaker.organization }}
-                </p>
+              </nuxt-link>
+            </li>
+          </ul>
+        </section>
+        <section>
+          <ul
+            v-for="speaker in internalEvent.speakers"
+            :key="speaker.id"
+          >
+            <li class="speaker-card">
+              <div class="speaker-card__header">
+                <img
+                  :src="`${speaker.image.url}?auto=compress&fm=webp&mask=ellipse&w=60`"
+                  width="60"
+                  height="60"
+                  alt=""
+                >
+                <div class="speaker-card__copy">
+                  <h4 class="speaker-card__name">
+                    {{ speaker.name }}
+                  </h4>
+                  <p class="speaker-card__organization">
+                    {{ speaker.organization }}
+                  </p>
+                </div>
               </div>
-            </div>
-            <p class="speaker-card__subject">
-              {{ speaker.subject }}
-            </p>
-          </li>
-        </ul>
-      </section>
-    </main>
-    <event-footer v-bind="internalEvent" />
+              <p class="speaker-card__subject">
+                {{ speaker.subject }}
+              </p>
+            </li>
+          </ul>
+        </section>
+      </main>
+      <event-footer v-bind="internalEvent" />
+    </div>
   </div>
 </template>
 

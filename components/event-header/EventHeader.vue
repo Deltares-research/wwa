@@ -51,8 +51,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem;
-    background-color: var(--primary-blue);
+    padding: 1rem 0;
   }
 
   .event-header__name {

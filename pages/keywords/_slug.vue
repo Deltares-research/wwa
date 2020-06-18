@@ -2,7 +2,6 @@
   <div class="invert">
     <div class="layout-section">
       <div class="layout-section__container">
-        <book-header title="Keywords" />
         <ul class="keywords__list list--inline">
           <li
             v-for="keyword in activeKeywords"
@@ -51,7 +50,6 @@
 
 <script>
 import allKeywords from '~/static/data/keywords/index.json';
-import BookHeader from '~/components/book-header/BookHeader';
 import ChapterList from '~/components/chapter-list/ChapterList';
 import FilterTag from '~/components/filter-tag/FilterTag';
 import loadData from '~/lib/load-data';
@@ -73,7 +71,7 @@ export default {
     return { allKeywords };
   },
   components: {
-    BookHeader, ChapterList, FilterTag,
+    ChapterList, FilterTag,
   },
   computed: {
     activeKeywords () {

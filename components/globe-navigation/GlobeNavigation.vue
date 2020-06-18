@@ -27,7 +27,7 @@
         </ul>
       </div>
       <section>
-        <ul class="list--inline">
+        <ul class="globe-navigation__tags list--inline">
           <li
             v-for="currentFilter in currentFilters"
             :key="currentFilter.slug"
@@ -41,6 +41,18 @@
             />
           </li>
         </ul>
+
+        <template>
+          <h1 class="sr-only">
+            {{ filterTitle }}
+          </h1>
+
+          <div
+            v-if="filterDescription"
+            v-html="filterDescription"
+            class="globe-navigation__description"
+          />
+        </template>
       </section>
     </div>
   </div>
@@ -48,6 +60,7 @@
 
 <script>
 import debounce from 'lodash/debounce';
+import renderMarkedContent from '~/lib/marked';
 import FilterTag from '~/components/filter-tag/FilterTag';
 import { mapState } from 'vuex';
 
@@ -64,6 +77,12 @@ export default {
   },
   computed: {
     ...mapState(['filters']),
+    activeFilter () {
+      return this.filters.find(filter => filter.slug === this.activeFilterSlug);
+    },
+    activeFilterItem () {
+      return this.currentFilters.find(filter => filter.slug === this.activeFilterItemSlug);
+    },
     activeFilterSlug () {
       const slug = this.$route.path.split('/')[1] ? this.$route.path.split('/')[1] : this.filters[0].slug;
       return slug;
@@ -74,6 +93,13 @@ export default {
     currentFilters () {
       const activeFilters = this.filters.find(filter => filter.slug === this.activeFilterSlug);
       return activeFilters ? activeFilters.filterItems : [];
+    },
+    filterDescription () {
+      const description = this.activeFilterItemSlug ? this.activeFilterItem.description : this.activeFilter.description;
+      return renderMarkedContent(description);
+    },
+    filterTitle () {
+      return this.activeFilterItemSlug ? this.activeFilterItem.title : this.activeFilter.title;
     },
   },
   mounted () {
@@ -136,8 +162,7 @@ export default {
 
 .globe-navigation {
   padding-top: 1rem;
-  padding-bottom: 1rem;
-  background: linear-gradient(180deg, rgba(8, 8, 8, 0) 0%, rgba(8, 8, 8, 1) 100%);
+  background: linear-gradient(180deg, rgba(8, 8, 8, 0) 0%, rgba(8, 8, 8, 1) 150px, rgba(8, 8, 8, 1) 100%);
 }
 
 .globe-navigation__header {
@@ -220,6 +245,10 @@ li.globe-navigation__tab--selected {
   color: var(--tertiary-blue);
 }
 
+.globe-navigation__tags {
+  margin-bottom: 1rem;
+}
+
 li.globe-navigation__tag {
   margin-bottom: .5rem;
 }
@@ -228,6 +257,26 @@ li.globe-navigation__tag {
   li.globe-navigation__tag {
     margin-right: .75rem;
     margin-bottom: .75rem;
+  }
+}
+
+.globe-navigation__description {
+  margin-bottom: 3rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.globe-navigation__description p {
+  margin-bottom: .5rem;
+}
+
+.globe-navigation__description p:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 600px) {
+  .globe-navigation__description {
+    max-width: 66%;
   }
 }
 </style>

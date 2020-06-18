@@ -2,14 +2,6 @@
   <div class="invert">
     <div class="layout-section">
       <div class="layout-section__container">
-        <book-header
-          :title="title"
-          :body="body"
-        />
-      </div>
-    </div>
-    <div class="layout-section">
-      <div class="layout-section__container">
         <chapter-list
           :chapters="chapters"
           sorted="newest"
@@ -21,7 +13,6 @@
 </template>
 
 <script>
-import BookHeader from '~/components/book-header/BookHeader';
 import ChapterList from '~/components/chapter-list/ChapterList';
 import loadData from '~/lib/load-data';
 import marked from '~/lib/marked';
@@ -43,6 +34,6 @@ export default {
     this.$store.commit('replaceTheme', this.theme.slug);
     this.$store.commit('disableGlobeAutoRotation');
   },
-  components: { BookHeader, ChapterList },
+  components: { ChapterList },
 };
 </script>

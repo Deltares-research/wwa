@@ -235,10 +235,12 @@ function generateAppData (dato, root, i18n) {
     return {
       title: filter.title,
       slug: filter.slug,
+      description: filter.body,
       filterItems: filter.filterItems.map(filterItem => {
         return {
           title: filterItem.title,
           slug: filterItem.slug,
+          description: filterItem.body,
           icon: filterItem.icon,
         };
       }),

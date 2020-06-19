@@ -62,7 +62,7 @@ export default {
   computed: {
     ...mapState(['globePositionRight', 'highlightedEvent']),
     isFilterPage () {
-      return this.$route.name === 'keywords-slug';
+      return this.$route.name === 'keywords-slug' || this.$route.name === 'keywords';
     },
   },
 };

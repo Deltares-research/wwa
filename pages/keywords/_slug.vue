@@ -1,8 +1,13 @@
 <template>
   <div class="invert">
+    <div class="keywords__header layout-section">
+      <div class="layout-section__container">
+        <h1>Keywords</h1>
+      </div>
+    </div>
+
     <div class="layout-section">
       <div class="layout-section__container">
-        <book-header title="Keywords" />
         <ul class="keywords__list list--inline">
           <li
             v-for="keyword in activeKeywords"
@@ -51,7 +56,6 @@
 
 <script>
 import allKeywords from '~/static/data/keywords/index.json';
-import BookHeader from '~/components/book-header/BookHeader';
 import ChapterList from '~/components/chapter-list/ChapterList';
 import FilterTag from '~/components/filter-tag/FilterTag';
 import loadData from '~/lib/load-data';
@@ -73,7 +77,7 @@ export default {
     return { allKeywords };
   },
   components: {
-    BookHeader, ChapterList, FilterTag,
+    ChapterList, FilterTag,
   },
   computed: {
     activeKeywords () {
@@ -111,6 +115,11 @@ export default {
 </script>
 
 <style>
+.keywords__header {
+  padding: 2rem 0 1rem 0;
+  background: linear-gradient(180deg, rgba(8, 8, 8, 0) 0%, rgba(8, 8, 8, 1) 100%);
+}
+
 .keywords__list {
   margin-bottom: 2rem;
 }
@@ -134,6 +143,6 @@ export default {
 }
 
 .keywords__dropdown:hover {
-  color: var(--secondary-blue);
+  color: var(--tertiary-blue);
 }
 </style>

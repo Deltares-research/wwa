@@ -1,11 +1,7 @@
 <template>
   <div>
     <header>
-      <event-header
-        :name="internalEvent.name"
-        :location="internalEvent.location"
-        :all-locales="internalEvent._allNameLocales"
-      />
+      <event-header :event="internalEvent" />
 
       <event-banner v-bind="internalEvent" />
     </header>
@@ -124,6 +120,9 @@
             location
             timezone
             displayDate
+            image {
+              url
+            }
 
             _allNameLocales {
               locale

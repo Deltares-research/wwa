@@ -1,35 +1,16 @@
 <template>
   <div>
     <header>
-      <event-header v-bind="internalEvent" />
-      <div class="event-hero__body">
-        <h2 class="event-hero__copy">
-          <span class="event-hero__date">
-            <time :datetime="internalEvent.startDate">{{ new Date(internalEvent.startDate).getDate() }}</time>  -
-            <time :datetime="internalEvent.endDate">{{ new Date(internalEvent.endDate).getDate() }}</time>
-            July 2020 ({{ internalEvent.timezone }})
-          </span>
-          <span class="event-hero__title">
-            {{ internalEvent.location }} {{ internalEvent.name }}
-          </span>
-        </h2>
-      </div>
+      <event-header
+        :name="internalEvent.name"
+        :location="internalEvent.location"
+        :all-locales="internalEvent._allNameLocales"
+      />
+
+      <event-banner :event="internalEvent" />
     </header>
 
     <main class="event__body">
-      <aside class="wwa-mention">
-        <img
-          class="wwa-mention__image"
-          src="/favicon-96x96.png"
-          width="32"
-          height="32"
-          alt=""
-        >
-        <p class="wwa-mention__body">
-          <span>This contribution is part of</span>
-          <a class="wwa-mention__highlight">The World Water Atlas</a>
-        </p>
-      </aside>
       <section
         v-for="section in internalEvent.sections"
         :key="section.id"
@@ -117,13 +98,15 @@
 
 <script>
   import fetchContent from '~/lib/fetch-content';
-  import eventHeader from '~/components/event-header/EventHeader';
-  import eventFooter from '~/components/event-footer/EventFooter';
+  import EventBanner from '~/components/event-banner/EventBanner';
+  import EventHeader from '~/components/event-header/EventHeader';
+  import EventFooter from '~/components/event-footer/EventFooter';
 
   export default {
     components: {
-      eventHeader,
-      eventFooter,
+      EventBanner,
+      EventHeader,
+      EventFooter,
     },
     head ({ params }) {
       return {
@@ -140,8 +123,7 @@
             name
             location
             timezone
-            startDate
-            endDate
+            displayDate
 
             _allNameLocales {
               locale
@@ -186,47 +168,8 @@
 </script>
 
 <style>
-  .event-hero__body {
-    background: var(--secondary-blue);
-    color: var(--primary-blue);
-    padding: 1.4rem;
-  }
-
-  .event-hero__copy {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .event-hero__date {
-    font-weight: normal;
-  }
-
-  .event-hero__title {
-    font-size: 1.8rem;
-  }
-
   .event__body {
     padding: 0.6rem;
-  }
-
-  .wwa-mention {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-
-  .wwa-mention__image {
-    margin-right: 0.6rem;
-  }
-
-  .wwa-mention__body {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .wwa-mention__highlight {
-    color: var(--tertiary-blue);
-    font-weight: 500;
   }
 
   .event-section {

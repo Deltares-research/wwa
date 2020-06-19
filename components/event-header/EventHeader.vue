@@ -7,7 +7,7 @@
     <nav class="language-switch">
       <ul class="language-switch__list">
         <li
-          v-for="{ locale } in _allNameLocales"
+          v-for="{ locale } in allLocales"
           :key="locale"
           class="language-switch__item"
         >
@@ -37,7 +37,7 @@
     props: {
       name: String,
       location: String,
-      _allNameLocales: Array, // eslint-disable-line vue/prop-name-casing
+      allLocales: Array,
     },
     data({ $route }) {
       return { route: $route };

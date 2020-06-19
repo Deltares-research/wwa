@@ -1,7 +1,12 @@
 <template>
   <div>
     <header>
-      <event-header :event="internalEvent" />
+      <event-header
+        :name="internalEvent.name"
+        :location="internalEvent.location"
+        :image="internalEvent.image"
+        :all-locales="internalEvent._allNameLocales"
+      />
 
       <event-banner v-bind="internalEvent" />
     </header>

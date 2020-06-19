@@ -1,18 +1,18 @@
 <template>
   <div class="event-header">
     <img
-      :src="`${event.image.url}?auto=compress&fit=crop&w=80&h=80`"
+      :src="`${image.url}?auto=compress&fit=crop&w=80&h=80`"
       alt=""
       class="event-header__image"
     >
     <h1 class="event-header__name">
-      <span class="event-header__location">{{ event.location }}</span>
-      {{ event.name }}
+      <span class="event-header__location">{{ location }}</span>
+      {{ name }}
     </h1>
     <nav class="language-switch">
       <ul class="language-switch__list">
         <li
-          v-for="{ locale } in event._allNameLocales"
+          v-for="{ locale } in allLocales"
           :key="locale"
           class="language-switch__item"
         >
@@ -40,7 +40,10 @@
       getNativeName: ISO6391.getNativeName,
     },
     props: {
-      event: Object,
+      name: String,
+      image: Object,
+      location: String,
+      allLocales: Array,
     },
     data({ $route }) {
       return { route: $route };

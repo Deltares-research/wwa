@@ -6,7 +6,10 @@
       :pages="pages"
       :active-page="activePage"
     />
-    <div class="chapter chapter-column">
+    <div
+      class="chapter-column"
+      :class="{ 'chapter-column--tall': highlightedEvent }"
+    >
       <narrative-header
         :chapter="chapter"
         :pages="pages"
@@ -33,6 +36,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter';
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader';
 import PageComponent from '~/components/page-component/PageComponent';
@@ -52,6 +56,9 @@ export default {
       scrollIntoViewSupport: false,
       headerCondensed: false,
     };
+  },
+  computed: {
+    ...mapState(['highlightedEvent']),
   },
   mounted () {
     this.$store.commit('replaceFeatures', this.pages);
@@ -148,14 +155,26 @@ export default {
 
 <style>
 .chapter-column {
-  position: absolute;
-  top: 0;
-  left:0;
+  margin-top: calc(-1 * var(--globe-spacing-default));
   padding-top: 64px;
   z-index: 0;
   width: 100vw;
   background-color: var(--black);
   overflow: hidden;
+}
+
+.chapter-column--tall {
+  margin-top: calc(-1 * var(--globe-spacing-tall));
+}
+
+@media (min-width: 600px) {
+  .chapter-column {
+    margin-top: calc(-1 * var(--globe-spacing-default--desktop));
+  }
+
+  .chapter-column--tall {
+    margin-top: calc(-1 * var(--globe-spacing-tall--desktop));
+  }
 }
 
 @media only screen and (min-width: 1024px) {

@@ -7,7 +7,8 @@ const store = () => {
       activeFeature: null,
       description: '',
       features: [],
-      setHighlightedEvent: null,
+      highlightedEvent: null,
+      navigationLinks: [],
       rotate: true,
       zoom: true,
       globeInteraction: true,
@@ -67,6 +68,9 @@ const store = () => {
       },
       setHighlightedEvent (state, highlightedEvent) {
         state.highlightedEvent = highlightedEvent;
+      },
+      setNavigationLinks (state, navigationLinks) {
+        state.navigationLinks = navigationLinks;
       },
       setFilters (state, filters) {
         state.filters = filters;

@@ -6,6 +6,13 @@
 @import './typography.css';
 @import './animations.css';
 
+:root {
+  --globe-spacing-default: 83vh;
+  --globe-spacing-default--desktop: 73vh;
+  --globe-spacing-tall: 90vh;
+  --globe-spacing-tall--desktop: 85vh;
+}
+
 .layout--static-page {
   width: 100%;
   background-color: var(--white);

@@ -168,7 +168,7 @@ export default {
 
 .narrative-header__content:after {
   content: '';
-  background-color: var(--grey);
+  background-color: var(--white);
   position: absolute;
   top: 0;
   left: 0;
@@ -330,6 +330,12 @@ export default {
   top: 4rem;
   position: fixed;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 600px) {
+  .narrative-header--condensed {
+    top: 5rem;
+  }
 }
 
 @media (min-width: 1024px) {

@@ -13,28 +13,16 @@
     <app-description class="main-menu__section main-menu__description" />
 
     <ul class="main-menu__section main-menu__navigation list--inline">
-      <li class="main-menu__navigation-item">
+      <li
+        v-for="link in navigationLinks.mainNavigation"
+        :key="link.slug"
+        class="main-menu__navigation-item"
+      >
         <nuxt-link
+          :to="`/${link.slug}`"
           class="main-menu__navigation-link"
-          to="/events"
         >
-          Events
-        </nuxt-link>
-      </li>
-      <li class="main-menu__navigation-item">
-        <nuxt-link
-          class="main-menu__navigation-link"
-          to="/about"
-        >
-          About
-        </nuxt-link>
-      </li>
-      <li class="main-menu__navigation-item">
-        <nuxt-link
-          class="main-menu__navigation-link"
-          to="/submit-a-story"
-        >
-          Submit story
+          {{ link.title }}
         </nuxt-link>
       </li>
     </ul>
@@ -42,6 +30,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import AppDescription from '~/components/app-description/AppDescription';
 
 export default {
@@ -55,6 +44,9 @@ export default {
         return 'dark';
       },
     },
+  },
+  computed: {
+    ...mapState(['navigationLinks']),
   },
   components: {
     AppDescription,
@@ -70,7 +62,7 @@ export default {
   left: 0;
   right: 0;
   top: 0;
-  z-index: 2;
+  z-index: 3;
 }
 
 .main-menu__section {

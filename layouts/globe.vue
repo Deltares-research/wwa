@@ -1,37 +1,41 @@
 <template>
-  <main>
-    <main-menu variant="dark" />
+  <div>
+    <main>
+      <main-menu variant="dark" />
 
-    <globe-header />
+      <globe-header />
 
-    <transition
-      name="fadeIn"
-      mode="out-in"
-    >
-      <globe-component
-        :is="GlobeComponent"
-        class="globe-component"
-        :class="{
-          'globe-component--right': globePositionRight,
-          'globe-component--tall': highlightedEvent,
-        }"
-      />
-    </transition>
-
-    <div
-      :class="{ 'globe-spacing--tall': highlightedEvent }"
-      class="globe-spacing"
-    >
-      <transition name="fadeIn">
-        <globe-navigation
-          v-if="!globePositionRight && !isFilterPage"
-          ref="globeNavigation"
+      <transition
+        name="fadeIn"
+        mode="out-in"
+      >
+        <globe-component
+          :is="GlobeComponent"
+          class="globe-component"
+          :class="{
+            'globe-component--right': globePositionRight,
+            'globe-component--tall': highlightedEvent,
+          }"
         />
       </transition>
 
-      <nuxt />
-    </div>
-  </main>
+      <div
+        :class="{ 'globe-spacing--tall': highlightedEvent }"
+        class="globe-spacing"
+      >
+        <transition name="fadeIn">
+          <globe-navigation
+            v-if="!globePositionRight && !isFilterPage"
+            ref="globeNavigation"
+          />
+        </transition>
+
+        <nuxt />
+      </div>
+    </main>
+
+    <app-footer />
+  </div>
 </template>
 
 <script>
@@ -39,6 +43,7 @@ import { mapState } from 'vuex';
 import MainMenu from '~/components/main-menu/MainMenu';
 import GlobeHeader from '~/components/globe-header/GlobeHeader';
 import GlobeNavigation from '~/components/globe-navigation/GlobeNavigation';
+import AppFooter from '~/components/app-footer/AppFooter';
 
 export default {
   async middleware ({ store, redirect }) {
@@ -46,13 +51,14 @@ export default {
     store.commit('setFilters', app.default.filters);
     store.commit('setDescription', app.default.description);
     store.commit('setHighlightedEvent', app.default.highlightedEvent);
+    store.commit('setNavigationLinks', app.default.navigationLinks);
   },
   beforeCreate () {
     this.GlobeComponent = () => ({
       component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue'),
     });
   },
-  components: { MainMenu, GlobeHeader, GlobeNavigation },
+  components: { MainMenu, GlobeHeader, GlobeNavigation, AppFooter },
   computed: {
     ...mapState(['globePositionRight', 'highlightedEvent']),
     isFilterPage () {
@@ -86,20 +92,21 @@ export default {
 }
 
 .globe-spacing {
-  margin-top: 83vh;
+  position: relative;
+  margin-top: var(--globe-spacing-default);
 }
 
 .globe-spacing--tall {
-  margin-top: 90vh;
+  margin-top: var(--globe-spacing-tall);
 }
 
 @media (min-width: 600px) {
   .globe-spacing {
-    margin-top: 73vh;
+    margin-top: var(--globe-spacing-default--desktop);
   }
 
   .globe-spacing--tall {
-    margin-top: 85vh;
+    margin-top: var(--globe-spacing-tall--desktop);
   }
 }
 

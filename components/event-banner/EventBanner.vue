@@ -50,10 +50,11 @@
     margin-bottom: .5rem;
     padding: 2rem;
     background-image: url('/assets/event-wave.svg'), linear-gradient(137deg, #E9E6CF 14.18%, var(--tertiary-blue) 95.78%);
-    background-size: 100% auto;
+    background-size: 105% auto;
     background-repeat: no-repeat;
-    background-position: bottom 30% center;
+    background-position: bottom 0% center;
     color: var(--primary-blue);
+    border-radius: 5px;
   }
 
   @media (min-width: 600px) {
@@ -61,6 +62,12 @@
       margin-bottom: 1rem;
       padding: 6rem 2rem;
       border-radius: 5px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .event-banner__banner {
+      background-position: bottom 20% center;
     }
   }
 

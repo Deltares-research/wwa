@@ -4,6 +4,7 @@
       <event-header
         :name="internalEvent.name"
         :location="internalEvent.location"
+        :image="internalEvent.image"
         :all-locales="internalEvent._allNameLocales"
       />
 
@@ -124,6 +125,9 @@
             location
             timezone
             displayDate
+            image {
+              url
+            }
 
             _allNameLocales {
               locale

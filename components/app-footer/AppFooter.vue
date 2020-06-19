@@ -1,5 +1,8 @@
 <template>
-  <footer class="app-footer layout-section">
+  <footer
+    class="app-footer layout-section"
+    :class="{ 'app-footer--small': isBookChapter }"
+  >
     <div class="app-footer__content layout-section__container">
       <a
         class="app-footer__logo"
@@ -57,6 +60,9 @@ export default {
   },
   computed: {
     ...mapState(['navigationLinks']),
+    isBookChapter () {
+      return this.$route.name === 'narratives-book-chapter';
+    },
   },
 };
 </script>
@@ -64,6 +70,10 @@ export default {
 <style>
 .app-footer {
   padding-top: 2rem;
+}
+
+.app-footer--small {
+  width: 67vw;
 }
 
 .app-footer__content {

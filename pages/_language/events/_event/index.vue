@@ -7,7 +7,7 @@
         :all-locales="internalEvent._allNameLocales"
       />
 
-      <event-banner :event="internalEvent" />
+      <event-banner v-bind="internalEvent" />
     </header>
 
     <main class="event__body">

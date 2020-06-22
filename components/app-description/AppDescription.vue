@@ -22,7 +22,7 @@ export default {
   font-weight: bold;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .app-description {
     font-size: .875rem;
     font-weight: normal;

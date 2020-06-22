@@ -92,7 +92,7 @@ export default {
   color: var(--white);
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .app-footer__logo {
     margin-bottom: 1.5rem;
   }
@@ -102,7 +102,7 @@ export default {
   color: var(--tertiary-blue);
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .app-footer__logo-highlight {
     display: block;
   }
@@ -114,7 +114,7 @@ export default {
   font-weight: bold;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .app-footer__navigation {
     float: right;
     display: flex;

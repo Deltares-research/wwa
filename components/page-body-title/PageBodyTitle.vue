@@ -116,7 +116,7 @@ export default {
   margin-bottom: .5rem;
 }
 
-@media (min-width: 768px) {
+@media (--md-viewport) {
   .page-body-title__title {
     font-size: 2rem;
     line-height: 2.5rem;
@@ -147,7 +147,7 @@ export default {
   margin-bottom: 0.5rem;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (--sm-viewport) {
   .page-body-title__theme {
     margin-bottom: 0;
   }

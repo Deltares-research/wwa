@@ -176,7 +176,7 @@ export default {
   margin-bottom: 1rem;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (--sm-viewport) {
   .page-body {
     padding: 1rem 2.5rem;
   }
@@ -213,7 +213,7 @@ export default {
   margin: 0 auto;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (--sm-viewport) {
   .page-body__asset-placeholder {
     padding: 0.5rem 2.5rem 1rem 2.5rem;
   }

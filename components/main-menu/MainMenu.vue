@@ -78,7 +78,7 @@ export default {
   line-height: 1.2;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .main-menu__logo {
     font-size: 1.3rem;
   }
@@ -88,7 +88,7 @@ export default {
   display: none;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .main-menu__description {
     display: block;
     flex: 0 1 300px;
@@ -108,7 +108,7 @@ export default {
   text-transform: uppercase;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .main-menu__navigation {
     flex: 0 0 auto;
     flex-wrap: nowrap;

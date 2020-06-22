@@ -148,7 +148,7 @@ export default {
   transition: transform var(--narrative-header-transition-speed) var(--narrative-header-transition-timing-hide);
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .narrative-header__content {
     padding: 3.75rem 2.5rem;
   }
@@ -208,7 +208,7 @@ export default {
   width: 1em;
 }
 
-@media (min-width: 768px) {
+@media (--md-viewport) {
   .narrative-header__title {
     font-size: 2rem;
     line-height: 2.5rem;
@@ -276,7 +276,7 @@ export default {
   overflow: scroll;
 }
 
-@media (min-width: 768px) {
+@media (--md-viewport) {
   .narrative-header__navigation {
     max-width: 600px;
   }
@@ -332,19 +332,19 @@ export default {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .narrative-header--condensed {
     top: 5rem;
   }
 }
 
-@media (min-width: 1024px) {
+@media (--lg-viewport) {
   .narrative-header--condensed {
     width: 67vw;
   }
 }
 
-@media (min-width: 1440px) {
+@media (--xl-viewport) {
   .narrative-header--condensed {
     width: 50vw;
   }

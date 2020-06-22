@@ -60,7 +60,7 @@
     background-color: var(--primary-blue);
   }
 
-  @media (min-width: 600px) {
+  @media (--sm-viewport) {
     .event-header {
       padding: 1rem 0;
     }
@@ -72,7 +72,7 @@
     border-radius: 50%;
   }
 
-  @media (min-width: 600px) {
+  @media (--sm-viewport) {
     .event-header__image {
       margin-right: 1rem;
     }
@@ -85,7 +85,7 @@
     font-size: 1rem;
   }
 
-  @media (min-width: 600px) {
+  @media (--sm-viewport) {
     .event-header__name {
       flex-direction: row;
     }
@@ -96,7 +96,7 @@
     color: var(--tertiary-blue);
   }
 
-  @media (min-width: 600px) {
+  @media (--sm-viewport) {
     .event-header__location {
       margin-right: 0.4rem;
     }

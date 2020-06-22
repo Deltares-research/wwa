@@ -42,9 +42,11 @@
           <img
             v-if="section.image"
             class="event-section__image"
-            :src="`${section.image.url}?auto=compress`"
-            :alt="section.image.alt"
-            width="320"
+            :src="section.image.responsiveImage.src"
+            :srcset="section.image.responsiveImage.srcSet"
+            :sizes="section.image.responsiveImage.sizes"
+            :alt="section.image.responsiveImage.alt"
+            :width="section.image.responsiveImage.width"
           >
           <span
             class="event-section__copy"
@@ -157,8 +159,15 @@
               backgroundColor
               waveMarker
               image {
-                url
-                alt
+                responsiveImage(imgixParams: {auto: compress, w: "550"}) {
+                  src
+                  alt
+                  srcSet
+                  sizes
+                  width
+                  height
+                  alt
+                }
               }
               chapters {
                 slug

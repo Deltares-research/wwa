@@ -75,7 +75,7 @@ export default {
   margin: 1rem 0;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .filter-keywords {
     width: calc(100vw - 80px);
     padding: 0 40px;

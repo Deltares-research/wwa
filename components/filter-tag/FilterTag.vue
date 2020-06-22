@@ -43,7 +43,7 @@ export default {
   color: var(--white);
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .filter-tag {
     font-size: 1rem;
   }

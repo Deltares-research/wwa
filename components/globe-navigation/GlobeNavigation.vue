@@ -230,7 +230,7 @@ li.globe-navigation__tab--selected {
   text-decoration: none;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .globe-navigation__tab-link {
     font-size: 1.25rem;
   }
@@ -253,7 +253,7 @@ li.globe-navigation__tag {
   margin-bottom: .5rem;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   li.globe-navigation__tag {
     margin-right: .75rem;
     margin-bottom: .75rem;
@@ -274,7 +274,7 @@ li.globe-navigation__tag {
   margin-bottom: 0;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .globe-navigation__description {
     max-width: 66%;
   }

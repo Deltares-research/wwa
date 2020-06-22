@@ -40,7 +40,7 @@ export default {
   max-width: 290px;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .globe-header {
     top: 5rem;
   }

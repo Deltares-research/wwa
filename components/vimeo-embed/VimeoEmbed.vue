@@ -77,7 +77,7 @@ export default {
   margin-bottom: 0.5rem;
 }
 
-@media (min-width: 600px) and (max-width: 900px) {
+@media (--sm-viewport) and (max-width: 900px) {
   .vimeo-embed__title {
     height: 3.25rem;
     line-height: 1.625rem;

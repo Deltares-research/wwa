@@ -81,7 +81,7 @@ export default {
   top: 9rem;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .globe-component {
     top: 0rem;
   }
@@ -100,7 +100,7 @@ export default {
   margin-top: var(--globe-spacing-tall);
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .globe-spacing {
     margin-top: var(--globe-spacing-default--desktop);
   }
@@ -110,13 +110,13 @@ export default {
   }
 }
 
-@media (min-width: 1024px) {
+@media (--lg-viewport) {
 .globe-component--right {
     transform: translateX(33%);
   }
 }
 
-@media (min-width: 1440px) {
+@media (--xl-viewport) {
   .globe-component--right {
     transform: translateX(25%);
   }

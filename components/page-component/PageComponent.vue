@@ -39,7 +39,7 @@ export default {
   margin: 3rem auto 0 auto;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (--sm-viewport) {
   .page-component {
     margin: 3.75rem auto 0 auto;
     padding-left: 2rem;

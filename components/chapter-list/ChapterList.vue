@@ -233,7 +233,7 @@ export default {
   hyphens: auto;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .chapter-list {
     margin: 0 -6px;
   }
@@ -273,7 +273,7 @@ export default {
   }
 }
 
-@media (min-width: 768px) {
+@media (--md-viewport) {
   .chapter-list__item-content {
     word-break: normal;
   }

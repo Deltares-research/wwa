@@ -167,7 +167,7 @@ export default {
   margin-top: calc(-1 * var(--globe-spacing-tall));
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .chapter-column {
     margin-top: calc(-1 * var(--globe-spacing-default--desktop));
   }
@@ -177,13 +177,13 @@ export default {
   }
 }
 
-@media only screen and (min-width: 1024px) {
+@media only screen and (--lg-viewport) {
   .chapter-column {
     width: 67vw;
   }
 }
 
-@media only screen and (min-width: 1440px) {
+@media only screen and (--xl-viewport) {
   .chapter-column {
     width: 50vw;
   }
@@ -200,7 +200,7 @@ export default {
   z-index: 1;
 }
 
-@media (min-width: 768px) {
+@media (--md-viewport) {
   [data-scrolled-to-top-trigger] {
     top: calc(12.5rem + 1px);
   }

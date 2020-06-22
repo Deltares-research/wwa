@@ -202,7 +202,7 @@ export default {
   text-decoration: underline;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .narrative-footer__related-item {
     width: 48%;
   }

@@ -113,7 +113,7 @@ export default {
   color: var(--primary-blue);
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .book-list__book-title {
     font-size: 2rem;
     line-height: 2.25rem;

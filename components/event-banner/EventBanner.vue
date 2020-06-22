@@ -40,7 +40,7 @@
     margin-bottom: 2rem;
   }
 
-  @media (min-width: 600px) {
+  @media (--sm-viewport) {
     .event-banner {
       margin-bottom: 3rem;
     }
@@ -57,7 +57,7 @@
     border-radius: 5px;
   }
 
-  @media (min-width: 600px) {
+  @media (--sm-viewport) {
     .event-banner__banner {
       margin-bottom: 1rem;
       padding: 6rem 2rem;
@@ -65,7 +65,7 @@
     }
   }
 
-  @media (min-width: 1024px) {
+  @media (--lg-viewport) {
     .event-banner__banner {
       background-position: bottom 20% center;
     }
@@ -76,7 +76,7 @@
     font-weight: bold;
   }
 
-  @media (min-width: 600px) {
+  @media (--sm-viewport) {
     .event-banner__title {
       font-size: 3.75rem;
       font-weight: 900;
@@ -88,7 +88,7 @@
     font-weight: 500;
   }
 
-  @media (min-width: 600px) {
+  @media (--sm-viewport) {
     .event-banner__date {
       font-size: 2rem;
       font-weight: bold;

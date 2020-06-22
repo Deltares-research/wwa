@@ -21,13 +21,6 @@
           'event-section--background-blue': section.backgroundColor === 'blue',
         }"
       >
-        <img
-          class="event-section__divider"
-          src="/event-section-wave.svg"
-          width="111"
-          height="35"
-          alt=""
-        >
         <section class="event__layout event__layout--padded event-section__body">
           <img
             v-if="section.waveMarker"

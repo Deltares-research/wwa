@@ -40,6 +40,16 @@
   padding-left: 1rem;
 }
 
+.event__content {
+  margin-bottom: 3rem;
+}
+
+@media (--sm-viewport) {
+  .event__content {
+    margin-bottom: 4rem;
+  }
+}
+
 .event__layout--background-black,
 .event__layout--background-blue {
   padding: 2rem 0;

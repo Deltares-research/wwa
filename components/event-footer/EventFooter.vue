@@ -30,16 +30,6 @@
 </script>
 
 <style>
-  .event-footer {
-    margin-top: 3rem;
-  }
-
-  @media (--sm-viewport) {
-    .event-footer {
-      margin-top: 4rem;
-    }
-  }
-
   .event-footer__body {
     position: relative;
     display: flex;
@@ -50,7 +40,7 @@
     padding-bottom: 1.4rem;
   }
 
-  @media(min-width: 30rem) {
+  @media (--sm-viewport) {
     .event-footer__body {
       padding-top: 2rem;
       padding-bottom: 4rem;

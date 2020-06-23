@@ -1,5 +1,6 @@
 @import './colors.css';
 @import './reset.css';
+@import './layout.css';
 @import './a11y.css';
 @import './list.css';
 @import './sdg-tag/sdg-tag.css';
@@ -11,36 +12,12 @@
   --globe-spacing-default--desktop: 73vh;
   --globe-spacing-tall: 90vh;
   --globe-spacing-tall--desktop: 85vh;
+  --wwa-column-width: 60rem;
+  --event-column-width: 70rem;
 }
 
-@custom-media --sm-viewport (min-width: 37.5em);
-@custom-media --md-viewport (min-width: 48em);
-@custom-media --lg-viewport (min-width: 64em);
-@custom-media --xl-viewport (min-width: 90em);
-
-.layout--static-page {
-  width: 100%;
-  background-color: var(--white);
-  color: var(--primary-blue);
-}
-
-.layout-section {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  padding: 0 20px;
-  width: 100%;
-  background: var(--black);
-}
-
-.layout-section__container {
-  width: 100%;
-  max-width: 950px;
-  z-index: 1;
-}
-
-@media (--sm-viewport) {
-  .layout-section {
-    padding: 0 40px;
-  }
-}
+@custom-media --sm-viewport (min-width: 37.5rem);
+@custom-media --md-viewport (min-width: 48rem);
+@custom-media --lg-viewport (min-width: 64rem);
+@custom-media --column-viewport (min-width: 70rem);
+@custom-media --xl-viewport (min-width: 90rem);

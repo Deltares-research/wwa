@@ -200,41 +200,6 @@
 </script>
 
 <style>
-  .event__layout {
-    max-width: 60rem;
-    margin-right: auto;
-    margin-left: auto;
-  }
-
-  .event__layout--padded {
-    padding-right: 1.2rem;
-    padding-left: 1.2rem;
-  }
-
-  @media (min-width: 38rem) {
-    .event__layout--padded {
-      padding-right: 2.4rem;
-      padding-left: 2.4rem;
-    }
-  }
-
-  .event-section--background-black {
-    background-color: var(--black);
-  }
-
-  .event-section--background-blue {
-    background-color: var(--primary-blue);
-  }
-
-  .event-section__body {
-    padding-top: 3.4rem;
-    padding-bottom: 3.4rem;
-  }
-
-  .event-section__divider {
-    margin-bottom: 0.2rem;
-  }
-
   .event-section__title {
     font-size: 2rem;
     font-weight: 900;

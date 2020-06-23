@@ -77,7 +77,9 @@ const mapallInternalEventsToRoutes = (allInternalEvents) => (
 
 const postcss = {
   plugins: {
-    'postcss-custom-media': {},
+    'postcss-custom-media': {
+      importFrom: 'components/core/index.css',
+    },
     'postcss-calc': {},
     'postcss-custom-properties': {},
   },

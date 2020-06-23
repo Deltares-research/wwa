@@ -1,7 +1,12 @@
 <template>
   <div class="chapter">
     <header>
-      <event-header v-bind="internalEvent" />
+      <event-header
+        :name="internalEvent.name"
+        :location="internalEvent.location"
+        :image="internalEvent.image"
+        :all-locales="internalEvent._allNameLocales"
+      />
     </header>
 
     <main>
@@ -41,6 +46,9 @@
           internalEvent(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
             name
             location
+            image {
+              url
+            }
             _allNameLocales {
               locale
             }

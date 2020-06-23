@@ -11,7 +11,7 @@
       <event-banner v-bind="internalEvent" />
     </header>
 
-    <main>
+    <main class="event__content">
       <section
         v-for="(section, index) in internalEvent.eventSections"
         :key="section.id"
@@ -33,9 +33,6 @@
             'event__layout--background-blue': section.backgroundColor === 'blue',
           }"
         >
-          previous: {{ internalEvent.eventSections[index - 1] ? internalEvent.eventSections[index - 1].backgroundColor : '' }}<br>
-          current: {{ section.backgroundColor }}<br>
-          next: {{ internalEvent.eventSections[index + 1] ? internalEvent.eventSections[index + 1].backgroundColor : '' }}
           <template v-for="block in section.blocks">
             <div
               v-if="block._modelApiKey === 'text_block'"

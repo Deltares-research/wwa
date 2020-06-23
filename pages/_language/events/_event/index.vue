@@ -35,18 +35,76 @@
         >
           <template v-for="block in section.blocks">
             <div
-              v-if="block._modelApiKey === 'text_block'"
+              v-if="block._modelApiKey === 'media_block'"
               :key="block.id"
               class="event__layout event__layout--padded"
             >
-              [TEXT BLOCK]
+              <img
+                v-if="block.showWaveMarker"
+                class="event-section__divider"
+                src="/event-section-wave.svg"
+                width="111"
+                height="35"
+                alt=""
+              >
+              <h3
+                class="event-section__title"
+                :class="{
+                  'event-section__title--orange': block.titleColor === 'orange',
+                  'event-section__title--blue': block.titleColor === 'blue',
+                }"
+              >
+                {{ block.title }}
+              </h3>
+              <img
+                v-if="block.image"
+                class="event-section__image"
+                :src="block.image.responsiveImage.src"
+                :srcset="block.image.responsiveImage.srcSet"
+                :sizes="block.image.responsiveImage.sizes"
+                :alt="block.image.responsiveImage.alt"
+                :width="block.image.responsiveImage.width"
+              >
+              <span
+                class="event-section__copy"
+                v-html="block.body"
+              />
             </div>
             <div
-              v-else-if="block._modelApiKey === 'video_block'"
+              v-else-if="block._modelApiKey === 'speakers_block'"
               :key="block.id"
               class="event__layout event__layout--padded"
             >
-              [VIDEO-BLOCK]
+              <h3 class="event-section__title">
+                {{ block.title }}
+              </h3>
+
+              <ul class="list--inline">
+                <li
+                  v-for="speaker in block.speakers"
+                  :key="speaker.id"
+                >
+                  <div class="speaker-card__header">
+                    <img
+                      :src="`${speaker.image.url}?auto=compress&fm=webp&mask=ellipse&w=60`"
+                      width="60"
+                      height="60"
+                      alt=""
+                    >
+                    <div class="speaker-card__copy">
+                      <h4 class="speaker-card__name">
+                        {{ speaker.name }}
+                      </h4>
+                      <p class="speaker-card__organization">
+                        {{ speaker.organization }}
+                      </p>
+                      <p class="speaker-card__subject">
+                        {{ speaker.subject }}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
             </div>
           </template>
         </div>
@@ -97,18 +155,35 @@
               showBottomWave
               showTopWave
               blocks {
-                ... on TextBlockRecord {
+                ... on MediaBlockRecord {
                   _modelApiKey
                   id
-                  showWaveMarker
                   title
-                  body(markdown: true)
+                  titleColor
+                  showWaveMarker
+                  body(markdown: false)
+                  image {
+                    responsiveImage {
+                      sizes
+                      src
+                      srcSet
+                      alt
+                      width
+                    }
+                  }
                 }
-                ... on VideoBlockRecord {
+                ... on SpeakersBlockRecord {
                   _modelApiKey
                   id
-                  video {
-                    url
+                  title
+                  speakers {
+                    id
+                    name
+                    organization
+                    subject
+                    image {
+                      url
+                    }
                   }
                 }
               }
@@ -124,3 +199,57 @@
     },
   };
 </script>
+
+<style>
+.event-section__title {
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  max-width: 30rem;
+}
+
+@media (min-width: 38rem) {
+  .event-section__title {
+    font-size: 3.75rem;
+  }
+}
+
+.event-section__title--orange {
+  color: var(--orange);
+}
+
+.event-section__title--blue {
+  color: var(--tertiary-blue);
+}
+
+.event-section__image {
+  margin-bottom: 1rem;
+}
+
+.event-section__copy {
+  display: block;
+  column-count: 2;
+  column-width: 25rem;
+  column-gap: 1.2rem;
+  margin-bottom: 1.4rem;
+}
+
+.event-section__copy p {
+  display: inline-block;
+  margin-bottom: 1rem;
+  max-width: 30rem;
+}
+
+.speaker-card {
+  background-color: var(--tertiary-blue);
+  padding: 1rem;
+}
+
+.speaker-card__header {
+  display: flex;
+}
+
+.speaker-card__copy {
+  margin-left: 1rem;
+}
+</style>

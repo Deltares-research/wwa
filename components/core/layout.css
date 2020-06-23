@@ -104,10 +104,12 @@
   background-image: url('/section-wave-bottom-blue.svg');
 }
 
-.event-section--wave-top-bg-blue:before {
+.event-section--wave-top-bg-blue:before,
+.event-section--wave-bottom-bg-blue:after {
   background-color: var(--primary-blue);
 }
 
-.event-section--wave-top-bg-black:before {
+.event-section--wave-top-bg-black:before,
+.event-section--wave-bottom-bg-black:after {
   background-color: var(--black);
 }

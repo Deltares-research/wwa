@@ -2,7 +2,7 @@
   command = "npm run lint -- --max-warnings 0 && npm run build && npm run generate"
   publish = "dist/"
   [build.environment]
-    CI = "1"                          # https://www.voorhoede.nl/en/blog/10x-faster-nuxt-builds-on-netlify/#skip-streaming-logs
+    CI = "1" # https://www.voorhoede.nl/en/blog/10x-faster-nuxt-builds-on-netlify/#skip-streaming-logs
     NODE_VERSION = "12"
     NODE_ENV = "development"
     NPM_CONFIG_AUDIT = "false"

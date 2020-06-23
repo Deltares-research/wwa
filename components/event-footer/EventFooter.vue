@@ -1,5 +1,5 @@
 <template functional>
-  <footer class="event-footer">
+  <footer class="event-footer event__layout event__layout--padded">
     <div class="event-footer__body">
       <p class="event-footer__copy">
         <span>{{ props.location }}</span>
@@ -37,8 +37,6 @@
   .event-footer__body {
     position: relative;
     display: flex;
-    margin-right: 1rem;
-    margin-left: 1rem;
     border-top-color: var(--white);
     border-top-style: solid;
     border-top-width: 2px;

@@ -56,13 +56,13 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: .5rem 0;
+    padding: .5rem 1rem;
     background-color: var(--primary-blue);
   }
 
   @media (--sm-viewport) {
     .event-header {
-      padding: 1rem 0;
+      padding: 1rem;
     }
   }
 

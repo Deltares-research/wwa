@@ -62,7 +62,7 @@ export default {
   box-sizing: border-box;
   width: 100%;
   height: auto;
-  max-width: 960px;
+  max-width: var(--wwa-column-width);
   margin: auto;
   padding: 10rem 1rem;
 }

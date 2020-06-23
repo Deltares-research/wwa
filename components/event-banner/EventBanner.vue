@@ -43,6 +43,7 @@
   @media (--sm-viewport) {
     .event-banner {
       margin-bottom: 3rem;
+      padding: 0 1rem;
     }
   }
 
@@ -54,7 +55,6 @@
     background-repeat: no-repeat;
     background-position: bottom 0% center;
     color: var(--primary-blue);
-    border-radius: 5px;
   }
 
   @media (--sm-viewport) {
@@ -74,6 +74,7 @@
   .event-banner__title {
     font-size: 2rem;
     font-weight: bold;
+    line-height: 1;
   }
 
   @media (--sm-viewport) {
@@ -98,6 +99,13 @@
   .event-banner__credits {
     display: flex;
     align-items: center;
+    padding: 0 1rem;
+  }
+
+  @media (--sm-viewport) {
+    .event-banner__credits {
+      padding: 0;
+    }
   }
 
   .event-banner__credits:before {

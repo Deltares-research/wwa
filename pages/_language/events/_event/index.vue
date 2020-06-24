@@ -8,13 +8,7 @@
         :all-locales="internalEvent._allNameLocales"
       />
 
-      <event-banner
-        :name="internalEvent.name"
-        :location="internalEvent.location"
-        :visually-hide-name="internalEvent.visuallyHideName"
-        :display-date="internalEvent.displayDate"
-        :banner-icon="internalEvent.bannerIcon"
-      />
+      <event-banner v-bind="internalEvent" />
     </header>
 
     <main class="event__content">

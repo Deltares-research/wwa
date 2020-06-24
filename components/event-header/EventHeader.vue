@@ -57,7 +57,6 @@
     flex-direction: row;
     align-items: center;
     padding: .5rem 1rem;
-    background-color: var(--primary-blue);
   }
 
   @media (--sm-viewport) {

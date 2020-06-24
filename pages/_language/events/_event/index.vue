@@ -29,90 +29,92 @@
           'event__layout--background-blue': section.backgroundColor === 'blue',
         }"
       >
-        <template v-for="block in section.blocks">
-          <div
-            v-if="block._modelApiKey === 'media_block'"
-            :key="block.id"
-            class="event__layout event__layout--padded"
-          >
-            <img
-              v-if="block.showWaveMarker"
-              class="event-section__divider"
-              src="/event-title-wave.svg"
-              width="111"
-              height="35"
-              alt=""
-            >
-            <h3
-              class="event-section__title"
-              :class="{
-                'event-section__title--orange': block.titleColor === 'orange',
-                'event-section__title--blue': block.titleColor === 'blue',
-              }"
-            >
-              {{ block.title }}
-            </h3>
-            <picture v-if="block.image">
-              <source
-                :srcset="block.image.portrait.srcSet"
-                :sizes="block.image.portrait.sizes"
-                media="(min-width: 800px)"
-              >
-              <source
-                :srcset="block.image.landscape.srcSet"
-                :sizes="block.image.landscape.sizes"
-                media="(max-width: 800px)"
-              >
-              <img
-                class="event-section__image"
-                :src="block.image.portrait.src"
-                :width="block.image.portrait.width"
-                :alt="block.image.alt"
-              >
-            </picture>
+        <div class="event-section__content">
+          <template v-for="block in section.blocks">
             <div
-              class="event-section__copy"
-              v-html="block.body"
-            />
-          </div>
-          <div
-            v-if="block._modelApiKey === 'speakers_block'"
-            :key="block.id"
-            class="event__layout event__layout--padded"
-          >
-            <h3 class="event-section__title">
-              {{ block.title }}
-            </h3>
-
-            <ul class="list--inline">
-              <li
-                v-for="speaker in block.speakers"
-                class="speaker-card"
-                :key="speaker.id"
+              v-if="block._modelApiKey === 'media_block'"
+              :key="block.id"
+              class="event__layout event__layout--padded"
+            >
+              <img
+                v-if="block.showWaveMarker"
+                class="event-section__divider"
+                src="/event-title-wave.svg"
+                width="111"
+                height="35"
+                alt=""
               >
-                <div class="speaker-card__header">
-                  <img
-                    :src="`${speaker.image.url}?auto=compress&fm=webp&mask=ellipse&w=60`"
-                    width="60"
-                    height="60"
-                    alt=""
-                  >
-                  <div class="speaker-card__copy">
-                    <h4 class="speaker-card__name">
-                      {{ speaker.name }}
-                    </h4>
-                    <p class="speaker-card__organization">
-                      {{ speaker.organization }}
-                    </p>
-                    <p class="speaker-card__subject">
-                      {{ speaker.subject }}
-                    </p>
+              <h3
+                class="event-section__title"
+                :class="{
+                  'event-section__title--orange': block.titleColor === 'orange',
+                  'event-section__title--blue': block.titleColor === 'blue',
+                }"
+              >
+                {{ block.title }}
+              </h3>
+              <picture v-if="block.image">
+                <source
+                  :srcset="block.image.portrait.srcSet"
+                  :sizes="block.image.portrait.sizes"
+                  media="(min-width: 800px)"
+                >
+                <source
+                  :srcset="block.image.landscape.srcSet"
+                  :sizes="block.image.landscape.sizes"
+                  media="(max-width: 800px)"
+                >
+                <img
+                  class="event-section__image"
+                  :src="block.image.portrait.src"
+                  :width="block.image.portrait.width"
+                  :alt="block.image.alt"
+                >
+              </picture>
+              <div
+                class="event-section__copy"
+                v-html="block.body"
+              />
+            </div>
+            <div
+              v-if="block._modelApiKey === 'speakers_block'"
+              :key="block.id"
+              class="event__layout event__layout--padded"
+            >
+              <h3 class="event-section__title">
+                {{ block.title }}
+              </h3>
+
+              <ul class="list--inline">
+                <li
+                  v-for="speaker in block.speakers"
+                  class="speaker-card"
+                  :key="speaker.id"
+                >
+                  <div class="speaker-card__header">
+                    <img
+                      :src="`${speaker.image.url}?auto=compress&fm=webp&mask=ellipse&w=60`"
+                      width="60"
+                      height="60"
+                      alt=""
+                    >
+                    <div class="speaker-card__copy">
+                      <h4 class="speaker-card__name">
+                        {{ speaker.name }}
+                      </h4>
+                      <p class="speaker-card__organization">
+                        {{ speaker.organization }}
+                      </p>
+                      <p class="speaker-card__subject">
+                        {{ speaker.subject }}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </template>
+                </li>
+              </ul>
+            </div>
+          </template>
+        </div>
       </section>
     </main>
     <event-footer v-bind="internalEvent" />
@@ -250,7 +252,6 @@
       column-count: 2;
       column-width: 25rem;
       column-gap: 1.2rem;
-      margin-bottom: 1.4rem;
     }
 
     .event-section__copy p {

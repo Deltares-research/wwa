@@ -36,13 +36,8 @@
 </script>
 
 <style>
-  .event-banner {
-    margin-bottom: 2rem;
-  }
-
   @media (--sm-viewport) {
     .event-banner {
-      margin-bottom: 3rem;
       padding: 0 1rem;
     }
   }

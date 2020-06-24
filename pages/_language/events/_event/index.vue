@@ -8,7 +8,13 @@
         :all-locales="internalEvent._allNameLocales"
       />
 
-      <event-banner v-bind="internalEvent" />
+      <event-banner
+        :name="internalEvent.name"
+        :location="internalEvent.location"
+        :visually-hide-name="internalEvent.visuallyHideName"
+        :display-date="internalEvent.displayDate"
+        :banner-icon="internalEvent.bannerIcon"
+      />
     </header>
 
     <main class="event__content">
@@ -144,11 +150,17 @@
           internalEvent(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
             slug
             name
+            visuallyHideName
             location
             timezone
             displayDate
             image {
               url
+            }
+            bannerIcon {
+              url
+              width
+              height
             }
 
             _allNameLocales {

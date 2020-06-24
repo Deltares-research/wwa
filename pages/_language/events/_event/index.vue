@@ -25,89 +25,94 @@
           'event-section--wave-top-bg-black': section.showTopWave && internalEvent.eventSections[index - 1] && internalEvent.eventSections[index - 1].backgroundColor === 'black',
           'event-section--wave-bottom-bg-blue': section.showBottomWave && internalEvent.eventSections[index + 1] && internalEvent.eventSections[index + 1].backgroundColor === 'blue',
           'event-section--wave-bottom-bg-black': section.showBottomWave && internalEvent.eventSections[index + 1] && internalEvent.eventSections[index + 1].backgroundColor === 'black',
+          'event__layout--background-black': section.backgroundColor === 'black',
+          'event__layout--background-blue': section.backgroundColor === 'blue',
         }"
       >
-        <div
-          :class="{
-            'event__layout--background-black': section.backgroundColor === 'black',
-            'event__layout--background-blue': section.backgroundColor === 'blue',
-          }"
-        >
-          <template v-for="block in section.blocks">
-            <div
-              v-if="block._modelApiKey === 'media_block'"
-              :key="block.id"
-              class="event__layout event__layout--padded"
+        <template v-for="block in section.blocks">
+          <div
+            v-if="block._modelApiKey === 'media_block'"
+            :key="block.id"
+            class="event__layout event__layout--padded"
+          >
+            <img
+              v-if="block.showWaveMarker"
+              class="event-section__divider"
+              src="/event-title-wave.svg"
+              width="111"
+              height="35"
+              alt=""
             >
-              <img
-                v-if="block.showWaveMarker"
-                class="event-section__divider"
-                src="/event-section-wave.svg"
-                width="111"
-                height="35"
-                alt=""
+            <h3
+              class="event-section__title"
+              :class="{
+                'event-section__title--orange': block.titleColor === 'orange',
+                'event-section__title--blue': block.titleColor === 'blue',
+              }"
+            >
+              {{ block.title }}
+            </h3>
+            <picture v-if="block.image">
+              <source
+                :srcset="block.image.portrait.srcSet"
+                :sizes="block.image.portrait.sizes"
+                media="(min-width: 800px)"
               >
-              <h3
-                class="event-section__title"
-                :class="{
-                  'event-section__title--orange': block.titleColor === 'orange',
-                  'event-section__title--blue': block.titleColor === 'blue',
-                }"
+              <source
+                :srcset="block.image.landscape.srcSet"
+                :sizes="block.image.landscape.sizes"
+                media="(max-width: 800px)"
               >
-                {{ block.title }}
-              </h3>
               <img
-                v-if="block.image"
                 class="event-section__image"
-                :src="block.image.responsiveImage.src"
-                :srcset="block.image.responsiveImage.srcSet"
-                :sizes="block.image.responsiveImage.sizes"
-                :alt="block.image.responsiveImage.alt"
-                :width="block.image.responsiveImage.width"
+                :src="block.image.portrait.src"
+                :width="block.image.portrait.width"
+                :alt="block.image.alt"
               >
-              <span
-                class="event-section__copy"
-                v-html="block.body"
-              />
-            </div>
+            </picture>
             <div
-              v-else-if="block._modelApiKey === 'speakers_block'"
-              :key="block.id"
-              class="event__layout event__layout--padded"
-            >
-              <h3 class="event-section__title">
-                {{ block.title }}
-              </h3>
+              class="event-section__copy"
+              v-html="block.body"
+            />
+          </div>
+          <div
+            v-if="block._modelApiKey === 'speakers_block'"
+            :key="block.id"
+            class="event__layout event__layout--padded"
+          >
+            <h3 class="event-section__title">
+              {{ block.title }}
+            </h3>
 
-              <ul class="list--inline">
-                <li
-                  v-for="speaker in block.speakers"
-                  :key="speaker.id"
-                >
-                  <div class="speaker-card__header">
-                    <img
-                      :src="`${speaker.image.url}?auto=compress&fm=webp&mask=ellipse&w=60`"
-                      width="60"
-                      height="60"
-                      alt=""
-                    >
-                    <div class="speaker-card__copy">
-                      <h4 class="speaker-card__name">
-                        {{ speaker.name }}
-                      </h4>
-                      <p class="speaker-card__organization">
-                        {{ speaker.organization }}
-                      </p>
-                      <p class="speaker-card__subject">
-                        {{ speaker.subject }}
-                      </p>
-                    </div>
+            <ul class="list--inline">
+              <li
+                v-for="speaker in block.speakers"
+                class="speaker-card"
+                :key="speaker.id"
+              >
+                <div class="speaker-card__header">
+                  <img
+                    :src="`${speaker.image.url}?auto=compress&fm=webp&mask=ellipse&w=60`"
+                    width="60"
+                    height="60"
+                    alt=""
+                  >
+                  <div class="speaker-card__copy">
+                    <h4 class="speaker-card__name">
+                      {{ speaker.name }}
+                    </h4>
+                    <p class="speaker-card__organization">
+                      {{ speaker.organization }}
+                    </p>
+                    <p class="speaker-card__subject">
+                      {{ speaker.subject }}
+                    </p>
                   </div>
-                </li>
-              </ul>
-            </div>
-          </template>
-        </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </template>
       </section>
     </main>
     <event-footer v-bind="internalEvent" />
@@ -154,6 +159,7 @@
               backgroundColor
               showBottomWave
               showTopWave
+
               blocks {
                 ... on MediaBlockRecord {
                   _modelApiKey
@@ -161,14 +167,19 @@
                   title
                   titleColor
                   showWaveMarker
-                  body(markdown: false)
+                  body(markdown: true)
                   image {
-                    responsiveImage {
-                      sizes
+                    alt
+
+                    portrait: responsiveImage(imgixParams: {auto: compress, w: "550", h: "660", fit: crop, crop: entropy}) {
                       src
                       srcSet
-                      alt
+                      sizes
                       width
+                    }
+                    landscape: responsiveImage(imgixParams: {auto: compress, w: "550"}) {
+                      srcSet
+                      sizes
                     }
                   }
                 }
@@ -201,55 +212,64 @@
 </script>
 
 <style>
-.event-section__title {
-  font-size: 2rem;
-  font-weight: 900;
-  margin-bottom: 1rem;
-  max-width: 30rem;
-}
-
-@media (min-width: 38rem) {
   .event-section__title {
-    font-size: 3.75rem;
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    max-width: 30rem;
   }
-}
 
-.event-section__title--orange {
-  color: var(--orange);
-}
+  @media (--sm-viewport) {
+    .event-section__title {
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      max-width: 30rem;
+    }
 
-.event-section__title--blue {
-  color: var(--tertiary-blue);
-}
+    @media (--sm-viewport) {
+      .event-section__title {
+        font-size: 3.75rem;
+      }
+    }
 
-.event-section__image {
-  margin-bottom: 1rem;
-}
+    .event-section__title--orange {
+      color: var(--orange);
+    }
 
-.event-section__copy {
-  display: block;
-  column-count: 2;
-  column-width: 25rem;
-  column-gap: 1.2rem;
-  margin-bottom: 1.4rem;
-}
+    .event-section__title--blue {
+      color: var(--tertiary-blue);
+    }
 
-.event-section__copy p {
-  display: inline-block;
-  margin-bottom: 1rem;
-  max-width: 30rem;
-}
+    .event-section__image {
+      margin-bottom: 1rem;
+    }
 
-.speaker-card {
-  background-color: var(--tertiary-blue);
-  padding: 1rem;
-}
+    .event-section__copy {
+      display: block;
+      column-count: 2;
+      column-width: 25rem;
+      column-gap: 1.2rem;
+      margin-bottom: 1.4rem;
+    }
 
-.speaker-card__header {
-  display: flex;
-}
+    .event-section__copy p {
+      display: inline-block;
+      margin-bottom: 1rem;
+      max-width: 30rem;
+    }
 
-.speaker-card__copy {
-  margin-left: 1rem;
-}
+    .speaker-card {
+      background-color: var(--tertiary-blue);
+      padding: 1rem;
+    }
+
+    .speaker-card__header {
+      display: flex;
+    }
+
+    .speaker-card__copy {
+      margin-left: 1rem;
+    }
+  }
 </style>

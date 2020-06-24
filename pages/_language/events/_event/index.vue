@@ -113,6 +113,16 @@
                 </li>
               </ul>
             </div>
+            <div
+              v-if="block._modelApiKey === 'chapters_block'"
+              :key="block.id"
+              class="event__layout event__layout--padded"
+            >
+              <chapters-carousel
+                :title="block.title"
+                :items="block.chapters"
+              />
+            </div>
           </template>
         </div>
       </section>
@@ -126,12 +136,14 @@
   import EventBanner from '~/components/event-banner/EventBanner';
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';
+  import ChaptersCarousel from '~/components/chapters-carousel/ChaptersCarousel';
 
   export default {
     components: {
       EventBanner,
       EventHeader,
       EventFooter,
+      ChaptersCarousel,
     },
     head ({ params }) {
       return {
@@ -169,6 +181,18 @@
               showTopWave
 
               blocks {
+                ... on ChaptersBlockRecord {
+                  _modelApiKey
+                  id
+                  title
+                  chapters {
+                    title
+                    slug
+                    cover {
+                      url
+                    }
+                  }
+                }
                 ... on MediaBlockRecord {
                   _modelApiKey
                   id

@@ -45,9 +45,11 @@
     "marked": "^1.1.0",
     "nuxt": "^2.13.1",
     "smoothscroll-polyfill": "^0.4.4",
+    "swiper": "^5.4.5",
     "three": "^0.116.1",
     "three.meshline": "^1.2.0",
-    "typeface-roboto": "0.0.75"
+    "typeface-roboto": "0.0.75",
+    "vue-awesome-swiper": "^4.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

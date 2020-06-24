@@ -146,11 +146,17 @@
           internalEvent(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
             slug
             name
+            visuallyHideName
             location
             timezone
             displayDate
             image {
               url
+            }
+            bannerIcon {
+              url
+              width
+              height
             }
 
             _allNameLocales {

@@ -1,8 +1,21 @@
 <template functional>
   <div class="event-banner">
     <div class="event-banner__banner">
-      <h2 class="event-banner__title">
-        {{ props.location }} {{ props.name }}
+      <img
+        v-if="props.bannerIcon"
+        :src="props.bannerIcon.url"
+        :width="props.bannerIcon.width"
+        :height="props.bannerIcon.height"
+        alt=""
+        class="event-banner__icon"
+      >
+      <h2
+        class="event-banner__title"
+        :class="{
+          'sr-only': props.visuallyHideName
+        }"
+      >
+        {{ props.location }} {{ props.name }}{{ bannerImageUrl }}
       </h2>
       <p class="event-banner__date">
         {{ props.displayDate }}
@@ -30,7 +43,9 @@
     props: {
       name: String,
       location: String,
+      visuallyHideName: Boolean,
       displayDate: String,
+      bannerIcon: Object,
     },
   };
 </script>
@@ -63,6 +78,19 @@
   @media (--lg-viewport) {
     .event-banner__banner {
       background-position: bottom 20% center;
+    }
+  }
+
+  .event-banner__icon {
+    margin-bottom: .5rem;
+    max-height: 50px;
+    width: auto;
+  }
+
+  @media (--sm-viewport) {
+    .event-banner__icon {
+      margin-bottom: .75rem;
+      max-height: 70px;
     }
   }
 

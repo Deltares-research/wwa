@@ -43,7 +43,7 @@
     "lodash.get": "^4.4.2",
     "mapbox-gl": "^1.11.0",
     "marked": "^1.1.0",
-    "nuxt": "^2.12.2",
+    "nuxt": "^2.13.1",
     "smoothscroll-polyfill": "^0.4.4",
     "three": "^0.116.1",
     "three.meshline": "^1.2.0",

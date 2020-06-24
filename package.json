@@ -10,7 +10,7 @@
     "build": "npm-run-all build:*",
     "build:data": "dato dump",
     "build:assets": "cpy ./components/**/assets/*.* ./static/assets",
-    "generate": "nuxt generate --fail-on-error",
+    "generate": "nuxt build && nuxt export --fail-on-error",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:fix": "npm run lint -- --fix",
     "data:backup": "dato dump --config dato.backup.js",

@@ -1,6 +1,36 @@
-const dotenv = require('dotenv-safe');
+import dotenv from 'dotenv-safe';
+import { promises as fs } from 'fs';
+import path from 'path';
+import fetchContent from './lib/fetch-content';
 
 dotenv.config();
+
+const mapallInternalEventsToRedirects = () => fetchContent(`
+  {
+    allInternalEvents {
+      slug
+      countryCode
+      nativeLocale
+      _allNameLocales {
+        locale
+      }
+    }
+  }
+`)
+  .then(({ allInternalEvents }) => (
+    allInternalEvents
+      .map((event) => [
+        `/events/${event.slug} /${event.nativeLocale}/events/${event.slug} 302 Country=${event.countryCode}`,
+        ...event._allNameLocales
+          .filter(({ locale }) => locale !== 'en')
+          .map(({ locale }) =>
+            `/events/${event.slug} /${locale}/events/${event.slug} 302 Language=${locale}`,
+          ),
+        `/events/${event.slug} /en/events/${event.slug} 302`,
+      ])
+      .flat()
+      .join('\n')
+  ));
 
 export default {
   build: {
@@ -58,6 +88,15 @@ export default {
       /^\/narratives\/undefined/,
     ],
   },
+  hooks: {
+    export: {
+      done (generator) {
+        return mapallInternalEventsToRedirects().then(redirectRules => {
+          return fs.writeFile(path.join(generator.distPath, '_redirects'), redirectRules);
+        });
+      },
+    },
+  },
   head: {
     title: 'World Water Atlas',
     meta: [
@@ -85,4 +124,5 @@ export default {
     { src: '~/plugins/smoothscroll', mode: 'client' },
     { src: '~/plugins/ga.js', mode: 'client' },
   ],
+  target: 'static',
 };

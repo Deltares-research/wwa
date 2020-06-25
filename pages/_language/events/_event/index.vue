@@ -142,10 +142,8 @@
       };
     },
     async asyncData({ params }) {
-      return {
-        ...await fetchContent({ query, variables: { locale: params.language, slug: params.event } }),
-        params,
-      };
+      const data = await fetchContent({ query, variables: { locale: params.language, slug: params.event } });
+      return { ...data, params };
     },
   };
 </script>

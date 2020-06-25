@@ -1,6 +1,6 @@
 <template>
-  <div class="chapters-carousel">
-    <p class="chapters-carousel__title">
+  <div class="event-block-chapters">
+    <p class="event-block-chapters__title">
       {{ title }}
     </p>
 
@@ -11,14 +11,19 @@
       >
         <nuxt-link
           :to="`/${item.slug}`"
-          class="chapters-carousel__link"
+          class="event-block-chapters__link"
         >
-          <span class="chapters-carousel__item-title">{{ item.title }}</span>
+          <span class="event-block-chapters__item-title">{{ item.title }}</span>
           <img
+            v-if="item.cover"
             :data-src="`${item.cover.url}?auto=compress&w=470`"
             alt=""
-            class="chapters-carousel__item-image swiper-lazy"
+            class="event-block-chapters__item-image swiper-lazy"
           >
+          <div
+            v-else
+            class="event-block-chapters__item-placeholder"
+          />
           <div class="swiper-lazy-preloader swiper-lazy-preloader-white" />
         </nuxt-link>
       </swiper-slide>
@@ -89,25 +94,25 @@ export default {
 </script>
 
 <style>
-.chapters-carousel__title {
+.event-block-chapters__title {
   margin-bottom: .25rem;
   font-size: .75rem;
   text-transform: uppercase;
 }
 
 @media (--sm-viewport) {
-  .chapters-carousel__title {
+  .event-block-chapters__title {
     font-size: .875rem;
   }
 }
 
-.chapters-carousel__link {
+.event-block-chapters__link {
   position: relative;
   display: block;
   height: 265px;
 }
 
-.chapters-carousel__link:before {
+.event-block-chapters__link:before {
   content: '';
   position: absolute;
   display: block;
@@ -116,8 +121,9 @@ export default {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0) 38.44%, rgba(0, 0, 0, 0.7) 100%);
 }
 
-.chapters-carousel__item-title {
+.event-block-chapters__item-title {
   position: absolute;
+  z-index: 12;
   left: 1rem;
   right: 1rem;
   bottom: 1rem;
@@ -127,10 +133,18 @@ export default {
   text-shadow: 1px 1px 1px var(--primary-blue);
 }
 
-.chapters-carousel__item-image {
+.event-block-chapters__item-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.event-block-chapters__item-placeholder {
+  position: absolute;
+  z-index: 11;
+  width: 100%;
+  height: 100%;
+  background: var(--grey);
 }
 
 .swiper-container {

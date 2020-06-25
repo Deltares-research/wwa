@@ -81,10 +81,7 @@
       title: String,
       titleColor: String,
       programButtonLabel: String,
-      image: {
-        portrait: Object,
-        landscape: Object,
-      },
+      image: Object,
       body: String,
       callToActionLabel: String,
       callToActionUrl: String,

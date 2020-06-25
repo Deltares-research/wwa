@@ -166,7 +166,6 @@
                   mirrorLayout
                   image {
                     alt
-
                     portrait: responsiveImage(imgixParams: {auto: compress, w: "550", h: "660", fit: crop, crop: entropy}) {
                       src
                       srcSet

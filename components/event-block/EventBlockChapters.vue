@@ -64,11 +64,17 @@ export default {
       swiperOptions: {
         slidesPerView: 3,
         preloadImages: false,
-        lazy: true,
+        lazy: {
+          loadOnTransitionStart: true,
+        },
         watchSlidesProgress: true,
         watchSlidesVisibility: true,
         mousewheel: {
           forceToAxis: true,
+        },
+        keyboard: {
+          enabled: true,
+          onlyInViewport: true,
         },
         navigation: {
           nextEl: '.swiper-button-next',

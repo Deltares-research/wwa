@@ -46,7 +46,7 @@
 
 @media (--sm-viewport) {
   .event__content .event__layout:not(:last-child) {
-    margin-bottom: 5rem;
+    margin-bottom: 4rem;
   }
 }
 

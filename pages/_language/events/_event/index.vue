@@ -32,56 +32,25 @@
         <div class="event-section__content">
           <template v-for="block in section.blocks">
             <div
+              v-if="block._modelApiKey === 'text_block'"
+              :key="block.id"
+              class="event__layout event__layout--padded"
+            >
+              <event-block-text v-bind="block" />
+            </div>
+            <div
               v-if="block._modelApiKey === 'media_block'"
               :key="block.id"
               class="event__layout event__layout--padded"
             >
-              <img
-                v-if="block.showWaveMarker"
-                class="event-section__divider"
-                src="/event-title-wave.svg"
-                width="111"
-                height="35"
-                alt=""
-              >
-              <h3
-                class="event-section__title"
-                :class="{
-                  'event-section__title--orange': block.titleColor === 'orange',
-                  'event-section__title--blue': block.titleColor === 'blue',
-                }"
-              >
-                {{ block.title }}
-              </h3>
-              <picture v-if="block.image">
-                <source
-                  :srcset="block.image.portrait.srcSet"
-                  :sizes="block.image.portrait.sizes"
-                  media="(min-width: 800px)"
-                >
-                <source
-                  :srcset="block.image.landscape.srcSet"
-                  :sizes="block.image.landscape.sizes"
-                  media="(max-width: 800px)"
-                >
-                <img
-                  class="event-section__image"
-                  :src="block.image.portrait.src"
-                  :width="block.image.portrait.width"
-                  :alt="block.image.alt"
-                >
-              </picture>
-              <div
-                class="event-section__copy"
-                v-html="block.body"
-              />
+              <event-block-text-media v-bind="block" />
             </div>
             <div
               v-if="block._modelApiKey === 'speakers_block'"
               :key="block.id"
               class="event__layout event__layout--padded"
             >
-              <h3 class="event-section__title">
+              <h3>
                 {{ block.title }}
               </h3>
 
@@ -133,7 +102,10 @@
 
 <script>
   import fetchContent from '~/lib/fetch-content';
+
   import EventBanner from '~/components/event-banner/EventBanner';
+  import EventBlockText from '~/components/event-block/EventBlockText';
+  import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia';
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';
   import ChaptersCarousel from '~/components/chapters-carousel/ChaptersCarousel';
@@ -141,6 +113,8 @@
   export default {
     components: {
       EventBanner,
+      EventBlockText,
+      EventBlockTextMedia,
       EventHeader,
       EventFooter,
       ChaptersCarousel,
@@ -193,23 +167,36 @@
                     }
                   }
                 }
-                ... on MediaBlockRecord {
+                ... on TextBlockRecord {
                   _modelApiKey
                   id
                   title
                   titleColor
                   showWaveMarker
                   body(markdown: true)
+                  callToActionLabel
+                  callToActionUrl
+                }
+                ... on MediaBlockRecord {
+                  _modelApiKey
+                  id
+                  title
+                  titleColor
+                  showWaveMarker
+                  programButtonLabel
+                  body(markdown: true)
+                  callToActionLabel
+                  callToActionUrl
+                  mirrorLayout
                   image {
                     alt
-
                     portrait: responsiveImage(imgixParams: {auto: compress, w: "550", h: "660", fit: crop, crop: entropy}) {
                       src
                       srcSet
                       sizes
                       width
                     }
-                    landscape: responsiveImage(imgixParams: {auto: compress, w: "550"}) {
+                    landscape: responsiveImage(imgixParams: {auto: compress, w: "600", h: "270", fit: crop, crop: entropy}) {
                       srcSet
                       sizes
                     }
@@ -244,63 +231,16 @@
 </script>
 
 <style>
-  .event-section__title {
-    font-size: 2rem;
-    font-weight: 900;
-    margin-bottom: 1rem;
-    max-width: 30rem;
+  .speaker-card {
+    background-color: var(--tertiary-blue);
+    padding: 1rem;
   }
 
-  @media (--sm-viewport) {
-    .event-section__title {
-      font-size: 2rem;
-      font-weight: 900;
-      margin-bottom: 1rem;
-      max-width: 30rem;
-    }
+  .speaker-card__header {
+    display: flex;
+  }
 
-    @media (--sm-viewport) {
-      .event-section__title {
-        font-size: 3.75rem;
-      }
-    }
-
-    .event-section__title--orange {
-      color: var(--orange);
-    }
-
-    .event-section__title--blue {
-      color: var(--tertiary-blue);
-    }
-
-    .event-section__image {
-      margin-bottom: 1rem;
-    }
-
-    .event-section__copy {
-      display: block;
-      column-count: 2;
-      column-width: 25rem;
-      column-gap: 1.2rem;
-    }
-
-    .event-section__copy p {
-      display: inline-block;
-      margin-bottom: 1rem;
-      max-width: 30rem;
-    }
-
-    .speaker-card {
-      background-color: var(--tertiary-blue);
-      padding: 1rem;
-    }
-
-    .speaker-card__header {
-      display: flex;
-    }
-
-    .speaker-card__copy {
-      margin-left: 1rem;
-    }
+  .speaker-card__copy {
+    margin-left: 1rem;
   }
 </style>

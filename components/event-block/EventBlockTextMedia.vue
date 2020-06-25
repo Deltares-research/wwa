@@ -28,6 +28,21 @@
       >
         {{ props.programButtonLabel }}
       </a>
+      <picture
+        v-if="props.image"
+        class="event-block-text-media__image-wrapper event-block-text-media__image-wrapper--mobile"
+      >
+        <source
+          :srcset="props.image.landscape.srcSet"
+          :sizes="props.image.landscape.sizes"
+        >
+        <img
+          class="event-block-text-media__image"
+          :src="props.image.portrait.src"
+          :width="props.image.portrait.width"
+          :alt="props.image.alt"
+        >
+      </picture>
       <div
         class="event-block-text-media__copy"
         v-html="props.body"
@@ -43,17 +58,11 @@
     </div>
     <picture
       v-if="props.image"
-      class="event-block-text-media__image-wrapper"
+      class="event-block-text-media__image-wrapper event-block-text-media__image-wrapper--desktop"
     >
       <source
         :srcset="props.image.portrait.srcSet"
         :sizes="props.image.portrait.sizes"
-        media="(min-width: 768px)"
-      >
-      <source
-        :srcset="props.image.landscape.srcSet"
-        :sizes="props.image.landscape.sizes"
-        media="(max-width: 767px)"
       >
       <img
         class="event-block-text-media__image"
@@ -159,6 +168,9 @@
     text-decoration: underline;
   }
 
+  .event-block-text-media__image-wrapper--desktop {
+    display: none;
+  }
 
   @media (--sm-viewport) {
     .event-block-text-media__image {
@@ -200,6 +212,14 @@
 
     .event-block-text-media__image-wrapper {
       flex: 1 1 50%;
+    }
+
+    .event-block-text-media__image-wrapper--desktop {
+      display: block;
+    }
+
+    .event-block-text-media__image-wrapper--mobile {
+      display: none;
     }
   }
 </style>

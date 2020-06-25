@@ -10,7 +10,7 @@
         :key="item.slug"
       >
         <nuxt-link
-          :to="`/${item.slug}`"
+          :to="`${currentRoute}/${item.slug}`"
           class="event-block-chapters__link"
         >
           <span class="event-block-chapters__item-title">{{ item.title }}</span>
@@ -95,6 +95,11 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    currentRoute () {
+      return this.$route.path;
+    },
   },
 };
 </script>

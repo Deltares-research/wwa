@@ -117,7 +117,6 @@
     .event-block-text__copy {
       max-width: 100%;
       column-count: 2;
-      column-width: 50%;
       column-gap: 1.5rem;
     }
 

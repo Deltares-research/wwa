@@ -36,7 +36,7 @@
               :key="block.id"
               class="event__layout event__layout--padded"
             >
-              <event-block-text v-bind="block"/>
+              <event-block-text v-bind="block" />
             </div>
             <div
               v-if="block._modelApiKey === 'media_block'"
@@ -148,7 +148,10 @@
                   id
                   title
                   titleColor
-                  body
+                  showWaveMarker
+                  body(markdown: true)
+                  callToActionLabel
+                  callToActionUrl
                 }
                 ... on MediaBlockRecord {
                   _modelApiKey

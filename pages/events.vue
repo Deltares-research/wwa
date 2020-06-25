@@ -32,7 +32,7 @@
 
 <script>
   import fetchContent from '~/lib/fetch-content';
-  
+
   export default {
     async asyncData() {
       const query = `
@@ -62,7 +62,7 @@
       `;
 
       return {
-        ...await fetchContent(query),
+        ...await fetchContent({ query }),
       };
     },
   };

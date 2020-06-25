@@ -126,6 +126,7 @@
   import EventBanner from '~/components/event-banner/EventBanner';
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';
+  import query from './index.graphql';
 
   export default {
     components: {
@@ -141,78 +142,8 @@
       };
     },
     async asyncData({ params }) {
-      const query = `
-        {
-          internalEvent(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
-            slug
-            name
-            visuallyHideName
-            location
-            timezone
-            displayDate
-            image {
-              url
-            }
-            bannerIcon {
-              url
-              width
-              height
-            }
-
-            _allNameLocales {
-              locale
-            }
-
-            eventSections {
-              backgroundColor
-              showBottomWave
-              showTopWave
-
-              blocks {
-                ... on MediaBlockRecord {
-                  _modelApiKey
-                  id
-                  title
-                  titleColor
-                  showWaveMarker
-                  body(markdown: true)
-                  image {
-                    alt
-
-                    portrait: responsiveImage(imgixParams: {auto: compress, w: "550", h: "660", fit: crop, crop: entropy}) {
-                      src
-                      srcSet
-                      sizes
-                      width
-                    }
-                    landscape: responsiveImage(imgixParams: {auto: compress, w: "550"}) {
-                      srcSet
-                      sizes
-                    }
-                  }
-                }
-                ... on SpeakersBlockRecord {
-                  _modelApiKey
-                  id
-                  title
-                  speakers {
-                    id
-                    name
-                    organization
-                    subject
-                    image {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      `;
-
       return {
-        ...await fetchContent(query),
+        ...await fetchContent({ query, variables: { locale: params.language, slug: params.event } }),
         params,
       };
     },

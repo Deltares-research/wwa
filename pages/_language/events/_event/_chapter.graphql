@@ -1,0 +1,17 @@
+query Chapter($locale: SiteLocale, $chapterSlug: String, $eventSlug: String) {
+  chapter(locale: $locale, filter: { slug: { eq: $chapterSlug } }) {
+    title
+    body
+  }
+
+  internalEvent(locale: $locale, filter: { slug: { eq: $eventSlug } }) {
+    name
+    location
+    image {
+      url
+    }
+    _allNameLocales {
+      locale
+    }
+  }
+}

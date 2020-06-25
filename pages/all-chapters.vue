@@ -45,7 +45,7 @@
       };
     },
     asyncData () {
-      return fetchContent(
+      return fetchContent({ query:
         `
             {
               allChapters(first: 100, orderBy: _publishedAt_DESC) {
@@ -72,7 +72,7 @@
               }
             }
           `,
-      );
+      });
     },
   };
 </script>

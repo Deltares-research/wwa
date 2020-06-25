@@ -66,6 +66,7 @@
     "postcss-custom-media": "^7.0.8",
     "postcss-custom-properties": "^9.1.1",
     "slug": "^2.1.1",
-    "webpack-glsl-loader": "^1.0.1"
+    "webpack-glsl-loader": "^1.0.1",
+    "webpack-graphql-loader": "^1.0.2"
   }
 }

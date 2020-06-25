@@ -45,6 +45,11 @@ export default {
       }
 
       config.module.rules.push({
+        test: /\.graphql?$/,
+        loader: 'webpack-graphql-loader',
+      });
+
+      config.module.rules.push({
         test: /\.glsl$/,
         loader: 'webpack-glsl-loader',
       });

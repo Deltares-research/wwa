@@ -22,6 +22,7 @@
   import fetchContent from '~/lib/fetch-content';
   import eventHeader from '~/components/event-header/EventHeader';
   import eventFooter from '~/components/event-footer/EventFooter';
+  import query from './_chapter.graphql';
 
   export default {
     components: {
@@ -36,28 +37,12 @@
       };
     },
     async asyncData({ params }) {
-      const query = `
-        {
-          chapter(locale: ${params.language}, filter: { slug: { eq: "${params.chapter}" } }) {
-            title
-            body
-          }
-
-          internalEvent(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
-            name
-            location
-            image {
-              url
-            }
-            _allNameLocales {
-              locale
-            }
-          }
-        }
-      `;
-
       return {
-        ...await fetchContent(query),
+        ...await fetchContent({ query, variables: {
+            locale: params.language,
+            chapterSlug: params.chapter,
+            eventSlug: params.event,
+          } }),
         params,
       };
     },

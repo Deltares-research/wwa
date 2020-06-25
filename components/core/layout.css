@@ -41,12 +41,12 @@
 }
 
 .event__content .event__layout:not(:last-child) {
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 @media (--sm-viewport) {
   .event__content .event__layout:not(:last-child) {
-    margin-bottom: 3rem;
+    margin-bottom: 5rem;
   }
 }
 

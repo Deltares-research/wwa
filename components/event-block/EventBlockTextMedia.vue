@@ -21,6 +21,13 @@
       >
         {{ props.title }}
       </h3>
+      <a
+        v-if="props.programButtonLabel"
+        href="#"
+        class="event-block-text-media__button"
+      >
+        {{ props.programButtonLabel }}
+      </a>
       <div
         class="event-block-text-media__copy"
         v-html="props.body"
@@ -64,6 +71,7 @@
       showWaveMarker: Boolean,
       title: String,
       titleColor: String,
+      programButtonLabel: String,
       image: {
         portrait: Object,
         landscape: Object,
@@ -98,6 +106,23 @@
 
   .event-block-text-media__title--blue {
     color: var(--tertiary-blue);
+  }
+
+  .event-block-text-media__button {
+    display: inline-block;
+    margin-top: -.5rem;
+    margin-bottom: 2.5rem;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--black);
+    text-decoration: none;
+    background: var(--tertiary-blue);
+    border-radius: 2px;
+  }
+
+  .event-block-text-media__button:hover {
+    color: var(--black);
   }
 
   .event-block-text-media__image {

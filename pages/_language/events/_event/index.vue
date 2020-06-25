@@ -159,6 +159,7 @@
                   title
                   titleColor
                   showWaveMarker
+                  programButtonLabel
                   body(markdown: true)
                   callToActionLabel
                   callToActionUrl

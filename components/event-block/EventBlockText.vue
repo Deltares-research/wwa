@@ -103,6 +103,10 @@
   }
 
   @media (--md-viewport) {
+    .event-block-text__icon {
+      margin-bottom: 1rem;
+    }
+
     .event-block-text__title {
       margin-bottom: 2rem;
       max-width: 66%;

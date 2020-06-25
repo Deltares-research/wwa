@@ -43,7 +43,7 @@
               :key="block.id"
               class="event__layout event__layout--padded"
             >
-              <event-block-text-media v-bind="block"/>
+              <event-block-text-media v-bind="block" />
             </div>
             <div
               v-if="block._modelApiKey === 'speakers_block'"
@@ -157,8 +157,12 @@
                   _modelApiKey
                   id
                   title
+                  titleColor
                   showWaveMarker
                   body(markdown: true)
+                  callToActionLabel
+                  callToActionUrl
+                  mirrorLayout
                   image {
                     alt
 
@@ -168,7 +172,7 @@
                       sizes
                       width
                     }
-                    landscape: responsiveImage(imgixParams: {auto: compress, w: "550"}) {
+                    landscape: responsiveImage(imgixParams: {auto: compress, w: "600", h: "270", fit: crop, crop: entropy}) {
                       srcSet
                       sizes
                     }

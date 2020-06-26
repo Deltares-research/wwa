@@ -48,13 +48,12 @@
 </template>
 
 <script>
-  import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
   import 'swiper/css/swiper.css';
 
   export default {
     components: {
-      Swiper,
-      SwiperSlide,
+      Swiper: () => import('vue-awesome-swiper').then(module => module.Swiper),
+      SwiperSlide: () => import('vue-awesome-swiper').then(module => module.SwiperSlide),
     },
     props: {
       title: String,

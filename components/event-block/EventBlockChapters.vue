@@ -154,17 +154,17 @@
     background: var(--grey);
   }
 
-  .swiper-container {
+  div.swiper-container {
     padding-bottom: 1rem;
   }
 
   @media (--sm-viewport) {
-    .swiper-container {
+    div.swiper-container {
       padding-bottom: 4rem;
     }
   }
 
-  .swiper-container-horizontal > .swiper-scrollbar {
+  div.swiper-container-horizontal > div.swiper-scrollbar {
     bottom: 0;
     left: 0;
     width: 100%;
@@ -174,26 +174,26 @@
   }
 
   @media (--sm-viewport) {
-    .swiper-container-horizontal > .swiper-scrollbar {
+    div.swiper-container-horizontal > div.swiper-scrollbar {
       bottom: 3rem;
     }
   }
 
-  .swiper-scrollbar-drag {
+  div.swiper-scrollbar-drag {
     background: var(--white);
   }
 
-  .swiper-button-prev {
+  div.swiper-button-prev {
     display: none;
   }
 
-  .swiper-button-next {
+  div.swiper-button-next {
     display: none;
   }
 
   @media (--sm-viewport) {
-    .swiper-button-prev,
-    .swiper-button-next {
+    div.swiper-button-prev,
+    div.swiper-button-next {
       display: flex;
       top: auto;
       bottom: 0;
@@ -203,8 +203,8 @@
       border-radius: 50%;
     }
 
-    .swiper-button-prev:after,
-    .swiper-button-next:after {
+    div.swiper-button-prev:after,
+    div.swiper-button-next:after {
       content: '';
       width: 50%;
       height: 50%;
@@ -212,19 +212,19 @@
       background-position: center;
     }
 
-    .swiper-button-prev {
+    div.swiper-button-prev {
       left: 0;
     }
 
-    .swiper-button-next {
+    div.swiper-button-next {
       left: calc(32px + .5rem);
     }
 
-    .swiper-button-prev:after {
+    div.swiper-button-prev:after {
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 8 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.3 12.3L1 7l5.3-5.3' stroke='%23000030' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     }
 
-    .swiper-button-next:after {
+    div.swiper-button-next:after {
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 8 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.7 1.7L7 7l-5.3 5.3' stroke='%23000030' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     }
   }

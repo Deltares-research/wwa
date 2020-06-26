@@ -192,18 +192,3 @@
     },
   };
 </script>
-
-<style>
-  .speaker-card {
-    background-color: var(--tertiary-blue);
-    padding: 1rem;
-  }
-
-  .speaker-card__header {
-    display: flex;
-  }
-
-  .speaker-card__copy {
-    margin-left: 1rem;
-  }
-</style>

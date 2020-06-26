@@ -5,7 +5,7 @@ import fetchContent from './lib/fetch-content';
 
 dotenv.config();
 
-const mapallInternalEventsToRedirects = () => fetchContent(`
+const mapallInternalEventsToRedirects = () => fetchContent({ query: `
   {
     allInternalEvents {
       slug
@@ -16,7 +16,7 @@ const mapallInternalEventsToRedirects = () => fetchContent(`
       }
     }
   }
-`)
+`})
   .then(({ allInternalEvents }) => (
     allInternalEvents
       .map((event) => [

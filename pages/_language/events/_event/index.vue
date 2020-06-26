@@ -46,41 +46,11 @@
               <event-block-text-media v-bind="block" />
             </div>
             <div
-              v-if="block._modelApiKey === 'speakers_block'"
+              v-if="block._modelApiKey === 'related_stories_block'"
               :key="block.id"
               class="event__layout event__layout--padded"
             >
-              <h3>
-                {{ block.title }}
-              </h3>
-
-              <ul class="list--inline">
-                <li
-                  v-for="speaker in block.speakers"
-                  class="speaker-card"
-                  :key="speaker.id"
-                >
-                  <div class="speaker-card__header">
-                    <img
-                      :src="`${speaker.image.url}?auto=compress&fm=webp&mask=ellipse&w=60`"
-                      width="60"
-                      height="60"
-                      alt=""
-                    >
-                    <div class="speaker-card__copy">
-                      <h4 class="speaker-card__name">
-                        {{ speaker.name }}
-                      </h4>
-                      <p class="speaker-card__organization">
-                        {{ speaker.organization }}
-                      </p>
-                      <p class="speaker-card__subject">
-                        {{ speaker.subject }}
-                      </p>
-                    </div>
-                  </div>
-                </li>
-              </ul>
+              <event-block-related-stories v-bind="block" />
             </div>
           </template>
         </div>
@@ -96,6 +66,7 @@
   import EventBanner from '~/components/event-banner/EventBanner';
   import EventBlockText from '~/components/event-block/EventBlockText';
   import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia';
+  import EventBlockRelatedStories from '~/components/event-block/EventBlockRelatedStories';
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';
 
@@ -104,6 +75,7 @@
       EventBanner,
       EventBlockText,
       EventBlockTextMedia,
+      EventBlockRelatedStories,
       EventHeader,
       EventFooter,
     },
@@ -178,17 +150,18 @@
                     }
                   }
                 }
-                ... on SpeakersBlockRecord {
+                ... on RelatedStoriesBlockRecord {
                   _modelApiKey
                   id
                   title
-                  speakers {
-                    id
-                    name
-                    organization
-                    subject
-                    image {
-                      url
+                  subtitle
+                  titleColor
+                  showWaveMarker
+                  chapters {
+                    title
+                    slug
+                    cover {
+                      url(imgixParams: {auto: compress, w: "360", fit: crop, crop: entropy})
                     }
                   }
                 }

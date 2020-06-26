@@ -46,41 +46,14 @@
               <event-block-text-media v-bind="block" />
             </div>
             <div
-              v-if="block._modelApiKey === 'speakers_block'"
+              v-if="block._modelApiKey === 'chapters_block'"
               :key="block.id"
               class="event__layout event__layout--padded"
             >
-              <h3>
-                {{ block.title }}
-              </h3>
-
-              <ul class="list--inline">
-                <li
-                  v-for="speaker in block.speakers"
-                  class="speaker-card"
-                  :key="speaker.id"
-                >
-                  <div class="speaker-card__header">
-                    <img
-                      :src="`${speaker.image.url}?auto=compress&fm=webp&mask=ellipse&w=60`"
-                      width="60"
-                      height="60"
-                      alt=""
-                    >
-                    <div class="speaker-card__copy">
-                      <h4 class="speaker-card__name">
-                        {{ speaker.name }}
-                      </h4>
-                      <p class="speaker-card__organization">
-                        {{ speaker.organization }}
-                      </p>
-                      <p class="speaker-card__subject">
-                        {{ speaker.subject }}
-                      </p>
-                    </div>
-                  </div>
-                </li>
-              </ul>
+              <event-block-chapters
+                :title="block.title"
+                :items="block.chapters"
+              />
             </div>
           </template>
         </div>
@@ -94,6 +67,7 @@
   import fetchContent from '~/lib/fetch-content';
 
   import EventBanner from '~/components/event-banner/EventBanner';
+  import EventBlockChapters from '~/components/event-block/EventBlockChapters';
   import EventBlockText from '~/components/event-block/EventBlockText';
   import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia';
   import EventHeader from '~/components/event-header/EventHeader';
@@ -102,6 +76,7 @@
   export default {
     components: {
       EventBanner,
+      EventBlockChapters,
       EventBlockText,
       EventBlockTextMedia,
       EventHeader,
@@ -143,6 +118,18 @@
               showTopWave
 
               blocks {
+                ... on ChaptersBlockRecord {
+                  _modelApiKey
+                  id
+                  title
+                  chapters {
+                    title
+                    slug
+                    cover {
+                      url
+                    }
+                  }
+                }
                 ... on TextBlockRecord {
                   _modelApiKey
                   id
@@ -178,20 +165,6 @@
                     }
                   }
                 }
-                ... on SpeakersBlockRecord {
-                  _modelApiKey
-                  id
-                  title
-                  speakers {
-                    id
-                    name
-                    organization
-                    subject
-                    image {
-                      url
-                    }
-                  }
-                }
               }
             }
           }
@@ -205,18 +178,3 @@
     },
   };
 </script>
-
-<style>
-  .speaker-card {
-    background-color: var(--tertiary-blue);
-    padding: 1rem;
-  }
-
-  .speaker-card__header {
-    display: flex;
-  }
-
-  .speaker-card__copy {
-    margin-left: 1rem;
-  }
-</style>

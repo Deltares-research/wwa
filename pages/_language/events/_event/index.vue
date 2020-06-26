@@ -165,20 +165,6 @@
                     }
                   }
                 }
-                ... on SpeakersBlockRecord {
-                  _modelApiKey
-                  id
-                  title
-                  speakers {
-                    id
-                    name
-                    organization
-                    subject
-                    image {
-                      url
-                    }
-                  }
-                }
               }
             }
           }

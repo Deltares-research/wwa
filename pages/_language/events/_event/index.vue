@@ -157,7 +157,6 @@
                       src
                       srcSet
                       sizes
-                      width
                     }
                     landscape: responsiveImage(imgixParams: {auto: compress, w: "600", h: "270", fit: crop, crop: entropy}) {
                       srcSet

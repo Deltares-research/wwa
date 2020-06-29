@@ -1,0 +1,22 @@
+query StaticPage($slug: String) {
+  staticPage(filter: {slug: {eq: $slug}}) {
+    slug
+    title
+    body(markdown: false)
+    video {
+      url
+      width
+      height
+      provider
+      providerUid
+    }
+    images {
+      id
+      url
+      title
+      width
+      height
+      alt
+    }
+  }
+}

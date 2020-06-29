@@ -95,7 +95,7 @@
   }
 
   .main-menu--dark {
-    background-color: var(--black);
+    background-color: var(--black-primary);
   }
 
   .main-menu--light {
@@ -106,7 +106,7 @@
   .main-menu--light .main-menu__navigation-link:hover,
   .main-menu--light .main-menu__logo .main-menu__navigation-link,
   .main-menu--light .main-menu__logo .main-menu__navigation-link:hover {
-    color: var(--primary-blue);
+    color: var(--blue-primary);
   }
 
   .main-menu--dark .main-menu__navigation-link,
@@ -116,7 +116,7 @@
 
   .main-menu--dark .main-menu__logo .main-menu__navigation-link,
   .main-menu--dark .main-menu__logo .main-menu__navigation-link:hover {
-    color: var(--tertiary-blue);
+    color: var(--blue-tertiary);
   }
 
   @media (--sm-viewport) {

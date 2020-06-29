@@ -39,7 +39,7 @@ export default {
 .title-list a {
   text-decoration: none;
   transition: .2s color;
-  color: var(--secondary-blue);
+  color: var(--blue-secondary);
 }
 
 .title-list a:hover {

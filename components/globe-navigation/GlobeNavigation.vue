@@ -221,7 +221,7 @@ li.globe-navigation__tab:last-child {
 }
 
 li.globe-navigation__tab--selected {
-  border-bottom: 2px solid var(--tertiary-blue);
+  border-bottom: 2px solid var(--blue-tertiary);
 }
 
 .globe-navigation__tab-link {
@@ -236,11 +236,11 @@ li.globe-navigation__tab--selected {
 
 .globe-navigation__tab--selected .globe-navigation__tab-link {
   font-weight: bold;
-  color: var(--tertiary-blue);
+  color: var(--blue-tertiary);
 }
 
 .globe-navigation__tab--selected .globe-navigation__tab-link:hover {
-  color: var(--tertiary-blue);
+  color: var(--blue-tertiary);
 }
 
 .globe-navigation__tags {

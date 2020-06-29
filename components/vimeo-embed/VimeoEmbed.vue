@@ -52,7 +52,7 @@ export default {
   height: 0;
   overflow: hidden;
   max-width: 100%;
-  background: var(--primary-blue);
+  background: var(--blue-primary);
   overflow: hidden;
   z-index: 0;
 }
@@ -70,7 +70,7 @@ export default {
 .vimeo-embed__description {
   text-align: left;
   padding: 1rem 1.5rem 1rem 1.5rem;
-  background: var(--primary-blue);
+  background: var(--blue-primary);
 }
 
 .vimeo-embed__title {

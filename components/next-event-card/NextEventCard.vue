@@ -26,9 +26,9 @@ export default {
   display: block;
   padding: 1rem;
   font-weight: bold;
-  color: var(--primary-blue);
+  color: var(--blue-primary);
   text-decoration: none;
-  background-image: url('/assets/event-wave.svg'), linear-gradient(137deg, #E9E6CF 14.18%, var(--tertiary-blue) 95.78%);
+  background-image: url('/assets/event-wave.svg'), linear-gradient(137deg, #E9E6CF 14.18%, var(--blue-tertiary) 95.78%);
   background-size: 100% auto;
   background-position: bottom center;
   border-radius: 5px;
@@ -51,7 +51,7 @@ export default {
 
 .next-event-card:hover,
 .next-event-card:focus {
-  color: var(--primary-blue);
+  color: var(--blue-primary);
 }
 
 .next-event-card__title,

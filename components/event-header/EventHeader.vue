@@ -94,7 +94,7 @@
 
   .event-header__location {
     display: block;
-    color: var(--tertiary-blue);
+    color: var(--blue-tertiary);
   }
 
   @media (--sm-viewport) {
@@ -125,6 +125,6 @@
   }
 
   .language-switch__link--active {
-    background-color: var(--grey);
+    background-color: var(--black-secondary);
   }
 </style>

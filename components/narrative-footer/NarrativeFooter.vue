@@ -117,7 +117,7 @@ export default {
 }
 
 .narrative-footer__link:hover {
-  color: var(--primary-blue);
+  color: var(--blue-primary);
 }
 
 .narrative-footer__link::before {

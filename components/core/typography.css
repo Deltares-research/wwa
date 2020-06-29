@@ -61,7 +61,7 @@ html {
 
 .invert {
   color: var(--white);
-  text-shadow: 0 0 2rem var(--primary-blue);
+  text-shadow: 0 0 2rem var(--blue-primary);
 }
 
 .h4,

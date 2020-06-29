@@ -96,7 +96,7 @@
   }
 
   .event-block-text-media__title--blue {
-    color: var(--tertiary-blue);
+    color: var(--blue-tertiary);
   }
 
   .event-block-text-media__button {
@@ -105,15 +105,15 @@
     padding: 0.5rem 1rem;
     margin-bottom: 2.5rem;
     font-weight: bold;
-    color: var(--black);
+    color: var(--black-primary);
     text-decoration: none;
-    background: var(--tertiary-blue);
+    background: var(--blue-tertiary);
     border-radius: 2px;
   }
 
   .event-block-text-media__button:hover {
     color: var(--white);
-    background-color: var(--secondary-blue);
+    background-color: var(--blue-secondary);
   }
 
   .event-block-text-media__image {
@@ -136,7 +136,7 @@
   .event-block-text-media__cta a {
     line-height: 1.9;
     font-weight: bold;
-    color: var(--tertiary-blue);
+    color: var(--blue-tertiary);
     text-decoration: none;
   }
 

@@ -74,8 +74,8 @@ export default {
 .static-page__fixed-ratio {
   padding: 0;
   position: relative;
-  color: var(--secondary-blue);
-  background-color: var(--grey);
+  color: var(--blue-secondary);
+  background-color: var(--black-secondary);
 }
 .static-page__fixed-ratio > * {
   position: absolute;

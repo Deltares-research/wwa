@@ -136,7 +136,7 @@
     font-size: 1.5rem;
     font-weight: 500;
     line-height: 1.2;
-    text-shadow: 1px 1px 1px var(--primary-blue);
+    text-shadow: 1px 1px 1px var(--blue-primary);
   }
 
   .event-block-chapters__item-image {
@@ -150,7 +150,7 @@
     z-index: 11;
     width: 100%;
     height: 100%;
-    background: var(--grey);
+    background: var(--black-secondary);
   }
 
   div.swiper-container {
@@ -169,7 +169,7 @@
     width: 100%;
     height: 2px;
     border-radius: 2px;
-    background: var(--grey--light);
+    background: var(--black-tertiary);
   }
 
   @media (--sm-viewport) {

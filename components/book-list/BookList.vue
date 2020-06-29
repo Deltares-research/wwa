@@ -100,16 +100,16 @@ export default {
 .book-list__more-link {
   display: inline-block;
   padding: 10px 15px;
-  background: var(--tertiary-blue);
+  background: var(--blue-tertiary);
   font-weight: bold;
   text-decoration: none;
-  color: var(--primary-blue);
+  color: var(--blue-primary);
   border-radius: 5px;
 }
 
 .book-list__more-link:hover,
 .book-list__more-link:focus {
-  color: var(--primary-blue);
+  color: var(--blue-primary);
 }
 
 @media (--sm-viewport) {

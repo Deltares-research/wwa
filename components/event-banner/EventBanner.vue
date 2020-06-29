@@ -60,11 +60,11 @@
   .event-banner__banner {
     margin-bottom: .6rem;
     padding: 2.8rem 2rem;
-    background-image: url('/assets/event-wave.svg'), linear-gradient(137deg, #E9E6CF 14.18%, var(--tertiary-blue) 95.78%);
+    background-image: url('/assets/event-wave.svg'), linear-gradient(137deg, #E9E6CF 14.18%, var(--blue-tertiary) 95.78%);
     background-size: 105% auto;
     background-repeat: no-repeat;
     background-position: bottom 0% center;
-    color: var(--primary-blue);
+    color: var(--blue-primary);
   }
 
   @media (--sm-viewport) {
@@ -148,12 +148,12 @@
     font-weight: bold;
     text-transform: uppercase;
     line-height: 1.2;
-    color: var(--grey--light);
+    color: var(--black-tertiary);
   }
 
   .event-banner__credits-link {
     font-weight: 500;
     text-decoration: none;
-    color: var(--tertiary-blue);
+    color: var(--blue-tertiary);
   }
 </style>

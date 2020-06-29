@@ -78,8 +78,8 @@ export default {
 
 .app-footer__content {
   padding: 2rem 0;
-  border-top: 1px solid var(--grey--light);
-  color: var(--grey--light);
+  border-top: 1px solid var(--black-tertiary);
+  color: var(--black-tertiary);
 }
 
 .app-footer__logo {
@@ -98,7 +98,7 @@ export default {
 }
 
 .app-footer__logo-highlight {
-  color: var(--tertiary-blue);
+  color: var(--blue-tertiary);
 }
 
 @media (--sm-viewport) {

@@ -89,7 +89,6 @@
     font-size: 2rem;
     font-weight: 900;
     margin-bottom: 1rem;
-    max-width: 30rem;
   }
 
   .event-block-text-media__title--orange {

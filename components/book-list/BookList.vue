@@ -101,7 +101,6 @@ export default {
   display: inline-block;
   padding: 10px 15px;
   background: var(--tertiary-blue);
-  font-size: 1rem;
   font-weight: bold;
   text-decoration: none;
   color: var(--primary-blue);

@@ -78,7 +78,6 @@
   }
 
   .event-block-text__copy p {
-    font-size: 1rem;
     line-height: 1.6;
   }
 
@@ -88,7 +87,6 @@
 
   .event-block-text__cta a,
   .event-block-text__copy a {
-    font-size: 1rem;
     line-height: 1.9;
     font-weight: bold;
     color: var(--tertiary-blue);

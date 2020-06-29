@@ -43,12 +43,6 @@ export default {
   color: var(--white);
 }
 
-@media (--sm-viewport) {
-  .filter-tag {
-    font-size: 1rem;
-  }
-}
-
 .filter-tag--selected {
   background: var(--tertiary-blue);
   color: var(--primary-blue);

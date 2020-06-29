@@ -199,7 +199,6 @@ export default {
   display: inline-flex;
   align-items: center;
   font-weight: bold;
-  font-size: 1rem;
   margin-bottom: 0.5rem;
 }
 
@@ -362,7 +361,6 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   width: calc(100vw - 1rem - (var(--narrative-hearder__navigation-toggle-fixed-size)));
-  font-size: 1rem;
   color: var(--primary-blue);
   min-height: auto;
   font-weight: 500;

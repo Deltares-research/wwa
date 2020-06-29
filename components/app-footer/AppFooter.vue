@@ -85,7 +85,6 @@ export default {
 .app-footer__logo {
   display: inline-block;
   margin-bottom: 1rem;
-  font-size: 1rem;
   font-weight: 500;
   line-height: 1.25;
   text-decoration: none;
@@ -110,7 +109,6 @@ export default {
 
 .app-footer__navigation {
   margin-bottom: 2rem;
-  font-size: 1rem;
   font-weight: bold;
 }
 

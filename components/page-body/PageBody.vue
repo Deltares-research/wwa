@@ -183,7 +183,6 @@ export default {
 }
 
 .page-body p.intro {
-  font-size: 1rem;
   color: var(--secondary-blue);
 }
 

@@ -18,13 +18,11 @@ export default {
 .app-description {
   padding-left: .5rem;
   border-left: 2px solid var(--orange);
-  font-size: 1rem;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 @media (--sm-viewport) {
   .app-description {
-    font-size: .875rem;
     font-weight: normal;
   }
 }

@@ -95,7 +95,6 @@ export default {
 .scroll-indicator .to-top a::before {
   background-color: transparent;
   content: '▲';
-  font-size: 1rem;
   text-align:center;
   position: relative;
   top: -.125rem;

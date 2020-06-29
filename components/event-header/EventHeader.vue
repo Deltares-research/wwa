@@ -2,6 +2,7 @@
   <div class="event-header">
     <img
       :src="`${image.url}?auto=compress&fit=crop&w=80&h=80`"
+      width="40"
       alt=""
       class="event-header__image"
     >
@@ -56,7 +57,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: .5rem 1rem;
+    padding: 0.6rem 1rem;
   }
 
   @media (--sm-viewport) {
@@ -66,8 +67,7 @@
   }
 
   .event-header__image {
-    margin-right: .5rem;
-    width: 40px;
+    margin-right: 0.6rem;
     border-radius: 50%;
   }
 
@@ -81,7 +81,9 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    font-weight: 500;
     font-size: 1rem;
+    line-height: 1.2;
   }
 
   @media (--sm-viewport) {
@@ -119,10 +121,10 @@
     border-radius: 0.3rem;
     padding: 0.5rem 1rem;
     text-decoration: none;
+    font-weight: 500;
   }
 
   .language-switch__link--active {
     background-color: var(--grey);
-    font-weight: bold;
   }
 </style>

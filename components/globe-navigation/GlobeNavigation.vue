@@ -166,7 +166,6 @@ export default {
 }
 
 .globe-navigation__header {
-  font-size: 12px;
   text-transform: uppercase;
 }
 
@@ -226,7 +225,6 @@ li.globe-navigation__tab--selected {
 }
 
 .globe-navigation__tab-link {
-  font-size: 1rem;
   text-decoration: none;
 }
 
@@ -262,7 +260,6 @@ li.globe-navigation__tag {
 
 .globe-navigation__description {
   margin-bottom: 3rem;
-  font-size: 1rem;
   line-height: 1.5;
 }
 

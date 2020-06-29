@@ -45,12 +45,14 @@ export default {
     top: 5rem;
   }
 
-  .globe-header__description {
-    display: none;
-  }
-
   .globe-header__event {
     margin: 1rem 0 0 0;
+  }
+}
+
+@media (--md-viewport) {
+  .globe-header__description {
+    display: none;
   }
 }
 </style>

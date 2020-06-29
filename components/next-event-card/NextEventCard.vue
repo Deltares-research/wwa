@@ -24,7 +24,7 @@ export default {
 <style>
 .next-event-card {
   display: block;
-  padding: .5rem .7rem;
+  padding: 1rem;
   font-weight: bold;
   color: var(--primary-blue);
   text-decoration: none;

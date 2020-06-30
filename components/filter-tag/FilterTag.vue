@@ -31,7 +31,7 @@ export default {
   display: flex;
   align-items: center;
   padding: .3rem 1rem .5rem 1rem;
-  background: var(--grey);
+  background: var(--black-secondary);
   font-size: .825rem;
   font-weight: bold;
   text-decoration: none;
@@ -43,20 +43,14 @@ export default {
   color: var(--white);
 }
 
-@media (--sm-viewport) {
-  .filter-tag {
-    font-size: 1rem;
-  }
-}
-
 .filter-tag--selected {
-  background: var(--tertiary-blue);
-  color: var(--primary-blue);
+  background: var(--blue-tertiary);
+  color: var(--blue-primary);
 }
 
 .filter-tag--selected:hover,
 .filter-tag--selected:focus {
-  color: var(--primary-blue);
+  color: var(--blue-primary);
 }
 
 .filter-tag--removable {

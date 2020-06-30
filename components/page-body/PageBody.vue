@@ -169,7 +169,7 @@ export default {
 .page-body {
   padding: 1.5rem;
   background-color: var(--white);
-  color: var(--primary-blue);
+  color: var(--blue-primary);
 }
 
 .page-body p {
@@ -183,8 +183,7 @@ export default {
 }
 
 .page-body p.intro {
-  font-size: 1rem;
-  color: var(--secondary-blue);
+  color: var(--blue-secondary);
 }
 
 .page-body img {
@@ -220,7 +219,7 @@ export default {
 }
 
 .page-body__footer {
-  color: var(--secondary-blue);
+  color: var(--blue-secondary);
   width: 100%;
   padding: 5px 0;
 }
@@ -253,7 +252,7 @@ export default {
 .fixed-ratio {
   padding: 0;
   position: relative;
-  background-color: var(--secondary-blue);
+  background-color: var(--blue-secondary);
 }
 
 .fixed-ratio > * {

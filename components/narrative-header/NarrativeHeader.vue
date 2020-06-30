@@ -199,7 +199,6 @@ export default {
   display: inline-flex;
   align-items: center;
   font-weight: bold;
-  font-size: 1rem;
   margin-bottom: 0.5rem;
 }
 
@@ -233,7 +232,7 @@ export default {
   z-index: 5;
   bottom: 0;
   right: 0;
-  background-color: var(--secondary-blue);
+  background-color: var(--blue-secondary);
   color: var(--white);
   border: none;
   padding: 8px 1em;
@@ -298,7 +297,7 @@ export default {
   border-radius: 2em;
   text-decoration: none;
   display: block;
-  color: var(--secondary-blue);
+  color: var(--blue-secondary);
   cursor: pointer;
   border: none;
   width: 100%;
@@ -310,17 +309,17 @@ export default {
 
 .narrative-header__navigation-item--active .narrative-header__link {
   background-color: var(--white);
-  color: var(--secondary-blue);
+  color: var(--blue-secondary);
   font-weight: bold;
 }
 
 .narrative-header__link:hover {
-  color: var(--secondary-blue);
+  color: var(--blue-secondary);
   text-decoration: underline;
 }
 
 .narrative-header__link-index {
-  color: var(--black);
+  color: var(--black-primary);
   font-weight: bold;
 }
 
@@ -362,8 +361,7 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   width: calc(100vw - 1rem - (var(--narrative-hearder__navigation-toggle-fixed-size)));
-  font-size: 1rem;
-  color: var(--primary-blue);
+  color: var(--blue-primary);
   min-height: auto;
   font-weight: 500;
   line-height: 1.5rem;
@@ -391,7 +389,7 @@ export default {
     min-height: auto;
   }
   .narrative-header__content:after {
-    background-color: var(--primary-blue);
+    background-color: var(--blue-primary);
     -webkit-print-color-adjust: exact;
   }
   .narrative-header__content:before {

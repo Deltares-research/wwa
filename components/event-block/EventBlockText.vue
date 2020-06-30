@@ -62,7 +62,7 @@
   }
 
   .event-block-text__title--blue {
-    color: var(--tertiary-blue);
+    color: var(--blue-tertiary);
   }
 
   .event-block-text__copy {
@@ -78,7 +78,6 @@
   }
 
   .event-block-text__copy p {
-    font-size: 1rem;
     line-height: 1.6;
   }
 
@@ -88,10 +87,9 @@
 
   .event-block-text__cta a,
   .event-block-text__copy a {
-    font-size: 1rem;
     line-height: 1.9;
     font-weight: bold;
-    color: var(--tertiary-blue);
+    color: var(--blue-tertiary);
     text-decoration: none;
   }
 

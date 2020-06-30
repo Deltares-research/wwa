@@ -228,7 +228,7 @@ export default {
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.2;
-  text-shadow: 1px 1px 1px var(--primary-blue);
+  text-shadow: 1px 1px 1px var(--blue-primary);
   word-break: break-word;
   hyphens: auto;
 }

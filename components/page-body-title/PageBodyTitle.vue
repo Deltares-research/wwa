@@ -143,7 +143,7 @@ export default {
 
 .page-body-title__storyteller {
   font-size: 0.75rem;
-  color: var(--secondary-blue);
+  color: var(--blue-secondary);
   margin-bottom: 0.5rem;
 }
 

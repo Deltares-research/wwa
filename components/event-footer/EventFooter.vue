@@ -68,7 +68,7 @@
 
   .event-footer__highlight {
     display: block;
-    color: var(--tertiary-blue);
+    color: var(--blue-tertiary);
     font-weight: 500;
   }
 

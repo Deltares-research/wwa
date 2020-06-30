@@ -52,6 +52,16 @@
             >
               <event-block-related-stories v-bind="block" />
             </div>
+            <div
+              v-if="block._modelApiKey === 'chapters_block'"
+              :key="block.id"
+              class="event__layout event__layout--padded"
+            >
+              <event-block-chapters
+                :title="block.title"
+                :items="block.chapters"
+              />
+            </div>
           </template>
         </div>
       </section>
@@ -64,6 +74,7 @@
   import fetchContent from '~/lib/fetch-content';
 
   import EventBanner from '~/components/event-banner/EventBanner';
+  import EventBlockChapters from '~/components/event-block/EventBlockChapters';
   import EventBlockText from '~/components/event-block/EventBlockText';
   import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia';
   import EventBlockRelatedStories from '~/components/event-block/EventBlockRelatedStories';
@@ -73,6 +84,7 @@
   export default {
     components: {
       EventBanner,
+      EventBlockChapters,
       EventBlockText,
       EventBlockTextMedia,
       EventBlockRelatedStories,
@@ -115,6 +127,18 @@
               showTopWave
 
               blocks {
+                ... on ChaptersBlockRecord {
+                  _modelApiKey
+                  id
+                  title
+                  chapters {
+                    title
+                    slug
+                    cover {
+                      url
+                    }
+                  }
+                }
                 ... on TextBlockRecord {
                   _modelApiKey
                   id
@@ -142,7 +166,6 @@
                       src
                       srcSet
                       sizes
-                      width
                     }
                     landscape: responsiveImage(imgixParams: {auto: compress, w: "600", h: "270", fit: crop, crop: entropy}) {
                       srcSet
@@ -184,18 +207,3 @@
     },
   };
 </script>
-
-<style>
-  .speaker-card {
-    background-color: var(--tertiary-blue);
-    padding: 1rem;
-  }
-
-  .speaker-card__header {
-    display: flex;
-  }
-
-  .speaker-card__copy {
-    margin-left: 1rem;
-  }
-</style>

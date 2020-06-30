@@ -159,7 +159,7 @@ export default {
   padding-top: 64px;
   z-index: 0;
   width: 100vw;
-  background-color: var(--black);
+  background-color: var(--black-primary);
   overflow: hidden;
 }
 

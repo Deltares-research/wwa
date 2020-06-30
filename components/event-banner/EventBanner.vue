@@ -58,13 +58,13 @@
   }
 
   .event-banner__banner {
-    margin-bottom: .5rem;
-    padding: 2rem;
-    background-image: url('/assets/event-wave.svg'), linear-gradient(137deg, #E9E6CF 14.18%, var(--tertiary-blue) 95.78%);
+    margin-bottom: .6rem;
+    padding: 2.8rem 2rem;
+    background-image: url('/assets/event-wave.svg'), linear-gradient(137deg, #E9E6CF 14.18%, var(--blue-tertiary) 95.78%);
     background-size: 105% auto;
     background-repeat: no-repeat;
     background-position: bottom 0% center;
-    color: var(--primary-blue);
+    color: var(--blue-primary);
   }
 
   @media (--sm-viewport) {
@@ -97,7 +97,6 @@
   .event-banner__title {
     font-size: 2rem;
     font-weight: bold;
-    line-height: 1;
   }
 
   @media (--sm-viewport) {
@@ -108,7 +107,6 @@
   }
 
   .event-banner__date {
-    font-size: 1rem;
     font-weight: 500;
   }
 
@@ -149,13 +147,13 @@
     font-size: .625rem;
     font-weight: bold;
     text-transform: uppercase;
-    color: var(--grey--light);
+    line-height: 1.2;
+    color: var(--black-tertiary);
   }
 
   .event-banner__credits-link {
-    font-size: 1rem;
     font-weight: 500;
     text-decoration: none;
-    color: var(--tertiary-blue);
+    color: var(--blue-tertiary);
   }
 </style>

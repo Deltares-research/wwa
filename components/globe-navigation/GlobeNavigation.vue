@@ -166,7 +166,6 @@ export default {
 }
 
 .globe-navigation__header {
-  font-size: 12px;
   text-transform: uppercase;
 }
 
@@ -222,11 +221,10 @@ li.globe-navigation__tab:last-child {
 }
 
 li.globe-navigation__tab--selected {
-  border-bottom: 2px solid var(--tertiary-blue);
+  border-bottom: 2px solid var(--blue-tertiary);
 }
 
 .globe-navigation__tab-link {
-  font-size: 1rem;
   text-decoration: none;
 }
 
@@ -238,11 +236,11 @@ li.globe-navigation__tab--selected {
 
 .globe-navigation__tab--selected .globe-navigation__tab-link {
   font-weight: bold;
-  color: var(--tertiary-blue);
+  color: var(--blue-tertiary);
 }
 
 .globe-navigation__tab--selected .globe-navigation__tab-link:hover {
-  color: var(--tertiary-blue);
+  color: var(--blue-tertiary);
 }
 
 .globe-navigation__tags {
@@ -262,7 +260,6 @@ li.globe-navigation__tag {
 
 .globe-navigation__description {
   margin-bottom: 3rem;
-  font-size: 1rem;
   line-height: 1.5;
 }
 

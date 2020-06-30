@@ -1,76 +1,62 @@
 <template functional>
-  <div
-    class="event-block-text-media"
-    :class="{ 'event-block-text-media--mirrored': props.mirrorLayout }"
-  >
-    <div class="event-block-text-media__content">
-      <img
-        v-if="props.showWaveMarker"
-        src="/event-title-wave.svg"
-        width="111"
-        height="35"
-        alt=""
-        class="event-block-text-media__icon"
-      >
-      <h3
-        class="event-block-text-media__title"
-        :class="{
-          'event-block-text-media__title--orange': props.titleColor === 'orange',
-          'event-block-text-media__title--blue': props.titleColor === 'blue',
-        }"
-      >
-        {{ props.title }}
-      </h3>
-      <a
-        v-if="props.programButtonLabel"
-        href="#"
-        class="event-block-text-media__button"
-      >
-        {{ props.programButtonLabel }}
-      </a>
-      <picture
-        v-if="props.image"
-        class="event-block-text-media__image-wrapper event-block-text-media__image-wrapper--mobile"
-      >
-        <source
-          :srcset="props.image.landscape.srcSet"
-          :sizes="props.image.landscape.sizes"
-        >
-        <img
-          class="event-block-text-media__image"
-          :src="props.image.portrait.src"
-          :width="props.image.portrait.width"
-          :alt="props.image.alt"
-        >
-      </picture>
-      <div
-        class="event-block-text-media__copy"
-        v-html="props.body"
-      />
-      <p
-        v-if="props.callToActionLabel && props.callToActionUrl"
-        class="event-block-text-media__cta"
-      >
-        <a :href="props.callToActionUrl">
-          {{ props.callToActionLabel }}
-        </a>
-      </p>
-    </div>
+  <div class="event-block-text-media">
+    <img
+      v-if="props.showWaveMarker"
+      src="/event-title-wave.svg"
+      width="111"
+      height="35"
+      alt=""
+      class="event-block-text-media__icon"
+    >
+    <h3
+      class="event-block-text-media__title"
+      :class="{
+        'event-block-text-media__title--orange': props.titleColor === 'orange',
+        'event-block-text-media__title--blue': props.titleColor === 'blue',
+      }"
+    >
+      {{ props.title }}
+    </h3>
+    <a
+      v-if="props.programButtonLabel"
+      href="#"
+      class="event-block-text-media__button"
+    >
+      {{ props.programButtonLabel }}
+    </a>
     <picture
       v-if="props.image"
-      class="event-block-text-media__image-wrapper event-block-text-media__image-wrapper--desktop"
+      class="event-block-text-media__image-wrapper"
+      :class="{ 'event-block-text-media__image-wrapper--mirrored': props.mirrorLayout }"
     >
       <source
         :srcset="props.image.portrait.srcSet"
         :sizes="props.image.portrait.sizes"
+        media="(min-width: 48rem)"
+      >
+      <source
+        :srcset="props.image.landscape.srcSet"
+        :sizes="props.image.landscape.sizes"
+        media="(max-width: 48rem)"
       >
       <img
         class="event-block-text-media__image"
         :src="props.image.portrait.src"
-        :width="props.image.portrait.width"
         :alt="props.image.alt"
       >
     </picture>
+    <div
+      class="event-block-text-media__copy"
+      v-html="props.body"
+    />
+    <p
+      v-if="props.callToActionLabel && props.callToActionUrl"
+      class="event-block-text-media__cta"
+    >
+      <a :href="props.callToActionUrl">
+        {{ props.callToActionLabel }}
+      </a>
+    </p>
   </div>
 </template>
 
@@ -91,7 +77,7 @@
 </script>
 
 <style>
-  .event-block-text-media__content {
+  .event-block-text-media {
     margin-bottom: 2rem;
   }
 
@@ -103,7 +89,6 @@
     font-size: 2rem;
     font-weight: 900;
     margin-bottom: 1rem;
-    max-width: 30rem;
   }
 
   .event-block-text-media__title--orange {
@@ -111,29 +96,28 @@
   }
 
   .event-block-text-media__title--blue {
-    color: var(--tertiary-blue);
+    color: var(--blue-tertiary);
   }
 
   .event-block-text-media__button {
-    display: inline-block;
-    margin-top: -.5rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
     margin-bottom: 2.5rem;
-    padding: .5rem 1rem;
-    font-size: 1rem;
     font-weight: bold;
-    color: var(--black);
+    color: var(--black-primary);
     text-decoration: none;
-    background: var(--tertiary-blue);
+    background: var(--blue-tertiary);
     border-radius: 2px;
   }
 
   .event-block-text-media__button:hover {
-    color: var(--black);
+    color: var(--white);
+    background-color: var(--blue-secondary);
   }
 
   .event-block-text-media__image {
     margin-bottom: 1rem;
-    width: 100%;
   }
 
   .event-block-text-media__copy {
@@ -141,20 +125,18 @@
   }
 
   .event-block-text-media__copy p {
-    font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.8;
   }
 
   .event-block-text-media__copy p:not(:last-child) {
-    margin-bottom: 1.5rem;
+    margin-bottom: 3.8rem;
   }
 
   .event-block-text-media__copy a,
   .event-block-text-media__cta a {
-    font-size: 1rem;
     line-height: 1.9;
     font-weight: bold;
-    color: var(--tertiary-blue);
+    color: var(--blue-tertiary);
     text-decoration: none;
   }
 
@@ -165,27 +147,13 @@
     text-decoration: underline;
   }
 
-  .event-block-text-media__image-wrapper--desktop {
-    display: none;
-  }
-
-  @media (--sm-viewport) {
-    .event-block-text-media__image {
-      max-width: 600px;
-    }
-  }
-
   @media (--md-viewport) {
-    .event-block-text-media__content {
-      margin-bottom: 0;
-    }
-
     .event-block-text-media {
-      display: flex;
-    }
-
-    .event-block-text-media--mirrored {
-      flex-direction: row-reverse;
+      display: inline-grid;
+      grid-column-gap: 3rem;
+      grid-template-columns: 1fr 1fr;
+      justify-items: start;
+      margin-bottom: 0;
     }
 
     .event-block-text-media__icon {
@@ -197,26 +165,18 @@
       line-height: 1.1;
     }
 
-    .event-block-text-media__content {
-      flex: 1 1 50%;
-      margin-right: 3rem;
-    }
-
-    .event-block-text-media--mirrored .event-block-text-media__content {
-      margin-left: 3rem;
-      margin-right: 0;
+    .event-block-text-media__image {
+      margin-bottom: 0;
     }
 
     .event-block-text-media__image-wrapper {
-      flex: 1 1 50%;
+      grid-column-start: 2;
+      grid-row-start: 1;
+      grid-row-end: 99;
     }
 
-    .event-block-text-media__image-wrapper--desktop {
-      display: block;
-    }
-
-    .event-block-text-media__image-wrapper--mobile {
-      display: none;
+    .event-block-text-media__image-wrapper--mirrored {
+      grid-column-start: 1;
     }
   }
 </style>

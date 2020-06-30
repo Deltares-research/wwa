@@ -125,14 +125,13 @@ export default {
 }
 
 .keywords__dropdown {
-  color: var(--grey);
-  background-color: var(--grey);
+  color: var(--black-secondary);
+  background-color: var(--black-secondary);
   display: inline-block;
   border-radius: 1rem;
   padding: .25rem 1rem .375rem 1rem;
   margin: .25em 1px .25em -1px;
   appearance: none;
-  font-size: 1rem;
   font-weight: bold;
   text-transform: uppercase;
   color: var(--white);
@@ -143,6 +142,6 @@ export default {
 }
 
 .keywords__dropdown:hover {
-  color: var(--tertiary-blue);
+  color: var(--blue-tertiary);
 }
 </style>

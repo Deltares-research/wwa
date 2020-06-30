@@ -78,14 +78,13 @@ export default {
 
 .app-footer__content {
   padding: 2rem 0;
-  border-top: 1px solid var(--grey--light);
-  color: var(--grey--light);
+  border-top: 1px solid var(--black-tertiary);
+  color: var(--black-tertiary);
 }
 
 .app-footer__logo {
   display: inline-block;
   margin-bottom: 1rem;
-  font-size: 1rem;
   font-weight: 500;
   line-height: 1.25;
   text-decoration: none;
@@ -99,7 +98,7 @@ export default {
 }
 
 .app-footer__logo-highlight {
-  color: var(--tertiary-blue);
+  color: var(--blue-tertiary);
 }
 
 @media (--sm-viewport) {
@@ -110,7 +109,6 @@ export default {
 
 .app-footer__navigation {
   margin-bottom: 2rem;
-  font-size: 1rem;
   font-weight: bold;
 }
 

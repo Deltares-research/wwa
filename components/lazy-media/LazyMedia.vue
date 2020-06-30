@@ -85,8 +85,8 @@ export default {
   }
 
   .lazy-placeholder {
-    background-color: var(--secondary-blue);
-    color: var(--grey);
+    background-color: var(--blue-secondary);
+    color: var(--black-secondary);
     display: flex;
     flex-direction: column;
     align-content: center;

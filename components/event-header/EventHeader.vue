@@ -7,8 +7,11 @@
       class="event-header__image"
     >
     <h1 class="event-header__name">
-      <span class="event-header__location">{{ location }}</span>
-      {{ name }}
+      <nuxt-link
+        :to="`/events/${slug}`"
+        v-html="name"
+        class="event-header__name-link"
+      />
     </h1>
     <nav class="language-switch">
       <ul class="language-switch__list">
@@ -42,8 +45,8 @@
     },
     props: {
       name: String,
+      slug: String,
       image: Object,
-      location: String,
       allLocales: Array,
     },
     data({ $route }) {
@@ -92,15 +95,13 @@
     }
   }
 
-  .event-header__location {
-    display: block;
+  .event-header__name em {
+    font-style: normal;
     color: var(--blue-tertiary);
   }
 
-  @media (--sm-viewport) {
-    .event-header__location {
-      margin-right: 0.4rem;
-    }
+  .event-header__name-link {
+    text-decoration: none;
   }
 
   .language-switch {

@@ -3,7 +3,7 @@
     <header class="event__layout">
       <event-header
         :name="internalEvent.name"
-        :location="internalEvent.location"
+        :slug="internalEvent.slug"
         :image="internalEvent.image"
         :all-locales="internalEvent._allNameLocales"
       />
@@ -105,7 +105,6 @@
             slug
             name
             visuallyHideName
-            location
             timezone
             displayDate
             image {

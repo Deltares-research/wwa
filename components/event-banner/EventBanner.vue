@@ -15,7 +15,7 @@
           'sr-only': props.visuallyHideName
         }"
       >
-        {{ props.location }} {{ props.name }}{{ bannerImageUrl }}
+        <span v-html="props.name" />
       </h2>
       <p class="event-banner__date">
         {{ props.displayDate }}
@@ -42,7 +42,6 @@
   export default {
     props: {
       name: String,
-      location: String,
       visuallyHideName: Boolean,
       displayDate: String,
       bannerIcon: Object,
@@ -97,6 +96,10 @@
   .event-banner__title {
     font-size: 2rem;
     font-weight: bold;
+  }
+
+  .event-banner__title em {
+    font-style: normal;
   }
 
   @media (--sm-viewport) {

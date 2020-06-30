@@ -2,8 +2,7 @@
   <footer class="event-footer event__layout event__layout--padded">
     <div class="event-footer__body">
       <p class="event-footer__copy">
-        <span>{{ props.location }}</span>
-        <span>{{ props.name }}</span>
+        <span v-html="props.name" />
       </p>
       <a
         class="event-footer__link"
@@ -24,7 +23,6 @@
   export default {
     props: {
       name: String,
-      location: String,
     },
   };
 </script>

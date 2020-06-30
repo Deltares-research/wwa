@@ -3,7 +3,7 @@
     <header>
       <event-header
         :name="internalEvent.name"
-        :location="internalEvent.location"
+        :slug="internalEvent.slug"
         :image="internalEvent.image"
         :all-locales="internalEvent._allNameLocales"
       />
@@ -45,7 +45,6 @@
 
           internalEvent(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
             name
-            location
             image {
               url
             }

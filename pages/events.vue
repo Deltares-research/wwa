@@ -5,13 +5,12 @@
       :key="event.id"
     >
       <li class="event-preview">
-        Date: {{ event.startDate }}
-        Location: {{ event.location }}
+        {{ event.startDate }}
         <img
           :src="`${event.image.url}?auto=compress&w=400`"
           alt=""
         >
-        Name: {{ event.name }}
+        {{ event.name }}
 
         <div class="event-preview__link">
           <a
@@ -32,7 +31,7 @@
 
 <script>
   import fetchContent from '~/lib/fetch-content';
-  
+
   export default {
     async asyncData() {
       const query = `
@@ -41,7 +40,6 @@
             name
             id
             startDate
-            location
             url
             image {
               url
@@ -53,7 +51,6 @@
             id
             slug
             startDate
-            location
             image {
               url
             }

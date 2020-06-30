@@ -93,7 +93,7 @@
   }
 
   .event-block-related-stories__subtitle--blue {
-    color: var(--tertiary-blue);
+    color: var(--blue-tertiary);
   }
 
   @media (--md-viewport) {

@@ -72,8 +72,10 @@ export default {
   padding-top: 2rem;
 }
 
-.app-footer--small {
-  width: 67vw;
+@media (--lg-viewport) {
+  .app-footer--small {
+    width: 67vw;
+  }
 }
 
 .app-footer__content {

@@ -6,10 +6,18 @@
       :style="`padding-bottom:${Math.round(videoHeight/videoWidth * 10000)/100}%`"
     >
       <iframe
-        v-if="videoProvider === 'youtube'"
+        v-if="videoChina"
         allowfullscreen="allowfullscreen"
         frameborder="0"
-        :src="`//www.${videoProvider}.com/embed/${videoProviderUid}`"
+        :src="`https://v.qq.com/txp/iframe/player.html?vid=${chinaVideoId}`"
+        width="100%"
+        height="100%"
+      />
+      <iframe
+        v-else-if="videoProvider === 'youtube'"
+        allowfullscreen="allowfullscreen"
+        frameborder="0"
+        :src="`//www.youtube.com/embed/${videoProviderUid}`"
         width="100%"
         height="100%"
       />
@@ -40,16 +48,13 @@ export default {
     videoHeight: Number,
     videoProvider: String,
     videoProviderUid: String,
-  },
-  data () {
-    return {
-      isLoaded: false,
-    };
+    videoChina: String,
   },
   components: { LazyMedia },
-  methods: {
-    onLoad () {
-      this.isLoaded = true;
+  computed: {
+    chinaVideoId () {
+      const match = /page\/(\w+)/.exec(this.videoChina);
+      return match ? match[1] : null;
     },
   },
 };

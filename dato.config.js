@@ -453,7 +453,7 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, keywords, slug, title, video, mapboxStyle } = page;
+      const { body, files, graphs, images, keywords, slug, title, video, videoChina, mapboxStyle } = page;
       const influences = (page.influence) ? page.influence.map(tag => ({
         title: tag.title,
         slug: tag.slug,
@@ -528,6 +528,7 @@ function getPages (dato, chapterRef) {
         theme,
         title,
         video,
+        videoChina,
         mapboxStyle,
       };
     });

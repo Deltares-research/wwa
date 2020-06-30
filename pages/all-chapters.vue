@@ -68,6 +68,7 @@
                     provider
                     providerUid
                   }
+                  videoChina
                 }
               }
             }

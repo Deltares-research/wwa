@@ -64,7 +64,7 @@
     </section>
 
     <section
-      v-if="video"
+      v-if="video || videoChina"
       class="page-body__video page-body__figure"
     >
       <responsive-video
@@ -73,6 +73,7 @@
         :video-height="video.height"
         :video-provider="video.provider"
         :video-provider-uid="video.providerUid"
+        :video-china="videoChina"
       />
       <div class="page-body__asset-placeholder" />
     </section>
@@ -134,6 +135,7 @@ export default {
     images: Array,
     title: String,
     video: Object,
+    videoChina: String,
     mapboxStyle: String,
     influences: Array,
     goals: Array,

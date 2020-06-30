@@ -453,7 +453,7 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, keywords, slug, title, video, videoChina, mapboxStyle } = page;
+      const { body, files, graphs, images, keywords, slug, title, mapboxStyle } = page;
       const influences = (page.influence) ? page.influence.map(tag => ({
         title: tag.title,
         slug: tag.slug,
@@ -502,6 +502,14 @@ function getPages (dato, chapterRef) {
             path: path,
           };
         }) : null;
+      let video = page.video;
+      if (page.videoChina) {
+        const providerUid = /^https:\/\/v\.qq\.com\/x\/page\/([a-z0-9]+)\.html$/.exec(page.videoChina)[1];
+        video = {
+            provider: 'qq',
+            providerUid,
+        };
+      }
       return {
         body,
         book,
@@ -528,7 +536,6 @@ function getPages (dato, chapterRef) {
         theme,
         title,
         video,
-        videoChina,
         mapboxStyle,
       };
     });

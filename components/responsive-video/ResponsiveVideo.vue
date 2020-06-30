@@ -3,29 +3,29 @@
     <div
       class="fixed-ratio"
       slot="content"
-      :style="`padding-bottom:${Math.round(videoHeight/videoWidth * 10000)/100}%`"
+      :style="`padding-bottom:${aspectRatio}%`"
     >
       <iframe
-        v-if="videoChina"
+        v-if="video.provider === 'qq'"
         allowfullscreen="allowfullscreen"
         frameborder="0"
-        :src="`https://v.qq.com/txp/iframe/player.html?vid=${chinaVideoId}`"
+        :src="`https://v.qq.com/txp/iframe/player.html?vid=${video.providerUid}`"
         width="100%"
         height="100%"
       />
       <iframe
-        v-else-if="videoProvider === 'youtube'"
+        v-else-if="video.provider === 'youtube'"
         allowfullscreen="allowfullscreen"
         frameborder="0"
-        :src="`//www.youtube.com/embed/${videoProviderUid}`"
+        :src="`//www.youtube.com/embed/${video.providerUid}`"
         width="100%"
         height="100%"
       />
       <iframe
-        v-else-if="videoProvider === 'vimeo'"
+        v-else-if="video.provider === 'vimeo'"
         allowfullscreen="allowfullscreen"
         frameborder="0"
-        :src="`https://player.vimeo.com/video/${videoProviderUid}?title=0&author=0&portrait=0&playbar=0&byline=0`"
+        :src="`https://player.vimeo.com/video/${video.providerUid}?title=0&author=0&portrait=0&playbar=0&byline=0`"
         width="100%"
         height="100%"
       />
@@ -33,7 +33,7 @@
     <div
       class="lazy-placeholder fixed-ratio"
       slot="placeholder"
-      :style="`padding-bottom:${Math.round(videoHeight/videoWidth * 10000)/100}%`"
+      :style="`padding-bottom:${aspectRatio}%`"
     />
   </lazy-media>
 </template>
@@ -44,17 +44,12 @@ import LazyMedia from '~/components/lazy-media/LazyMedia';
 
 export default {
   props: {
-    videoWidth: Number,
-    videoHeight: Number,
-    videoProvider: String,
-    videoProviderUid: String,
-    videoChina: String,
+    video: Object,
   },
   components: { LazyMedia },
   computed: {
-    chinaVideoId () {
-      const match = /page\/(\w+)/.exec(this.videoChina);
-      return match ? match[1] : null;
+    aspectRatio () {
+      return this.video.height && this.video.width? Math.round(this.video.height/this.video.width * 10000)/100 : 62;
     },
   },
 };

@@ -157,11 +157,17 @@
                   subtitle
                   titleColor
                   showWaveMarker
-                  chapters {
-                    title
-                    slug
-                    cover {
-                      url(imgixParams: {auto: compress, w: "360", fit: crop, crop: entropy})
+                  linkedChapters {
+                    id
+                    book {
+                      slug
+                    }
+                    chapter {
+                      slug
+                      title
+                      cover {
+                        url
+                      }
                     }
                   }
                 }

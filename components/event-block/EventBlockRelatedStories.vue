@@ -25,20 +25,20 @@
 
     <ul class="list--inline event-block-related-stories__list">
       <li
-        v-for="chapter in props.chapters"
-        :key="chapter.slug"
+        v-for="linkedChapter in props.linkedChapters"
+        :key="linkedChapter.id"
         class="event-block-related-stories__list-item"
       >
         <nuxt-link
-          to="#"
+          :to="`/narratives/${linkedChapter.book.slug}/${linkedChapter.chapter.slug}`"
           class="event-block-related-stories__link"
         >
           <div class="event-block-related-stories__chapter-title">
-            {{ chapter.title }}
+            {{ linkedChapter.chapter.title }}
           </div>
 
           <img
-            :src="chapter.cover.url"
+            :src="linkedChapter.chapter.cover.url"
             alt=""
             class="event-block-related-stories__image"
           >
@@ -57,7 +57,7 @@
       title: String,
       subtitle: String,
       titleColor: String,
-      chapters: Array,
+      linkedChapters: Array,
     },
   };
 </script>

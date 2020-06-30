@@ -46,6 +46,13 @@
               <event-block-text-media v-bind="block" />
             </div>
             <div
+              v-if="block._modelApiKey === 'related_stories_block'"
+              :key="block.id"
+              class="event__layout event__layout--padded"
+            >
+              <event-block-related-stories v-bind="block" />
+            </div>
+            <div
               v-if="block._modelApiKey === 'chapters_block'"
               :key="block.id"
               class="event__layout event__layout--padded"
@@ -70,6 +77,7 @@
   import EventBlockChapters from '~/components/event-block/EventBlockChapters';
   import EventBlockText from '~/components/event-block/EventBlockText';
   import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia';
+  import EventBlockRelatedStories from '~/components/event-block/EventBlockRelatedStories';
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';
 
@@ -79,6 +87,7 @@
       EventBlockChapters,
       EventBlockText,
       EventBlockTextMedia,
+      EventBlockRelatedStories,
       EventHeader,
       EventFooter,
     },
@@ -161,6 +170,27 @@
                     landscape: responsiveImage(imgixParams: {auto: compress, w: "600", h: "270", fit: crop, crop: entropy}) {
                       srcSet
                       sizes
+                    }
+                  }
+                }
+                ... on RelatedStoriesBlockRecord {
+                  _modelApiKey
+                  id
+                  title
+                  subtitle
+                  titleColor
+                  showWaveMarker
+                  linkedChapters {
+                    id
+                    book {
+                      slug
+                    }
+                    chapter {
+                      slug
+                      title
+                      cover {
+                        url(imgixParams: {auto: compress, w: "500", fit: crop, crop: entropy})
+                      }
                     }
                   }
                 }

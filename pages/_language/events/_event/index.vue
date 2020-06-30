@@ -189,7 +189,7 @@
                       slug
                       title
                       cover {
-                        url
+                        url(imgixParams: {auto: compress, w: "500", fit: crop, crop: entropy})
                       }
                     }
                   }

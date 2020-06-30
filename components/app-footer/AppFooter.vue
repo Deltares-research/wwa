@@ -43,7 +43,7 @@
       </nav>
 
       <div v-once>
-        &copy; {{ currentYear }} World Water Atlas
+        &copy; {{ currentYear }} <span lang="en">World Water Atlas</span>
       </div>
     </div>
   </footer>

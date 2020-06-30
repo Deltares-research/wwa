@@ -8,7 +8,13 @@
         class="event-footer__link"
         href="/"
       >
-        Explore <span class="event-footer__highlight">World Water Atlas</span>
+        Explore
+        <span
+          class="event-footer__highlight"
+          lang="en"
+        >
+          World Water Atlas
+        </span>
       </a>
       <img
         class="event-footer__background"
@@ -54,13 +60,18 @@
     border-right-style: solid;
     border-right-width: 1px;
     margin-right: 1rem;
+    font-weight: 500;
     line-height: 1.25;
+  }
+
+  .event-footer__copy em {
+    display: block;
+    font-style: normal;
   }
 
   .event-footer__link {
     z-index: 1;
     line-height: 1.25;
-    font-weight: bold;
     text-decoration: none;
   }
 

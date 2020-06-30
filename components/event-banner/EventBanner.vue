@@ -25,11 +25,12 @@
     <aside class="event-banner__credits">
       <p class="event-banner__credits-content">
         <span class="event-banner__credits-title">
-          This contribution is part of
+          {{ props.bannerTagline }}
         </span>
         <nuxt-link
           to="/"
           class="event-banner__credits-link"
+          lang="en"
         >
           The World Water Atlas
         </nuxt-link>
@@ -45,6 +46,7 @@
       visuallyHideName: Boolean,
       displayDate: String,
       bannerIcon: Object,
+      bannerTagline: String,
     },
   };
 </script>

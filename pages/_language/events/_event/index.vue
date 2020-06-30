@@ -115,6 +115,7 @@
               width
               height
             }
+            bannerTagline
 
             _allNameLocales {
               locale

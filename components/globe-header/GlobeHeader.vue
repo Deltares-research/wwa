@@ -44,13 +44,13 @@ export default {
   .globe-header {
     top: 5rem;
   }
-
-  .globe-header__event {
-    margin: 1rem 0 0 0;
-  }
 }
 
 @media (--md-viewport) {
+  .globe-header__event {
+    margin: 1rem 0 0 0;
+  }
+
   .globe-header__description {
     display: none;
   }

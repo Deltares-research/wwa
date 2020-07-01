@@ -3,13 +3,25 @@
     :href="`/events/${event.slug}`"
     class="next-event-card"
   >
-    <span class="next-event-card__title h3">
-      {{ event.title }}
-    </span>
+    <div class="next-event-card__content">
+      <img
+        v-if="event.bannerIcon"
+        alt=""
+        :src="`${event.bannerIcon.imgixHost}/${event.bannerIcon.value.path}`"
+        :width="event.bannerIcon.value.width"
+        :height="event.bannerIcon.value.height"
+        class="next-event-card__icon"
+      >
 
-    <span class="next-event-card__description">
-      <time :datetime="event.startDate">{{ event.displayDate }}</time>
-    </span>
+      <span
+        v-html="event.name"
+        class="next-event-card__title h3"
+      />
+
+      <span class="next-event-card__description">
+        <time :datetime="event.startDate">{{ event.displayDate }}</time>
+      </span>
+    </div>
   </a>
 </template>
 
@@ -54,16 +66,34 @@ export default {
   color: var(--blue-primary);
 }
 
+.next-event-card__icon {
+  float: left;
+  width: 20%;
+}
+
 .next-event-card__title,
 .next-event-card__description {
   display: block;
+  padding-left: .5rem;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 75%;
+}
+
+.next-event-card__title {
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.next-event-card__title em {
+  font-style: normal;
 }
 
 .next-event-card__description {
   margin-bottom: .25rem;
+  font-size: 1.125rem;
+  font-weight: bold;
 }
 </style>

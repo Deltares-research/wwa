@@ -224,10 +224,11 @@ function generateAppData (dato, root, i18n) {
   const description = dato.app.description;
 
   const highlightedEvent = dato.app.highlightedEvent ? {
-    title: dato.app.highlightedEvent.name,
+    name: dato.app.highlightedEvent.name,
     slug: dato.app.highlightedEvent.slug,
     startDate: dato.app.highlightedEvent.startDate,
     endDate: dato.app.highlightedEvent.endDate,
+    bannerIcon: dato.app.highlightedEvent.bannerIconSmall,
     displayDate: dato.app.highlightedEvent.displayDate,
   } : null;
 

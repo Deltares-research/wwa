@@ -32,31 +32,33 @@
         :key="speaker.id"
         class="event-block-speakers__speaker"
       >
-        <div class="event-block-speakers__speaker-heading">
-          <img
-            :src="speaker.image.url"
-            alt=""
-            class="event-block-speakers__speaker-image"
-          >
+        <div class="event-block-speakers__speaker-wrapper">
+          <div class="event-block-speakers__speaker-heading">
+            <img
+              :src="speaker.image.url"
+              alt=""
+              class="event-block-speakers__speaker-image"
+            >
 
-          <div class="event-block-speakers__speaker-meta">
-            <h4 class="event-block-speakers__speaker-name">
-              {{ speaker.name }}
-            </h4>
+            <div class="event-block-speakers__speaker-meta">
+              <h4 class="event-block-speakers__speaker-name">
+                {{ speaker.name }}
+              </h4>
 
-            <p class="event-block-speakers__speaker-organization">
-              {{ speaker.organization }}
-            </p>
+              <p class="event-block-speakers__speaker-organization">
+                {{ speaker.organization }}
+              </p>
+            </div>
           </div>
+
+          <h5 class="event-block-speakers__speaker-label">
+            {{ speaker.subjectLabel }}
+          </h5>
+
+          <p class="event-block-speakers__speaker-subject">
+            {{ speaker.subject }}
+          </p>
         </div>
-
-        <h5 class="event-block-speakers__speaker-label">
-          {{ speaker.subjectLabel }}
-        </h5>
-
-        <p class="event-block-speakers__speaker-subject">
-          {{ speaker.subject }}
-        </p>
       </swiper-slide>
 
       <div
@@ -113,6 +115,11 @@
             el: '.swiper-scrollbar',
           },
           breakpoints: {
+            600: {
+              slidesPerColumn: 2,
+              slidesPerView: 2.8,
+              spaceBetween: 20,
+            },
             0: {
               slidesPerColumn: 1,
               slidesPerView: 1.2,
@@ -165,11 +172,32 @@
     text-transform: uppercase;
   }
 
+  @media (--md-viewport) {
+    .event-block-speakers__carousel {
+      height: 570px;
+    }
+  }
+
   .event-block-speakers__speaker {
-    padding: 1rem;
     height: auto;
     background-color: var(--blue-secondary);
     border-radius: 5px;
+  }
+
+  @media (--md-viewport) {
+    .event-block-speakers__speaker {
+      height: 240px;
+    }
+  }
+
+  .event-block-speakers__speaker-wrapper {
+    padding: 1rem;
+  }
+
+  @media (--md-viewport) {
+    .event-block-speakers__speaker-wrapper {
+      padding: 1.5rem;
+    }
   }
 
   .event-block-speakers__speaker-heading {
@@ -179,20 +207,40 @@
 
   .event-block-speakers__speaker-image {
     margin-right: 1rem;
-    width: 60px;
-    height: 60px;
+    width: 52px;
+    height: 52px;
     border: 4px solid var(--blue-secondary);
     border-radius: 50%;
     box-shadow: 0px 5px 18px rgba(44, 39, 36, .3);
+  }
+
+  @media (--md-viewport) {
+    .event-block-speakers__speaker-image {
+      margin-right: 1.5rem;
+      width: 85px;
+      height: 85px;
+    }
   }
 
   .event-block-speakers__speaker-meta {
     margin-top: .5rem;
   }
 
+  @media (--md-viewport) {
+    .event-block-speakers__speaker-name {
+      font-size: 1.5rem;
+    }
+  }
+
   .event-block-speakers__speaker-organization {
     line-height: 1.2;
     opacity: .6;
+  }
+
+  @media (--md-viewport) {
+    .event-block-speakers__speaker-organization {
+      font-weight: 500;
+    }
   }
 
   .event-block-speakers__speaker-label {
@@ -204,5 +252,23 @@
   .event-block-speakers__speaker-subject {
     font-weight: 500;
     line-height: 1.2;
+  }
+
+  @media (--md-viewport) {
+    .event-block-speakers__speaker-subject {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (--md-viewport) {
+    .event-block-speakers__speaker-name,
+    .event-block-speakers__speaker-organization,
+    .event-block-speakers__speaker-subject {
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   }
 </style>

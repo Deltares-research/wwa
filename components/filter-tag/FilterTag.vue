@@ -30,7 +30,8 @@ export default {
 .filter-tag {
   display: flex;
   align-items: center;
-  padding: .3rem 1rem .5rem 1rem;
+  padding: .3rem 1rem;
+  min-height: 2rem;
   background: var(--black-secondary);
   font-size: .825rem;
   font-weight: bold;

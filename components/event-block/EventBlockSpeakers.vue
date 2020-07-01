@@ -226,21 +226,9 @@
     margin-top: .5rem;
   }
 
-  @media (--md-viewport) {
-    .event-block-speakers__speaker-name {
-      font-size: 1.5rem;
-    }
-  }
-
   .event-block-speakers__speaker-organization {
     line-height: 1.2;
     opacity: .6;
-  }
-
-  @media (--md-viewport) {
-    .event-block-speakers__speaker-organization {
-      font-weight: 500;
-    }
   }
 
   .event-block-speakers__speaker-label {
@@ -255,12 +243,6 @@
   }
 
   @media (--md-viewport) {
-    .event-block-speakers__speaker-subject {
-      font-size: 1.5rem;
-    }
-  }
-
-  @media (--md-viewport) {
     .event-block-speakers__speaker-name,
     .event-block-speakers__speaker-organization,
     .event-block-speakers__speaker-subject {
@@ -269,6 +251,18 @@
       text-overflow: ellipsis;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
+    }
+
+    .event-block-speakers__speaker-name {
+      font-size: 1.5rem;
+    }
+
+    .event-block-speakers__speaker-organization {
+      font-weight: 500;
+    }
+
+    .event-block-speakers__speaker-subject {
+      font-size: 1.5rem;
     }
   }
 </style>

@@ -62,6 +62,20 @@
                 :items="block.chapters"
               />
             </div>
+            <div
+              v-if="block._modelApiKey === 'speakers_block'"
+              :key="block.id"
+              class="event__layout event__layout--padded"
+            >
+              <event-block-speakers
+                :show-wave-marker="block.showWaveMarker"
+                :image="block.image"
+                :title="block.title"
+                :subtitle="block.subtitle"
+                :title-color="block.titleColor"
+                :speakers="block.speakers"
+              />
+            </div>
           </template>
         </div>
       </section>
@@ -78,6 +92,7 @@
   import EventBlockText from '~/components/event-block/EventBlockText';
   import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia';
   import EventBlockRelatedStories from '~/components/event-block/EventBlockRelatedStories';
+  import EventBlockSpeakers from '~/components/event-block/EventBlockSpeakers';
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';
 
@@ -88,6 +103,7 @@
       EventBlockText,
       EventBlockTextMedia,
       EventBlockRelatedStories,
+      EventBlockSpeakers,
       EventHeader,
       EventFooter,
     },
@@ -191,6 +207,24 @@
                       cover {
                         url(imgixParams: {auto: compress, w: "500", fit: crop, crop: entropy})
                       }
+                    }
+                  }
+                }
+                ... on SpeakersBlockRecord {
+                  _modelApiKey
+                  id
+                  showWaveMarker
+                  subtitle
+                  title
+                  titleColor
+                  speakers {
+                    id
+                    name
+                    organization
+                    subject
+                    subjectLabel
+                    image {
+                      url(imgixParams: {auto: compress, w: "95", h: "95", fit: crop, crop: entropy})
                     }
                   }
                 }

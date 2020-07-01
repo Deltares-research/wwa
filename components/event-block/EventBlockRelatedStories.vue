@@ -32,6 +32,7 @@
         <nuxt-link
           :to="`/narratives/${linkedChapter.book.slug}/${linkedChapter.chapter.slug}`"
           class="event-block-related-stories__link"
+          lang="en"
         >
           <div class="event-block-related-stories__chapter-title">
             {{ linkedChapter.chapter.title }}

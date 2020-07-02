@@ -2,34 +2,12 @@
   <div>
     <main-menu variant="dark" />
 
-    <main class="layout-section">
+    <main class="layout-section event-layout-section">
       <div class="layout-section__container">
-        <ol
-          v-for="event in [...allInternalEvents, ...allExternalEvents]"
-          :key="event.id"
-        >
-          <li class="event-preview">
-            {{ event.startDate }}
-            <img
-              :src="`${event.image.url}?auto=compress&w=400`"
-              alt=""
-            >
-            {{ event.name }}
-
-            <div class="event-preview__link">
-              <a
-                v-if="event.url"
-                :href="event.url"
-              >{{ event.url }}</a>
-              <nuxt-link
-                v-else
-                :to="`/en/events/${event.slug}`"
-              >
-                Go to event page
-              </nuxt-link>
-            </div>
-          </li>
-        </ol>
+        <event-overview-list
+          :internal-events="allInternalEvents"
+          :external-events="allExternalEvents"
+        />
       </div>
     </main>
 
@@ -40,6 +18,7 @@
 <script>
   import fetchContent from '~/lib/fetch-content';
   import MainMenu from '~/components/main-menu/MainMenu';
+  import EventOverviewList from '~/components/event-overview-list/EventOverviewList';
   import AppFooter from '~/components/app-footer/AppFooter';
 
   export default {
@@ -47,22 +26,35 @@
       const query = `
         {
           allExternalEvents {
-            name
             id
+            name
             startDate
+            endDate
+            displayDate
+            summary
+            location
             url
+            urlLabel
             image {
               url
+              width
+              height
             }
           }
 
           allInternalEvents {
-            name
             id
+            name
             slug
             startDate
+            endDate
+            displayDate
+            summary
+            location
             image {
               url
+              width
+              height
             }
           }
         }
@@ -72,16 +64,12 @@
         ...await fetchContent(query),
       };
     },
-    components: { MainMenu, AppFooter },
+    components: { MainMenu, EventOverviewList, AppFooter },
   };
 </script>
 
 <style>
-  .event-preview {
-    margin: 2rem;
-  }
-
-  .event-preview__link {
-    font-weight: bold;
+  .event-layout-section {
+    padding-top: 200px;
   }
 </style>

@@ -22,6 +22,11 @@
   import AppFooter from '~/components/app-footer/AppFooter';
 
   export default {
+    async middleware ({ store, redirect }) {
+      const app = await import('~/static/data/app.json');
+      store.commit('setDescription', app.default.description);
+      store.commit('setNavigationLinks', app.default.navigationLinks);
+    },
     async asyncData() {
       const query = `
         {

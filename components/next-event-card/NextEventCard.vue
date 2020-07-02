@@ -7,7 +7,7 @@
       <img
         v-if="event.bannerIcon"
         alt=""
-        :src="`${event.bannerIcon.imgixHost}/${event.bannerIcon.value.path}`"
+        :src="`${event.bannerIcon.imgixHost}/${event.bannerIcon.value.path}?compress=auto&width=75`"
         :width="event.bannerIcon.value.width"
         :height="event.bannerIcon.value.height"
         class="next-event-card__icon"
@@ -76,13 +76,15 @@ export default {
   display: block;
   padding-left: .5rem;
   width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   max-width: 75%;
 }
 
 .next-event-card__title {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   font-size: 1.25rem;
   font-weight: 900;
 }
@@ -95,5 +97,8 @@ export default {
   margin-bottom: .25rem;
   font-size: 1.125rem;
   font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

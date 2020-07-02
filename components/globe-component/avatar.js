@@ -12,6 +12,7 @@ class Avatar {
     this.textures['too-dirty'] = new THREE.TextureLoader().load(base + 'assets/too-dirty.png');
     this.textures['too-much'] = new THREE.TextureLoader().load(base + 'assets/too-much.png');
     this.textures['too-little'] = new THREE.TextureLoader().load(base + 'assets/too-little.png');
+    this.textures['event'] = new THREE.TextureLoader().load(base + 'assets/event-marker.png');
     this.mesh = new THREE.Object3D();
   }
 

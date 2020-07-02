@@ -127,10 +127,11 @@
           },
           mapboxStyle: 'mapbox://styles/gerrith/cje46m7aw8fif2stbi1jlline',
           theme: {
-            slug: 'too-much',
+            slug: 'event',
           },
         };
       });
+      this.$store.commit('replaceTheme', 'too-much');
       this.$store.commit('replaceFeatures', this.markers);
       this.$store.commit('enableInteraction');
       this.$store.commit('enableGlobeAutoRotation');

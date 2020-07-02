@@ -95,11 +95,15 @@ export default {
       return activeFilters ? activeFilters.filterItems : [];
     },
     filterDescription () {
-      const description = this.activeFilterItemSlug ? this.activeFilterItem.description : this.activeFilter.description;
+      const description = this.activeFilterItemSlug
+        ? this.activeFilterItem ? this.activeFilterItem.description : ''
+        : this.activeFilter ? this.activeFilter.description : '';
       return renderMarkedContent(description);
     },
     filterTitle () {
-      return this.activeFilterItemSlug ? this.activeFilterItem.title : this.activeFilter.title;
+      return this.activeFilterItemSlug
+        ? this.activeFilterItem ? this.activeFilterItem.title : ''
+        : this.activeFilter ? this.activeFilter.title : '';
     },
   },
   mounted () {

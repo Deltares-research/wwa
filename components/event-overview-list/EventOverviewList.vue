@@ -181,19 +181,29 @@
     },
     mounted() {
       const allEvents = [...this.internalEvents, ...this.externalEvents];
-      const today = new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate())).getTime();
+      const today = new Date();
 
       this.futureEvents = allEvents
         .filter(event => {
           const startDate = new Date(event.startDate + 'T00:00:00Z').getTime();
           const endDate = new Date(event.endDate + 'T00:00:00Z').getTime();
           return startDate >= today || startDate < today && endDate >= today;
+        })
+        .sort((a, b) => {
+          const startDateA = new Date(a.startDate + 'T00:00:00Z').getTime();
+          const startDateB = new Date(b.startDate + 'T00:00:00Z').getTime();
+          return startDateA - startDateB;
         });
 
       this.pastEvents = allEvents
         .filter(event => {
           const endDate = new Date(event.endDate + 'T00:00:00Z').getTime();
           return endDate < today;
+        })
+        .sort((a, b) => {
+          const startDateA = new Date(a.startDate + 'T00:00:00Z').getTime();
+          const startDateB = new Date(b.startDate + 'T00:00:00Z').getTime();
+          return startDateB - startDateA;
         });
     },
   };
@@ -229,6 +239,11 @@
     font-weight: 500;
     color: var(--blue-tertiary);
     border-bottom: 2px solid var(--blue-tertiary);
+  }
+
+  .event-overview-list__tab--selected:hover,
+  .event-overview-list__tab--selected:focus {
+    color: var(--blue-tertiary);
   }
 
   .event-overview-list__list {

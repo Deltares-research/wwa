@@ -73,6 +73,10 @@
             id
             startDate
             url
+            geolocation {
+              latitude
+              longitude
+            }
             image {
               url
             }
@@ -83,6 +87,10 @@
             id
             slug
             startDate
+            geolocation {
+              latitude
+              longitude
+            }
             image {
               url
             }
@@ -98,10 +106,34 @@
     computed: {
       ...mapState(['highlightedEvent']),
     },
+    data() {
+      return {
+        markers: [],
+      };
+    },
     beforeCreate () {
       this.GlobeComponent = () => ({
         component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue'),
       });
+    },
+    mounted () {
+      const allEvents = [...this.allInternalEvents, ...this.allExternalEvents];
+      this.markers = allEvents.map(event => {
+        return {
+          location: {
+            lat: event.geolocation.latitude,
+            lon: event.geolocation.longitude,
+            zoom: 1,
+          },
+          mapboxStyle: 'mapbox://styles/gerrith/cje46m7aw8fif2stbi1jlline',
+          theme: {
+            slug: 'too-much',
+          },
+        };
+      });
+      this.$store.commit('replaceFeatures', this.markers);
+      this.$store.commit('enableInteraction');
+      this.$store.commit('enableGlobeAutoRotation');
     },
   };
 </script>

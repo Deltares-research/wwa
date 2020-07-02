@@ -250,6 +250,8 @@ li.globe-navigation__tab--selected {
 }
 
 .globe-navigation__tags {
+  display: flex;
+  flex-wrap: wrap;
   margin-bottom: 1rem;
 }
 

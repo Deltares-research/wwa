@@ -1,8 +1,8 @@
 <template>
   <div>
-    <main>
-      <main-menu variant="dark" />
+    <main-menu variant="dark" />
 
+    <main>
       <globe-header />
 
       <transition

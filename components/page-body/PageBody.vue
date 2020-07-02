@@ -69,10 +69,7 @@
     >
       <responsive-video
         class="page-body__lazy-video"
-        :video-width="video.width"
-        :video-height="video.height"
-        :video-provider="video.provider"
-        :video-provider-uid="video.providerUid"
+        :video="video"
       />
       <div class="page-body__asset-placeholder" />
     </section>

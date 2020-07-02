@@ -95,16 +95,16 @@ export default {
       return activeFilters ? activeFilters.filterItems : [];
     },
     filterDescription () {
-       const description = this.activeFilterItemSlug
-         ? this.activeFilterItem ? this.activeFilterItem.description : ''
-         : this.activeFilter ? this.activeFilter.description : '';
-       return renderMarkedContent(description);
-     },
-     filterTitle () {
-       return this.activeFilterItemSlug
-         ? this.activeFilterItem ? this.activeFilterItem.title : ''
-         : this.activeFilter ? this.activeFilter.title : '';
-     },
+      const description = this.activeFilterItemSlug
+        ? this.activeFilterItem ? this.activeFilterItem.description : ''
+        : this.activeFilter ? this.activeFilter.description : '';
+      return renderMarkedContent(description);
+    },
+    filterTitle () {
+      return this.activeFilterItemSlug
+        ? this.activeFilterItem ? this.activeFilterItem.title : ''
+        : this.activeFilter ? this.activeFilter.title : '';
+    },
   },
   mounted () {
     this.tabsList = this.$refs.tabsList;
@@ -250,6 +250,8 @@ li.globe-navigation__tab--selected {
 }
 
 .globe-navigation__tags {
+  display: flex;
+  flex-wrap: wrap;
   margin-bottom: 1rem;
 }
 

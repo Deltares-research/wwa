@@ -29,7 +29,7 @@
         class="event-block-colofon__logo-item"
       >
         <img
-          :src="logo.url"
+          :src="`${logo.url}?h=100&auto=compress`"
           :alt="logo.alt"
           class="event-block-colofon__logo"
           loading="lazy"

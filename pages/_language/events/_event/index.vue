@@ -157,7 +157,7 @@
                   body
                   logos {
                     id
-                    url(imgixParams: {auto: compress, h: "100"})
+                    url
                     alt
                   }
                 }
@@ -211,7 +211,7 @@
                       slug
                       title
                       cover {
-                        url(imgixParams: {auto: compress, w: "500", fit: crop, crop: entropy})
+                        url
                       }
                     }
                   }

@@ -133,6 +133,12 @@
 </script>
 
 <style>
+  @media (--md-viewport) {
+    .event-block-speakers {
+      margin: 0 -.5rem;
+    }
+  }
+
   .event-block-speakers__icon {
     margin-bottom: .25rem;
   }
@@ -147,6 +153,12 @@
     margin-bottom: .5rem;
     font-size: 2rem;
     font-weight: 900;
+  }
+
+  @media (--md-viewport) {
+    .event-block-speakers__title {
+      margin-left: .5rem;
+    }
   }
 
   .event-block-speakers__title--orange {
@@ -173,13 +185,29 @@
   }
 
   @media (--md-viewport) {
+    .event-block-speakers__subtitle {
+      margin-left: .5rem;
+    }
+  }
+
+  @media (--md-viewport) {
     .event-block-speakers div.swiper-container-horizontal > div.swiper-scrollbar {
+      left: .5rem;
+      width: calc(100% - 1rem);
       bottom: 4rem;
     }
 
     .event-block-speakers div.swiper-button-prev,
     .event-block-speakers div.swiper-button-next {
       bottom: 1rem;
+    }
+
+    .event-block-speakers div.swiper-button-prev {
+      left: .5rem;
+    }
+
+    .event-block-speakers div.swiper-button-next {
+      left: calc(32px + 1rem);
     }
   }
 
@@ -214,7 +242,13 @@
 
   @media (--md-viewport) {
     .event-block-speakers__speaker-wrapper {
+      margin-left: .5rem;
+      margin-right: .5rem;
       margin-bottom: 1rem;
+    }
+
+    .event-block-speakers__speaker:last-child .event-block-speakers__speaker-wrapper{
+      margin-right: .5rem;
     }
   }
 

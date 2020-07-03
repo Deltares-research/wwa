@@ -62,6 +62,13 @@
                 :items="block.chapters"
               />
             </div>
+            <div
+              v-if="block._modelApiKey === 'colofon_block'"
+              :key="block.id"
+              class="event__layout event__layout--padded"
+            >
+              <event-block-colofon v-bind="block" />
+            </div>
           </template>
         </div>
       </section>
@@ -75,6 +82,7 @@
 
   import EventBanner from '~/components/event-banner/EventBanner';
   import EventBlockChapters from '~/components/event-block/EventBlockChapters';
+  import EventBlockColofon from '~/components/event-block/EventBlockColofon';
   import EventBlockText from '~/components/event-block/EventBlockText';
   import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia';
   import EventBlockRelatedStories from '~/components/event-block/EventBlockRelatedStories';
@@ -85,6 +93,7 @@
     components: {
       EventBanner,
       EventBlockChapters,
+      EventBlockColofon,
       EventBlockText,
       EventBlockTextMedia,
       EventBlockRelatedStories,
@@ -139,6 +148,19 @@
                     }
                   }
                 }
+                ... on ColofonBlockRecord {
+                  _modelApiKey
+                  id
+                  title
+                  titleColor
+                  showWaveMarker
+                  body
+                  logos {
+                    id
+                    url
+                    alt
+                  }
+                }
                 ... on TextBlockRecord {
                   _modelApiKey
                   id
@@ -189,7 +211,7 @@
                       slug
                       title
                       cover {
-                        url(imgixParams: {auto: compress, w: "500", fit: crop, crop: entropy})
+                        url
                       }
                     }
                   }

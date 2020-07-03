@@ -1,39 +1,18 @@
 <template>
-  <div class="layout-section layout-section--events">
+  <main class="layout-section layout-section--events">
     <div class="layout-section__container">
-      <ol
-        v-for="event in [...allInternalEvents, ...allExternalEvents]"
-        :key="event.id"
-      >
-        <li class="event-preview">
-          {{ event.startDate }}
-          <img
-            :src="`${event.image.url}?auto=compress&w=400`"
-            alt=""
-          >
-          {{ event.name }}
-
-          <div class="event-preview__link">
-            <a
-              v-if="event.url"
-              :href="event.url"
-            >{{ event.url }}</a>
-            <nuxt-link
-              v-else
-              :to="`/en/events/${event.slug}`"
-            >
-              Go to event page
-            </nuxt-link>
-          </div>
-        </li>
-      </ol>
+      <event-overview-list
+        :internal-events="allInternalEvents"
+        :external-events="allExternalEvents"
+      />
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
   import { mapState } from 'vuex';
   import fetchContent from '~/lib/fetch-content';
+  import EventOverviewList from '~/components/event-overview-list/EventOverviewList';
 
   export default {
     layout: 'globe',
@@ -47,30 +26,43 @@
       const query = `
         {
           allExternalEvents {
-            name
             id
+            name
             startDate
+            endDate
+            displayDate
+            summary
+            location
             url
+            urlLabel
             geolocation {
               latitude
               longitude
             }
             image {
               url
+              width
+              height
             }
           }
 
           allInternalEvents {
-            name
             id
+            name
             slug
             startDate
+            endDate
+            displayDate
+            summary
+            location
             geolocation {
               latitude
               longitude
             }
             image {
               url
+              width
+              height
             }
           }
         }
@@ -80,6 +72,7 @@
         ...await fetchContent(query),
       };
     },
+    components: { EventOverviewList },
     computed: {
       ...mapState(['highlightedEvent']),
     },

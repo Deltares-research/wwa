@@ -55,7 +55,7 @@
           class="event-overview-list__list-item"
         >
           <div class="event-overview-list__list-item-header">
-            <h3
+            <h2
               v-html="event.name"
               class="event-overview-list__name"
             />

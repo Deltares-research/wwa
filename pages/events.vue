@@ -1,9 +1,9 @@
 <template>
   <main class="layout-section layout-section--events">
     <div class="layout-section__container">
-      <h2 class="events-title">
+      <h1 class="events-title">
         Events
-      </h2>
+      </h1>
 
       <p class="events-highlight-title">
         Highlight
@@ -15,9 +15,10 @@
           :src="app.highlightedEvent.image.responsiveImage.src"
           :srcset="app.highlightedEvent.image.responsiveImage.srcSet"
           :sizes="app.highlightedEvent.image.responsiveImage.sizes"
+          alt=""
         >
         <div class="event-preview__highlight-copy">
-          <h3
+          <h2
             class="event-preview__highlight-title"
             v-html="app.highlightedEvent.name"
           />

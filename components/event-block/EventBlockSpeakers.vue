@@ -132,7 +132,7 @@
   };
 </script>
 
-<style>
+<style scoped>
   @media (--md-viewport) {
     .event-block-speakers {
       margin: 0 -.5rem;

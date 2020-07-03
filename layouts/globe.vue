@@ -25,7 +25,7 @@
       >
         <transition name="fadeIn">
           <globe-navigation
-            v-if="!globePositionRight && !isFilterPage"
+            v-if="!globePositionRight && !isFilterPage && !isEventPage"
             ref="globeNavigation"
           />
         </transition>
@@ -63,6 +63,9 @@ export default {
     ...mapState(['globePositionRight', 'highlightedEvent']),
     isFilterPage () {
       return this.$route.name === 'keywords-slug' || this.$route.name === 'keywords';
+    },
+    isEventPage () {
+      return this.$route.name === 'events';
     },
   },
 };

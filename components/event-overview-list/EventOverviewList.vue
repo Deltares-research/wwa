@@ -41,72 +41,16 @@
     </ul>
 
     <article
-      id="article1"
+      :id="`tab${index + 1}`"
       role="tabpanel"
-      aria-labelledby="tab1"
-      :hidden="currentTabId != 'tab1'"
+      :aria-labelledby="`tab${index + 1}`"
+      :hidden="currentTabId != `tab${index + 1}`"
+      v-for="(events, index) in [futureEvents, pastEvents]"
+      :key="index"
     >
       <ol class="event-overview-list__list">
         <li
-          v-for="event in futureEvents"
-          :key="event.id"
-          class="event-overview-list__list-item"
-        >
-          <div class="event-overview-list__list-item-header">
-            <h3
-              v-html="event.name"
-              class="event-overview-list__name"
-            />
-
-            <p class="event-overview-list__summary">
-              {{ event.summary }}
-            </p>
-
-            <a
-              v-if="event.url"
-              :href="event.url"
-              class="event-overview-list__link"
-            >
-              {{ event.urlLabel }}
-            </a>
-            <nuxt-link
-              v-else
-              :to="`/en/events/${event.slug}`"
-              class="event-overview-list__link event-overview-list__link--internal"
-            >
-              Go to event page
-            </nuxt-link>
-          </div>
-
-          <lazy-media class="event-overview-list__list-item-image">
-            <img
-              :src="`${event.image.url}?auto=compress&w=600`"
-              alt=""
-            >
-          </lazy-media>
-
-          <div class="event-overview-list__list-item-footer">
-            <p class="event-overview-list__date">
-              {{ event.displayDate }}
-            </p>
-
-            <p class="event-overview-list__location">
-              {{ event.location }}
-            </p>
-          </div>
-        </li>
-      </ol>
-    </article>
-
-    <article
-      id="article2"
-      role="tabpanel"
-      aria-labelledby="tab2"
-      :hidden="currentTabId != 'tab2'"
-    >
-      <ol class="event-overview-list__list">
-        <li
-          v-for="event in pastEvents"
+          v-for="event in events"
           :key="event.id"
           class="event-overview-list__list-item"
         >
@@ -170,8 +114,7 @@
     data () {
       return {
         currentTabId: 'tab1',
-        futureEvents: null,
-        pastEvents: null,
+        today: '',
       };
     },
     methods: {
@@ -179,32 +122,33 @@
         this.currentTabId = tabId;
       },
     },
+    computed: {
+      allEvents () {
+        return [...this.internalEvents, ...this.externalEvents];
+      },
+      futureEvents () {
+        return this.allEvents
+          .filter(event => {
+            const startDate = new Date(event.startDate);
+            const endDate = new Date(event.endDate);
+            return startDate >= this.today || startDate < this.today && endDate >= this.today;
+          })
+          .sort((a, b) => {
+            return new Date(a.startDate) - new Date(b.startDate);
+          });
+      },
+      pastEvents () {
+        return this.allEvents
+          .filter(event => {
+            return new Date(event.endDate) < this.today;
+          })
+          .sort((a, b) => {
+            return new Date(b.startDate) - new Date(a.startDate);
+          });
+      },
+    },
     mounted() {
-      const allEvents = [...this.internalEvents, ...this.externalEvents];
-      const today = new Date();
-
-      this.futureEvents = allEvents
-        .filter(event => {
-          const startDate = new Date(event.startDate + 'T00:00:00Z').getTime();
-          const endDate = new Date(event.endDate + 'T00:00:00Z').getTime();
-          return startDate >= today || startDate < today && endDate >= today;
-        })
-        .sort((a, b) => {
-          const startDateA = new Date(a.startDate + 'T00:00:00Z').getTime();
-          const startDateB = new Date(b.startDate + 'T00:00:00Z').getTime();
-          return startDateA - startDateB;
-        });
-
-      this.pastEvents = allEvents
-        .filter(event => {
-          const endDate = new Date(event.endDate + 'T00:00:00Z').getTime();
-          return endDate < today;
-        })
-        .sort((a, b) => {
-          const startDateA = new Date(a.startDate + 'T00:00:00Z').getTime();
-          const startDateB = new Date(b.startDate + 'T00:00:00Z').getTime();
-          return startDateB - startDateA;
-        });
+      this.today = new Date();
     },
   };
 </script>

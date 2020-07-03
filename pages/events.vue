@@ -21,6 +21,9 @@
             class="event-preview__highlight-title"
             v-html="app.highlightedEvent.name"
           />
+          <p class="event-preview__highlight-date">
+            {{ app.highlightedEvent.displayDate }}
+          </p>
           <p class="event-preview__highlight-summary">
             {{ app.highlightedEvent.summary }}
           </p>
@@ -151,15 +154,31 @@
 </script>
 
 <style>
+  .events-title {
+    margin-bottom: 1rem;
+  }
+
+  @media (--md-viewport) {
+    .events-title {
+      margin-bottom: 2rem;
+    }
+  }
+
   .events-highlight-title {
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.5rem;
     font-weight: 500;
-    font-size: 1.2rem;
+  }
+
+  @media (--md-viewport) {
+    .events-highlight-title {
+      font-size: 1.25rem;
+    }
   }
 
   .layout-section--events {
     position: relative;
     margin-top: calc(var(--globe-spacing-default) + 50px);
+    padding-top: 1rem;
   }
 
   .layout-section--events:before {
@@ -180,9 +199,9 @@
     color: var(--blue-tertiary);
   }
 
-  @media(--sm-viewport) {
+  @media(--md-viewport) {
     .events-title {
-      font-size: 3.8rem;
+      font-size: 3.75rem;
     }
   }
 
@@ -196,6 +215,12 @@
     width: 100%;
     height: 18rem;
     z-index: 1;
+  }
+
+  @media(--md-viewport) {
+    .event-preview__highlight {
+      height: 25rem;
+    }
   }
 
   .event-preview__highlight-image {
@@ -218,22 +243,77 @@
   }
 
   .event-preview__highlight-copy {
-    padding: 1rem;
+    padding: 2rem 1rem;
   }
 
   .event-preview__highlight-title {
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
     font-weight: bold;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
+  }
+
+  @media(--md-viewport) {
+    .event-preview__highlight-title {
+      margin-bottom: 0;
+      font-size: 3.75rem;
+      line-height: 1;
+    }
   }
 
   .event-preview__highlight-title em {
     font-style: normal;
   }
 
+  .event-preview__highlight-date {
+    display: none;
+  }
+
+  @media(--md-viewport) {
+    .event-preview__highlight-date {
+      display: block;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  }
+
   .event-preview__highlight-summary {
-    line-height: 24px;
-    font-size: 1.2rem;
-    line-height: 1.1;
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+    font-weight: 500;
+    text-shadow: 0px 0px 1px black;
+    line-height: 1.3;
+  }
+
+  @media(--md-viewport) {
+    .event-preview__highlight-summary {
+      max-width: 50%;
+    }
+  }
+
+  .event-preview__highlight-link {
+    display: flex;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--blue-tertiary);
+  }
+
+  .event-preview__highlight-link:hover,
+  .event-preview__highlight-link:focus {
+    color: var(--blue-tertiary);
+  }
+
+  .event-preview__highlight-link:after {
+    content: '';
+    display: block;
+    margin-left: .5rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--white);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.7 5h6.6M5 1.7L8.3 5 5 8.3' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 </style>

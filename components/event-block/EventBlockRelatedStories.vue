@@ -114,7 +114,7 @@
   @media (--md-viewport) {
     .event-block-related-stories__list {
       flex-wrap: nowrap;
-      margin: 0 -.5rem;
+      margin: 0 0 0 -.5rem;
     }
   }
 

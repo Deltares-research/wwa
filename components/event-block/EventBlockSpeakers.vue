@@ -173,10 +173,6 @@
   }
 
   @media (--md-viewport) {
-    .event-block-speakers div.swiper-container {
-      padding-bottom: 2rem;
-    }
-
     .event-block-speakers div.swiper-container-horizontal > div.swiper-scrollbar {
       bottom: 4rem;
     }

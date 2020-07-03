@@ -93,6 +93,17 @@
             >
               <event-block-colofon v-bind="block" />
             </animator>
+            <div
+              v-if="block._modelApiKey === 'schedule_block'"
+              :key="block.id"
+              class="event__layout event__layout--padded"
+            >
+              <event-block-schedule
+                v-bind="block"
+                :timezone="internalEvent.timezone"
+                :language="params.language"
+              />
+            </div>
           </template>
         </div>
       </section>
@@ -107,6 +118,7 @@
   import EventBanner from '~/components/event-banner/EventBanner';
   import EventBlockChapters from '~/components/event-block/EventBlockChapters';
   import EventBlockColofon from '~/components/event-block/EventBlockColofon';
+  import EventBlockSchedule from '~/components/event-block/EventBlockSchedule';
   import EventBlockText from '~/components/event-block/EventBlockText';
   import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia';
   import EventBlockRelatedStories from '~/components/event-block/EventBlockRelatedStories';
@@ -120,6 +132,7 @@
       EventBanner,
       EventBlockChapters,
       EventBlockColofon,
+      EventBlockSchedule,
       EventBlockText,
       EventBlockTextMedia,
       EventBlockRelatedStories,
@@ -266,6 +279,22 @@
                     subjectLabel
                     image {
                       url
+                    }
+                  }
+                }
+                ... on ScheduleBlockRecord {
+                  _modelApiKey
+                  id
+                  eventDays {
+                    id
+                    date
+                    scheduleItems {
+                      id
+                      title
+                      topic
+                      startTime
+                      endTime
+                      description
                     }
                   }
                 }

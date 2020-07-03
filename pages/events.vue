@@ -123,9 +123,7 @@
           location: {
             lat: event.geolocation.latitude,
             lon: event.geolocation.longitude,
-            zoom: 1,
           },
-          mapboxStyle: 'mapbox://styles/gerrith/cje46m7aw8fif2stbi1jlline',
           theme: {
             slug: 'event',
           },

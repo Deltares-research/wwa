@@ -11,13 +11,16 @@
 
     <main class="event-section event__content">
       <div class="event__layout event__layout--padded">
-        <narrative-header-event :chapter="chapter" />
+        <narrative-header-event
+          :chapter="chapter"
+          @scrollTo="smoothScroll"
+        />
       </div>
 
       <article
         v-for="page in chapter.pages"
         :key="page.slug"
-        :id="page.slug"
+        :ref="page.slug"
         class="event__layout event__layout--padded"
       >
         <h2>{{ page.title }}</h2>
@@ -83,6 +86,13 @@
         ...await fetchContent(query),
         params,
       };
+    },
+    methods: {
+      smoothScroll (slug) {
+        const element = this.$refs[slug][0];
+        const domRect = element.getBoundingClientRect();
+        window.scrollBy({ top: domRect.y - 16, behavior: 'smooth' });
+      },
     },
   };
 </script>

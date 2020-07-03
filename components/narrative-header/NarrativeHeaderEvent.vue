@@ -24,8 +24,16 @@
         Back
       </nuxt-link>
 
-      <select class="narrative-header-event__select">
-        <option value="">
+      <select
+        @change="navigate()"
+        v-model="selectedPage"
+        class="narrative-header-event__select"
+      >
+        <option
+          value=""
+          selected
+          disabled
+        >
           In this chapter
         </option>
         <option
@@ -44,6 +52,17 @@
   export default {
     props: {
       chapter: Object,
+    },
+    data () {
+      return {
+        selectedPage: '',
+      };
+    },
+    methods: {
+      navigate () {
+        this.$emit('scrollTo', this.selectedPage);
+        this.selectedPage = '';
+      },
     },
   };
 </script>

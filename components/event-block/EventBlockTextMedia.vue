@@ -18,11 +18,11 @@
       {{ props.title }}
     </h3>
     <a
-      v-if="props.programButtonLabel"
-      href="#"
+      v-if="props.internalButtonLabel"
+      :href="`#${props.internalButtonSlug}`"
       class="event-block-text-media__button"
     >
-      {{ props.programButtonLabel }}
+      {{ props.internalButtonLabel }}
     </a>
     <picture
       v-if="props.image"
@@ -66,7 +66,8 @@
       showWaveMarker: Boolean,
       title: String,
       titleColor: String,
-      programButtonLabel: String,
+      internalButtonLabel: String,
+      internalButtonSlug: String,
       image: Object,
       body: String,
       callToActionLabel: String,

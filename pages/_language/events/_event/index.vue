@@ -34,6 +34,7 @@
             <div
               v-if="block._modelApiKey === 'text_block'"
               :key="block.id"
+              :id="block.slug"
               class="event__layout event__layout--padded"
             >
               <event-block-text v-bind="block" />
@@ -41,6 +42,7 @@
             <div
               v-if="block._modelApiKey === 'media_block'"
               :key="block.id"
+              :id="block.slug"
               class="event__layout event__layout--padded"
             >
               <event-block-text-media v-bind="block" />
@@ -48,6 +50,7 @@
             <div
               v-if="block._modelApiKey === 'related_stories_block'"
               :key="block.id"
+              :id="block.slug"
               class="event__layout event__layout--padded"
             >
               <event-block-related-stories v-bind="block" />
@@ -55,6 +58,7 @@
             <div
               v-if="block._modelApiKey === 'chapters_block'"
               :key="block.id"
+              :id="block.slug"
               class="event__layout event__layout--padded"
             >
               <event-block-chapters
@@ -65,6 +69,7 @@
             <div
               v-if="block._modelApiKey === 'speakers_block'"
               :key="block.id"
+              :id="block.slug"
               class="event__layout event__layout--padded"
             >
               <event-block-speakers
@@ -79,6 +84,7 @@
             <div
               v-if="block._modelApiKey === 'colofon_block'"
               :key="block.id"
+              :id="block.slug"
               class="event__layout event__layout--padded"
             >
               <event-block-colofon v-bind="block" />
@@ -156,6 +162,7 @@
                   _modelApiKey
                   id
                   title
+                  slug
                   chapters {
                     title
                     slug
@@ -168,6 +175,7 @@
                   _modelApiKey
                   id
                   title
+                  slug
                   titleColor
                   showWaveMarker
                   body
@@ -181,6 +189,7 @@
                   _modelApiKey
                   id
                   title
+                  slug
                   titleColor
                   showWaveMarker
                   body(markdown: true)
@@ -191,9 +200,11 @@
                   _modelApiKey
                   id
                   title
+                  slug
                   titleColor
                   showWaveMarker
-                  programButtonLabel
+                  internalButtonLabel
+                  internalButtonSlug
                   body(markdown: true)
                   callToActionLabel
                   callToActionUrl
@@ -215,6 +226,7 @@
                   _modelApiKey
                   id
                   title
+                  slug
                   subtitle
                   titleColor
                   showWaveMarker
@@ -238,6 +250,7 @@
                   showWaveMarker
                   subtitle
                   title
+                  slug
                   titleColor
                   speakers {
                     id

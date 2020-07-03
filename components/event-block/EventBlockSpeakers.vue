@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="event-block-speakers">
     <img
       v-if="showWaveMarker"
       src="/event-title-wave.svg"
@@ -115,15 +115,15 @@
             el: '.swiper-scrollbar',
           },
           breakpoints: {
-            600: {
+            768: {
               slidesPerColumn: 2,
               slidesPerView: 2.8,
-              spaceBetween: 20,
+              spaceBetween: 0,
             },
             0: {
               slidesPerColumn: 1,
               slidesPerView: 1.2,
-              spaceBetween: 10,
+              spaceBetween: 0,
             },
           },
         },
@@ -173,15 +173,29 @@
   }
 
   @media (--md-viewport) {
+    .event-block-speakers div.swiper-container {
+      padding-bottom: 2rem;
+    }
+
+    .event-block-speakers div.swiper-container-horizontal > div.swiper-scrollbar {
+      bottom: 4rem;
+    }
+
+    .event-block-speakers div.swiper-button-prev,
+    .event-block-speakers div.swiper-button-next {
+      bottom: 1rem;
+    }
+  }
+
+  @media (--md-viewport) {
     .event-block-speakers__carousel {
-      height: 570px;
+      height: 550px;
     }
   }
 
   .event-block-speakers__speaker {
+    display: flex;
     height: auto;
-    background-color: var(--blue-secondary);
-    border-radius: 5px;
   }
 
   @media (--md-viewport) {
@@ -191,12 +205,20 @@
   }
 
   .event-block-speakers__speaker-wrapper {
+    margin-right: 1rem;
     padding: 1rem;
+    width: 100%;
+    background-color: var(--blue-secondary);
+    border-radius: 5px;
+  }
+
+  .event-block-speakers__speaker:last-child .event-block-speakers__speaker-wrapper{
+    margin-right: 0;
   }
 
   @media (--md-viewport) {
     .event-block-speakers__speaker-wrapper {
-      padding: 1.5rem;
+      margin-bottom: 1rem;
     }
   }
 

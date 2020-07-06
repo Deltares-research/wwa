@@ -99,6 +99,14 @@
 </script>
 
 <style>
+  .event-block-chapters .swiper-container {
+    perspective: 100px;
+  }
+
+  .event-block-chapters .swiper-wrapper {
+    transform-style: preserve-3d;
+  }
+
   .event-block-chapters__title {
     margin-bottom: .25rem;
     font-size: .75rem;
@@ -115,12 +123,14 @@
     position: relative;
     display: block;
     height: 265px;
+    overflow: hidden;
   }
 
   .event-block-chapters__link:before {
     content: '';
     position: absolute;
-    display: block;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 38.44%, rgba(0, 0, 0, 0.7) 100%);
@@ -139,9 +149,14 @@
   }
 
   .event-block-chapters__item-image {
-    width: 100%;
-    height: 100%;
+    position: relative;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    max-width: none;
     object-fit: cover;
+    transform: translateZ(-5px);
   }
 
   .event-block-chapters__item-placeholder {

@@ -96,11 +96,13 @@
             <div
               v-if="block._modelApiKey === 'schedule_block'"
               :key="block.id"
+              :id="block.slug"
               class="event__layout event__layout--padded"
             >
               <event-block-schedule
-                v-bind="block"
+                :eventDays="block.eventDays"
                 :timezone="internalEvent.timezone"
+                :timezoneComment="internalEvent.timezoneComment"
                 :language="params.language"
               />
             </div>
@@ -156,6 +158,7 @@
             name
             visuallyHideName
             timezone
+            timezoneComment
             displayDate
             image {
               url
@@ -285,6 +288,7 @@
                 ... on ScheduleBlockRecord {
                   _modelApiKey
                   id
+                  slug
                   eventDays {
                     id
                     date
@@ -295,6 +299,11 @@
                       startTime
                       endTime
                       description
+                      speaker {
+                        image {
+                          url
+                        }
+                      }
                     }
                   }
                 }

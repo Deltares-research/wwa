@@ -100,9 +100,9 @@
               class="event__layout event__layout--padded"
             >
               <event-block-schedule
-                :eventDays="block.eventDays"
+                :event-days="block.eventDays"
                 :timezone="internalEvent.timezone"
-                :timezoneComment="internalEvent.timezoneComment"
+                :timezone-comment="internalEvent.timezoneComment"
                 :language="params.language"
               />
             </div>
@@ -299,6 +299,8 @@
                       startTime
                       endTime
                       description
+                      watchLabel
+                      watchUrl
                       speaker {
                         image {
                           url

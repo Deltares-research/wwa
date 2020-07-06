@@ -1,9 +1,14 @@
 <template>
   <div>
-    <h3 class="event-block-schedule__title">Schedule</h3>
+    <h3 class="event-block-schedule__title">
+      Schedule
+    </h3>
 
     <div class="event-block-schedule-wide">
-      <div class="event-block-schedule__tablist" role="tablist">
+      <div
+        class="event-block-schedule__tablist"
+        role="tablist"
+      >
         <a
           v-for="(eventDay, index) in eventDays"
           :key="`tab-${eventDay.id}`"
@@ -24,9 +29,9 @@
         </a>
       </div>
 
-      <p>{{ timezoneComment }} {{ timezone }}</p>
+      <p>{{ timezoneComment }} UTC {{ timezone.substr(0,3) }}</p>
 
-      <template v-for="(eventDay, index) in eventDays">
+      <template v-for="(eventDay, index) in parsedEventDays">
         <section
           class=""
           :key="`section-${eventDay.id}`"
@@ -35,31 +40,54 @@
           :aria-labelledby="`tab${index}`"
           :hidden="eventDay.id !== activeEventDayId"
         >
-          <ul class="" :key="`content-${eventDay.id}`">
+          <ul
+            class=""
+            :key="`content-${eventDay.id}`"
+          >
             <li
               v-for="scheduleItem in eventDay.scheduleItems"
               :key="scheduleItem.id"
               class="event-block-schedule__item event-block-schedule__item-wide"
             >
-              <span class="event-block-schedule__time-wide">
-                {{ scheduleItem.startTime }} - {{ scheduleItem.endTime }}
-              </span>
-              <div class="event-block-schedule__body-wide">
-                <img
-                  class="event-block-schedule__speaker-image"
-                  v-if="scheduleItem.speaker"
-                  :src="`${scheduleItem.speaker.image.url}?auto=format&mask=ellipse&w=60&h=60`"
-                  alt=""
-                >
-                <span class="event-block-schedule__copy event-block-schedule__copy-wide">
-                  <span class="event-block-schedule__copy-title-wide">{{ scheduleItem.title }}</span>
-                  <span class="event-block-schedule__description-label">Topic</span>
-                  <span>{{ scheduleItem.topic }}</span>
+              <div class="event-block-schedule__time-wrapper">
+                <span
+                  v-if="scheduleItem.isNow"
+                  class="event-block-schedule__now-notice"
+                >now</span>
+                <span class="event-block-schedule__time-wide">
+                  {{ scheduleItem.startTime }} - {{ scheduleItem.endTime }}
                 </span>
+              </div>
+              <div
+                class="event-block-schedule__body-wide"
+                :class="{
+                  'event-block-schedule__body--active': scheduleItem.isNow,
+                }"
+              >
+                <div class="event-block-schedule__meta">
+                  <img
+                    class="event-block-schedule__speaker-image"
+                    v-if="scheduleItem.speaker"
+                    :src="`${scheduleItem.speaker.image.url}?auto=format&mask=ellipse&w=60&h=60`"
+                    alt=""
+                  >
+                  <span class="event-block-schedule__copy event-block-schedule__copy-wide">
+                    <span class="event-block-schedule__copy-title-wide">{{ scheduleItem.title }}</span>
+                    <span class="event-block-schedule__description-label">Topic</span>
+                    <span class="event-block-schedule__topic">{{ scheduleItem.topic }}</span>
+                  </span>
+                </div>
                 <div class="event-block-schedule__description-wide">
                   <span class="event-block-schedule__description-label">Description</span>
                   {{ scheduleItem.description }}
                 </div>
+                <a
+                  v-if="scheduleItem.isNow && scheduleItem.watchUrl"
+                  class="event-block-schedule__url"
+                  :href="scheduleItem.watchUrl"
+                >
+                  {{ scheduleItem.watchLabel }}
+                </a>
               </div>
             </li>
           </ul>
@@ -68,15 +96,15 @@
     </div>
 
     <div class="event-block-schedule">
-      <template v-for="(eventDay, index) in parsedEventDays">
+      <template v-for="eventDay in eventDays">
         <input
           class="event-block-schedule__tab"
           :key="`input-${eventDay.id}`"
           :id="`tab-${eventDay.id}`"
-          :checked="eventDay.isToday || index === 0"
+          :checked="eventDay.id === activeEventDayId"
           name="tabs"
           type="radio"
-        />
+        >
         <label
           :key="`label-${eventDay.id}`"
           :for="`tab-${eventDay.id}`"
@@ -89,7 +117,10 @@
             ) }}
           </time>
         </label>
-        <ul class="event-block-schedule__itemlist" :key="`content-${eventDay.id}`">
+        <ul
+          class="event-block-schedule__itemlist"
+          :key="`content-${eventDay.id}`"
+        >
           <li
             v-for="scheduleItem in eventDay.scheduleItems"
             :key="scheduleItem.id"
@@ -129,7 +160,6 @@
         </ul>
       </template>
     </div>
-
   </div>
 </template>
 
@@ -141,21 +171,26 @@
       eventDays: Array,
       language: String,
     },
-    data({ eventDays }) {
+    data({ timezone, eventDays }) {
+      const currentDate = new Date();
       const eventDayToday = eventDays.find(eventDay =>
-        new Date().toDateString() === new Date(eventDay.date).toDateString()
+        currentDate.toDateString() === new Date(eventDay.date).toDateString(),
       );
 
       return {
         parsedEventDays: eventDays.map(eventDay => ({
           ...eventDay,
-          isToday: new Date().toDateString()
-            === new Date(eventDay.date).toDateString(),
+          scheduleItems: eventDay.scheduleItems.map(scheduleItem => ({
+            ...scheduleItem,
+            isNow: eventDayToday
+              && currentDate > new Date(`${eventDay.date}T${scheduleItem.startTime}${timezone}`)
+              && currentDate < new Date(`${eventDay.date}T${scheduleItem.endTime}${timezone}`),
+          })),
         })),
         activeEventDayId: eventDayToday ? eventDayToday.id : eventDays[0].id,
       };
     },
-  }
+  };
 </script>
 
 <style>
@@ -312,12 +347,23 @@
     margin-bottom: 0.2rem;
   }
 
+  .event-block-schedule__now-notice {
+    display: block;
+    color: var(--orange);
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+  }
+
+  .event-block-schedule__time-wrapper {
+    max-width: 10rem;
+    width: 100%;
+    margin-right: 2rem;
+  }
+
   .event-block-schedule__time-wide {
     font-size: 1.2rem;
     white-space: nowrap;
-    margin-right: 2rem;
-    max-width: 10rem;
-    width: 100%;
   }
 
   .event-block-schedule__body {
@@ -343,11 +389,24 @@
     min-height: 8.4rem;
   }
 
+  .event-block-schedule__body--active {
+    background-color: var(--white);
+    color: var(--blue-primary);
+  }
+
   .event-block-schedule__speaker-image {
     border-radius: 100%;
     border: 4px solid var(--white);
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
     margin-right: 1.2rem;
+  }
+
+  .event-block-schedule__meta {
+    display: flex;
+    align-items: flex-start;
+    margin-right: 4rem;
+    width: 100%;
+    max-width: 14rem;
   }
 
   .event-block-schedule__copy {
@@ -356,9 +415,6 @@
   }
 
   .event-block-schedule__copy-wide {
-    margin-right: 4rem;
-    width: 100%;
-    max-width: 14rem;
     font-weight: 500;
   }
 
@@ -384,6 +440,7 @@
 
   .event-block-schedule__description-wide {
     max-width: 30rem;
+    margin-right: 1rem;
   }
 
   .event-block-schedule__description-label {
@@ -392,6 +449,15 @@
     font-size: 0.8rem;
     color: var(--black-tertiary);
     text-transform: uppercase;
+  }
+
+  .event-block-schedule__url {
+    min-width: 8rem;
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--blue-primary);
+    box-shadow: 0px 6px 13px rgba(182, 187, 189, 0.5);
+    border-radius: 4px;
   }
 
   summary::-webkit-details-marker {

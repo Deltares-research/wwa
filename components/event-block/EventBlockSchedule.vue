@@ -171,24 +171,37 @@
       eventDays: Array,
       language: String,
     },
-    data({ timezone, eventDays }) {
-      const currentDate = new Date();
-      const eventDayToday = eventDays.find(eventDay =>
-        currentDate.toDateString() === new Date(eventDay.date).toDateString(),
-      );
-
+    data({ eventDayToday, eventDays }) {
       return {
-        parsedEventDays: eventDays.map(eventDay => ({
+        currentDate: new Date(),
+        activeEventDayId: eventDayToday ? eventDayToday.id : eventDays[0].id,
+      };
+    },
+    computed: {
+      parsedEventDays({ eventDays, currentDate, timezone }) {
+        return eventDays.map(eventDay => ({
           ...eventDay,
           scheduleItems: eventDay.scheduleItems.map(scheduleItem => ({
             ...scheduleItem,
-            isNow: eventDayToday
-              && currentDate > new Date(`${eventDay.date}T${scheduleItem.startTime}${timezone}`)
+            isNow:
+              currentDate > new Date(`${eventDay.date}T${scheduleItem.startTime}${timezone}`)
               && currentDate < new Date(`${eventDay.date}T${scheduleItem.endTime}${timezone}`),
           })),
-        })),
-        activeEventDayId: eventDayToday ? eventDayToday.id : eventDays[0].id,
-      };
+        }));
+      },
+      eventDayToday({ currentDate, eventDays }) {
+        if (currentDate === undefined)
+          return false;
+
+        return eventDays.find(eventDay =>
+          currentDate.toDateString() === new Date(eventDay.date).toDateString(),
+        );
+      },
+    },
+    created() {
+      setInterval(() => {
+         this.currentDate = new Date();
+      }, 1000 * 60);
     },
   };
 </script>

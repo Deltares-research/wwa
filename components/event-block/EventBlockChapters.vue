@@ -17,10 +17,10 @@
           <span class="event-block-chapters__item-title">{{ item.title }}</span>
           <img
             v-if="item.cover"
-            :data-src="`${item.cover.url}?auto=compress&w=470`"
+            :data-src="`${item.cover.url}?auto=compress&w=530`"
             alt=""
             class="event-block-chapters__item-image swiper-lazy"
-            data-swiper-parallax="-5%"
+            data-swiper-parallax="-10%"
           >
           <div
             v-else
@@ -144,10 +144,10 @@
 
   .event-block-chapters__item-image {
     position: relative;
-    top: -10%;
-    left: -10%;
-    width: 120%;
-    height: 120%;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
     max-width: none;
     object-fit: cover;
   }

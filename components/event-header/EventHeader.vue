@@ -1,5 +1,5 @@
 <template>
-  <div class="event-header">
+  <div class="animator__fade event-header">
     <img
       :src="`${image.url}?auto=compress&fit=crop&w=80&h=80`"
       width="40"

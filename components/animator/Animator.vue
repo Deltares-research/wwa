@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{animator: showAnimations, 'animator--active': isIntersected}"
-    :style="{ '--animator-delay': delay, '--animator-stagger': stagger }"
+    :style="{ '--animator-delay': delay + 's', '--animator-stagger': stagger }"
   >
     <slot />
   </div>

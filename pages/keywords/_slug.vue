@@ -22,6 +22,7 @@
           <li v-if="availableKeywords.length">
             <select
               class="keywords__dropdown"
+              aria-label="Select keyword"
               @change="updatePath"
             >
               <option

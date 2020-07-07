@@ -19,7 +19,7 @@
               :is-removable="true"
             />
           </li>
-          <li>
+          <li v-if="availableKeywords.length">
             <select
               class="keywords__dropdown"
               @change="updatePath"
@@ -55,93 +55,87 @@
 </template>
 
 <script>
-import allKeywords from '~/static/data/keywords/index.json';
-import ChapterList from '~/components/chapter-list/ChapterList';
-import FilterTag from '~/components/filter-tag/FilterTag';
-import loadData from '~/lib/load-data';
-import { unionByProp } from '~/lib/set-operations';
+  import ChapterList from '~/components/chapter-list/ChapterList';
+  import FilterTag from '~/components/filter-tag/FilterTag';
+  import loadData from '~/lib/load-data';
+  import { unionByProp } from '~/lib/set-operations';
 
-export default {
-  layout: 'globe',
-  async asyncData (context) {
-    const { params } = context;
-    const keywordsFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : [];
-    const { results = [], tags: keywords = [] } = await loadData(context, { keywords: keywordsFromUrl });
+  export default {
+    layout: 'globe',
+    async asyncData (context) {
+      const { params } = context;
+      const keywordsFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : [];
+      const { results = [], tags: keywords = [] } = await loadData(context, { keywords: keywordsFromUrl });
 
-    return {
-      keywords,
-      results,
-    };
-  },
-  data () {
-    return { allKeywords };
-  },
-  components: {
-    ChapterList, FilterTag,
-  },
-  computed: {
-    activeKeywords () {
-      const base = this.$route.path.replace(/(\+?[^/])*(\/?)$/, ''); // remove all tags
-      return this.keywords.map(tag => {
-        const excludingSelf = this.keywords
-          .filter(t => t.slug !== tag.slug)
-          .map(t => t.slug)
-          .join('+');
-        tag.unsetLink = `${base}${excludingSelf}`;
-        return tag;
-      });
+      return {
+        keywords,
+        results,
+      };
     },
-    availableKeywords () {
-      // Build available keywords objects from results
-      const availableKeywords = this.results
-        .reduce((acc, result) => unionByProp(acc, result.keywords, 'slug'), [])
-        .filter(keyword => this.activeKeywords.every(active => active.slug !== keyword.slug));
-
-      return (availableKeywords.length) ? availableKeywords : this.allKeywords;
+    components: {
+      ChapterList, FilterTag,
     },
-  },
-  mounted () {
-    this.$store.commit('replaceTheme', 'too-much');
-    this.$store.commit('replaceFeatures', this.results);
-  },
-  methods: {
-    updatePath (event) {
-      const keywordSlug = event.target.value;
-      const currentSlug = this.keywords.map(kewyord => kewyord.slug).join('+');
-      this.$router.push(`/keywords/${(currentSlug) ? currentSlug + '+' : ''}${keywordSlug}`);
+    computed: {
+      activeKeywords () {
+        const base = this.$route.path.replace(/(\+?[^/])*(\/?)$/, ''); // remove all tags
+        return this.keywords.map(tag => {
+          const excludingSelf = this.keywords
+            .filter(t => t.slug !== tag.slug)
+            .map(t => t.slug)
+            .join('+');
+          tag.unsetLink = `${base}${excludingSelf}`;
+          return tag;
+        });
+      },
+      availableKeywords () {
+        // Build available keywords objects from results
+        return this.results
+          .reduce((acc, result) => unionByProp(acc, result.keywords, 'slug'), [])
+          .filter(keyword => this.activeKeywords.every(active => active.slug !== keyword.slug));
+      },
     },
-  },
-};
+    mounted () {
+      this.$store.commit('replaceTheme', 'too-much');
+      this.$store.commit('replaceFeatures', this.results);
+    },
+    methods: {
+      updatePath (event) {
+        const keywordSlug = event.target.value;
+        const currentSlug = this.keywords.map(kewyord => kewyord.slug).join('+');
+        this.$router.push(`/keywords/${(currentSlug) ? currentSlug + '+' : ''}${keywordSlug}`);
+      },
+    },
+  };
 </script>
 
 <style>
-.keywords__header {
-  padding: 2rem 0 1rem 0;
-  background: linear-gradient(180deg, rgba(8, 8, 8, 0) 0%, rgba(8, 8, 8, 1) 100%);
-}
+  .keywords__header {
+    padding: 2rem 0 1rem 0;
+    background: linear-gradient(180deg, rgba(8, 8, 8, 0) 0%, rgba(8, 8, 8, 1) 100%);
+  }
 
-.keywords__list {
-  margin-bottom: 2rem;
-}
+  .keywords__list {
+    margin-bottom: 2rem;
+  }
 
-.keywords__dropdown {
-  color: var(--black-secondary);
-  background-color: var(--black-secondary);
-  display: inline-block;
-  border-radius: 1rem;
-  padding: .25rem 1rem .375rem 1rem;
-  margin: .25em 1px .25em -1px;
-  appearance: none;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: var(--white);
-  background-color: transparent;
-  border: none;
-  transition: color .25s;
-  cursor: pointer;
-}
+  .keywords__dropdown {
+    color: var(--black-secondary);
+    background-color: var(--black-secondary);
+    display: inline-block;
+    border-radius: 1rem;
+    padding: .25rem 1rem .375rem 1rem;
+    margin: .25em 1px .25em -1px;
+    appearance: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--white);
+    background-color: transparent;
+    border: none;
+    transition: color .25s;
+    cursor: pointer;
+  }
 
-.keywords__dropdown:hover {
-  color: var(--blue-tertiary);
-}
+  .keywords__dropdown:hover {
+    color: var(--blue-tertiary);
+  }
 </style>

@@ -3,7 +3,7 @@
     <div class="layout-section">
       <div class="layout-section__container">
         <chapter-list
-          :chapters="results"
+          :chapters="filteredChapters"
           sorted="newest"
           :limit="20"
         />
@@ -13,33 +13,26 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import ChapterList from '~/components/chapter-list/ChapterList';
+  import { mapState } from 'vuex';
+  import getFilteredChaptersByFilter from '~/lib/get-filtered-chapters-by-filter';
+  import ChapterList from '~/components/chapter-list/ChapterList';
 
-export default {
-  layout: 'globe',
-  async fetch ({ store }) {
-    return await store.dispatch('getBooks');
-  },
-  computed: {
-    ...mapState(['books']),
-    results () {
-      return this.books.length
-        ? this.books.map(book => {
-          return book.chapters.filter(chapter => {
-            return chapter.filters.includes(this.$route.params.slug)
-            })
-        })
-        .filter(filteredBooks => Boolean(filteredBooks.length))
-        .flat()
-        : []
+  export default {
+    layout: 'globe',
+    async fetch ({ store }) {
+      return await store.dispatch('getBooks');
     },
-  },
-  mounted () {
-    this.$store.commit('replaceTheme', 'too-much');
-    this.$store.commit('replaceFeatures', this.results);
-    this.$store.commit('enableGlobeAutoRotation');
-  },
-  components: { ChapterList },
-};
+    computed: {
+      ...mapState(['books']),
+      filteredChapters () {
+        return getFilteredChaptersByFilter(this.books, this.$route.params.slug);
+      },
+    },
+    mounted () {
+      this.$store.commit('replaceTheme', 'too-much');
+      this.$store.commit('replaceFeatures', this.filteredChapters);
+      this.$store.commit('enableGlobeAutoRotation');
+    },
+    components: { ChapterList },
+  };
 </script>

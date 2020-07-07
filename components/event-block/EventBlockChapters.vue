@@ -20,6 +20,7 @@
             :data-src="`${item.cover.url}?auto=compress&w=470`"
             alt=""
             class="event-block-chapters__item-image swiper-lazy"
+            data-swiper-parallax="-5%"
           >
           <div
             v-else
@@ -92,6 +93,7 @@
               spaceBetween: 10,
             },
           },
+          parallax: true,
         },
       };
     },
@@ -99,14 +101,6 @@
 </script>
 
 <style>
-  .event-block-chapters .swiper-container {
-    perspective: 100px;
-  }
-
-  .event-block-chapters .swiper-wrapper {
-    transform-style: preserve-3d;
-  }
-
   .event-block-chapters__title {
     margin-bottom: .25rem;
     font-size: .75rem;
@@ -156,7 +150,6 @@
     height: 120%;
     max-width: none;
     object-fit: cover;
-    transform: translateZ(-5px);
   }
 
   .event-block-chapters__item-placeholder {

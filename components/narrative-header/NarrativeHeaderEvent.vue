@@ -19,7 +19,7 @@
       class="narrative-header-event__navigation"
     >
       <nuxt-link
-        to="/"
+        :to="`/${this.$route.params.language}/events/${this.$route.params.event}`"
         class="narrative-header-event__back-button"
       >
         Back
@@ -159,7 +159,7 @@
 
   .narrative-header-event__back-button:hover,
   .narrative-header-event__back-button:focus {
-    color: var(--blue-primary);
+    color: var(--white);
   }
 
   .narrative-header-event__back-button:before {

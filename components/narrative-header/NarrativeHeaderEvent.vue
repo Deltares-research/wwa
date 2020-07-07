@@ -5,6 +5,7 @@
         {{ chapter.title }}
       </h1>
       <img
+        v-if="chapter.cover"
         :src="chapter.cover.responsiveImage.src"
         :srcset="chapter.cover.responsiveImage.srcSet"
         :sizes="chapter.cover.responsiveImage.sizes"
@@ -84,6 +85,10 @@
     margin-bottom: 1rem;
     width: 100%;
     height: 180px;
+    background-image: url(/assets/event-wave.svg), linear-gradient(137deg, #E9E6CF 14.18%, var(--blue-tertiary) 95.78%);
+    background-size: 105% auto;
+    background-repeat: no-repeat;
+    background-position: bottom 0% center;
   }
 
   @media (--md-viewport) {

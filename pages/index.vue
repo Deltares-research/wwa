@@ -17,10 +17,7 @@
 </template>
 
 <script>
-import loadData from '~/lib/load-data';
-import marked from '~/lib/custom-marked';
-import flattenDeep from 'lodash/flattenDeep';
-import home from '~/static/data/home.json';
+import { mapState } from 'vuex';
 
 import BookList from '~/components/book-list/BookList';
 import ChapterList from '~/components/chapter-list/ChapterList';
@@ -28,37 +25,14 @@ import ChapterList from '~/components/chapter-list/ChapterList';
 export default {
   layout: 'globe',
   components: { BookList, ChapterList },
-  async asyncData (context) {
-    const books = await loadData(context, { book: 'index' });
-
-    const chaptersNested = await Promise.all([
-      ...books.map(book => {
-        return book.chapters.map(chapter => {
-          return loadData(context,
-            {
-              chapter: {
-                path: `books/${book.slug}/chapters/${chapter.slug}/index.json`,
-              },
-            });
-        });
-      }),
-    ]);
-
-    const chaptersFlattend = flattenDeep(chaptersNested);
-    const chapters = await Promise.all(chaptersFlattend);
-    const markers = flattenDeep(chapters.map(chapter => chapter.pages))
-      .filter(page => page.location && page.theme && page.path);
-
-    return { books, markers };
+  async fetch ({ store }) {
+    return await store.dispatch('getBooks');
   },
-  data: function () {
-    return {
-      body: marked(home.body),
-      slug: '',
-    };
+  computed: {
+    ...mapState(['books']),
   },
   mounted () {
-    this.$store.commit('replaceFeatures', this.markers);
+    this.$store.commit('replaceFeatures', []);
     this.$store.commit('enableInteraction');
     this.$store.commit('enableGlobeAutoRotation');
   },

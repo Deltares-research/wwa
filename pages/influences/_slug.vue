@@ -13,32 +13,26 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import ChapterList from '~/components/chapter-list/ChapterList';
-import loadData from '~/lib/load-data';
-import marked from '~/lib/marked';
-import allInfluences from '~/static/data/influences/index.json';
 
 export default {
   layout: 'globe',
-  async asyncData (context) {
-    const { params } = context;
-    const influencesFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : [];
-    const { results = [], title, body } = (influencesFromUrl) ? await loadData(context, { influences: influencesFromUrl }) : {};
-    // Build active influences objects from url
-    const activeInfluences = allInfluences
-      .filter(tag => influencesFromUrl.some(active => active === tag.slug));
-
-    return {
-      influences: allInfluences,
-      activeInfluences,
-      title,
-      body,
-      results,
-    };
+  async fetch ({ store }) {
+    return await store.dispatch('getBooks');
   },
   computed: {
-    htmlBody () {
-      return marked(this.body);
+    ...mapState(['books']),
+    results () {
+      return this.books.length
+        ? this.books.map(book => {
+          return book.chapters.filter(chapter => {
+            return chapter.filters.includes(this.$route.params.slug)
+            })
+        })
+        .filter(filteredBooks => Boolean(filteredBooks.length))
+        .flat()
+        : []
     },
   },
   mounted () {

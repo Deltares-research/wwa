@@ -1,4 +1,5 @@
 const pick = require('lodash/fp/pick');
+const uniq = require('lodash/uniq');
 const slugify = require('slug');
 
 /**
@@ -91,9 +92,11 @@ module.exports = (dato, root, i18n) => {
  * @param {i18n} i18n
  */
 function generateBooks (dato, root, i18n) {
+  const booksShort = getBooksShort(dato)
+  root.createDataFile(`static/data/books/index.json`, 'json', booksShort);
+
   const books = getBooks(dato);
   books.forEach(book => root.createDataFile(`static/data/books/${book.slug}/index.json`, 'json', book));
-  root.createDataFile(`static/data/books/index.json`, 'json', books);
 }
 
 /**
@@ -137,7 +140,6 @@ function generateByInfluence (dato, root, i18n) {
       .filter(chapter => chapter.influences.some(chapterInfluence => chapterInfluence.slug === influence.slug));
     root.createDataFile(`static/data/influences/${influence.slug}.json`, 'json', { ...influence, entries: chaptersByInfluences });
   }
-  root.createDataFile('static/data/influences/index.json', 'json', influences);
 }
 
 /**
@@ -163,7 +165,6 @@ function generateByGoal (dato, root, i18n) {
       .filter(chapter => chapter.goals.some(chapterGoal => chapterGoal.slug === goal.slug));
     root.createDataFile(`static/data/goals/${goal.slug}.json`, 'json', { ...goal, entries: chaptersByGoals });
   }
-  root.createDataFile('static/data/goals/index.json', 'json', goals);
 }
 
 /**
@@ -189,7 +190,6 @@ function generateByMethodology (dato, root, i18n) {
       .filter(chapter => chapter.methodologies.some(chapterMethodology => chapterMethodology.slug === methodology.slug));
     root.createDataFile(`static/data/methodologies/${methodology.slug}.json`, 'json', { ...methodology, entries: chaptersByMethodology });
   }
-  root.createDataFile('static/data/methodologies/index.json', 'json', methodologies);
 }
 
 /**
@@ -210,7 +210,6 @@ function generateByKeyword (dato, root, i18n) {
     index.push(tagObj);
     root.createDataFile(`static/data/keywords/${tagObj.slug}.json`, 'json', pages);
   }
-  root.createDataFile(`static/data/keywords/index.json`, 'json', index.filter(i => i.slug !== 'unfiled'));
 }
 
 /**
@@ -303,7 +302,6 @@ function generateThemes (dato, root, i18n) {
     const chaptersByTheme = chapters.filter(chapter => chapter.theme.slug === theme.slug);
     root.createDataFile(`static/data/themes/${theme.slug}.json`, 'json', { ...theme, entries: chaptersByTheme });
   }
-  root.createDataFile(`static/data/themes/index.json`, 'json', themes);
 }
 
 /**
@@ -350,6 +348,65 @@ function getBooks (dato) {
       const methodologies = collectUniqueTags(chapters, 'methodologies');
       const keywords = collectUniqueTags(chapters, 'keywords');
       return { body, chapters, influences, goals, methodologies, keywords, path, slug, icon, title, theme };
+    });
+}
+
+/**
+ * Get Dato Book entities in a short format
+ *
+ * @param {Dato} dato
+ */
+function getBooksShort (dato) {
+  return dato.books
+    .filter(filterPublished)
+    .map(book => {
+      const path = `${contentBasePath}/${book.slug}`;
+      const title = book.title;
+      const chapters = getChapters(dato, book)
+        .filter(filterPublished)
+        .map(({ slug, title, cover, path, pages }) => {
+          const influencesFilters = pages.map(page => page.influences
+            ? page.influences.map(influence => {
+              return influence.slug
+            })
+            : [])
+            .flat()
+
+          const goalsFilters = pages.map(page => page.goals
+            ? page.goals.map(goal => {
+              return goal.slug
+            })
+            : [])
+            .flat()
+
+          const methodologiesFilters = pages.map(page => page.methodologies
+            ? page.methodologies.map(methodology => {
+              return methodology.slug
+            })
+            : [])
+            .flat()
+
+          const themesFilters = pages.map(page => page.themes
+            ? page.themes.map(theme => {
+              return theme.slug
+            })
+            : [])
+            .flat()
+
+          const filters = uniq(influencesFilters.concat(goalsFilters, methodologiesFilters, themesFilters));
+
+          // topics???!!
+
+          const availableCategories = [
+            ...(influencesFilters.length ? ['influences'] : []),
+            ...(goalsFilters.length ? ['goals'] : []),
+            ...(methodologiesFilters.length ? ['methodologies'] : []),
+            ...(themesFilters.length ? ['themes'] : []),
+          ]
+
+          return { slug, title, cover, path, filters, availableCategories };
+        });
+      return { title, path, chapters };
     });
 }
 

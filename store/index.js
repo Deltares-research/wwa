@@ -1,4 +1,5 @@
 import Vuex from 'vuex';
+import loadData from '~/lib/load-data';
 
 const store = () => {
   return new Vuex.Store({
@@ -16,6 +17,13 @@ const store = () => {
       globeAutoRotation: true,
       globePositionRight: false,
       filters: [],
+      books: [],
+    },
+    actions: {
+      async getBooks({ commit }) {
+        const books = await loadData(this, { book: 'index' });
+        commit('setBooks', books);
+      }
     },
     mutations: {
       activateFeature (state, feature) {
@@ -74,6 +82,9 @@ const store = () => {
       },
       setFilters (state, filters) {
         state.filters = filters;
+      },
+      setBooks (state, books) {
+        state.books = books;
       },
     },
   });

@@ -3,7 +3,7 @@
     <div class="layout-section">
       <div class="layout-section__container">
         <chapter-list
-          :chapters="results"
+          :chapters="filteredChapters"
           sorted="newest"
           :limit="20"
         />
@@ -13,37 +13,24 @@
 </template>
 
 <script>
-import ChapterList from '~/components/chapter-list/ChapterList';
-import loadData from '~/lib/load-data';
-import marked from '~/lib/marked';
-import allMethodologies from '~/static/data/methodologies/index.json';
+  import { mapState } from 'vuex';
+  import getFilteredChaptersByFilter from '~/lib/get-filtered-chapters-by-filter';
+  import ChapterList from '~/components/chapter-list/ChapterList';
 
 export default {
   layout: 'globe',
-  async asyncData (context) {
-    const { params } = context;
-    const methodologiesFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : [];
-    const { results = [], title, body } = (methodologiesFromUrl) ? await loadData(context, { methodologies: methodologiesFromUrl }) : {};
-    // Build active methodologies objects from url
-    const activeMethodologies = allMethodologies
-      .filter(tag => methodologiesFromUrl.some(active => active === tag.slug));
-
-    return {
-      methodologies: allMethodologies,
-      activeMethodologies,
-      title,
-      body,
-      results,
-    };
+  async fetch ({ store }) {
+    return await store.dispatch('getBooks');
   },
   computed: {
-    htmlBody () {
-      return marked(this.body);
+    ...mapState(['books']),
+    filteredChapters () {
+      return getFilteredChaptersByFilter(this.books, this.$route.params.slug);
     },
   },
   mounted () {
     this.$store.commit('replaceTheme', 'too-much');
-    this.$store.commit('replaceFeatures', this.results);
+    this.$store.commit('replaceFeatures', this.filteredChapters);
     this.$store.commit('enableGlobeAutoRotation');
   },
   components: { ChapterList },

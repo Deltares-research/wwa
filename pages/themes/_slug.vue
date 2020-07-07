@@ -5,7 +5,7 @@
         <chapter-list
           :chapters="filteredChapters"
           sorted="newest"
-          :limit="20"
+          :limit="32"
         />
       </div>
     </div>
@@ -14,7 +14,7 @@
 
 <script>
   import { mapState } from 'vuex';
-  import getFilteredChaptersByCategory from '~/lib/get-filtered-chapters-by-category'
+  import getFilteredChaptersByFilter from '~/lib/get-filtered-chapters-by-filter';
   import ChapterList from '~/components/chapter-list/ChapterList';
 
   export default {
@@ -25,11 +25,12 @@
     computed: {
       ...mapState(['books']),
       filteredChapters () {
-        return getFilteredChaptersByCategory(this.books, 'themes');
+        return getFilteredChaptersByFilter(this.books, this.$route.params.slug);
       },
     },
     mounted () {
-      this.$store.commit('replaceTheme', 'too-much');
+      this.$store.commit('replaceTheme', 'too-much'); // fix this to below
+      // this.$store.commit('replaceTheme', this.$route.params.themes);
       this.$store.commit('replaceFeatures', this.filteredChapters);
       this.$store.commit('enableGlobeAutoRotation');
     },

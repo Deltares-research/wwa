@@ -10,17 +10,22 @@
           :width="props.bannerIcon.width"
           :height="props.bannerIcon.height"
           alt=""
-          class="animator__slide-in animator--stagger-1 event-banner__icon"
+          class="animator__slide-in event-banner__icon"
+          animator-stagger
         >
         <h2
-          class="animator__slide-in animator--stagger-2 event-banner__title"
+          class="animator__slide-in event-banner__title"
           :class="{
             'sr-only': props.visuallyHideName
           }"
+          animator-stagger
         >
           <span v-html="props.name" />
         </h2>
-        <p class="animator__slide-in animator--stagger-3 event-banner__date">
+        <p
+          class="animator__slide-in event-banner__date"
+          animator-stagger
+        >
           {{ props.displayDate }}
         </p>
       </div>

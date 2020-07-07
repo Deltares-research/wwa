@@ -1,29 +1,32 @@
 <template functional>
-  <div>
+  <div class="test">
     <img
       v-if="props.showWaveMarker"
       src="/event-title-wave.svg"
       width="111"
       height="35"
       alt=""
-      class="event-block-text__icon"
+      class="animator__slide-up event-block-text__icon"
     >
     <h3
-      class="event-block-text__title"
+      class="animator__slide-up event-block-text__title"
       :class="{
         'event-block-text__title--orange': props.titleColor === 'orange',
         'event-block-text__title--blue': props.titleColor === 'blue',
       }"
+      animator-stagger
     >
       {{ props.title }}
     </h3>
     <div
-      class="event-block-text__copy"
+      class="animator__slide-up event-block-text__copy"
       v-html="props.body"
+      animator-stagger
     />
     <p
       v-if="props.callToActionLabel && props.callToActionUrl"
-      class="event-block-text__cta"
+      class="animator__slide-up event-block-text__cta"
+      animator-stagger
     >
       <a :href="props.callToActionUrl">
         {{ props.callToActionLabel }}

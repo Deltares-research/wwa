@@ -27,13 +27,13 @@
       {{ props.internalButtonLabel }}
     </a>
     <div
-      class="animator__slide-up"
+      class="animator__slide-up event-block-text-media__image-wrapper"
+      :class="{ 'event-block-text-media__image-wrapper--mirrored': props.mirrorLayout }"
       animator-stagger
     >
       <picture
         v-if="props.image"
-        class="animator__scale-container event-block-text-media__image-wrapper"
-        :class="{ 'event-block-text-media__image-wrapper--mirrored': props.mirrorLayout }"
+        class="animator__scale-container "
       >
         <source
           :srcset="props.image.portrait.srcSet"
@@ -126,7 +126,7 @@
     background-color: var(--blue-secondary);
   }
 
-  .event-block-text-media__image-wrapper {
+  .event-block-text-media__image-wrapper picture {
     display: block;
     margin-bottom: 1rem;
   }

@@ -1,12 +1,14 @@
 <template>
   <div class="event">
     <header class="event__layout">
-      <event-header
-        :name="internalEvent.name"
-        :slug="internalEvent.slug"
-        :image="internalEvent.image"
-        :all-locales="internalEvent._allNameLocales"
-      />
+      <animator :delay="0">
+        <event-header
+          :name="internalEvent.name"
+          :slug="internalEvent.slug"
+          :image="internalEvent.image"
+          :all-locales="internalEvent._allNameLocales"
+        />
+      </animator>
 
       <animator>
         <event-banner v-bind="internalEvent" />
@@ -33,31 +35,31 @@
       >
         <div class="event-section__content">
           <template v-for="block in section.blocks">
-            <div
+            <animator
               v-if="block._modelApiKey === 'text_block'"
               :key="block.id"
               :id="block.slug"
               class="event__layout event__layout--padded"
             >
               <event-block-text v-bind="block" />
-            </div>
-            <div
+            </animator>
+            <animator
               v-if="block._modelApiKey === 'media_block'"
               :key="block.id"
               :id="block.slug"
               class="event__layout event__layout--padded"
             >
               <event-block-text-media v-bind="block" />
-            </div>
-            <div
+            </animator>
+            <animator
               v-if="block._modelApiKey === 'related_stories_block'"
               :key="block.id"
               :id="block.slug"
               class="event__layout event__layout--padded"
             >
               <event-block-related-stories v-bind="block" />
-            </div>
-            <div
+            </animator>
+            <animator
               v-if="block._modelApiKey === 'chapters_block'"
               :key="block.id"
               :id="block.slug"
@@ -67,8 +69,8 @@
                 :title="block.title"
                 :items="block.chapters"
               />
-            </div>
-            <div
+            </animator>
+            <animator
               v-if="block._modelApiKey === 'speakers_block'"
               :key="block.id"
               :id="block.slug"
@@ -82,15 +84,15 @@
                 :title-color="block.titleColor"
                 :speakers="block.speakers"
               />
-            </div>
-            <div
+            </animator>
+            <animator
               v-if="block._modelApiKey === 'colofon_block'"
               :key="block.id"
               :id="block.slug"
               class="event__layout event__layout--padded"
             >
               <event-block-colofon v-bind="block" />
-            </div>
+            </animator>
           </template>
         </div>
       </section>

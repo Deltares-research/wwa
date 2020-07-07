@@ -99,6 +99,9 @@
               :id="block.slug"
               class="event__layout event__layout--padded"
             >
+              <h3 class="event-block__title">
+                Schedule
+              </h3>
               <event-block-schedule
                 :event-days="block.eventDays"
                 :timezone="internalEvent.timezone"
@@ -322,3 +325,17 @@
     },
   };
 </script>
+
+<style>
+  .event-block__title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+  }
+
+  @media (--md-viewport) {
+    .event-block__title {
+      font-size: 3.75rem;
+    }
+  }
+</style>

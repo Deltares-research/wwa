@@ -1,126 +1,137 @@
 <template>
   <div>
-    <h3 class="event-block-schedule__title">
-      Schedule
-    </h3>
-
     <div class="event-block-schedule-wide">
       <div
-        class="event-block-schedule__tablist"
+        class="event-block-schedule-wide__tablist"
         role="tablist"
       >
         <a
-          v-for="(eventDay, index) in eventDays"
-          :key="`tab-${eventDay.id}`"
-          class="event-block-schedule__tablink"
+          v-for="eventDay in eventDays"
+          :key="`tab-wide-${eventDay.id}`"
+          class="event-block-schedule-wide__tablink"
           role="tab"
-          :href="`#section${index}`"
-          :id="`tab${index}`"
-          :aria-controls="`section${index}`"
+          href="#"
+          :id="`tab-wide-${eventDay.id}`"
+          :aria-controls="`section-wide-${eventDay.id}`"
           :aria-selected="eventDay.id === activeEventDayId"
           @click.prevent="selectedEventDayId = eventDay.id"
         >
           <time :datetime="eventDay.date">
-            {{ new Date(eventDay.date).toLocaleDateString(
-              language,
-              { weekday: 'long', month: 'long', day: 'numeric' }
-            ) }}
+            {{
+              new Date(eventDay.date).toLocaleDateString(
+                language,
+                { weekday: 'short', month: 'long', day: 'numeric' }
+              )
+            }}
           </time>
         </a>
       </div>
 
-      <p>{{ timezoneComment }} UTC {{ timezone.substr(0,3) }}</p>
+      <p>{{ displayTimezone }}</p>
 
-      <template v-for="(eventDay, index) in parsedEventDays">
-        <section
-          class=""
-          :key="`section-${eventDay.id}`"
-          role="tabpanel"
-          :id="`section${index}`"
-          :aria-labelledby="`tab${index}`"
-          :hidden="eventDay.id !== activeEventDayId"
-        >
-          <ul
-            class=""
-            :key="`content-${eventDay.id}`"
+      <section
+        v-for="eventDay in parsedEventDays"
+        :key="`section-wide-${eventDay.id}`"
+        role="tabpanel"
+        :id="`section-wide-${eventDay.id}`"
+        :aria-labelledby="`tab-wide-${eventDay.id}`"
+        :hidden="eventDay.id !== activeEventDayId"
+      >
+        <ul :key="`content-${eventDay.id}`">
+          <li
+            v-for="scheduleItem in eventDay.scheduleItems"
+            :key="scheduleItem.id"
+            class="event-block-schedule__item event-block-schedule-wide__item"
           >
-            <li
-              v-for="scheduleItem in eventDay.scheduleItems"
-              :key="scheduleItem.id"
-              class="event-block-schedule__item event-block-schedule__item-wide"
-            >
-              <div class="event-block-schedule__time-wrapper">
-                <span
-                  v-if="scheduleItem.isNow"
-                  class="event-block-schedule__now-notice"
-                >now</span>
-                <span class="event-block-schedule__time-wide">
-                  {{ scheduleItem.startTime }} - {{ scheduleItem.endTime }}
-                </span>
-              </div>
-              <div
-                class="event-block-schedule__body-wide"
-                :class="{
-                  'event-block-schedule__body--active': scheduleItem.isNow,
-                }"
+            <div class="event-block-schedule-wide__time-wrapper">
+              <span
+                v-if="scheduleItem.isNow"
+                class="event-block-schedule__now-notice"
               >
-                <div class="event-block-schedule__meta">
-                  <img
-                    class="event-block-schedule__speaker-image"
-                    v-if="scheduleItem.speaker"
-                    :src="`${scheduleItem.speaker.image.url}?auto=format&mask=ellipse&w=60&h=60`"
-                    alt=""
-                  >
-                  <span class="event-block-schedule__copy event-block-schedule__copy-wide">
-                    <span class="event-block-schedule__copy-title-wide">{{ scheduleItem.title }}</span>
-                    <span class="event-block-schedule__description-label">Topic</span>
-                    <span class="event-block-schedule__topic">{{ scheduleItem.topic }}</span>
-                  </span>
-                </div>
-                <div class="event-block-schedule__description-wide">
-                  <span class="event-block-schedule__description-label">Description</span>
-                  {{ scheduleItem.description }}
-                </div>
-                <a
-                  v-if="scheduleItem.isNow && scheduleItem.watchUrl"
-                  class="event-block-schedule__url"
-                  :href="scheduleItem.watchUrl"
+                now
+              </span>
+              <span class="event-block-schedule-wide__time">
+                {{ scheduleItem.startTime }} - {{ scheduleItem.endTime }}
+              </span>
+            </div>
+            <div
+              class="event-block-schedule-wide__body"
+              :class="{
+                'event-block-schedule__body--active': scheduleItem.isNow,
+              }"
+            >
+              <div class="event-block-schedule-wide__meta">
+                <img
+                  class="event-block-schedule-wide__speaker"
+                  v-if="scheduleItem.speaker"
+                  :src="`${scheduleItem.speaker.image.url}?auto=format&mask=ellipse&w=60&h=60`"
+                  alt=""
                 >
-                  <img class="event-block-schedule__url-icon" src="/assets/play-icon-dark.svg" alt="">
-                  {{ scheduleItem.watchLabel }}
-                </a>
+                <div class="event-block-schedule__copy event-block-schedule-wide__copy">
+                  <span class="event-block-schedule-wide__copy-title">{{ scheduleItem.title }}</span>
+                  <span class="event-block-schedule__description-label">Topic</span>
+                  <span class="event-block-schedule__topic">{{ scheduleItem.topic }}</span>
+                </div>
               </div>
-            </li>
-          </ul>
-        </section>
-      </template>
+              <div class="event-block-schedule-wide__description">
+                <span class="event-block-schedule__description-label">Description</span>
+                {{ scheduleItem.description }}
+              </div>
+              <a
+                v-if="scheduleItem.isNow && scheduleItem.watchUrl"
+                class="event-block-schedule__url event-block-schedule-wide__url"
+                :href="scheduleItem.watchUrl"
+              >
+                <img
+                  class="event-block-schedule-wide__url-icon"
+                  src="/assets/play-icon-dark.svg"
+                  alt=""
+                >
+                {{ scheduleItem.watchLabel }}
+              </a>
+            </div>
+          </li>
+        </ul>
+      </section>
     </div>
 
     <div class="event-block-schedule">
-      <template v-for="eventDay in eventDays">
-        <input
-          class="event-block-schedule__tab"
-          :key="`input-${eventDay.id}`"
+      <select
+        class="event-block-schedule__tablist"
+        @change="(event) => selectedEventDayId = event.target.value"
+      >
+        <option
+          v-for="eventDay in eventDays"
+          :key="eventDay.id"
+          :value="eventDay.id"
           :id="`tab-${eventDay.id}`"
-          :checked="eventDay.id === activeEventDayId"
-          name="tabs"
-          type="radio"
+          :aria-controls="`section-${eventDay.id}`"
+          :selected="eventDay.id === activeEventDayId"
         >
-        <label
-          :key="`label-${eventDay.id}`"
-          :for="`tab-${eventDay.id}`"
-          class="event-block-schedule__date"
-        >
-          <time :datetime="eventDay.date">
-            {{ new Date(eventDay.date).toLocaleDateString(
+          {{
+            new Date(eventDay.date).toLocaleDateString(
               language,
               { weekday: 'long', month: 'long', day: 'numeric' }
-            ) }}
-          </time>
-        </label>
+            )
+          }}
+        </option>
+      </select>
+
+      <p class="event-block-schedule__timezone">
+        {{ displayTimezone }}
+      </p>
+
+
+      <section
+        v-for="eventDay in parsedEventDays"
+        :key="`section-${eventDay.id}`"
+        :id="`section-${eventDay.id}`"
+        :aria-labelledby="`tab-${eventDay.id}`"
+        :hidden="eventDay.id !== activeEventDayId"
+      >
         <ul
-          class="event-block-schedule__itemlist"
           :key="`content-${eventDay.id}`"
+          class="event-block-schedule__itemlist"
         >
           <li
             v-for="scheduleItem in eventDay.scheduleItems"
@@ -128,38 +139,72 @@
           >
             <details class="event-block-schedule__item">
               <summary class="event-block-schedule__summary">
+                <span
+                  v-if="scheduleItem.isNow"
+                  class="event-block-schedule__now-notice"
+                >
+                  now
+                </span>
                 <span class="event-block-schedule__time">
                   {{ scheduleItem.startTime }} - {{ scheduleItem.endTime }}
                 </span>
-                <span class="event-block-schedule__body">
-                  <span class="event-block-schedule__copy">
-                    <span class="event-block-schedule__copy-title">{{ scheduleItem.title }}</span>
-                    <span>{{ scheduleItem.topic }}</span>
+                <span
+                  class="event-block-schedule__meta"
+                  :class="{
+                    'event-block-schedule__body--active': scheduleItem.isNow,
+                  }"
+                >
+                  <a
+                    v-if="scheduleItem.isNow && scheduleItem.watchUrl"
+                    class="event-block-schedule__url"
+                    :href="scheduleItem.watchUrl"
+                  >
+                    <img
+                      class="event-block-schedule__url-icon"
+                      src="/assets/play-icon-light.svg"
+                      :alt="scheduleItem.watchLabel"
+                    >
+                  </a>
+                  <span
+                    class="event-block-schedule__body"
+                    :class="{
+                      'event-block-schedule__body--active': scheduleItem.isNow,
+                    }"
+                  >
+                    <span class="event-block-schedule__copy">
+                      <span class="event-block-schedule__copy-title">{{ scheduleItem.title }}</span>
+                      <span>{{ scheduleItem.topic }}</span>
+                    </span>
+                    <img
+                      class="event-block-schedule__icon-closed"
+                      src="/assets/plus-icon.svg"
+                      width="16"
+                      height="16"
+                      alt=""
+                    >
+                    <img
+                      class="event-block-schedule__icon-open"
+                      src="/assets/min-icon.svg"
+                      width="16"
+                      height="2"
+                      alt=""
+                    >
                   </span>
-                  <img
-                    class="event-block-schedule__icon-closed"
-                    src="/assets/plus-icon.svg"
-                    width="16"
-                    height="16"
-                    alt=""
-                  >
-                  <img
-                    class="event-block-schedule__icon-open"
-                    src="/assets/min-icon.svg"
-                    width="16"
-                    height="2"
-                    alt=""
-                  >
                 </span>
               </summary>
-              <div class="event-block-schedule__description">
+              <div
+                class="event-block-schedule__description"
+                :class="{
+                  'event-block-schedule__body--active': scheduleItem.isNow,
+                }"
+              >
                 <span class="event-block-schedule__description-label">Description</span>
                 {{ scheduleItem.description }}
               </div>
             </details>
           </li>
         </ul>
-      </template>
+      </section>
     </div>
   </div>
 </template>
@@ -172,10 +217,11 @@
       eventDays: Array,
       language: String,
     },
-    data({ eventDayToday, eventDays }) {
+    data({ eventDayToday, eventDays, timezone, timezoneComment }) {
       return {
         currentDate: new Date(),
         selectedEventDayId: '',
+        displayTimezone: `${timezoneComment} UTC ${timezone.substr(0,3)}`,
       };
     },
     computed: {
@@ -200,9 +246,9 @@
       },
       activeEventDayId({ eventDays, eventDayToday, selectedEventDayId }) {
         if (selectedEventDayId)
-          return selectedEventDayId
+          return selectedEventDayId;
 
-        return eventDayToday ? eventDayToday.id : eventDays[0].id
+        return eventDayToday ? eventDayToday.id : eventDays[0].id;
       },
     },
     created() {
@@ -214,9 +260,11 @@
 </script>
 
 <style>
+  /*
+    show/hide the wide and default variants
+  */
   .event-block-schedule {
-    display: flex;
-    flex-wrap: wrap;
+    display: block;
   }
 
   .event-block-schedule-wide {
@@ -233,14 +281,22 @@
     }
   }
 
-  .event-block-schedule__tablist {
+  /*
+    wide variant specific
+  */
+  .event-block-schedule-wide__item {
+    display: flex;
+    align-items: center;
+  }
+
+  .event-block-schedule-wide__tablist {
     display: flex;
     background-color: var(--blue-tertiary);
     border-radius: 4px;
     margin-bottom: 1rem;
   }
 
-  .event-block-schedule__tablink {
+  .event-block-schedule-wide__tablink {
     padding-bottom: 0.2rem;
     margin-top: 1.2rem;
     margin-right: 1.2rem;
@@ -252,80 +308,103 @@
     text-decoration: none;
   }
 
-  .event-block-schedule__tablink:hover,
-  .event-block-schedule__tablink:focus,
-  .event-block-schedule__tablink:active {
-    color: initial;
-  }
-
-  .event-block-schedule__tablink[aria-selected] {
+  .event-block-schedule-wide__tablink[aria-selected] {
+    color: var(--blue-primary);
     border-bottom: 2px solid var(--blue-primary);
   }
 
-  .event-block-schedule__tab {
-    position: absolute;
-    opacity: 0;
-  }
-
-  .event-block-schedule__tab:focus + .event-block-schedule__date {
-    z-index: 1;
-  }
-
-  .event-block-schedule__tab:checked + .event-block-schedule__date + .event-block-schedule__itemlist {
-    display: block;
-  }
-
-  .event-block-schedule__tab:checked + .event-block-schedule__date {
-    text-decoration: underline;
-  }
-
-  .event-block-schedule__date {
+  .event-block-schedule-wide__body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
     width: 100%;
-    cursor: pointer;
+    padding: 1.2rem;
+    background-color: var(--indigo);
+    border-radius: 4px;
+    min-height: 8.4rem;
   }
 
-  .event-block-schedule__date:hover {
+  .event-block-schedule-wide__meta {
+    display: flex;
+    align-items: flex-start;
+    margin-right: 4rem;
+    width: 100%;
+    max-width: 14rem;
   }
 
-  .event-block-schedule__date:active {
+  .event-block-schedule-wide__copy {
+    font-weight: 500;
   }
 
+  .event-block-schedule-wide__copy-title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+  }
 
-  @media (--lg-viewport) {
-    .event-block-schedule__date {
-      width: auto;
-    }
+  .event-block-schedule-wide__description {
+    max-width: 30rem;
+    margin-right: 1rem;
+  }
+
+  .event-block-schedule-wide__time-wrapper {
+    max-width: 10rem;
+    width: 100%;
+    margin-right: 2rem;
+  }
+
+  .event-block-schedule-wide__time {
+    font-size: 1.2rem;
+    white-space: nowrap;
+  }
+
+  .event-block-schedule-wide__url {
+    box-shadow: 0px 6px 13px rgba(182, 187, 189, 0.5);
+    min-width: 8rem;
+  }
+
+  .event-block-schedule-wide__url-icon {
+    margin-right: 0.6rem;
+    padding: 0.6rem;
+    border-radius: 50%;
+    background-color: var(--blue-tertiary);
+    box-shadow: 0px 6px 16px rgba(84, 66, 56, 0.45);
+  }
+
+  .event-block-schedule-wide__speaker {
+    border-radius: 100%;
+    border: 4px solid var(--white);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+    margin-right: 1.2rem;
+  }
+
+  /*
+    default variant specific
+  */
+  .event-block-schedule__tablist {
+    width: 100%;
+    display: block;
+    padding: 0.8rem 0.6rem;
+    margin-bottom: 0.4rem;
+    background-color: var(--blue-tertiary);
+    color: var(--black-primary);
+    font-weight: 500;
+    font-size: 1rem;
+    border-radius: 4px;
+  }
+
+  .event-block-schedule__timezone {
+    margin-bottom: 1rem;
   }
 
   .event-block-schedule__itemlist {
     list-style: none;
     width: 100%;
-    display: none;
     border-left-style: solid;
     border-left-color: var(--blue-tertiary);
     border-left-width: 2px;
     padding-left: 1rem;
-  }
-
-  .event-block-schedule__item {
-    margin-bottom: 1.2rem;
-  }
-
-  .event-block-schedule__item-wide {
-    display: flex;
-    align-items: center;
-  }
-
-  .event-block-schedule__item[open] .event-block-schedule__icon-closed {
-    display: none;
-  }
-
-  .event-block-schedule__item[open] .event-block-schedule__icon-open {
-    display: block;
-  }
-
-  .event-block-schedule__icon-open {
-    display: none;
   }
 
   .event-block-schedule__item[open] .event-block-schedule__body {
@@ -333,60 +412,8 @@
     border-bottom-left-radius: 0;
   }
 
-  .event-block-schedule__title {
-    font-size: 2rem;
-    font-weight: 900;
-    margin-bottom: 1rem;
-  }
-
-  @media (--md-viewport) {
-    .event-block-schedule__title {
-      font-size: 3.75rem;
-      line-height: 1.1;
-    }
-  }
-
-  .event-block-schedule__date {
-    padding: 1rem;
-    margin-bottom: 1rem;
-    color: var(--black-primary);
-    font-weight: 500;
-    background-color: var(--blue-tertiary);
-    list-style-type: square;
-    border-radius: 4px;
-  }
-
-  .event-block-schedule__summary {
-    display: flex;
-    flex-direction: column;
-    outline: none;
-  }
-
-  .event-block-schedule__time {
-    font-weight: 500;
-    margin-bottom: 0.2rem;
-  }
-
-  .event-block-schedule__now-notice {
-    display: block;
-    color: var(--orange);
-    font-weight: bold;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-  }
-
-  .event-block-schedule__time-wrapper {
-    max-width: 10rem;
-    width: 100%;
-    margin-right: 2rem;
-  }
-
-  .event-block-schedule__time-wide {
-    font-size: 1.2rem;
-    white-space: nowrap;
-  }
-
   .event-block-schedule__body {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -398,55 +425,41 @@
     border-radius: 4px;
   }
 
-  .event-block-schedule__body-wide {
+  .event-block-schedule__summary {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    width: 100%;
-    padding: 1.2rem;
-    background-color: var(--indigo);
-    border-radius: 4px;
-    min-height: 8.4rem;
+    flex-direction: column;
+    outline: none;
   }
 
-  .event-block-schedule__body--active {
-    background-color: var(--white);
-    color: var(--blue-primary);
+  .event-block-schedule__summary::-webkit-details-marker {
+    display: none;
   }
 
-  .event-block-schedule__speaker-image {
-    border-radius: 100%;
-    border: 4px solid var(--white);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
-    margin-right: 1.2rem;
+  .event-block-schedule__icon-open {
+    display: none;
+  }
+
+  .event-block-schedule__item[open] .event-block-schedule__icon-closed {
+    display: none;
+  }
+
+  .event-block-schedule__item[open] .event-block-schedule__icon-open {
+    display: block;
+  }
+
+  .event-block-schedule__time {
+    font-weight: 500;
+    margin-bottom: 0.2rem;
   }
 
   .event-block-schedule__meta {
-    display: flex;
-    align-items: flex-start;
-    margin-right: 4rem;
     width: 100%;
-    max-width: 14rem;
-  }
-
-  .event-block-schedule__copy {
     display: flex;
-    flex-direction: column;
-  }
-
-  .event-block-schedule__copy-wide {
-    font-weight: 500;
+    flex-direction: row;
   }
 
   .event-block-schedule__copy-title {
     font-weight: bold;
-  }
-
-  .event-block-schedule__copy-title-wide {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 1.4rem;
-    margin-bottom: 0.6rem;
   }
 
   .event-block-schedule__description {
@@ -458,9 +471,11 @@
     border-bottom-left-radius: 4px;
   }
 
-  .event-block-schedule__description-wide {
-    max-width: 30rem;
-    margin-right: 1rem;
+  /*
+    shared styling for both variants
+  */
+  .event-block-schedule__item {
+    margin-bottom: 1.2rem;
   }
 
   .event-block-schedule__description-label {
@@ -471,15 +486,24 @@
     text-transform: uppercase;
   }
 
+  .event-block-schedule__body--active {
+    background-color: var(--white);
+    color: var(--blue-primary);
+  }
+
+  .event-block-schedule__copy {
+    display: flex;
+    flex-direction: column;
+  }
+
   .event-block-schedule__url {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 8rem;
-    padding: 1rem 1.2rem;
+    align-self: center;
+    padding: 0.8rem 1.2rem;
     text-decoration: none;
     color: var(--blue-primary);
-    box-shadow: 0px 6px 13px rgba(182, 187, 189, 0.5);
     border-radius: 4px;
     white-space: nowrap;
   }
@@ -488,11 +512,15 @@
     margin-right: 0.6rem;
     padding: 0.6rem;
     border-radius: 50%;
-    background-color: var(--blue-tertiary);
+    background-color: var(--blue-primary);
     box-shadow: 0px 6px 16px rgba(84, 66, 56, 0.45);
   }
 
-  summary::-webkit-details-marker {
-    display: none;
+  .event-block-schedule__now-notice {
+    display: block;
+    color: var(--orange);
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-transform: uppercase;
   }
 </style>

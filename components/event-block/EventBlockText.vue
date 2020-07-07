@@ -1,7 +1,7 @@
-<template functional>
+<template>
   <div>
     <img
-      v-if="props.showWaveMarker"
+      v-if="showWaveMarker"
       src="/event-title-wave.svg"
       width="111"
       height="35"
@@ -11,36 +11,50 @@
     <h3
       class="event-block-text__title"
       :class="{
-        'event-block-text__title--orange': props.titleColor === 'orange',
-        'event-block-text__title--blue': props.titleColor === 'blue',
+        'event-block-text__title--orange': titleColor === 'orange',
+        'event-block-text__title--blue': titleColor === 'blue',
       }"
     >
-      {{ props.title }}
+      {{ title }}
     </h3>
+    <p
+      v-if="subtitle"
+      class="event-block-text__subtitle"
+    >
+      {{ subtitle }}
+    </p>
     <div
       class="event-block-text__copy"
-      v-html="props.body"
+      v-html="htmlBody"
     />
     <p
-      v-if="props.callToActionLabel && props.callToActionUrl"
+      v-if="callToActionLabel && callToActionUrl"
       class="event-block-text__cta"
     >
-      <a :href="props.callToActionUrl">
-        {{ props.callToActionLabel }}
+      <a :href="callToActionUrl">
+        {{ callToActionLabel }}
       </a>
     </p>
   </div>
 </template>
 
 <script>
+  import renderMarkedContent from '~/lib/custom-marked';
+
   export default {
     props: {
       showWaveMarker: Boolean,
       title: String,
       titleColor: String,
+      subtitle: String,
       body: String,
       callToActionLabel: String,
       callToActionUrl: String,
+    },
+    computed: {
+      htmlBody () {
+        return renderMarkedContent(this.body);
+      },
     },
   };
 </script>
@@ -63,6 +77,14 @@
 
   .event-block-text__title--blue {
     color: var(--blue-tertiary);
+  }
+
+  .event-block-text__subtitle {
+    max-width: 30rem;
+    margin-top: -.5rem;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    line-height: 1.2;
   }
 
   .event-block-text__copy {

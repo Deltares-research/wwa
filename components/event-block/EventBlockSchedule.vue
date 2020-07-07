@@ -77,18 +77,20 @@
                 <span class="event-block-schedule__description-label">Description</span>
                 {{ scheduleItem.description }}
               </div>
-              <a
-                v-if="scheduleItem.isNow && scheduleItem.watchUrl"
-                class="event-block-schedule__url event-block-schedule-wide__url"
-                :href="scheduleItem.watchUrl"
-              >
-                <img
-                  class="event-block-schedule-wide__url-icon"
-                  src="/assets/play-icon-dark.svg"
-                  alt=""
+              <div class="event-block-schedule-wide__url-wrapper">
+                <a
+                  v-if="scheduleItem.isNow && scheduleItem.watchUrl"
+                  class="event-block-schedule__url event-block-schedule-wide__url"
+                  :href="scheduleItem.watchUrl"
                 >
-                {{ scheduleItem.watchLabel }}
-              </a>
+                  <img
+                    class="event-block-schedule-wide__url-icon"
+                    src="/assets/play-icon-dark.svg"
+                    alt=""
+                  >
+                  {{ scheduleItem.watchLabel }}
+                </a>
+              </div>
             </div>
           </li>
         </ul>
@@ -309,8 +311,12 @@
   }
 
   .event-block-schedule-wide__tablink[aria-selected] {
-    color: var(--blue-primary);
     border-bottom: 2px solid var(--blue-primary);
+  }
+
+  .event-block-schedule-wide__tablink:hover,
+  .event-block-schedule-wide__tablink:focus {
+    color: var(--blue-primary);
   }
 
   .event-block-schedule-wide__body {
@@ -359,12 +365,17 @@
     white-space: nowrap;
   }
 
+  .event-block-schedule-wide__url-wrapper {
+    min-width: 8rem;
+    align-self: center;
+  }
+
   .event-block-schedule-wide__url {
     box-shadow: 0px 6px 13px rgba(182, 187, 189, 0.5);
-    min-width: 8rem;
   }
 
   .event-block-schedule-wide__url-icon {
+    flex-shrink: 0;
     margin-right: 0.6rem;
     padding: 0.6rem;
     border-radius: 50%;
@@ -383,9 +394,11 @@
     default variant specific
   */
   .event-block-schedule__tablist {
+    appearance: none;
     width: 100%;
     display: block;
     padding: 0.8rem 0.6rem;
+    border: 0;
     margin-bottom: 0.4rem;
     background-color: var(--blue-tertiary);
     color: var(--black-primary);
@@ -500,7 +513,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    align-self: center;
     padding: 0.8rem 1.2rem;
     text-decoration: none;
     color: var(--blue-primary);

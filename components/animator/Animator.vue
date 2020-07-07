@@ -2,6 +2,7 @@
   <div
     :class="{animator: showAnimations, 'animator--active': isIntersected}"
     :style="{ '--animator-delay': delay + 's', '--animator-stagger': stagger }"
+    ref="container"
   >
     <slot />
   </div>
@@ -38,6 +39,7 @@ export default {
     if ('IntersectionObserver' in window) {
       this.observe();
       this.showAnimations = true;
+      this.setStagger();
     } else {
       this.isIntersected = true;
     }
@@ -62,6 +64,10 @@ export default {
       if ('IntersectionObserver' in window) {
         this.observer.unobserve(this.$el);
       }
+    },
+    setStagger() {
+      const items = this.$refs['container'].querySelectorAll('[animator-stagger]');
+      [...items].forEach((item, i) => item.classList.add(`animator--stagger-${i + 1}`));
     },
   },
 };
@@ -140,14 +146,23 @@ export default {
   /*
     slide-up and fade-in from bottom
   */
+  .animator .animator__scale-container {
+    overflow: hidden;
+  }
+
   .animator .animator__scale-up {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(1);
+  }
+
+  .animator .animator__scale-image {
+    width: 100%;
+    max-width: none;
   }
 
   .animator.animator--active .animator__scale-up {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1.05);
     transition:
       opacity 1s var(--animator-delay) linear,
       transform 1s var(--animator-delay) var(--animator-ease);
@@ -166,5 +181,13 @@ export default {
 
   .animator.animator--active .animator--stagger-3 {
     transition-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 3) );
+  }
+
+  .animator.animator--active .animator--stagger-4 {
+    transition-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 4) );
+  }
+
+  .animator.animator--active .animator--stagger-5 {
+    transition-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 5) );
   }
 </style>

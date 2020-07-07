@@ -1,7 +1,7 @@
 <template>
   <div class="event">
     <header class="event__layout">
-      <animator delay="0">
+      <animator :delay="0">
         <event-header
           :name="internalEvent.name"
           :slug="internalEvent.slug"

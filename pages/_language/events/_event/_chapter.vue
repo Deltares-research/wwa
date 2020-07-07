@@ -183,7 +183,8 @@
     background: var(--blue-primary);
   }
 
-  .event-chapter__block:not(:last-child) {
+  .event-chapter__block:not(:last-child),
+  .event-chapter__block .page-body__figure:not(:last-child) {
     margin-bottom: 2rem;
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="event-block-chapters">
+  <div class="animator__slide-up event-block-chapters">
     <p class="event-block-chapters__title">
       {{ title }}
     </p>

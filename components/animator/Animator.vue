@@ -1,7 +1,8 @@
 <template>
   <div
     :class="{animator: showAnimations, 'animator--active': isIntersected}"
-    :style="{ '--animator-delay': delay, '--animator-stagger': stagger }"
+    :style="{ '--animator-delay': delay + 's', '--animator-stagger': stagger }"
+    ref="container"
   >
     <slot />
   </div>
@@ -20,7 +21,7 @@ export default {
     },
     delay: {
       type: Number,
-      default: 1,
+      default: 0.5,
     },
     stagger: {
       type: Number,
@@ -38,6 +39,7 @@ export default {
     if ('IntersectionObserver' in window) {
       this.observe();
       this.showAnimations = true;
+      this.setStagger();
     } else {
       this.isIntersected = true;
     }
@@ -63,6 +65,10 @@ export default {
         this.observer.unobserve(this.$el);
       }
     },
+    setStagger() {
+      const items = this.$refs['container'].querySelectorAll('[animator-stagger]');
+      [...items].forEach((item, i) => item.classList.add(`animator--stagger-${i + 1}`));
+    },
   },
 };
 </script>
@@ -70,6 +76,7 @@ export default {
 <style>
   .animator {
     --animator-ease: cubic-bezier(.3, .51, .09, 1);
+    --animator-duration: 0.7s;
   }
 
   /*
@@ -90,7 +97,7 @@ export default {
   .animator.animator--active .animator__clip-container,
   .animator.animator--active .animator__clip-content {
     transform: translateX(0);
-    transition: transform 1.2s var(--animator-delay) var(--animator-ease);
+    transition: transform var(--animator-duration) var(--animator-delay) var(--animator-ease);
   }
 
   /*
@@ -102,7 +109,7 @@ export default {
 
   .animator.animator--active .animator__fade {
     opacity: 1;
-    transition: opacity 1s var(--animator-delay) linear;
+    transition: opacity var(--animator-duration) var(--animator-delay) linear;
   }
 
   /*
@@ -117,8 +124,8 @@ export default {
     opacity: 1;
     transform: translateX(0);
     transition:
-      opacity 1s var(--animator-delay) linear,
-      transform 1s var(--animator-delay) var(--animator-ease);
+      opacity var(--animator-duration) var(--animator-delay) linear,
+      transform var(--animator-duration) var(--animator-delay) var(--animator-ease);
   }
 
   /*
@@ -133,24 +140,33 @@ export default {
     opacity: 1;
     transform: translateY(0);
     transition:
-      opacity 1s var(--animator-delay) linear,
-      transform 1s var(--animator-delay) var(--animator-ease);
+      opacity var(--animator-duration) var(--animator-delay) linear,
+      transform var(--animator-duration) var(--animator-delay) var(--animator-ease);
   }
 
   /*
     slide-up and fade-in from bottom
   */
+  .animator .animator__scale-container {
+    overflow: hidden;
+  }
+
   .animator .animator__scale-up {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(1);
+  }
+
+  .animator .animator__scale-image {
+    width: 100%;
+    max-width: none;
   }
 
   .animator.animator--active .animator__scale-up {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1.05);
     transition:
-      opacity 1s var(--animator-delay) linear,
-      transform 1s var(--animator-delay) var(--animator-ease);
+      opacity var(--animator-duration) var(--animator-delay) linear,
+      transform var(--animator-duration) var(--animator-delay) var(--animator-ease);
   }
 
   /*
@@ -166,5 +182,13 @@ export default {
 
   .animator.animator--active .animator--stagger-3 {
     transition-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 3) );
+  }
+
+  .animator.animator--active .animator--stagger-4 {
+    transition-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 4) );
+  }
+
+  .animator.animator--active .animator--stagger-5 {
+    transition-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 5) );
   }
 </style>

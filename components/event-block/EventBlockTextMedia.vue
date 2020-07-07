@@ -6,52 +6,61 @@
       width="111"
       height="35"
       alt=""
-      class="event-block-text-media__icon"
+      class="animator__slide-up event-block-text-media__icon"
     >
     <h3
-      class="event-block-text-media__title"
+      class="animator__slide-up event-block-text-media__title"
       :class="{
         'event-block-text-media__title--orange': props.titleColor === 'orange',
         'event-block-text-media__title--blue': props.titleColor === 'blue',
       }"
+      animator-stagger
     >
       {{ props.title }}
     </h3>
     <a
       v-if="props.internalButtonLabel"
       :href="`#${props.internalButtonSlug}`"
-      class="event-block-text-media__button"
+      class="animator__slide-up event-block-text-media__button"
+      animator-stagger
     >
       {{ props.internalButtonLabel }}
     </a>
-    <picture
-      v-if="props.image"
-      class="event-block-text-media__image-wrapper"
-      :class="{ 'event-block-text-media__image-wrapper--mirrored': props.mirrorLayout }"
-    >
-      <source
-        :srcset="props.image.portrait.srcSet"
-        :sizes="props.image.portrait.sizes"
-        media="(min-width: 48rem)"
-      >
-      <source
-        :srcset="props.image.landscape.srcSet"
-        :sizes="props.image.landscape.sizes"
-        media="(max-width: 48rem)"
-      >
-      <img
-        class="event-block-text-media__image"
-        :src="props.image.portrait.src"
-        :alt="props.image.alt"
-      >
-    </picture>
     <div
-      class="event-block-text-media__copy"
+      class="animator__slide-up event-block-text-media__image-wrapper"
+      :class="{ 'event-block-text-media__image-wrapper--mirrored': props.mirrorLayout }"
+      animator-stagger
+    >
+      <picture
+        v-if="props.image"
+        class="animator__scale-container "
+      >
+        <source
+          :srcset="props.image.portrait.srcSet"
+          :sizes="props.image.portrait.sizes"
+          media="(min-width: 48rem)"
+        >
+        <source
+          :srcset="props.image.landscape.srcSet"
+          :sizes="props.image.landscape.sizes"
+          media="(max-width: 48rem)"
+        >
+        <img
+          class="animator__scale-up animator__scale-image event-block-text-media__image"
+          :src="props.image.portrait.src"
+          :alt="props.image.alt"
+        >
+      </picture>
+    </div>
+    <div
+      class="animator__slide-up event-block-text-media__copy"
       v-html="props.body"
+      animator-stagger
     />
     <p
       v-if="props.callToActionLabel && props.callToActionUrl"
-      class="event-block-text-media__cta"
+      class="animator__slide-up event-block-text-media__cta"
+      animator-stagger
     >
       <a :href="props.callToActionUrl">
         {{ props.callToActionLabel }}
@@ -117,7 +126,8 @@
     background-color: var(--blue-secondary);
   }
 
-  .event-block-text-media__image {
+  .event-block-text-media__image-wrapper picture {
+    display: block;
     margin-bottom: 1rem;
   }
 
@@ -166,11 +176,8 @@
       line-height: 1.1;
     }
 
-    .event-block-text-media__image {
-      margin-bottom: 0;
-    }
-
     .event-block-text-media__image-wrapper {
+      margin-bottom: 0;
       grid-column-start: 2;
       grid-row-start: 1;
       grid-row-end: 99;

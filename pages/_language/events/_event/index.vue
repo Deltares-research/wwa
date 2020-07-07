@@ -10,7 +10,9 @@
         />
       </animator>
 
-      <event-banner v-bind="internalEvent" />
+      <animator>
+        <event-banner v-bind="internalEvent" />
+      </animator>
     </header>
 
     <main class="event__content">

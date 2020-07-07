@@ -84,9 +84,6 @@ export default {
   */
   .animator .animator__clip {
     overflow: hidden;
-  }
-
-  .animator .animator__clip-container {
     transform: translateX(-100%);
   }
 
@@ -94,7 +91,7 @@ export default {
     transform: translateX(100%);
   }
 
-  .animator.animator--active .animator__clip-container,
+  .animator.animator--active .animator__clip,
   .animator.animator--active .animator__clip-content {
     transform: translateX(0);
     transition: transform var(--animator-duration) var(--animator-delay) var(--animator-ease);

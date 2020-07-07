@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{animator: showAnimations, 'animator--active': isIntersected}"
-    :style="{ '--animator-delay': delay, '--animator-stagger': stagger }"
+    :style="{ '--animator-delay': delay + 's', '--animator-stagger': stagger }"
   >
     <slot />
   </div>
@@ -77,9 +77,6 @@ export default {
   */
   .animator .animator__clip {
     overflow: hidden;
-  }
-
-  .animator .animator__clip-container {
     transform: translateX(-100%);
   }
 
@@ -87,7 +84,7 @@ export default {
     transform: translateX(100%);
   }
 
-  .animator.animator--active .animator__clip-container,
+  .animator.animator--active .animator__clip,
   .animator.animator--active .animator__clip-content {
     transform: translateX(0);
     transition: transform 1.2s var(--animator-delay) var(--animator-ease);

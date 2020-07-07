@@ -8,7 +8,9 @@
         :all-locales="internalEvent._allNameLocales"
       />
 
-      <event-banner v-bind="internalEvent" />
+      <animator>
+        <event-banner v-bind="internalEvent" />
+      </animator>
     </header>
 
     <main class="event__content">
@@ -109,6 +111,7 @@
   import EventBlockSpeakers from '~/components/event-block/EventBlockSpeakers';
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';
+  import Animator from '~/components/animator/Animator';
 
   export default {
     components: {
@@ -121,6 +124,7 @@
       EventBlockSpeakers,
       EventHeader,
       EventFooter,
+      Animator,
     },
     head ({ params }) {
       return {

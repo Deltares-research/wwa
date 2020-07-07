@@ -1,28 +1,32 @@
 <template functional>
   <div class="event-banner">
-    <div class="event-banner__banner">
-      <img
-        v-if="props.bannerIcon"
-        :src="props.bannerIcon.url"
-        :width="props.bannerIcon.width"
-        :height="props.bannerIcon.height"
-        alt=""
-        class="event-banner__icon"
-      >
-      <h2
-        class="event-banner__title"
-        :class="{
-          'sr-only': props.visuallyHideName
-        }"
-      >
-        <span v-html="props.name" />
-      </h2>
-      <p class="event-banner__date">
-        {{ props.displayDate }}
-      </p>
+    <div class="animator__clip animator__clip-container">
+      <div class="animator__clip-content event-banner__banner">
+        <span class="animator__fade event-banner__gradient" />
+        <span class="event-banner__wave" />
+        <img
+          v-if="props.bannerIcon"
+          :src="props.bannerIcon.url"
+          :width="props.bannerIcon.width"
+          :height="props.bannerIcon.height"
+          alt=""
+          class="animator__slide-in animator--stagger-1 event-banner__icon"
+        >
+        <h2
+          class="animator__slide-in animator--stagger-2 event-banner__title"
+          :class="{
+            'sr-only': props.visuallyHideName
+          }"
+        >
+          <span v-html="props.name" />
+        </h2>
+        <p class="animator__slide-in animator--stagger-3 event-banner__date">
+          {{ props.displayDate }}
+        </p>
+      </div>
     </div>
 
-    <aside class="event-banner__credits">
+    <aside class="animator__fade event-banner__credits">
       <p class="event-banner__credits-content">
         <span class="event-banner__credits-title">
           {{ props.bannerTagline }}
@@ -59,12 +63,9 @@
   }
 
   .event-banner__banner {
+    position: relative;
     margin-bottom: .6rem;
     padding: 2.8rem 2rem;
-    background-image: url('/assets/event-wave.svg'), linear-gradient(137deg, #E9E6CF 14.18%, var(--blue-tertiary) 95.78%);
-    background-size: 105% auto;
-    background-repeat: no-repeat;
-    background-position: bottom 0% center;
     color: var(--blue-primary);
   }
 
@@ -72,16 +73,50 @@
     .event-banner__banner {
       margin-bottom: 1rem;
       padding: 6rem 2rem;
+
       border-radius: 5px;
+      overflow: hidden;
     }
   }
 
+  .event-banner__banner > *:not(.event-banner__gradient):not(.event-banner__wave) {
+    position: relative;
+    z-index: 3;
+  }
+
+  .event-banner__gradient,
+  .event-banner__wave {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* gradient background */
+  .event-banner__gradient {
+    z-index: 1;
+    background-image: linear-gradient(137deg, #E9E6CF 14.18%, var(--blue-tertiary) 95.78%);
+    background-size: cover;
+  }
+
+  /* wave lines */
+  .event-banner__wave {
+    z-index: 2;
+
+    background-image: url('/assets/event-wave.svg');
+    background-size: 105% auto;
+    background-repeat: no-repeat;
+    background-position: bottom 0% center;
+  }
+
   @media (--lg-viewport) {
-    .event-banner__banner {
+    .event-banner__wave {
       background-position: bottom 20% center;
     }
   }
 
+  /* design week logo */
   .event-banner__icon {
     margin-bottom: .5rem;
     max-height: 50px;

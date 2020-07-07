@@ -18,7 +18,7 @@
           :id="`tab${index}`"
           :aria-controls="`section${index}`"
           :aria-selected="eventDay.id === activeEventDayId"
-          @click.prevent="activeEventDayId = eventDay.id"
+          @click.prevent="selectedEventDayId = eventDay.id"
         >
           <time :datetime="eventDay.date">
             {{ new Date(eventDay.date).toLocaleDateString(
@@ -86,6 +86,7 @@
                   class="event-block-schedule__url"
                   :href="scheduleItem.watchUrl"
                 >
+                  <img class="event-block-schedule__url-icon" src="/assets/play-icon-dark.svg" alt="">
                   {{ scheduleItem.watchLabel }}
                 </a>
               </div>
@@ -174,7 +175,7 @@
     data({ eventDayToday, eventDays }) {
       return {
         currentDate: new Date(),
-        activeEventDayId: eventDayToday ? eventDayToday.id : eventDays[0].id,
+        selectedEventDayId: '',
       };
     },
     computed: {
@@ -191,11 +192,17 @@
       },
       eventDayToday({ currentDate, eventDays }) {
         if (currentDate === undefined)
-          return false;
+          return;
 
         return eventDays.find(eventDay =>
           currentDate.toDateString() === new Date(eventDay.date).toDateString(),
         );
+      },
+      activeEventDayId({ eventDays, eventDayToday, selectedEventDayId }) {
+        if (selectedEventDayId)
+          return selectedEventDayId
+
+        return eventDayToday ? eventDayToday.id : eventDays[0].id
       },
     },
     created() {
@@ -465,12 +472,24 @@
   }
 
   .event-block-schedule__url {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-width: 8rem;
-    padding: 1rem;
+    padding: 1rem 1.2rem;
     text-decoration: none;
     color: var(--blue-primary);
     box-shadow: 0px 6px 13px rgba(182, 187, 189, 0.5);
     border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .event-block-schedule__url-icon {
+    margin-right: 0.6rem;
+    padding: 0.6rem;
+    border-radius: 50%;
+    background-color: var(--blue-tertiary);
+    box-shadow: 0px 6px 16px rgba(84, 66, 56, 0.45);
   }
 
   summary::-webkit-details-marker {

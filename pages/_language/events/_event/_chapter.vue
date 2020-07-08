@@ -162,7 +162,7 @@
       smoothScroll (slug) {
         const element = this.$refs[slug][0];
         const domRect = element.getBoundingClientRect();
-        window.scrollBy({ top: domRect.y - 16, behavior: 'smooth' });
+        window.scrollBy({ top: domRect.y, behavior: 'smooth' });
       },
     },
   };

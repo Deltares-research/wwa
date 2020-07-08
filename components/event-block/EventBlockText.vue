@@ -6,14 +6,15 @@
       width="111"
       height="35"
       alt=""
-      class="event-block-text__icon"
+      class="animator__slide-up event-block-text__icon"
     >
     <h3
-      class="event-block-text__title"
+      class="animator__slide-up event-block-text__title"
       :class="{
         'event-block-text__title--orange': titleColor === 'orange',
         'event-block-text__title--blue': titleColor === 'blue',
       }"
+      animator-stagger
     >
       {{ title }}
     </h3>
@@ -24,12 +25,14 @@
       {{ subtitle }}
     </p>
     <div
-      class="event-block-text__copy"
+      class="event-block-text__copy animator__slide-up event-block-text__copy"
       v-html="body"
+      animator-stagger
     />
     <p
       v-if="callToActionLabel && callToActionUrl"
-      class="event-block-text__cta"
+      class="animator__slide-up event-block-text__cta"
+      animator-stagger
     >
       <a :href="callToActionUrl">
         {{ callToActionLabel }}

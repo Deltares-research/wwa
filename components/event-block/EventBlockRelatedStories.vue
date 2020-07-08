@@ -6,19 +6,23 @@
       width="111"
       height="35"
       alt=""
-      class="event-block-related-stories__icon"
+      class="animator__slide-up event-block-related-stories__icon"
     >
 
-    <h3 class="event-block-related-stories__title">
+    <h3
+      class="animator__slide-up event-block-related-stories__title"
+      animator-stagger
+    >
       {{ props.title }}
     </h3>
 
     <h4
-      class="event-block-related-stories__subtitle"
+      class="animator__slide-up event-block-related-stories__subtitle"
       :class="{
         'event-block-related-stories__subtitle--orange': props.titleColor === 'orange',
         'event-block-related-stories__subtitle--blue': props.titleColor === 'blue',
       }"
+      animator-stagger
     >
       {{ props.subtitle }}
     </h4>
@@ -27,7 +31,8 @@
       <li
         v-for="linkedChapter in props.linkedChapters"
         :key="linkedChapter.id"
-        class="event-block-related-stories__list-item"
+        class="animator__slide-up event-block-related-stories__list-item"
+        animator-stagger
       >
         <nuxt-link
           :to="`/narratives/${linkedChapter.book.slug}/${linkedChapter.chapter.slug}`"

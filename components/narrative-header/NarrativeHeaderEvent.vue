@@ -14,7 +14,7 @@
       >
     </div>
 
-    <nav
+    <div
       v-if="chapter.pages.length > 1"
       class="narrative-header-event__navigation"
     >
@@ -25,26 +25,39 @@
         Back
       </nuxt-link>
 
-      <select
-        @change="navigate()"
-        v-model="selectedPage"
+      <button
+        @click="toggleNavigation"
+        aria-controls="narrative-event-header-navigation"
+        aria-haspopup="true"
+        :aria-expanded="showNavigation ? 'true' : 'false'"
         class="narrative-header-event__select"
+        :class="{ 'narrative-header-event__select--open': showNavigation }"
       >
-        <option
-          value=""
-          selected
-          disabled
-        >
-          In this chapter
-        </option>
-        <option
+        In this chapter
+      </button>
+    </div>
+
+    <nav
+      id="narrative-event-header-navigation"
+      class="narrative-header-event__dropdown"
+      :aria-hidden="showNavigation ? 'false' : 'true'"
+      :class="{ 'narrative-header-event__dropdown--visible': showNavigation }"
+    >
+      <ol>
+        <li
           v-for="page in chapter.pages"
           :key="page.slug"
-          :value="page.slug"
+          class="narrative-header-event__list-item"
         >
-          {{ page.title }}
-        </option>
-      </select>
+          <a
+            :href="`#${page.slug}`"
+            class="narrative-header-event__link"
+            @click.prevent="navigate(page.slug)"
+          >
+            {{ page.title }}
+          </a>
+        </li>
+      </ol>
     </nav>
   </header>
 </template>
@@ -56,20 +69,30 @@
     },
     data () {
       return {
-        selectedPage: '',
+        showNavigation: false,
       };
     },
     methods: {
-      navigate () {
-        this.$emit('scrollTo', this.selectedPage);
-        this.selectedPage = '';
+      toggleNavigation () {
+        this.showNavigation = !this.showNavigation;
+      },
+      navigate (slug) {
+        this.$emit('scrollTo', slug);
+        this.showNavigation = false;
       },
     },
   };
 </script>
 
 <style>
+  :root {
+    --narrative-header-event-transition-speed: 300ms;
+    --narrative-header-event-transition-timing-hide: cubic-bezier(0.83, 0, 0.73, 1);
+    --narrative-header-event-transition-timing-reveal: cubic-bezier(0.17, 0, 0.27, 1);
+  }
+
   .narrative-header-event {
+    position: relative;
     margin: 0 -1rem 2rem -1rem;
   }
 
@@ -82,7 +105,8 @@
 
   .narrative-header-event__header {
     position: relative;
-    margin-bottom: 1rem;
+    z-index: 1;
+    border-bottom: 1rem solid var(--black);
     width: 100%;
     height: 180px;
     background-image: url(/assets/event-wave.svg), linear-gradient(137deg, #E9E6CF 14.18%, var(--blue-tertiary) 95.78%);
@@ -132,14 +156,17 @@
   }
 
   .narrative-header-event__navigation {
+    position: relative;
+    z-index: 1;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: .75rem 1rem;
     background-color: var(--blue-secondary);
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 154 84' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23FFF' fill='none' fill-rule='evenodd' opacity='.4'%3E%3Cpath d='M-201.3 224c36.4-42.2 60-66.2 182.7-58 75.1 4.9 72.1-74.2 187.4-91.6'/%3E%3Cpath d='M-202.3 217.2c36.5-42 60-66 182.8-58 75 5 72-74 187.4-91.5'/%3E%3Cpath d='M-203.2 210.5c36.5-42 60-66.1 182.7-58 75.1 5 72.1-74.1 187.4-91.5'/%3E%3Cpath d='M-204.1 203.8c36.4-42.1 60-66.1 182.7-58 75.1 5 72.1-74.1 187.4-91.5'/%3E%3Cpath d='M-205 197c36.4-42 60-66 182.7-58 75 5 72-74 187.4-91.4'/%3E%3Cpath d='M-206 190.4c36.5-42.1 60-66.1 182.7-58 75.2 5 72.1-74.1 187.5-91.5'/%3E%3Cpath d='M-207 183.6c36.5-42 60-66 182.8-58 75.1 5 72.1-74 187.4-91.4'/%3E%3Cpath d='M-207.9 177c36.5-42.2 60-66.2 182.8-58 75 4.9 72-74.2 187.4-91.6'/%3E%3Cpath d='M-208.8 170.2c36.5-42 60-66 182.7-58 75.2 5 72.1-74 187.5-91.5'/%3E%3Cpath d='M-209.7 163.5c36.4-42 60-66.1 182.7-58 75.1 5 72.1-74.1 187.4-91.5'/%3E%3Cpath d='M-210.7 156.8c36.5-42.1 60-66.1 182.8-58 75 5 72-74.1 187.4-91.5'/%3E%3Cpath d='M-211.6 150c36.5-42 60-66 182.7-58C46.3 97 43.3 18 158.6.7'/%3E%3C/g%3E%3C/svg%3E");
+    background-image: url('/assets/waves.svg');
     background-repeat: no-repeat;
     background-position: right center;
-    background-size: 10rem auto;
+    background-size: 30rem auto;
   }
 
   @media (--md-viewport) {
@@ -167,21 +194,20 @@
     margin: .1rem .5rem 0 0;
     width: 5px;
     height: 10px;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 7 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.3 1L2 5l3.3 4' stroke='%2368D4F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url('/assets/arrow-left.svg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
   }
 
   .narrative-header-event__select {
-    padding: .5rem 2rem .6rem .75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .5rem .5rem .6rem .75rem;
     max-width: 160px;
     appearance: none;
     background-color: var(--blue-primary);
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 2l6 5.6L14 2' stroke='%2368D4F5' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-size: 1rem;
-    background-repeat: no-repeat;
-    background-position: right .5rem center;
     box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
     border: none;
     border-radius: 5px;
@@ -190,5 +216,63 @@
     font-weight: 500;
     color: var(--white);
     cursor: pointer;
+  }
+
+  .narrative-header-event__select:after {
+    content: '';
+    display: block;
+    margin-left: .5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: url('/assets/arrow-down.svg');
+    background-size: 1rem;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform var(--narrative-header-event-transition-speed) linear;
+  }
+
+  .narrative-header-event__select--open:after {
+    transform: rotate(180deg);
+  }
+
+  .narrative-header-event__dropdown {
+    position: absolute;
+    padding: 1rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--white);
+    transition: transform var(--narrative-header-event-transition-speed) var(--narrative-header-event-transition-timing-hide);
+  }
+
+  @media (--sm-viewport) {
+    .narrative-header-event__dropdown {
+      left: auto;
+      max-width: 500px;
+    }
+  }
+
+  .narrative-header-event__dropdown--visible {
+    transition: transform var(--narrative-header-event-transition-speed) var(--narrative-header-event-transition-timing-reveal);
+    transform: translateY(100%);
+  }
+
+  .narrative-header-event__list-item:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  .narrative-header-event__link {
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    color: var(--blue-secondary);
+  }
+
+  .narrative-header-event__link:hover,
+  .narrative-header-event__link:focus {
+    color: var(--blue-secondary);
   }
 </style>

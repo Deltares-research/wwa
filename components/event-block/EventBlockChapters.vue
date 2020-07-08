@@ -1,5 +1,5 @@
 <template>
-  <div class="event-block-chapters">
+  <div class="animator__slide-up event-block-chapters">
     <p class="event-block-chapters__title">
       {{ title }}
     </p>
@@ -17,9 +17,10 @@
           <span class="event-block-chapters__item-title">{{ item.title }}</span>
           <img
             v-if="item.cover"
-            :data-src="`${item.cover.url}?auto=compress&w=470`"
+            :data-src="`${item.cover.url}?auto=compress&w=530`"
             alt=""
             class="event-block-chapters__item-image swiper-lazy"
+            data-swiper-parallax="-10%"
           >
           <div
             v-else
@@ -92,6 +93,7 @@
               spaceBetween: 10,
             },
           },
+          parallax: true,
         },
       };
     },
@@ -115,12 +117,14 @@
     position: relative;
     display: block;
     height: 265px;
+    overflow: hidden;
   }
 
   .event-block-chapters__link:before {
     content: '';
     position: absolute;
-    display: block;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 38.44%, rgba(0, 0, 0, 0.7) 100%);
@@ -139,8 +143,12 @@
   }
 
   .event-block-chapters__item-image {
-    width: 100%;
-    height: 100%;
+    position: relative;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    max-width: none;
     object-fit: cover;
   }
 

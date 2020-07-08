@@ -23,5 +23,6 @@ module.exports = {
     'comma-dangle': ['warn', 'always-multiline'],
     'vue/no-unused-vars': 'warn',
     'no-debugger': 'warn',
+    'no-unreachable': 'warn',
   },
 };

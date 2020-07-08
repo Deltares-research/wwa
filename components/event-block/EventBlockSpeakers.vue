@@ -6,26 +6,31 @@
       width="111"
       height="35"
       alt=""
-      class="event-block-speakers__icon"
+      class="animator__slide-up event-block-speakers__icon"
     >
 
     <h3
-      class="event-block-speakers__title"
+      class="animator__slide-up event-block-speakers__title"
       :class="{
         'event-block-speakers__title--orange': titleColor === 'orange',
         'event-block-speakers__title--blue': titleColor === 'blue',
       }"
+      animator-stagger
     >
       {{ title }}
     </h3>
 
-    <p class="event-block-speakers__subtitle">
+    <p
+      class="animator__slide-up event-block-speakers__subtitle"
+      animator-stagger
+    >
       {{ subtitle }}
     </p>
 
     <swiper
       :options="swiperOptions"
-      class="event-block-speakers__carousel"
+      class="animator__slide-up event-block-speakers__carousel"
+      animator-stagger
     >
       <swiper-slide
         v-for="speaker in speakers"

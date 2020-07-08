@@ -6,23 +6,28 @@
       width="111"
       height="35"
       alt=""
-      class="event-block-colofon__icon"
+      class="animator__slide-up event-block-colofon__icon"
     >
     <h3
-      class="event-block-colofon__title"
+      class="animator__slide-up event-block-colofon__title"
       :class="{
         'event-block-colofon__title--orange': props.titleColor === 'orange',
         'event-block-colofon__title--blue': props.titleColor === 'blue',
       }"
+      animator-stagger
     >
       {{ props.title }}
     </h3>
     <div
-      class="event-block-colofon__copy"
+      class="animator__slide-up event-block-colofon__copy"
       v-html="props.body"
+      animator-stagger
     />
 
-    <ul class="event-block-colofon__logos list--inline">
+    <ul
+      class="animator__slide-up event-block-colofon__logos list--inline"
+      animator-stagger
+    >
       <li
         v-for="logo in props.logos"
         :key="logo.id"

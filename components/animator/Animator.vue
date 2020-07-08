@@ -21,11 +21,11 @@ export default {
     },
     delay: {
       type: Number,
-      default: 0.5,
+      default: 0.5, // in seconds
     },
     stagger: {
       type: Number,
-      default: .1,
+      default: .1, // in seconds
     },
   },
   data () {

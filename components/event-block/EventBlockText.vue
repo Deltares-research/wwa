@@ -1,5 +1,5 @@
 <template functional>
-  <div class="test">
+  <div>
     <img
       v-if="props.showWaveMarker"
       src="/event-title-wave.svg"

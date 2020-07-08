@@ -294,6 +294,7 @@
 
   .event-block-schedule-wide__tablist {
     display: flex;
+    flex-wrap: wrap;
     background-color: var(--blue-tertiary);
     border-radius: 4px;
     margin-bottom: 1rem;

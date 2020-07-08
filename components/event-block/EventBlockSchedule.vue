@@ -103,7 +103,7 @@
         @change="(event) => selectedEventDayId = event.target.value"
       >
         <option
-          v-for="eventDay in eventDays"
+          v-for="eventDay in parsedEventDays"
           :key="eventDay.id"
           :value="eventDay.id"
           :id="`tab-${eventDay.id}`"
@@ -111,7 +111,7 @@
           :selected="eventDay.id === activeEventDayId"
         >
           {{
-            new Date(eventDay.date).toLocaleDateString(
+            new Date(eventDay.parsedDate).toLocaleDateString(
               language,
               { weekday: 'long', month: 'long', day: 'numeric' }
             )

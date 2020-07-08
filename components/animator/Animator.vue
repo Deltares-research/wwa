@@ -73,6 +73,10 @@ export default {
 };
 </script>
 
+<!--
+All animation types are nested in '.animator' to prevent unvisible content if 'IntersectionObserver' is not supported. Means animation type classes only work when nested within '.animator'
+-->
+
 <style>
   .animator {
     --animator-ease: cubic-bezier(.3, .51, .09, 1);

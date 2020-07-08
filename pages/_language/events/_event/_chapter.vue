@@ -71,6 +71,17 @@
           >
             <story-map :mapbox-style="page.mapboxStyle" />
           </div>
+
+          <div
+            v-if="page.creditsTitle"
+            class="event-chapter__block"
+          >
+            <event-block-credits
+              :title="page.creditsTitle"
+              :body="page.creditsBody"
+              :logos="page.creditsLogos"
+            />
+          </div>
         </div>
       </article>
     </main>
@@ -87,6 +98,7 @@
   import ResponsiveImage from '~/components/responsive-image/ResponsiveImage';
   import ResponsiveVideo from '~/components/responsive-video/ResponsiveVideo';
   import EventBlockText from '~/components/event-block/EventBlockText';
+  import EventBlockCredits from '~/components/event-block/EventBlockCredits';
   import eventFooter from '~/components/event-footer/EventFooter';
 
   export default {
@@ -97,6 +109,7 @@
       ResponsiveImage,
       ResponsiveVideo,
       EventBlockText,
+      EventBlockCredits,
       eventFooter,
     },
     head ({ params }) {
@@ -138,6 +151,12 @@
                 height
               }
               mapboxStyle
+              creditsTitle
+              creditsBody(markdown: true)
+              creditsLogos {
+                url
+                alt
+              }
             }
           }
 

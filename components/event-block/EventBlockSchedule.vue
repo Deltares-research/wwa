@@ -82,6 +82,8 @@
                   v-if="scheduleItem.isNow && scheduleItem.watchUrl"
                   class="event-block-schedule__url event-block-schedule-wide__url"
                   :href="scheduleItem.watchUrl"
+                  target="_blank"
+                  rel="noopener"
                 >
                   <img
                     class="event-block-schedule-wide__url-icon"
@@ -160,6 +162,8 @@
                     v-if="scheduleItem.isNow && scheduleItem.watchUrl"
                     class="event-block-schedule__url"
                     :href="scheduleItem.watchUrl"
+                    target="_blank"
+                    rel="noopener"
                   >
                     <img
                       class="event-block-schedule__url-icon"

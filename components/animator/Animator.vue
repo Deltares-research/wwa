@@ -66,8 +66,8 @@ export default {
       }
     },
     setStagger() {
-      const items = this.$refs['container'].querySelectorAll('[animator-stagger]');
-      [...items].forEach((item, i) => item.classList.add(`animator--stagger-${i + 1}`));
+      const items = [...this.$refs['container'].querySelectorAll('[animator-stagger]')];
+      items.forEach((item, i) => item.classList.add(`animator--stagger-${i + 1}`));
     },
   },
 };

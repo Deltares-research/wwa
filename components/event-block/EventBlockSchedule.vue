@@ -371,6 +371,10 @@
     align-self: center;
   }
 
+  .event-block-schedule-wide__url-wrapper {
+    min-width: 10rem;
+  }
+
   .event-block-schedule-wide__url {
     box-shadow: 0px 6px 13px rgba(182, 187, 189, 0.5);
   }

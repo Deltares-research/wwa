@@ -246,16 +246,6 @@ export default {
   display: inline-block;
 }
 
-.fixed-ratio {
-  padding: 0;
-  position: relative;
-  background-color: var(--blue-secondary);
-}
-
-.fixed-ratio > * {
-  position: absolute;
-}
-
 /*
 * style rules for a minimal print layout
 */

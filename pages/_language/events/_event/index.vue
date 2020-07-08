@@ -178,7 +178,7 @@
                   slug
                   titleColor
                   showWaveMarker
-                  body
+                  body(markdown: true)
                   logos {
                     id
                     url

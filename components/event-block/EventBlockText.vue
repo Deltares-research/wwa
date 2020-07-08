@@ -25,7 +25,7 @@
     </p>
     <div
       class="event-block-text__copy"
-      v-html="htmlBody"
+      v-html="body"
     />
     <p
       v-if="callToActionLabel && callToActionUrl"
@@ -39,8 +39,6 @@
 </template>
 
 <script>
-  import renderMarkedContent from '~/lib/custom-marked';
-
   export default {
     props: {
       showWaveMarker: Boolean,
@@ -50,11 +48,6 @@
       body: String,
       callToActionLabel: String,
       callToActionUrl: String,
-    },
-    computed: {
-      htmlBody () {
-        return renderMarkedContent(this.body);
-      },
     },
   };
 </script>
@@ -101,6 +94,10 @@
 
   .event-block-text__copy p {
     line-height: 1.6;
+  }
+
+  .event-block-text__copy p:first-child {
+    font-weight: bold;
   }
 
   .event-block-text__copy p:not(:last-child) {

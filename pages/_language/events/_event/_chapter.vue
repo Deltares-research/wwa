@@ -122,7 +122,7 @@
               slug
               title
               storyteller
-              body
+              body(markdown: true)
               images {
                 id
                 url

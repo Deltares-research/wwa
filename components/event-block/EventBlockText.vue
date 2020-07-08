@@ -1,7 +1,7 @@
-<template functional>
-  <div class="test">
+<template>
+  <div>
     <img
-      v-if="props.showWaveMarker"
+      v-if="showWaveMarker"
       src="/event-title-wave.svg"
       width="111"
       height="35"
@@ -11,25 +11,31 @@
     <h3
       class="animator__slide-up event-block-text__title"
       :class="{
-        'event-block-text__title--orange': props.titleColor === 'orange',
-        'event-block-text__title--blue': props.titleColor === 'blue',
+        'event-block-text__title--orange': titleColor === 'orange',
+        'event-block-text__title--blue': titleColor === 'blue',
       }"
       animator-stagger
     >
-      {{ props.title }}
+      {{ title }}
     </h3>
+    <p
+      v-if="subtitle"
+      class="event-block-text__subtitle"
+    >
+      {{ subtitle }}
+    </p>
     <div
-      class="animator__slide-up event-block-text__copy"
-      v-html="props.body"
+      class="event-block-text__copy animator__slide-up event-block-text__copy"
+      v-html="body"
       animator-stagger
     />
     <p
-      v-if="props.callToActionLabel && props.callToActionUrl"
+      v-if="callToActionLabel && callToActionUrl"
       class="animator__slide-up event-block-text__cta"
       animator-stagger
     >
-      <a :href="props.callToActionUrl">
-        {{ props.callToActionLabel }}
+      <a :href="callToActionUrl">
+        {{ callToActionLabel }}
       </a>
     </p>
   </div>
@@ -41,6 +47,7 @@
       showWaveMarker: Boolean,
       title: String,
       titleColor: String,
+      subtitle: String,
       body: String,
       callToActionLabel: String,
       callToActionUrl: String,
@@ -68,6 +75,14 @@
     color: var(--blue-tertiary);
   }
 
+  .event-block-text__subtitle {
+    max-width: 30rem;
+    margin-top: -.5rem;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
   .event-block-text__copy {
     max-width: 30rem;
   }
@@ -82,6 +97,10 @@
 
   .event-block-text__copy p {
     line-height: 1.6;
+  }
+
+  .event-block-text__copy p:first-child {
+    font-weight: bold;
   }
 
   .event-block-text__copy p:not(:last-child) {

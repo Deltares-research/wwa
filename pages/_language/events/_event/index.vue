@@ -93,6 +93,22 @@
             >
               <event-block-colofon v-bind="block" />
             </animator>
+            <div
+              v-if="block._modelApiKey === 'schedule_block'"
+              :key="block.id"
+              :id="block.slug"
+              class="event__layout event__layout--padded"
+            >
+              <h3 class="event-block__title">
+                Schedule
+              </h3>
+              <event-block-schedule
+                :event-days="block.eventDays"
+                :timezone="internalEvent.timezone"
+                :timezone-comment="internalEvent.timezoneComment"
+                :language="params.language"
+              />
+            </div>
           </template>
         </div>
       </section>
@@ -107,6 +123,7 @@
   import EventBanner from '~/components/event-banner/EventBanner';
   import EventBlockChapters from '~/components/event-block/EventBlockChapters';
   import EventBlockColofon from '~/components/event-block/EventBlockColofon';
+  import EventBlockSchedule from '~/components/event-block/EventBlockSchedule';
   import EventBlockText from '~/components/event-block/EventBlockText';
   import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia';
   import EventBlockRelatedStories from '~/components/event-block/EventBlockRelatedStories';
@@ -120,6 +137,7 @@
       EventBanner,
       EventBlockChapters,
       EventBlockColofon,
+      EventBlockSchedule,
       EventBlockText,
       EventBlockTextMedia,
       EventBlockRelatedStories,
@@ -143,6 +161,7 @@
             name
             visuallyHideName
             timezone
+            timezoneComment
             displayDate
             image {
               url
@@ -184,7 +203,7 @@
                   slug
                   titleColor
                   showWaveMarker
-                  body
+                  body(markdown: true)
                   logos {
                     id
                     url
@@ -269,6 +288,30 @@
                     }
                   }
                 }
+                ... on ScheduleBlockRecord {
+                  _modelApiKey
+                  id
+                  slug
+                  eventDays {
+                    id
+                    date
+                    scheduleItems {
+                      id
+                      title
+                      topic
+                      startTime
+                      endTime
+                      description
+                      watchLabel
+                      watchUrl
+                      speaker {
+                        image {
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -282,3 +325,17 @@
     },
   };
 </script>
+
+<style>
+  .event-block__title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+  }
+
+  @media (--md-viewport) {
+    .event-block__title {
+      font-size: 3.75rem;
+    }
+  }
+</style>

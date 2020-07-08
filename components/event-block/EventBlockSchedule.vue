@@ -228,6 +228,7 @@
         currentDate: new Date(),
         selectedEventDayId: '',
         displayTimezone: `${timezoneComment} UTC ${timezone.substr(0,3)}`,
+        interval: null,
       };
     },
     computed: {
@@ -259,9 +260,12 @@
       },
     },
     created() {
-      setInterval(() => {
-         this.currentDate = new Date();
+      this.interval = setInterval(() => {
+        this.currentDate = new Date();
       }, 1000 * 60);
+    },
+    beforeDestroy() {
+      clearInterval(this.interval);
     },
   };
 </script>

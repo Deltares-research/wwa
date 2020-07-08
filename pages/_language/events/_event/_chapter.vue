@@ -21,6 +21,7 @@
         v-for="page in chapter.pages"
         :key="page.slug"
         :ref="page.slug"
+        :id="page.slug"
         class="event__layout event__layout--padded"
       >
         <h2>{{ page.title }}</h2>

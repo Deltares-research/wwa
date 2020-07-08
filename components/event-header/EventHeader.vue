@@ -8,7 +8,7 @@
     >
     <h1 class="event-header__name">
       <nuxt-link
-        :to="`/events/${slug}`"
+        :to="`/${this.$route.params.language}/events/${this.$route.params.event}`"
         v-html="name"
         class="event-header__name-link"
       />

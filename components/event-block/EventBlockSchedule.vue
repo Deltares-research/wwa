@@ -6,7 +6,7 @@
         role="tablist"
       >
         <a
-          v-for="eventDay in eventDays"
+          v-for="eventDay in parsedEventDays"
           :key="`tab-wide-${eventDay.id}`"
           class="event-block-schedule-wide__tablink"
           role="tab"
@@ -18,7 +18,7 @@
         >
           <time :datetime="eventDay.date">
             {{
-              new Date(eventDay.date).toLocaleDateString(
+              new Date(eventDay.parsedDate).toLocaleDateString(
                 language,
                 { weekday: 'short', month: 'long', day: 'numeric' }
               )
@@ -230,6 +230,7 @@
       parsedEventDays({ eventDays, currentDate, timezone }) {
         return eventDays.map(eventDay => ({
           ...eventDay,
+          parsedDate: new Date(`${eventDay.date}T07:00${timezone}`),
           scheduleItems: eventDay.scheduleItems.map(scheduleItem => ({
             ...scheduleItem,
             isNow:
@@ -362,11 +363,6 @@
 
   .event-block-schedule-wide__time {
     font-size: 1.2rem;
-    white-space: nowrap;
-  }
-
-  .event-block-schedule-wide__url-wrapper {
-    min-width: 8rem;
     align-self: center;
   }
 
@@ -394,6 +390,7 @@
     default variant specific
   */
   .event-block-schedule__tablist {
+    position: relative;
     appearance: none;
     width: 100%;
     display: block;
@@ -405,6 +402,9 @@
     font-weight: 500;
     font-size: 1rem;
     border-radius: 4px;
+    background-image: url('/assets/arrow-icon.svg');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
   }
 
   .event-block-schedule__timezone {

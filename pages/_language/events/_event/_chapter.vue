@@ -92,12 +92,12 @@
 
 <script>
   import fetchContent from '~/lib/fetch-content';
+  import EventBlockText from '~/components/event-block/EventBlockText';
   import eventHeader from '~/components/event-header/EventHeader';
   import NarrativeHeaderEvent from '~/components/narrative-header/NarrativeHeaderEvent';
   import StoryMap from '~/components/story-map/StoryMap';
   import ResponsiveImage from '~/components/responsive-image/ResponsiveImage';
   import ResponsiveVideo from '~/components/responsive-video/ResponsiveVideo';
-  import EventBlockText from '~/components/event-block/EventBlockText';
   import EventBlockCredits from '~/components/event-block/EventBlockCredits';
   import eventFooter from '~/components/event-footer/EventFooter';
 

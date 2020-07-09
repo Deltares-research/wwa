@@ -117,9 +117,9 @@
 </template>
 
 <script>
+import renderMarkedContent from '~/lib/marked';
 import PageBodyTitle from '~/components/page-body-title/PageBodyTitle';
 import StoryMap from '~/components/story-map/StoryMap';
-import renderMarkedContent from '~/lib/custom-marked';
 import ResponsiveImage from '~/components/responsive-image/ResponsiveImage';
 import ResponsiveVideo from '~/components/responsive-video/ResponsiveVideo';
 
@@ -178,6 +178,10 @@ export default {
   .page-body {
     padding: 2rem;
   }
+}
+
+.page-body p:first-child {
+  font-weight: bold;
 }
 
 .page-body p:first-child {

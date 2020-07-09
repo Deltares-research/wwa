@@ -57,8 +57,6 @@ export default {
     this.controls.enablePan = false;
     this.controls.minDistance = 5.3;
     this.controls.maxDistance = 50;
-        // zoom is disabled per default within orbit-controls
-    // enable it on mounted
     this.controls.enableZoom = true;
 
     this.controls.addEventListener('change', () => {

@@ -73,6 +73,9 @@ module.exports = (dato, root, i18n) => {
     case 'themes':
       generateThemes(dato, root, i18n);
       break;
+    case 'globe_data':
+      generateThemes(dato, root, i18n);
+      break;
     default:
       generateChapters(dato, root, i18n);
       generateBooks(dato, root, i18n);
@@ -83,24 +86,20 @@ module.exports = (dato, root, i18n) => {
       generateAppData(dato, root, i18n);
       generateStaticPages(dato, root, i18n);
       generateThemes(dato, root, i18n);
-
       generateGlobeData(dato, root, i18n);
   }
 };
 
 /**
- * Write out Book JSONs
+ * Write out Book JSON
  *
  * @param {Dato} dato - DatoCMS API
  * @param {Root} root - Project root
  * @param {i18n} i18n
  */
 function generateBooks (dato, root, i18n) {
-  const booksShort = getBooksShort(dato);
-  root.createDataFile(`static/data/books/index.json`, 'json', booksShort);
-
-  // const books = getBooks(dato);
-  // books.forEach(book => root.createDataFile(`static/data/books/${book.slug}/index.json`, 'json', book));
+  const allChapters = getBooksShort(dato);
+  root.createDataFile(`static/data/books/index.json`, 'json', allChapters);
 }
 
 /**
@@ -195,26 +194,6 @@ function generateByMethodology (dato, root, i18n) {
     root.createDataFile(`static/data/methodologies/${methodology.slug}.json`, 'json', { ...methodology, entries: chaptersByMethodology });
   }
 }
-
-// /**
-//  * Write out JSON files by keyword
-//  *
-//  * @param {Dato} dato - DatoCMS API
-//  * @param {Root} root - Project root
-//  * @param {i18n} i18n
-//  */
-// function generateByKeyword (dato, root, i18n) {
-//   const pages = getPages(dato);
-//   const tags = collectPagesByKeyword(pages);
-//   const index = [];
-//   for (const tag in tags) {
-//     const pages = tags[tag];
-//     const tagObj = Object.assign({}, tags[tag]);
-//     delete tagObj.entries; // not needed in index
-//     index.push(tagObj);
-//     root.createDataFile(`static/data/keywords/${tagObj.slug}.json`, 'json', pages);
-//   }
-// }
 
 function generateKeywords (dato, root, i18n) {
   const keywords = uniqBy(dato.books

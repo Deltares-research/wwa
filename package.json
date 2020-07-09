@@ -22,7 +22,8 @@
     "data:static-pages": "cross-env DATO_EXPORT=static_pages dato dump",
     "data:themes": "cross-env DATO_EXPORT=themes dato dump",
     "data:goals": "cross-env DATO_EXPORT=goals dato dump",
-    "data:methodologies": "cross-env DATO_EXPORT=methodologies dato dump"
+    "data:methodologies": "cross-env DATO_EXPORT=methodologies dato dump",
+    "data:globe-data": "cross-env DATO_EXPORT=globe_data dato dump"
   },
   "babel": {
     "presets": [

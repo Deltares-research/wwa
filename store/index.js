@@ -1,5 +1,6 @@
 import Vuex from 'vuex';
-import loadData from '~/lib/load-data';
+import getBookChaptersByFilter from '~/lib/get-book-chapters-by-filter';
+import getBookChaptersByFilterItem from '~/lib/get-book-chapters-by-filter-item';
 
 const store = () => {
   return new Vuex.Store({
@@ -17,7 +18,23 @@ const store = () => {
       globeAutoRotation: true,
       globePositionRight: false,
       filters: [],
+      activeFilter: null,
+      activeFilterItem: null,
       books: [],
+      activeKeywordSlugs: [],
+    },
+    getters: {
+      filteredChapters: (state) => {
+        if (state.activeFilter && !state.activeFilterItem) {
+          return getBookChaptersByFilterItem(state.books, state.activeFilter);
+        } else if (state.activeFilter && state.activeFilterItem) {
+         return getBookChaptersByFilter(state.books, state.activeFilterItem);
+        } else if (state.activeKeywordSlugs.length){
+          return state.books;
+        } else {
+          return state.books;
+        }
+      },
     },
     actions: {
       async getBooks({ commit }) {
@@ -85,6 +102,18 @@ const store = () => {
       },
       setBooks (state, books) {
         state.books = books;
+      },
+      setActiveFilterItem (state, activeFilterItem) {
+        state.activeFilterItem = activeFilterItem;
+      },
+      setActiveFilter (state, activeFilter) {
+        state.activeFilter = activeFilter;
+      },
+      setActiveKeywordSlugs (state, keywords) {
+        state.activeKeywords = keywords;
+      },
+      addActiveKeywordSlug (state, keyword) {
+        state.activeKeywordSlugs.push(keyword);
       },
     },
   });

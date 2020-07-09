@@ -1,5 +1,6 @@
 const pick = require('lodash/fp/pick');
 const uniq = require('lodash/uniq');
+const uniqBy = require('lodash/uniqBy');
 const slugify = require('slug');
 
 /**
@@ -63,7 +64,7 @@ module.exports = (dato, root, i18n) => {
         generateByMethodology(dato, root, i18n);
         break;
     case 'keywords':
-      generateByKeyword(dato, root, i18n);
+      generateKeywords(dato, root, i18n);
       break;
     case 'static_pages':
       generateStaticPages(dato, root, i18n);
@@ -77,7 +78,7 @@ module.exports = (dato, root, i18n) => {
       generateByInfluence(dato, root, i18n);
       generateByGoal(dato, root, i18n);
       generateByMethodology(dato, root, i18n);
-      generateByKeyword(dato, root, i18n);
+      generateKeywords(dato, root, i18n);
       generateAppData(dato, root, i18n);
       generateStaticPages(dato, root, i18n);
       generateThemes(dato, root, i18n);
@@ -95,8 +96,8 @@ function generateBooks (dato, root, i18n) {
   const booksShort = getBooksShort(dato)
   root.createDataFile(`static/data/books/index.json`, 'json', booksShort);
 
-  const books = getBooks(dato);
-  books.forEach(book => root.createDataFile(`static/data/books/${book.slug}/index.json`, 'json', book));
+  // const books = getBooks(dato);
+  // books.forEach(book => root.createDataFile(`static/data/books/${book.slug}/index.json`, 'json', book));
 }
 
 /**
@@ -192,24 +193,37 @@ function generateByMethodology (dato, root, i18n) {
   }
 }
 
-/**
- * Write out JSON files by keyword
- *
- * @param {Dato} dato - DatoCMS API
- * @param {Root} root - Project root
- * @param {i18n} i18n
- */
-function generateByKeyword (dato, root, i18n) {
-  const pages = getPages(dato);
-  const tags = collectPagesByKeyword(pages);
-  const index = [];
-  for (const tag in tags) {
-    const pages = tags[tag];
-    const tagObj = Object.assign({}, tags[tag]);
-    delete tagObj.entries; // not needed in index
-    index.push(tagObj);
-    root.createDataFile(`static/data/keywords/${tagObj.slug}.json`, 'json', pages);
-  }
+// /**
+//  * Write out JSON files by keyword
+//  *
+//  * @param {Dato} dato - DatoCMS API
+//  * @param {Root} root - Project root
+//  * @param {i18n} i18n
+//  */
+// function generateByKeyword (dato, root, i18n) {
+//   const pages = getPages(dato);
+//   const tags = collectPagesByKeyword(pages);
+//   const index = [];
+//   for (const tag in tags) {
+//     const pages = tags[tag];
+//     const tagObj = Object.assign({}, tags[tag]);
+//     delete tagObj.entries; // not needed in index
+//     index.push(tagObj);
+//     root.createDataFile(`static/data/keywords/${tagObj.slug}.json`, 'json', pages);
+//   }
+// }
+
+function generateKeywords (dato, root, i18n) {
+  const keywords = uniqBy(dato.books
+    .filter(filterPublished)
+    .map(book => {
+      return getChapters(dato, book)
+        .filter(filterPublished)
+        .map(({pages}) => pages.map(page => page.keywords).flat()).flat()
+    })
+    .flat(), 'slug')
+
+  root.createDataFile(`static/data/keywords/index.json`, 'json', keywords);
 }
 
 /**
@@ -324,32 +338,6 @@ function generateStaticPages (dato, root, i18n) {
   const staticPageIndex = staticPages.map(page => ({ path: `/${page.slug}` }));
   root.createDataFile('static/data/static-pages/index.json', 'json', staticPageIndex);
 }
-/**
- * Get Dato Book entities
- *
- * @param {Dato} dato
- */
-function getBooks (dato) {
-  return dato.books
-    .filter(filterPublished)
-    .map(book => {
-      const { body, slug, icon, title } = book;
-      const path = `${contentBasePath}/${slug}`;
-      const chapters = getChapters(dato, book)
-        .filter(filterPublished)
-        .map(chapter => {
-          const { location, pages, path, slug, title, influences, goals, methodologies, keywords, createdAt, updatedAt, cover } = chapter;
-          const theme = getDominantTheme(pages);
-          return { influences, goals, methodologies, keywords, location, path, slug, title, theme, createdAt, updatedAt, cover };
-        });
-      const theme = getDominantTheme(chapters);
-      const influences = collectUniqueTags(chapters, 'influences');
-      const goals = collectUniqueTags(chapters, 'goals');
-      const methodologies = collectUniqueTags(chapters, 'methodologies');
-      const keywords = collectUniqueTags(chapters, 'keywords');
-      return { body, chapters, influences, goals, methodologies, keywords, path, slug, icon, title, theme };
-    });
-}
 
 /**
  * Get Dato Book entities in a short format
@@ -364,7 +352,7 @@ function getBooksShort (dato) {
       const title = book.title;
       const chapters = getChapters(dato, book)
         .filter(filterPublished)
-        .map(({ slug, title, cover, path, pages }) => {
+        .map(({ slug, title, cover, path, updatedAt, pages }) => {
           const influencesFilters = pages.map(page => page.influences
             ? page.influences.map(influence => {
               return influence.slug
@@ -386,25 +374,20 @@ function getBooksShort (dato) {
             : [])
             .flat()
 
-          const themesFilters = pages.map(page => page.themes
-            ? page.themes.map(theme => {
-              return theme.slug
-            })
-            : [])
-            .flat()
+          const themesFilters = pages.map(page => page.theme ? page.theme.slug : false).filter(Boolean);
+          const narrativeFilter = book.slug;
+          const keywords = pages.map(page => page.keywords.map(keyword => keyword.slug)).flat()
 
-          const filters = uniq(influencesFilters.concat(goalsFilters, methodologiesFilters, themesFilters));
-
-          // topics???!!
-
+          const filters = uniq(influencesFilters.concat(goalsFilters, methodologiesFilters, themesFilters, narrativeFilter));
           const availableCategories = [
             ...(influencesFilters.length ? ['influences'] : []),
             ...(goalsFilters.length ? ['goals'] : []),
             ...(methodologiesFilters.length ? ['methodologies'] : []),
             ...(themesFilters.length ? ['themes'] : []),
+            'narratives',
           ]
 
-          return { slug, title, cover, path, filters, availableCategories };
+          return { slug, title, cover, path, updatedAt, filters, availableCategories, keywords };
         });
       return { title, path, chapters };
     });
@@ -659,40 +642,40 @@ function getThemes (dato) {
   });
 }
 
-/**
- * collect Chapter entities in object by keyword
- *
- * @param {DatoRecord[]} pages
- * @returns {object} arrays of Pages by tag
- */
-function collectPagesByKeyword (pages) {
-  return pages
-    .map(page => {
-      const { book, chapter, keywords, location, influences, goals, path, slug, storyteller, theme, title } = page;
-      return {
-        tags: page.keywords,
-        page: { book, chapter, keywords, location, influences, goals, path, slug, storyteller, theme, title },
-      };
-    })
-    .filter(match => Boolean(match.tags)) // filter falsy (false, undefined, '')
-    .map(match => match.tags.map(tag => {
-      return {
-        tag: tag,
-        page: match.page,
-      };
-    }))
-    .reduce((a, b) => a.concat(b), []) // Flat array of keywords
-    .reduce((tags, match) => {
-      tags[match.tag.slug] = tags[match.tag.slug] || {
-        title: match.tag.title,
-        slug: match.tag.slug,
-        path: match.tag.path,
-        entries: [],
-      };
-      tags[match.tag.slug].entries.push(match.page);
-      return tags;
-    }, {});
-}
+// /**
+//  * collect Chapter entities in object by keyword
+//  *
+//  * @param {DatoRecord[]} pages
+//  * @returns {object} arrays of Pages by tag
+//  */
+// function collectPagesByKeyword (pages) {
+//   return pages
+//     .map(page => {
+//       const { book, chapter, keywords, location, influences, goals, path, slug, storyteller, theme, title } = page;
+//       return {
+//         tags: page.keywords,
+//         page: { book, chapter, keywords, location, influences, goals, path, slug, storyteller, theme, title },
+//       };
+//     })
+//     .filter(match => Boolean(match.tags)) // filter falsy (false, undefined, '')
+//     .map(match => match.tags.map(tag => {
+//       return {
+//         tag: tag,
+//         page: match.page,
+//       };
+//     }))
+//     .reduce((a, b) => a.concat(b), []) // Flat array of keywords
+//     .reduce((tags, match) => {
+//       tags[match.tag.slug] = tags[match.tag.slug] || {
+//         title: match.tag.title,
+//         slug: match.tag.slug,
+//         path: match.tag.path,
+//         entries: [],
+//       };
+//       tags[match.tag.slug].entries.push(match.page);
+//       return tags;
+//     }, {});
+// }
 
 /**
  * Get unique array of tags from items

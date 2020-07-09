@@ -1,15 +1,20 @@
 <template>
-  <div class="invert">
-    <div class="layout-section">
-      <div class="layout-section__container">
-        TODO: keywords content
-      </div>
-    </div>
-  </div>
+  <chapter-list
+    :chapters="filteredChapters"
+    sorted="newest"
+    :limit="20"
+  />
 </template>
 
 <script>
-export default {
-  layout: 'globe',
-};
+  import { mapGetters } from 'vuex';
+  import ChapterList from '~/components/chapter-list/ChapterList';
+
+  export default {
+    layout: 'globe',
+    computed: {
+      ...mapGetters(['filteredChapters']),
+    },
+    components: { ChapterList },
+  };
 </script>

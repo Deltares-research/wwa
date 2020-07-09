@@ -32,9 +32,12 @@ export default {
     ...mapState(['books']),
   },
   mounted () {
-    this.$store.commit('replaceFeatures', []);
-    this.$store.commit('enableInteraction');
-    this.$store.commit('enableGlobeAutoRotation');
+    // this.$store.commit('replaceFeatures', []);
+    // this.$store.commit('enableInteraction');
+    // this.$store.commit('enableGlobeAutoRotation');
+    // this.$store.commit('replaceTheme', 'too-much');
+    // this.$store.commit('replaceFeatures', this.markers);
+    // this.$store.commit('enableGlobeAutoRotation');
   },
 };
 </script>

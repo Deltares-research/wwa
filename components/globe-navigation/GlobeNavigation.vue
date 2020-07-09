@@ -88,7 +88,7 @@ export default {
       return slug;
     },
     activeFilterItemSlug () {
-      return this.$route.path.split('/')[2];
+      return this.$route.params.slug;
     },
     currentFilters () {
       const activeFilters = this.filters.find(filter => filter.slug === this.activeFilterSlug);
@@ -106,6 +106,10 @@ export default {
         : this.activeFilter ? this.activeFilter.title : '';
     },
   },
+  created() {
+    this.$store.commit('setActiveFilter', this.activeFilterSlug);
+    this.$store.commit('setActiveFilterItem', this.activeFilterItemSlug);
+  },
   mounted () {
     this.tabsList = this.$refs.tabsList;
     this.tabLinks = this.$refs.tabLink;
@@ -113,6 +117,14 @@ export default {
     this.handleResize();
 
     window.addEventListener('resize', debounce(this.handleResize), 1000);
+  },
+  watch: {
+    activeFilterSlug(newValue) {
+      this.$store.commit('setActiveFilter', newValue);
+    },
+    activeFilterItemSlug(newValue) {
+      this.$store.commit('setActiveFilterItem', newValue);
+    },
   },
   methods: {
     handleResize () {

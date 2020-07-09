@@ -4,7 +4,7 @@
       v-if="related.length"
       class="narrative-footer__related"
     >
-      <h3 class="h2">
+      <h3 class="h2 narrative-footer__title">
         Similar Stories
       </h3>
       <ul class="narrative-footer__related-list">
@@ -94,6 +94,10 @@ export default {
 <style>
 .narrative-footer {
   padding: 2rem;
+}
+
+.narrative-footer__title {
+  margin-bottom: .5rem;
 }
 
 .narrative-footer__prev-next {
@@ -204,7 +208,11 @@ export default {
 
 @media (--sm-viewport) {
   .narrative-footer__related-item {
-    width: 48%;
+    margin-bottom: 1.5rem;
+  }
+
+  .narrative-footer__related-item:not(:last-child) {
+    margin-right: 1rem;
   }
 
   .narrative-footer__related-list {

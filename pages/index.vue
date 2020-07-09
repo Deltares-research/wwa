@@ -25,9 +25,6 @@ import ChapterList from '~/components/chapter-list/ChapterList';
 export default {
   layout: 'globe',
   components: { BookList, ChapterList },
-  async fetch ({ store }) {
-    return await store.dispatch('getBooks');
-  },
   computed: {
     ...mapState(['books']),
   },

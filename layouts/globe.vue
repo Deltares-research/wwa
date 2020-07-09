@@ -9,14 +9,14 @@
         name="fadeIn"
         mode="out-in"
       >
-        <globe-component
-          :is="GlobeComponent"
-          class="globe-component"
-          :class="{
-            'globe-component--right': globePositionRight,
-            'globe-component--tall': highlightedEvent,
-          }"
-        />
+<!--        <globe-component-->
+<!--          :is="GlobeComponent"-->
+<!--          class="globe-component"-->
+<!--          :class="{-->
+<!--            'globe-component&#45;&#45;right': globePositionRight,-->
+<!--            'globe-component&#45;&#45;tall': highlightedEvent,-->
+<!--          }"-->
+<!--        />-->
       </transition>
 
       <div
@@ -39,15 +39,16 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import MainMenu from '~/components/main-menu/MainMenu';
 import GlobeHeader from '~/components/globe-header/GlobeHeader';
 import GlobeNavigation from '~/components/globe-navigation/GlobeNavigation';
 import AppFooter from '~/components/app-footer/AppFooter';
 
 export default {
-  async middleware ({ store, redirect }) {
-    const app = await import('~/static/data/app.json');
+  async middleware ({ store }) {
+    const app = await import('~/static/data/app.json'); // hmmm
+    await store.dispatch('getBooks') // hmmm
     store.commit('setFilters', app.default.filters);
     store.commit('setDescription', app.default.description);
     store.commit('setHighlightedEvent', app.default.highlightedEvent);
@@ -60,6 +61,7 @@ export default {
   },
   components: { MainMenu, GlobeHeader, GlobeNavigation, AppFooter },
   computed: {
+    ...mapGetters(['filteredChapters']),
     ...mapState(['globePositionRight', 'highlightedEvent']),
     isFilterPage () {
       return this.$route.name === 'keywords-slug' || this.$route.name === 'keywords';

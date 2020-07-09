@@ -35,9 +35,9 @@ const store = () => {
     },
     actions: {
       async getBooks({ commit }) {
-        const books = await loadData(this, { book: 'index' });
-        commit('setBooks', books);
-      }
+        const books = await import('~/static/data/books/index.json');
+        commit('setBooks', books.default);
+      },
     },
     mutations: {
       activateFeature (state, feature) {

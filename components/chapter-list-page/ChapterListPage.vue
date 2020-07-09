@@ -22,9 +22,6 @@
     computed: {
       ...mapGetters(['filteredChapters']),
     },
-    mounted() {
-      console.log('hmm')
-    },
     components: { ChapterList },
   };
 </script>

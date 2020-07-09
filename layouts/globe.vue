@@ -39,91 +39,91 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
-import MainMenu from '~/components/main-menu/MainMenu';
-import GlobeHeader from '~/components/globe-header/GlobeHeader';
-import GlobeNavigation from '~/components/globe-navigation/GlobeNavigation';
-import AppFooter from '~/components/app-footer/AppFooter';
+  import { mapGetters, mapState } from 'vuex';
+  import MainMenu from '~/components/main-menu/MainMenu';
+  import GlobeHeader from '~/components/globe-header/GlobeHeader';
+  import GlobeNavigation from '~/components/globe-navigation/GlobeNavigation';
+  import AppFooter from '~/components/app-footer/AppFooter';
 
-export default {
-  async middleware ({ store }) {
-    const app = await import('~/static/data/app.json'); // hmmm
-    await store.dispatch('getBooks') // hmmm
-    store.commit('setFilters', app.default.filters);
-    store.commit('setDescription', app.default.description);
-    store.commit('setHighlightedEvent', app.default.highlightedEvent);
-    store.commit('setNavigationLinks', app.default.navigationLinks);
-  },
-  beforeCreate () {
-    this.GlobeComponent = () => ({
-      component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue'),
-    });
-  },
-  components: { MainMenu, GlobeHeader, GlobeNavigation, AppFooter },
-  computed: {
-    ...mapGetters(['filteredChapters']),
-    ...mapState(['globePositionRight', 'highlightedEvent']),
-    isFilterPage () {
-      return this.$route.name === 'keywords-slug' || this.$route.name === 'keywords';
+  export default {
+    async middleware ({ store }) {
+      const app = await import('~/static/data/app.json');
+      await store.dispatch('getBooks');
+      store.commit('setFilters', app.default.filters);
+      store.commit('setDescription', app.default.description);
+      store.commit('setHighlightedEvent', app.default.highlightedEvent);
+      store.commit('setNavigationLinks', app.default.navigationLinks);
     },
-    isEventPage () {
-      return this.$route.name === 'events';
+    beforeCreate () {
+      this.GlobeComponent = () => ({
+        component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue'),
+      });
     },
-  },
-};
+    components: { MainMenu, GlobeHeader, GlobeNavigation, AppFooter },
+    computed: {
+      ...mapGetters(['filteredChapters']),
+      ...mapState(['globePositionRight', 'highlightedEvent']),
+      isFilterPage () {
+        return this.$route.name === 'keywords-slug' || this.$route.name === 'keywords';
+      },
+      isEventPage () {
+        return this.$route.name === 'events';
+      },
+    },
+  };
 </script>
 
 <style>
-.globe-component {
-  position: fixed;
-  z-index: -10;
-  top: 4rem;
-  transform: none;
-  transition: transform 0.5s ease-in-out;
-}
-
-.globe-component--tall {
-  top: 9rem;
-}
-
-@media (--sm-viewport) {
   .globe-component {
-    top: 0rem;
+    position: fixed;
+    z-index: -10;
+    top: 4rem;
+    transform: none;
+    transition: transform 0.5s ease-in-out;
   }
 
   .globe-component--tall {
-    top: 5rem;
+    top: 9rem;
   }
-}
 
-.globe-spacing {
-  position: relative;
-  margin-top: var(--globe-spacing-default);
-}
+  @media (--sm-viewport) {
+    .globe-component {
+      top: 0rem;
+    }
 
-.globe-spacing--tall {
-  margin-top: var(--globe-spacing-tall);
-}
+    .globe-component--tall {
+      top: 5rem;
+    }
+  }
 
-@media (--sm-viewport) {
   .globe-spacing {
-    margin-top: var(--globe-spacing-default--desktop);
+    position: relative;
+    margin-top: var(--globe-spacing-default);
   }
 
   .globe-spacing--tall {
-    margin-top: var(--globe-spacing-tall--desktop);
+    margin-top: var(--globe-spacing-tall);
   }
-}
 
-@media (--lg-viewport) {
-.globe-component--right {
-    transform: translateX(33%);
-  }
-}
+  @media (--sm-viewport) {
+    .globe-spacing {
+      margin-top: var(--globe-spacing-default--desktop);
+    }
 
-@media (--xl-viewport) {
-  .globe-component--right {
-    transform: translateX(25%);
+    .globe-spacing--tall {
+      margin-top: var(--globe-spacing-tall--desktop);
+    }
   }
-}
+
+  @media (--lg-viewport) {
+    .globe-component--right {
+      transform: translateX(33%);
+    }
+  }
+
+  @media (--xl-viewport) {
+    .globe-component--right {
+      transform: translateX(25%);
+    }
+  }
 </style>

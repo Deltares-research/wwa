@@ -71,8 +71,8 @@
     },
     data () {
       return {
-        activeKeywordSlugs: []
-      }
+        activeKeywordSlugs: [],
+      };
     },
     created() {
       const activeKeywordsFromUrl = this.$route.path.split('/')[2];
@@ -88,25 +88,25 @@
         return this.books.map(book => book.chapters.filter(chapter => {
           return this.activeKeywordSlugs.every(keyword => chapter.keywords.includes(keyword));
         }))
-          .flat()
+          .flat();
       },
       activeKeywords () {
-        return this.keywords.filter(keyword => this.activeKeywordSlugs.includes(keyword.slug))
+        return this.keywords.filter(keyword => this.activeKeywordSlugs.includes(keyword.slug));
       },
       availableKeywords () {
         if (this.activeKeywordSlugs.length) {
           const availableKeywordSlugs = this.filteredChapters.filter(chapter => {
             return this.activeKeywordSlugs.every(keyword => {
-              return chapter.keywords ? chapter.keywords.includes(keyword) : false
-            })
+              return chapter.keywords ? chapter.keywords.includes(keyword) : false;
+            });
           }).map(chapter => chapter.keywords)
             .flat()
-            .filter(keyword => !this.activeKeywordSlugs.includes(keyword))
-          const uniqueKeywordSlugs = Array.from(new Set(availableKeywordSlugs))
+            .filter(keyword => !this.activeKeywordSlugs.includes(keyword));
+          const uniqueKeywordSlugs = Array.from(new Set(availableKeywordSlugs));
 
-          return this.keywords.filter(keyword => uniqueKeywordSlugs.includes(keyword.slug))
+          return this.keywords.filter(keyword => uniqueKeywordSlugs.includes(keyword.slug));
         } else {
-          return this.keywords
+          return this.keywords;
         }
       },
     },
@@ -117,7 +117,7 @@
     methods: {
       updatePath (event) {
         const keywordSlug = event.target.value;
-        const newActiveKeywordSlugs = this.activeKeywordSlugs.concat([keywordSlug]).join('+')
+        const newActiveKeywordSlugs = this.activeKeywordSlugs.concat([keywordSlug]).join('+');
 
         this.$router.push(`/keywords/${newActiveKeywordSlugs}`);
       },

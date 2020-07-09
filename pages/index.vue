@@ -18,7 +18,7 @@
 
 <script>
 import loadData from '~/lib/load-data';
-import marked from '~/lib/custom-marked';
+import renderMarkedContent from '~/lib/marked';
 import flattenDeep from 'lodash/flattenDeep';
 import home from '~/static/data/home.json';
 
@@ -53,7 +53,7 @@ export default {
   },
   data: function () {
     return {
-      body: marked(home.body),
+      body: renderMarkedContent(home.body),
       slug: '',
     };
   },

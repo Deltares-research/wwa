@@ -57,6 +57,7 @@ export default {
     this.controls.enablePan = false;
     this.controls.minDistance = 5.3;
     this.controls.maxDistance = 50;
+    this.controls.enableZoom = true;
 
     this.controls.addEventListener('change', () => {
       this.$store.commit('disableGlobeAutoRotation');

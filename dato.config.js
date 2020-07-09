@@ -236,7 +236,7 @@ function generateGlobeData (dato, root, i18n) {
         chapterSlug: 'event',
         location: event.geolocation,
         theme: { slug: 'event' },
-      }
+      };
   });
 
   const pages = flattendeep(dato.books

@@ -60,7 +60,10 @@
                 :alt="image.alt"
                 width="100%"
               />
-              <figcaption class="page-body__asset-placeholder">
+              <figcaption
+                v-if="image.title || image.value && image.value.title"
+                class="page-body__asset-placeholder"
+              >
                 {{ image.title || image.value && image.value.title }}
               </figcaption>
             </figure>

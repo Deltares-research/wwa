@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="page-body">
+    <div class="page-body">
       <page-body-title
         :page-title="title"
         :influences="influences"
@@ -10,14 +10,14 @@
         :storyteller="storyteller"
         :theme="theme"
       />
-      <section
+      <div
         v-if="htmlBody"
         class="page-body__body"
         v-html="htmlBody"
       />
-    </section>
+    </div>
 
-    <section
+    <div
       v-if="images && images.length"
       class="page-body__images"
     >
@@ -41,9 +41,9 @@
           {{ image.title || image.value && image.value.title }}
         </figcaption>
       </figure>
-    </section>
+    </div>
 
-    <section
+    <div
       v-if="graphs && graphs.length"
       class="page-body__graphs"
     >
@@ -61,15 +61,15 @@
           width="100%"
         />
         <figcaption
-          v-if="image && image.title || image && image.value && image.value.title"
+          v-if="graph && graph.title || graph && graph.value && graph.value.title"
           class="page-body__asset-caption"
         >
           {{ graph.value.title }}
         </figcaption>
       </figure>
-    </section>
+    </div>
 
-    <section
+    <div
       v-if="video"
       class="page-body__video page-body__figure"
     >
@@ -77,16 +77,16 @@
         class="page-body__lazy-video"
         :video="video"
       />
-    </section>
+    </div>
 
-    <section
+    <div
       v-if="mapboxStyle"
       class="page-body__map page-body__figure"
     >
       <story-map :mapbox-style="mapboxStyle" />
-    </section>
+    </div>
 
-    <section
+    <div
       v-if="links || partner && partner.name"
       class="page-body page-body__footer"
     >
@@ -117,7 +117,7 @@
           {{ partner.name }}
         </p>
       </div>
-    </section>
+    </div>
   </div>
 </template>
 
@@ -172,6 +172,11 @@ export default {
   color: var(--white);
 }
 
+.page-body p {
+  margin-bottom: 1rem;
+  color: var(--white);
+}
+
 .page-body p:first-child {
   font-weight: bold;
 }
@@ -187,6 +192,14 @@ export default {
 
 .page-body img {
   max-width: 100%;
+}
+
+.page-body__images:not(:last-child),
+.page-body__graphs,:not(:last-child)
+.page-body__video:not(:last-child),
+.page-body__map:not(:last-child),
+.page-body__figure:not(:last-child) {
+  margin-bottom: 1rem;
 }
 
 .page-body__figure {
@@ -206,7 +219,7 @@ export default {
 }
 
 .page-body__asset-caption {
-  padding: 0.5rem 1.5rem 0 1.5rem;
+  padding-top: .5rem;
   background-color: var(--white);
   margin: 0 auto;
 }
@@ -218,7 +231,6 @@ export default {
 }
 
 .page-body__footer {
-  color: var(--blue-secondary);
   width: 100%;
   padding: 5px 0;
 }
@@ -246,36 +258,5 @@ export default {
   margin: 0 4px;
   vertical-align: middle;
   display: inline-block;
-}
-
-/*
-* style rules for a minimal print layout
-*/
-
-@media print {
-  .page-body__links a:after,
-  .page-body p a:after {
-    content: " (" attr(href) ")";
-    font-size: 80%;
-  }
-  .page-body__video {
-    display: none;
-  }
-  .page-body__figure {
-    page-break-inside: avoid;
-    max-width: 100mm;
-  }
-  .page-body__links {
-    page-break-inside: avoid;
-  }
-  .page-body__images,
-  .page-body__graphs {
-    padding: 0 1.5rem;
-  }
-  .page-body__asset-caption {
-    max-width: none;
-    padding-left: 0;
-    padding-right: 0;
-  }
 }
 </style>

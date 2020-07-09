@@ -34,7 +34,11 @@
           :alt="image.alt || image.value && image.value.alt"
           width="100%"
         />
-        <figcaption class="page-body__asset-placeholder">
+        <figcaption
+          v-if="image.title || image.value && image.value.title"
+          class="page-body__asset-placeholder"
+        >
+          slfkbm 'alrktgmqer elkrtgnqel'kr q;elrkgn
           {{ image.title || image.value && image.value.title }}
         </figcaption>
       </figure>
@@ -57,7 +61,10 @@
           :alt="graph.value.alt"
           width="100%"
         />
-        <figcaption class="page-body__asset-placeholder">
+        <figcaption
+          v-if="graph.value.title"
+          class="page-body__asset-placeholder"
+        >
           {{ graph.value.title }}
         </figcaption>
       </figure>
@@ -71,7 +78,6 @@
         class="page-body__lazy-video"
         :video="video"
       />
-      <div class="page-body__asset-placeholder" />
     </section>
 
     <section
@@ -79,7 +85,6 @@
       class="page-body__map page-body__figure"
     >
       <story-map :mapbox-style="mapboxStyle" />
-      <div class="page-body__asset-placeholder" />
     </section>
 
     <section class="page-body">
@@ -165,8 +170,7 @@ export default {
 <style>
 .page-body {
   padding: 1.5rem;
-  background-color: var(--white);
-  color: var(--blue-primary);
+  color: var(--white);
 }
 
 .page-body p {
@@ -204,15 +208,7 @@ export default {
 }
 
 .page-body__asset-placeholder {
-  padding: 0.5rem 1.5rem 1rem 1.5rem;
-  background-color: var(--white);
-  margin: 0 auto;
-}
-
-@media only screen and (--sm-viewport) {
-  .page-body__asset-placeholder {
-    padding: 0.5rem 2.5rem 1rem 2.5rem;
-  }
+  padding-top: 0.5rem;
 }
 
 .page-body__footer {

@@ -5,10 +5,9 @@
     </h1>
 
     <img
+      v-if="props.cover"
       class="narrative-header__cover"
-      :src="props.cover.responsiveImage.src"
-      :srcset="props.cover.responsiveImage.srcSet"
-      :sizes="props.cover.responsiveImage.sizes"
+      :src="`${props.cover.imgixHost}${props.cover.value.path}?auto=compress&w=700`"
       alt=""
     >
   </header>

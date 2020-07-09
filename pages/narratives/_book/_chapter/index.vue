@@ -6,7 +6,7 @@
       :class="{ 'chapter-column--tall': highlightedEvent }"
     >
       <narrative-header
-        v-bind="content.chapter"
+        v-bind="chapter"
       />
       <page-component
         data-page-component
@@ -37,27 +37,9 @@ import fetchContent from '~/lib/fetch-content';
 export default {
   layout: 'globe',
   async asyncData (context) {
-    const query = `
-      {
-        chapter(filter: { slug: { eq: "${context.params.chapter}" } }) {
-          title
-          cover {
-            responsiveImage(imgixParams: {w: "1024", auto: compress}) {
-              src
-              srcSet
-              sizes
-            }
-          }
-        }
-      }
-    `;
-
     const { pages, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params);
     const chapter = { path, slug, title, previousChapter, nextChapter, cover, related };
     return {
-      content: {
-        ...await fetchContent(query),
-      },
       chapter,
       pages,
       path,

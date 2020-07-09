@@ -35,15 +35,22 @@ export default {
 <style>
 .page-component {
   min-height: 25vh;
-  max-width: 44rem;
   margin: 3rem auto 0 auto;
 }
 
-@media only screen and (--sm-viewport) {
+.page-component:first-of-type {
+  position: relative;
+  z-index: 2;
+  margin-top: -8rem;
+}
+
+@media (--md-viewport) {
   .page-component {
-    margin: 3.75rem auto 0 auto;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    max-width: 44rem;
+  }
+
+  .page-component:first-of-type {
+    margin-top: -5rem;
   }
 }
 

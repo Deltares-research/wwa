@@ -178,6 +178,7 @@ export default {
 
 @media (--sm-viewport) {
   .chapter-column {
+    padding-top: 90px;
     margin-top: calc(-1 * var(--globe-spacing-default--desktop));
   }
 
@@ -186,15 +187,9 @@ export default {
   }
 }
 
-@media only screen and (--lg-viewport) {
+@media (--lg-viewport) {
   .chapter-column {
-    width: 67vw;
-  }
-}
-
-@media only screen and (--xl-viewport) {
-  .chapter-column {
-    width: 50vw;
+    width: 45rem;
   }
 }
 

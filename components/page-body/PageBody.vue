@@ -164,19 +164,25 @@ export default {
 
 <style>
 .page-body {
-  padding: 1.5rem;
-  background-color: var(--white);
-  color: var(--blue-primary);
+  padding: 1rem;
+  color: var(--white);
 }
 
-.page-body p {
-  margin-bottom: 1rem;
-}
-
-@media only screen and (--sm-viewport) {
+@media (--md-viewport) {
   .page-body {
-    padding: 1rem 2.5rem;
+    padding: 0;
   }
+}
+
+@media (--lg-viewport) {
+  .page-body {
+    padding: 2rem;
+  }
+}
+
+.page-body p:first-child {
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 
 .page-body p.intro {

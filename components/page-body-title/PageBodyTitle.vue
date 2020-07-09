@@ -16,9 +16,9 @@
       </span>
     </div>
 
-    <h1 class="page-body-title__title">
+    <h2 class="page-body-title__title">
       {{ pageTitle }}
-    </h1>
+    </h2>
 
     <div
       class="page-body-title__keywords"

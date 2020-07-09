@@ -13,6 +13,7 @@
       :class="{
         'event-block-text__title--orange': titleColor === 'orange',
         'event-block-text__title--blue': titleColor === 'blue',
+        'event-block-text__title--small': showSmallTitle,
       }"
       animator-stagger
     >
@@ -51,6 +52,7 @@
       body: String,
       callToActionLabel: String,
       callToActionUrl: String,
+      showSmallTitle: Boolean,
     },
   };
 </script>
@@ -132,6 +134,10 @@
       max-width: 66%;
       font-size: 5rem;
       line-height: 1;
+    }
+
+    .event-block-text__title--small {
+      font-size: 3rem;
     }
 
     .event-block-text__copy {

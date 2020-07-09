@@ -15,7 +15,10 @@
       />
     </section>
     <h1>{{ title }}</h1>
-    <section v-html="htmlBody" />
+    <section
+      class="static-page__body"
+      v-html="htmlBody"
+    />
     <figure
       v-for="image in images"
       :key="image.id"
@@ -35,7 +38,7 @@
 <script>
 import loadData from '~/lib/load-data';
 import lazyImage from '~/components/lazy-media/LazyMedia';
-import marked from '~/lib/custom-marked';
+import renderMarkedContent from '~/lib/marked';
 
 export default {
   layout: 'static-page',
@@ -46,7 +49,7 @@ export default {
   },
   computed: {
     htmlBody () {
-      return marked(this.body);
+      return renderMarkedContent(this.body);
     },
   },
   components: {
@@ -65,6 +68,10 @@ export default {
   max-width: var(--wwa-column-width);
   margin: auto;
   padding: 10rem 1rem;
+}
+
+.static-page__body p:first-child {
+  font-weight: bold;
 }
 
 .static-page__video {

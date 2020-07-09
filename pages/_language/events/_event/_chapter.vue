@@ -32,6 +32,7 @@
               :subtitle="page.storyteller"
               title-color="white"
               :body="page.body"
+              :show-small-title="true"
             />
           </div>
 

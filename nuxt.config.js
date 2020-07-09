@@ -132,6 +132,9 @@ export default {
       const homeRoute = routes.find(route => route.name === 'index')
       homeRoute.alias = '/themes'
 
+      const keywordsRoute = routes.find(route => route.name === 'keywords')
+      keywordsRoute.alias = '/keywords/:slug'
+
       routes.unshift({
         name: `methodologies`,
         path: `/methodologies`,

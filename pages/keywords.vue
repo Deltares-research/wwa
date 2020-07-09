@@ -15,7 +15,8 @@
           >
             <filter-tag
               :title="keyword.title"
-              :url="keyword.unsetLink"
+              :slug="keyword.slug"
+              :active-keyword-slugs="activeKeywordSlugs"
               :is-removable="true"
             />
           </li>
@@ -46,7 +47,7 @@
     <div class="layout-section">
       <div class="layout-section__container">
         <chapter-list
-          :chapters="results"
+          :chapters="filteredChapters"
           sorted="newest"
           :limit="20"
         />
@@ -56,54 +57,69 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex';
   import ChapterList from '~/components/chapter-list/ChapterList';
   import FilterTag from '~/components/filter-tag/FilterTag';
-  import loadData from '~/lib/load-data';
-  import { unionByProp } from '~/lib/set-operations';
 
   export default {
     layout: 'globe',
-    async asyncData (context) {
-      const { params } = context;
-      const keywordsFromUrl = (params.slug) ? [].concat(params.slug.split('+')) : [];
-      const { results = [], tags: keywords = [] } = await loadData(context, { keywords: keywordsFromUrl });
-
+    async asyncData () {
+      const keywords = await import('~/static/data/keywords/index.json');
       return {
-        keywords,
-        results,
+        keywords: keywords.default,
       };
     },
+    data () {
+      return {
+        activeKeywordSlugs: []
+      }
+    },
+    created() {
+      const activeKeywordsFromUrl = this.$route.path.split('/')[2];
+      this.activeKeywordSlugs = activeKeywordsFromUrl ? [].concat(activeKeywordsFromUrl.split('+')) : [];
+    },
     components: {
-      ChapterList, FilterTag,
+      ChapterList,
+      FilterTag,
     },
     computed: {
+      ...mapState(['books']),
+      filteredChapters() {
+        return this.books.map(book => book.chapters.filter(chapter => {
+          return this.activeKeywordSlugs.every(keyword => chapter.keywords.includes(keyword));
+        }))
+          .flat()
+      },
       activeKeywords () {
-        const base = this.$route.path.replace(/(\+?[^/])*(\/?)$/, ''); // remove all tags
-        return this.keywords.map(tag => {
-          const excludingSelf = this.keywords
-            .filter(t => t.slug !== tag.slug)
-            .map(t => t.slug)
-            .join('+');
-          tag.unsetLink = `${base}${excludingSelf}`;
-          return tag;
-        });
+        return this.keywords.filter(keyword => this.activeKeywordSlugs.includes(keyword.slug))
       },
       availableKeywords () {
-        // Build available keywords objects from results
-        return this.results
-          .reduce((acc, result) => unionByProp(acc, result.keywords, 'slug'), [])
-          .filter(keyword => this.activeKeywords.every(active => active.slug !== keyword.slug));
+        if (this.activeKeywordSlugs.length) {
+          const availableKeywordSlugs = this.filteredChapters.filter(chapter => {
+            return this.activeKeywordSlugs.every(keyword => {
+              return chapter.keywords ? chapter.keywords.includes(keyword) : false
+            })
+          }).map(chapter => chapter.keywords)
+            .flat()
+            .filter(keyword => !this.activeKeywordSlugs.includes(keyword))
+          const uniqueKeywordSlugs = Array.from(new Set(availableKeywordSlugs))
+
+          return this.keywords.filter(keyword => uniqueKeywordSlugs.includes(keyword.slug))
+        } else {
+          return this.keywords
+        }
       },
     },
     mounted () {
-      this.$store.commit('replaceTheme', 'too-much');
-      this.$store.commit('replaceFeatures', this.results);
+      // this.$store.commit('replaceTheme', 'too-much');
+      // this.$store.commit('replaceFeatures', this.results);
     },
     methods: {
       updatePath (event) {
         const keywordSlug = event.target.value;
-        const currentSlug = this.keywords.map(kewyord => kewyord.slug).join('+');
-        this.$router.push(`/keywords/${(currentSlug) ? currentSlug + '+' : ''}${keywordSlug}`);
+        const newActiveKeywordSlugs = this.activeKeywordSlugs.concat([keywordSlug]).join('+')
+
+        this.$router.push(`/keywords/${newActiveKeywordSlugs}`);
       },
     },
   };

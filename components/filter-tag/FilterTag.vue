@@ -1,6 +1,6 @@
 <template>
   <nuxt-link
-    :to="url"
+    :to="resetUrl"
     class="filter-tag"
     :class="{ 'filter-tag--selected': isSelected, 'filter-tag--removable': isRemovable }"
   >
@@ -18,11 +18,24 @@
 export default {
   props: {
     title: String,
+    slug: String,
     url: String,
     icon: Object,
+    activeKeywordSlugs: Array,
     isSelected: Boolean,
     isRemovable: Boolean,
   },
+  computed: {
+    resetUrl() {
+      if (this.url) {
+        return this.url
+      } else {
+        const base = this.$route.path.replace(/(\+?[^/])*(\/?)$/, ''); // remove all tags
+        const excludingSelf = this.activeKeywordSlugs.filter(slug => slug !== this.slug).join('+');
+        return `${base}${excludingSelf}`;
+      }
+    }
+  }
 };
 </script>
 

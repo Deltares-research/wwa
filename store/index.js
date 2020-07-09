@@ -9,7 +9,6 @@ const store = () => {
     state: {
       activeFeature: null,
       description: '',
-      features: [],
       highlightedEvent: null,
       navigationLinks: [],
       rotate: true,
@@ -25,7 +24,9 @@ const store = () => {
     },
     getters: {
       filteredChapters: (state) => {
-        if (state.activeFilter && !state.activeFilterItem) {
+        if (state.activeFilter === 'event') {
+          return [{ slug: 'event'}];
+        } else if (state.activeFilter && !state.activeFilterItem) {
           return getBookChaptersByFilterItem(state.books, state.activeFilter);
         } else if (state.activeFilter && state.activeFilterItem) {
          return getBookChaptersByFilter(state.books, state.activeFilterItem);
@@ -57,9 +58,6 @@ const store = () => {
       },
       resetTheme (state) {
         state.theme = DEFAULT_THEME;
-      },
-      replaceFeatures (state, features) {
-        state.features = features;
       },
       disableRotate (state) {
         state.rotate = false;

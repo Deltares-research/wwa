@@ -230,6 +230,15 @@ function generateKeywords (dato, root, i18n) {
 }
 
 function generateGlobeData (dato, root, i18n) {
+  const events = [...dato.externalEvents, ...dato.internalEvents]
+    .map(event => {
+      return {
+        chapterSlug: 'event',
+        location: event.geolocation,
+        theme: { slug: 'event' },
+      }
+  });
+
   const pages = flattendeep(dato.books
     .filter(filterPublished)
     .map(book => {
@@ -254,7 +263,7 @@ function generateGlobeData (dato, root, i18n) {
             .filter(Boolean);
         });
     }));
-  root.createDataFile(`static/data/globeData/index.json`, 'json', pages);
+  root.createDataFile(`static/data/globeData/index.json`, 'json', [...pages, ...events]);
 }
 
 /**

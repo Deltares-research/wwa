@@ -147,7 +147,7 @@
         };
       });
       this.$store.commit('resetTheme');
-      this.$store.commit('replaceFeatures', this.markers);
+      this.$store.commit('setActiveFilter', 'event');
       this.$store.commit('enableInteraction');
       this.$store.commit('enableGlobeAutoRotation');
     },

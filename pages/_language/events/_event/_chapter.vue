@@ -73,7 +73,7 @@
           </div>
 
           <div
-            v-if="page.creditsTitle"
+            v-if="page.creditsTitle || page.creditsBody || page.creditsLogos"
             class="event-chapter__block"
           >
             <event-block-credits

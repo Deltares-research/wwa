@@ -21,19 +21,9 @@
     </div>
 
     <ul
-      v-if="keywords && keywords.length || influences && influences.length || methodologies && methodologies.length"
+      v-if="influences && influences.length || methodologies && methodologies.length"
       class="page-body-title__tags list--inline"
     >
-      <li
-        v-for="link in keywords"
-        :key="`keyword-${link.slug}`"
-        class="page-body-title__tag"
-      >
-        <filter-tag
-          :title="link.title"
-          :url="link.path"
-        />
-      </li>
       <li
         v-for="link in methodologies"
         :key="`methodology-${link.slug}`"
@@ -83,23 +73,22 @@
 </template>
 
 <script>
-  import FilterTag from '~/components/filter-tag/FilterTag';
+import FilterTag from '~/components/filter-tag/FilterTag';
 
-  export default {
-    components: {
-      FilterTag,
-    },
-    props: {
-      pageTitle: String,
-      influences: Array,
-      goals: Array,
-      methodologies: Array,
-      keywords: Array,
-      storyteller: Object,
-      partner: Object,
-      theme: Object,
-    },
-  };
+export default {
+  components: {
+    FilterTag,
+  },
+  props: {
+    pageTitle: String,
+    influences: Array,
+    goals: Array,
+    methodologies: Array,
+    storyteller: Object,
+    partner: Object,
+    theme: Object,
+  },
+};
 </script>
 
 <style>

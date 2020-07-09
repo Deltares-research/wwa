@@ -1,11 +1,6 @@
 <template>
   <div>
     <div data-scrolled-to-top-trigger />
-    <scroll-indicator
-      v-if="pages.length > 1"
-      :pages="pages"
-      :active-page="activePage"
-    />
     <div
       class="chapter-column"
       :class="{ 'chapter-column--tall': highlightedEvent }"
@@ -36,7 +31,6 @@ import { mapState } from 'vuex';
 import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter';
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader';
 import PageComponent from '~/components/page-component/PageComponent';
-import ScrollIndicator from '~/components/scroll-indicator/ScrollIndicator';
 import loadData from '~/lib/load-data';
 import fetchContent from '~/lib/fetch-content';
 
@@ -68,7 +62,7 @@ export default {
       pages,
       path,
       slug,
-      title
+      title,
     };
   },
   data: function () {
@@ -104,7 +98,6 @@ export default {
     NarrativeFooter,
     NarrativeHeader,
     PageComponent,
-    ScrollIndicator,
   },
   methods: {
     observeIntersectingChildren () {
@@ -152,11 +145,6 @@ export default {
     updateActivePage (pageSlug) {
       const activePages = (pageSlug) ? this.pages.filter(page => page.slug === pageSlug) : null;
       this.activePage = (activePages && activePages[0]) ? activePages[0] : this.pages[0];
-    },
-    visibilityChanged (isVisible, entry) {
-      if (isVisible) {
-        this.updateActivePage(entry.target.id);
-      }
     },
   },
   watch: {

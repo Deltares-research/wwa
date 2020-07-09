@@ -22,7 +22,7 @@ const vOffsetFactor = vOffset / 100;
 const center = new THREE.Vector3(0, 0, 0);
 
 export default {
-  data () {
+  data() {
     return {
       renderer: null,
       camera: null,
@@ -36,7 +36,7 @@ export default {
       cameraDistance: 40,
     };
   },
-  mounted () {
+  mounted() {
     try {
       this.renderer = this.createRenderer();
     } catch (err) {
@@ -106,7 +106,7 @@ export default {
     this.replaceTheme(this.theme);
   },
   watch: {
-    activeFeature (val) {
+    activeFeature(val) {
       this.activateFeature(val);
       if (val.theme && val.theme.slug) {
         this.replaceTheme(val.theme.slug);
@@ -114,20 +114,20 @@ export default {
 
       this.disableGlobeAutoRotation();
     },
-    features (val) {
+    features(val) {
       this.replaceFeatures(val);
     },
-    rotate (val) {
+    rotate(val) {
       this.setEnableRotate(val);
     },
-    zoom (val) {
+    zoom(val) {
       this.setEnableZoom(val);
     },
-    theme (val, old) {
+    theme(val, old) {
       this.replaceTheme(val, old);
       // this.disableGlobeAutoRotation()
     },
-    cameraDistance (val) {
+    cameraDistance(val) {
       this.updateAvatarPositions();
     },
   },
@@ -141,7 +141,7 @@ export default {
       globeAutoRotation: state => state.globeAutoRotation,
     }),
     containerSize: {
-      get () {
+      get() {
         // lookup the size of the globe card element
         let size = [0, 0];
         if (this.globeContainerElement != null) {
@@ -156,7 +156,7 @@ export default {
     },
     globeContainerElement: {
       // lookup the globe element
-      get () {
+      get() {
         let el = this.$el;
         return el;
       },
@@ -164,7 +164,7 @@ export default {
     },
     globeElement: {
       // lookup the globe element
-      get () {
+      get() {
         let el = null;
         if (this.$el != null) {
           el = this.$el.querySelector('.globe');
@@ -175,7 +175,7 @@ export default {
     },
   },
   methods: {
-    activateFeature (feature) {
+    activateFeature(feature) {
       if (!(feature) || !(feature.location)) {
         return;
       }
@@ -206,7 +206,7 @@ export default {
       to.r = 40 - feature.location.zoom;
       this.panAndZoom(from, to);
     },
-    updateAvatarPositions () {
+    updateAvatarPositions() {
       const dist = this.camera.position.distanceTo(center);
 
       const epsilon = 500 * ((dist - this.controls.minDistance) / (this.controls.maxDistance - this.controls.minDistance)); // The maximum distance between two points for them to be considered as being in the same neighborhood.
@@ -303,29 +303,29 @@ export default {
      * Animates the particles on the globe to the colors associated with the provided theme slug.
      * @param {String} slug one of the theme slugs: too-little, too-much or too-dirty
      */
-    replaceTheme (slug) {
+    replaceTheme(slug) {
       this.particles.replaceTheme(slug);
     },
-    setEnableZoom (val) {
+    setEnableZoom(val) {
       if (!(this.controls)) {
         return;
       }
       this.controls.enableZoom = val;
     },
-    setEnableRotate (val) {
+    setEnableRotate(val) {
       if (!(this.controls)) {
         return;
       }
       this.controls.enableRotate = val;
     },
-    replaceFeatures (features) {
+    replaceFeatures(features) {
       const globe = this.globe;
       const filteredFeatures = features.filter(feature => feature.location);
       this.avatar.clear();
       this.avatar.load(filteredFeatures, avs => globe.add(avs));
       this.updateAvatarPositions();
     },
-    handleResize () {
+    handleResize() {
       // We're getting the containerSize here because the size
       // of the canvas itself is not changing on screen resize
       const width = this.containerSize[0];
@@ -346,7 +346,7 @@ export default {
       // redraw
       // this.renderer.render(this.scene, this.camera)
     },
-    handleClick (event) {
+    handleClick(event) {
       // dynamically setting raycaster threshold level based on zoom to change precision
       this.raycaster.params.Points.threshold = this.camera.position.distanceTo(center) / 100;
 
@@ -363,16 +363,16 @@ export default {
         }
       }
     },
-    handleMouseMove (event) {
+    handleMouseMove(event) {
       event.preventDefault();
-
+      const canvasDistanceTop = this.renderer.domElement.getBoundingClientRect().top;
       this.mouse.x = ((event.clientX / this.renderer.domElement.clientWidth) * 2) - 1;
-      this.mouse.y = -((event.clientY / this.renderer.domElement.clientHeight) * 2) + 1;
+      this.mouse.y = -((event.clientY - canvasDistanceTop) / this.renderer.domElement.clientHeight) * 2 + 1;
     },
     /**
      * Pan to the active story
      */
-    panAndZoom (from, to) {
+    panAndZoom(from, to) {
       const tween = new Tween(from)
         .to(to, tweenDuration)
         .on('update', ({ r, theta, phi }) => {
@@ -388,7 +388,7 @@ export default {
      * Create a renderer in the element
      * @returns {Renderer}
      */
-    createRenderer () {
+    createRenderer() {
       const renderer = new THREE.WebGLRenderer({
         alpha: false,
         antialias: true,
@@ -408,7 +408,7 @@ export default {
      * Create a scene
      * @returns {Scene} Scene with a sphere
      */
-    createScene () {
+    createScene() {
       const { base = '/' } = this.$router.options;
       const scene = new THREE.Scene();
 
@@ -435,14 +435,14 @@ export default {
 
       return scene;
     },
-    disableGlobeAutoRotation () {
+    disableGlobeAutoRotation() {
       this.globeAutoRotate = false;
     },
     /**
      * Creates a raycaster for detecting mouseover over avatars
      * @return {THEE.Raycaster} a THREE Raycaster
      */
-    createRaycaster () {
+    createRaycaster() {
       this.raycaster = new THREE.Raycaster();
       this.raycaster.params.Points.threshold = 0.1;
     },
@@ -452,7 +452,7 @@ export default {
      * @param {Scene} scene - scene (used to look at).
      * @returns {Camera} Camera, looking at the scene.
      */
-    createCamera () {
+    createCamera() {
       const width = this.containerSize[0];
       const height = this.containerSize[1];
       const renderWidth = this.containerSize[0];
@@ -479,7 +479,7 @@ export default {
      * Render and animate the scene.
      * @return {[type]} [description]
      */
-    animate () {
+    animate() {
       requestAnimationFrame(this.animate);
 
       if (this.globeAutoRotation) {

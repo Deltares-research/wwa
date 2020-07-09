@@ -38,7 +38,6 @@
   </lazy-media>
 </template>
 
-
 <script>
 import LazyMedia from '~/components/lazy-media/LazyMedia';
 
@@ -54,3 +53,15 @@ export default {
   },
 };
 </script>
+
+<style>
+  .fixed-ratio {
+    padding: 0;
+    position: relative;
+    background-color: var(--blue-secondary);
+  }
+
+  .fixed-ratio > * {
+    position: absolute;
+  }
+</style>

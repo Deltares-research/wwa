@@ -34,7 +34,10 @@
           :alt="image.alt || image.value && image.value.alt"
           width="100%"
         />
-        <figcaption class="page-body__asset-placeholder">
+        <figcaption
+          v-if="image.title || image.value && image.value.title"
+          class="page-body__asset-caption"
+        >
           {{ image.title || image.value && image.value.title }}
         </figcaption>
       </figure>
@@ -57,7 +60,10 @@
           :alt="graph.value.alt"
           width="100%"
         />
-        <figcaption class="page-body__asset-placeholder">
+        <figcaption
+          v-if="image.title || image.value && image.value.title"
+          class="page-body__asset-caption"
+        >
           {{ graph.value.title }}
         </figcaption>
       </figure>
@@ -71,7 +77,6 @@
         class="page-body__lazy-video"
         :video="video"
       />
-      <div class="page-body__asset-placeholder" />
     </section>
 
     <section
@@ -79,39 +84,39 @@
       class="page-body__map page-body__figure"
     >
       <story-map :mapbox-style="mapboxStyle" />
-      <div class="page-body__asset-placeholder" />
     </section>
 
-    <section class="page-body">
-      <section class="page-body__footer">
-        <ul
-          v-if="links"
-          class="page-body__links"
+    <section
+      v-if="links || partner && partner.name"
+      class="page-body page-body__footer"
+    >
+      <ul
+        v-if="links"
+        class="page-body__links"
+      >
+        <li
+          v-for="(link, index) in links"
+          :key="`${link.title}-${index}`"
         >
-          <li
-            v-for="(link, index) in links"
-            :key="`${link.title}-${index}`"
+          <a
+            target="_blank"
+            :href="link.path"
+          >{{ link.title }}</a>
+        </li>
+      </ul>
+      <div class="page-body__footer--partner">
+        <p v-if="partner && partner.name">
+          Created in partnership with:
+          <img
+            v-if="partner.logo && partner.logo.imgixHost"
+            :src="`${partner.logo.imgixHost}${partner.logo.value.path}?auto=compress&w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`"
+            class="page-body__partner-img"
+            :width="scaleMaxToSize(partner.logo, sizeLimit).w"
+            :height="scaleMaxToSize(partner.logo, sizeLimit).h"
           >
-            <a
-              target="_blank"
-              :href="link.path"
-            >{{ link.title }}</a>
-          </li>
-        </ul>
-        <div class="page-body__footer--partner">
-          <p v-if="partner && partner.name">
-            Created in partnership with:
-            <img
-              v-if="partner.logo && partner.logo.imgixHost"
-              :src="`${partner.logo.imgixHost}${partner.logo.value.path}?auto=compress&w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`"
-              class="page-body__partner-img"
-              :width="scaleMaxToSize(partner.logo, sizeLimit).w"
-              :height="scaleMaxToSize(partner.logo, sizeLimit).h"
-            >
-            {{ partner.name }}
-          </p>
-        </div>
-      </section>
+          {{ partner.name }}
+        </p>
+      </div>
     </section>
   </div>
 </template>
@@ -213,15 +218,15 @@ export default {
   vertical-align: bottom;
 }
 
-.page-body__asset-placeholder {
-  padding: 0.5rem 1.5rem 1rem 1.5rem;
+.page-body__asset-caption {
+  padding: 0.5rem 1.5rem 0 1.5rem;
   background-color: var(--white);
   margin: 0 auto;
 }
 
 @media only screen and (--sm-viewport) {
-  .page-body__asset-placeholder {
-    padding: 0.5rem 2.5rem 1rem 2.5rem;
+  .page-body__asset-caption {
+    padding: 0.5rem 2.5rem 0 2.5rem;
   }
 }
 
@@ -280,7 +285,7 @@ export default {
   .page-body__graphs {
     padding: 0 1.5rem;
   }
-  .page-body__asset-placeholder {
+  .page-body__asset-caption {
     max-width: none;
     padding-left: 0;
     padding-right: 0;

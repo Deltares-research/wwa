@@ -21,7 +21,7 @@ const vOffset = 15;
 const vOffsetFactor = vOffset / 100;
 const center = new THREE.Vector3(0, 0, 0);
 
-const globeData = require('~/static/data/globeData/index.json')
+const globeData = require('~/static/data/globeData/index.json');
 
 export default {
   data () {
@@ -36,7 +36,7 @@ export default {
       connections: [],
       message: '',
       cameraDistance: 40,
-      globeData
+      globeData,
     };
   },
   mounted () {

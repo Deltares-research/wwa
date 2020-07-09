@@ -236,7 +236,7 @@ function generateGlobeData (dato, root, i18n) {
       return book.chapters
         .filter(filterPublished)
         .map(chapter => {
-          const chapterSlug = chapter.slug
+          const chapterSlug = chapter.slug;
           return chapter.pages.map(page => {
             if (page.location) {
               return {
@@ -246,14 +246,14 @@ function generateGlobeData (dato, root, i18n) {
                   slug: page.theme ? page.theme.slug : 'too-much',
                 },
                 path: `/narratives/${book.slug}/${chapterSlug}#${page.slug}`,
-              }
+              };
             } else {
-              return false
+              return false;
             }
           })
-            .filter(Boolean)
-        })
-    }))
+            .filter(Boolean);
+        });
+    }));
   root.createDataFile(`static/data/globeData/index.json`, 'json', pages);
 }
 

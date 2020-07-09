@@ -132,7 +132,7 @@ export default {
           this.$store.commit('resetTheme');
         }
       },
-      immediate: true
+      immediate: true,
     },
   },
   methods: {

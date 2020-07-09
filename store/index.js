@@ -47,6 +47,7 @@ const store = () => {
       activateFeature (state, feature) {
         const { theme, location, slug, path } = feature;
         state.activeFeature = { location, slug, path, theme };
+        state.theme = feature.theme ? feature.theme.slug : DEFAULT_THEME;
       },
       deactivateFeature (state) {
         state.activeFeature = undefined;

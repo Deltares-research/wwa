@@ -111,8 +111,9 @@
       },
     },
     mounted () {
-      // this.$store.commit('replaceTheme', 'too-much');
-      // this.$store.commit('replaceFeatures', this.results);
+      this.$store.commit('resetTheme');
+      this.$store.commit('enableInteraction');
+      this.$store.commit('enableGlobeAutoRotation');
     },
     methods: {
       updatePath (event) {

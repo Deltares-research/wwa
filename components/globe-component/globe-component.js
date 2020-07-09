@@ -103,15 +103,11 @@ export default {
     if (this.activateFeature && this.activateFeature.theme) {
       this.theme = this.activateFeature.theme.slug || this.theme;
     }
-    this.replaceTheme(this.theme);
+    this.applyTheme(this.theme);
   },
   watch: {
     activeFeature (val) {
       this.activateFeature(val);
-      if (val.theme && val.theme.slug) {
-        this.replaceTheme(val.theme.slug);
-      }
-
       this.disableGlobeAutoRotation();
     },
     features (val) {
@@ -124,8 +120,7 @@ export default {
       this.setEnableZoom(val);
     },
     theme (val, old) {
-      this.replaceTheme(val, old);
-      // this.disableGlobeAutoRotation()
+      this.applyTheme(val, old);
     },
     cameraDistance (val) {
       this.updateAvatarPositions();
@@ -306,7 +301,7 @@ export default {
      * Animates the particles on the globe to the colors associated with the provided theme slug.
      * @param {String} slug one of the theme slugs: too-little, too-much or too-dirty
      */
-    replaceTheme (slug) {
+    applyTheme (slug) {
       this.particles.replaceTheme(slug);
     },
     setEnableZoom (val) {

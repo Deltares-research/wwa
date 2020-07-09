@@ -46,6 +46,10 @@ export default {
   margin-top: -8rem;
 }
 
+.page-component:last-of-type {
+  margin-bottom: 0;
+}
+
 @media (--md-viewport) {
   .page-component {
     margin-left: auto;

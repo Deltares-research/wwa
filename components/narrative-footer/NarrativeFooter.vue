@@ -1,6 +1,6 @@
 <template>
   <nav class="narrative-footer">
-    <section
+    <div
       v-if="related.length"
       class="narrative-footer__related"
     >
@@ -50,8 +50,8 @@
           </nuxt-link>
         </li>
       </ul>
-    </section>
-    <section class="narrative-footer__prev-next">
+    </div>
+    <div class="narrative-footer__prev-next">
       <nuxt-link
         v-if="previousLink"
         :to="previousLink.path"
@@ -68,7 +68,7 @@
       >
         <span class="sr-only">Continue reading about</span> {{ nextLink.title }}
       </nuxt-link>
-    </section>
+    </div>
   </nav>
 </template>
 
@@ -117,7 +117,7 @@ export default {
 }
 
 .narrative-footer__link:hover {
-  color: var(--blue-primary);
+  color: var(--white);
 }
 
 .narrative-footer__link::before {

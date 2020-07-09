@@ -230,7 +230,6 @@ export default {
 }
 
 .page-body__footer {
-  color: var(--blue-secondary);
   width: 100%;
   padding: 5px 0;
 }

@@ -35,7 +35,7 @@ export default {
 <style>
 .page-component {
   min-height: 25vh;
-  margin: 2rem auto 0 auto;
+  margin: 2rem 1rem 0 1rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid var(--black-tertiary);
 }
@@ -48,12 +48,21 @@ export default {
 
 @media (--md-viewport) {
   .page-component {
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 4rem;
-    max-width: 44rem;
+    max-width: 45rem;
   }
 
   .page-component:first-of-type {
     margin-top: -5rem;
+  }
+}
+
+@media (--lg-viewport) {
+  .page-component {
+    margin-left: 2rem;
+    margin-right: 2rem;
   }
 }
 

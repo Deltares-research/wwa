@@ -169,20 +169,7 @@ export default {
 
 <style>
 .page-body {
-  padding: 1rem;
   color: var(--white);
-}
-
-@media (--md-viewport) {
-  .page-body {
-    padding: 0;
-  }
-}
-
-@media (--lg-viewport) {
-  .page-body {
-    padding: 2rem;
-  }
 }
 
 .page-body p:first-child {

@@ -17,41 +17,33 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+  import { mapState } from 'vuex';
 
-import BookList from '~/components/book-list/BookList';
-import ChapterList from '~/components/chapter-list/ChapterList';
+  import BookList from '~/components/book-list/BookList';
+  import ChapterList from '~/components/chapter-list/ChapterList';
 
-export default {
-  layout: 'globe',
-  components: { BookList, ChapterList },
-  computed: {
-    ...mapState(['books']),
-  },
-  mounted () {
-    // this.$store.commit('replaceFeatures', []);
-    // this.$store.commit('enableInteraction');
-    // this.$store.commit('enableGlobeAutoRotation');
-    // this.$store.commit('replaceTheme', 'too-much');
-    // this.$store.commit('replaceFeatures', this.markers);
-    // this.$store.commit('enableGlobeAutoRotation');
-  },
-};
+  export default {
+    layout: 'globe',
+    components: { BookList, ChapterList },
+    computed: {
+      ...mapState(['books']),
+    },
+  };
 </script>
 
 <style>
-.globe-section {
-  padding-top: 1rem;
-}
+  .globe-section {
+    padding-top: 1rem;
+  }
 
-[data-hero-hide-trigger] {
-  display: block;
-  position: absolute;
-  top: 1rem;
-  right: 0;
-  width: 1px;
-  height: 1px;
-  background-color: transparent;
-  z-index: 1;
-}
+  [data-hero-hide-trigger] {
+    display: block;
+    position: absolute;
+    top: 1rem;
+    right: 0;
+    width: 1px;
+    height: 1px;
+    background-color: transparent;
+    z-index: 1;
+  }
 </style>

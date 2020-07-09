@@ -122,8 +122,17 @@ export default {
     activeFilterSlug(newValue) {
       this.$store.commit('setActiveFilter', newValue);
     },
-    activeFilterItemSlug(newValue) {
-      this.$store.commit('setActiveFilterItem', newValue);
+    activeFilterItemSlug: {
+      handler(newValue) {
+        this.$store.commit('setActiveFilterItem', newValue);
+
+        if (newValue === 'too-much' || newValue === 'too-dirty' || newValue === 'too-little') {
+          this.$store.commit('replaceTheme', newValue);
+        } else {
+          this.$store.commit('resetTheme');
+        }
+      },
+      immediate: true
     },
   },
   methods: {

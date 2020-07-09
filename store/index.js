@@ -1,6 +1,7 @@
 import Vuex from 'vuex';
 import getBookChaptersByFilter from '~/lib/get-book-chapters-by-filter';
 import getBookChaptersByFilterItem from '~/lib/get-book-chapters-by-filter-item';
+const DEFAULT_THEME = 'too-much';
 
 const store = () => {
   return new Vuex.Store({
@@ -14,7 +15,7 @@ const store = () => {
       rotate: true,
       zoom: true,
       globeInteraction: true,
-      theme: 'too-much',
+      theme: DEFAULT_THEME,
       globeAutoRotation: true,
       globePositionRight: false,
       filters: [],
@@ -52,6 +53,9 @@ const store = () => {
       },
       replaceTheme (state, theme) {
         state.theme = theme;
+      },
+      resetTheme (state) {
+        state.theme = DEFAULT_THEME;
       },
       replaceFeatures (state, features) {
         state.features = features;

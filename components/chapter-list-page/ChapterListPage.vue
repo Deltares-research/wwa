@@ -22,6 +22,10 @@
     computed: {
       ...mapGetters(['filteredChapters']),
     },
+    mounted() {
+      this.$store.commit('enableInteraction');
+      this.$store.commit('enableGlobeAutoRotation');
+    },
     components: { ChapterList },
   };
 </script>

@@ -61,7 +61,7 @@
           width="100%"
         />
         <figcaption
-          v-if="image && image.title || image && image.value && image.value.title"
+          v-if="graph && graph.title || graph && graph.value && graph.value.title"
           class="page-body__asset-caption"
         >
           {{ graph.value.title }}

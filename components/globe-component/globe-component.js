@@ -60,6 +60,7 @@ export default {
     this.controls.enablePan = false;
     this.controls.minDistance = 5.3;
     this.controls.maxDistance = 50;
+    this.controls.enableZoom = true;
 
     this.controls.addEventListener('change', () => {
       this.$store.commit('disableGlobeAutoRotation');
@@ -363,9 +364,9 @@ export default {
     },
     handleMouseMove (event) {
       event.preventDefault();
-
+      const canvasDistanceTop = this.renderer.domElement.getBoundingClientRect().top;
       this.mouse.x = ((event.clientX / this.renderer.domElement.clientWidth) * 2) - 1;
-      this.mouse.y = -((event.clientY / this.renderer.domElement.clientHeight) * 2) + 1;
+      this.mouse.y = -((event.clientY - canvasDistanceTop) / this.renderer.domElement.clientHeight) * 2 + 1;
     },
     /**
      * Pan to the active story

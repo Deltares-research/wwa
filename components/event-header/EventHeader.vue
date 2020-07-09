@@ -1,5 +1,5 @@
 <template>
-  <div class="event-header">
+  <div class="animator__fade event-header">
     <img
       :src="`${image.url}?auto=compress&fit=crop&w=80&h=80`"
       width="40"
@@ -8,7 +8,7 @@
     >
     <h1 class="event-header__name">
       <nuxt-link
-        :to="`/events/${slug}`"
+        :to="`/${this.$route.params.language}/events/${this.$route.params.event}`"
         v-html="name"
         class="event-header__name-link"
       />

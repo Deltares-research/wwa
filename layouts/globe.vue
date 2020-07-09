@@ -5,20 +5,6 @@
     <main>
       <globe-header />
 
-      <transition
-        name="fadeIn"
-        mode="out-in"
-      >
-<!--        <globe-component-->
-<!--          :is="GlobeComponent"-->
-<!--          class="globe-component"-->
-<!--          :class="{-->
-<!--            'globe-component&#45;&#45;right': globePositionRight,-->
-<!--            'globe-component&#45;&#45;tall': highlightedEvent,-->
-<!--          }"-->
-<!--        />-->
-      </transition>
-
       <div
         :class="{ 'globe-spacing--tall': highlightedEvent }"
         class="globe-spacing"

@@ -129,25 +129,25 @@ export default {
     extendRoutes (routes, resolve) {
       const ChapterListComponent = resolve(__dirname, 'components/chapter-list-page/ChapterListPage.vue');
 
-      const homeRoute = routes.find(route => route.name === 'index')
-      homeRoute.alias = '/themes'
+      const homeRoute = routes.find(route => route.name === 'index');
+      homeRoute.alias = '/themes';
 
-      const keywordsRoute = routes.find(route => route.name === 'keywords')
-      keywordsRoute.alias = '/keywords/:slug'
+      const keywordsRoute = routes.find(route => route.name === 'keywords');
+      keywordsRoute.alias = '/keywords/:slug';
 
       routes.unshift({
         name: `methodologies`,
         path: `/methodologies`,
         component: ChapterListComponent,
-        alias: ['/influences', '/goals', '/narratives']
-      })
+        alias: ['/influences', '/goals', '/narratives'],
+      });
 
       routes.unshift({
         name: 'methodologies-slug',
         path: `/methodologies/:slug`,
         component: ChapterListComponent,
-        alias: ['/influences/:slug', '/goals/:slug', '/narratives/:slug', '/themes/:slug']
-      })
+        alias: ['/influences/:slug', '/goals/:slug', '/narratives/:slug', '/themes/:slug'],
+      });
     },
   },
 };

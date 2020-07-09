@@ -93,7 +93,7 @@ module.exports = (dato, root, i18n) => {
  * @param {i18n} i18n
  */
 function generateBooks (dato, root, i18n) {
-  const booksShort = getBooksShort(dato)
+  const booksShort = getBooksShort(dato);
   root.createDataFile(`static/data/books/index.json`, 'json', booksShort);
 
   // const books = getBooks(dato);
@@ -219,9 +219,9 @@ function generateKeywords (dato, root, i18n) {
     .map(book => {
       return getChapters(dato, book)
         .filter(filterPublished)
-        .map(({pages}) => pages.map(page => page.keywords).flat()).flat()
+        .map(({pages}) => pages.map(page => page.keywords).flat()).flat();
     })
-    .flat(), 'slug')
+    .flat(), 'slug');
 
   root.createDataFile(`static/data/keywords/index.json`, 'json', keywords);
 }
@@ -355,28 +355,28 @@ function getBooksShort (dato) {
         .map(({ slug, title, cover, path, updatedAt, pages }) => {
           const influencesFilters = pages.map(page => page.influences
             ? page.influences.map(influence => {
-              return influence.slug
+              return influence.slug;
             })
             : [])
-            .flat()
+            .flat();
 
           const goalsFilters = pages.map(page => page.goals
             ? page.goals.map(goal => {
-              return goal.slug
+              return goal.slug;
             })
             : [])
-            .flat()
+            .flat();
 
           const methodologiesFilters = pages.map(page => page.methodologies
             ? page.methodologies.map(methodology => {
-              return methodology.slug
+              return methodology.slug;
             })
             : [])
-            .flat()
+            .flat();
 
           const themesFilters = pages.map(page => page.theme ? page.theme.slug : false).filter(Boolean);
           const narrativeFilter = book.slug;
-          const keywords = pages.map(page => page.keywords.map(keyword => keyword.slug)).flat()
+          const keywords = pages.map(page => page.keywords.map(keyword => keyword.slug)).flat();
 
           const filters = uniq(influencesFilters.concat(goalsFilters, methodologiesFilters, themesFilters, narrativeFilter));
           const availableCategories = [
@@ -385,7 +385,7 @@ function getBooksShort (dato) {
             ...(methodologiesFilters.length ? ['methodologies'] : []),
             ...(themesFilters.length ? ['themes'] : []),
             'narratives',
-          ]
+          ];
 
           return { slug, title, cover, path, updatedAt, filters, availableCategories, keywords };
         });

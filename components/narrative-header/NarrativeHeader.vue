@@ -44,7 +44,7 @@
     position: absolute;
     padding: 0 1rem;
     top: 5rem;
-    max-width: 44rem;
+    max-width: 45rem;
     font-style: normal;
     font-weight: 900;
     font-size: 2rem;

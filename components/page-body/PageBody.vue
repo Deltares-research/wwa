@@ -35,7 +35,7 @@
           width="100%"
         />
         <figcaption
-          v-if="image.title || image.value && image.value.title"
+          v-if="image && image.title || image && image.value && image.value.title"
           class="page-body__asset-caption"
         >
           {{ image.title || image.value && image.value.title }}
@@ -61,7 +61,7 @@
           width="100%"
         />
         <figcaption
-          v-if="image.title || image.value && image.value.title"
+          v-if="image && image.title || image && image.value && image.value.title"
           class="page-body__asset-caption"
         >
           {{ graph.value.title }}

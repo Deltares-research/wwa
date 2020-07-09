@@ -93,7 +93,22 @@ export default {
 
 <style>
 .narrative-footer {
-  padding: 2rem;
+  padding: 2rem 1rem;
+}
+
+@media (--md-viewport) {
+  .narrative-footer {
+    margin: 0 auto;
+    padding: 2rem 0;
+    max-width: 45rem;
+  }
+}
+
+@media (--lg-viewport) {
+  .narrative-footer {
+    padding: 2rem;
+    max-width: auto;
+  }
 }
 
 .narrative-footer__title {
@@ -144,11 +159,6 @@ export default {
   content: '❯';
   right: 0;
   left: auto
-}
-
-.narrative-footer {
-  max-width: 40rem;
-  margin: auto;
 }
 
 .narrative-footer__related-list {

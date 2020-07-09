@@ -1,21 +1,12 @@
 <template>
   <div>
     <div data-scrolled-to-top-trigger />
-    <scroll-indicator
-      v-if="pages.length > 1"
-      :pages="pages"
-      :active-page="activePage"
-    />
     <div
       class="chapter-column"
       :class="{ 'chapter-column--tall': highlightedEvent }"
     >
       <narrative-header
-        :chapter="chapter"
-        :pages="pages"
-        :active-page="activePage && activePage.slug"
-        :condensed="headerCondensed"
-        @selectLink="smoothScroll"
+        v-bind="chapter"
       />
       <page-component
         data-page-component
@@ -40,15 +31,21 @@ import { mapState } from 'vuex';
 import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter';
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader';
 import PageComponent from '~/components/page-component/PageComponent';
-import ScrollIndicator from '~/components/scroll-indicator/ScrollIndicator';
 import loadData from '~/lib/load-data';
+import fetchContent from '~/lib/fetch-content';
 
 export default {
   layout: 'globe',
   async asyncData (context) {
     const { pages, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params);
     const chapter = { path, slug, title, previousChapter, nextChapter, cover, related };
-    return { chapter, pages, path, slug, title };
+    return {
+      chapter,
+      pages,
+      path,
+      slug,
+      title,
+    };
   },
   data: function () {
     return {
@@ -83,7 +80,6 @@ export default {
     NarrativeFooter,
     NarrativeHeader,
     PageComponent,
-    ScrollIndicator,
   },
   methods: {
     observeIntersectingChildren () {
@@ -132,11 +128,6 @@ export default {
       const activePages = (pageSlug) ? this.pages.filter(page => page.slug === pageSlug) : null;
       this.activePage = (activePages && activePages[0]) ? activePages[0] : this.pages[0];
     },
-    visibilityChanged (isVisible, entry) {
-      if (isVisible) {
-        this.updateActivePage(entry.target.id);
-      }
-    },
   },
   watch: {
     '$route' (to, from) {
@@ -169,6 +160,7 @@ export default {
 
 @media (--sm-viewport) {
   .chapter-column {
+    padding-top: 90px;
     margin-top: calc(-1 * var(--globe-spacing-default--desktop));
   }
 
@@ -177,15 +169,9 @@ export default {
   }
 }
 
-@media only screen and (--lg-viewport) {
+@media (--lg-viewport) {
   .chapter-column {
-    width: 67vw;
-  }
-}
-
-@media only screen and (--xl-viewport) {
-  .chapter-column {
-    width: 50vw;
+    width: 45rem;
   }
 }
 

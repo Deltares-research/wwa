@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="page-body">
+    <div class="page-body">
       <page-body-title
         :page-title="title"
         :influences="influences"
@@ -10,14 +10,14 @@
         :storyteller="storyteller"
         :theme="theme"
       />
-      <section
+      <div
         v-if="htmlBody"
         class="page-body__body"
         v-html="htmlBody"
       />
-    </section>
+    </div>
 
-    <section
+    <div
       v-if="images && images.length"
       class="page-body__images"
     >
@@ -35,16 +35,15 @@
           width="100%"
         />
         <figcaption
-          v-if="image.title || image.value && image.value.title"
-          class="page-body__asset-placeholder"
+          v-if="image && image.title || image && image.value && image.value.title"
+          class="page-body__asset-caption"
         >
-          slfkbm 'alrktgmqer elkrtgnqel'kr q;elrkgn
           {{ image.title || image.value && image.value.title }}
         </figcaption>
       </figure>
-    </section>
+    </div>
 
-    <section
+    <div
       v-if="graphs && graphs.length"
       class="page-body__graphs"
     >
@@ -62,15 +61,15 @@
           width="100%"
         />
         <figcaption
-          v-if="graph.value.title"
-          class="page-body__asset-placeholder"
+          v-if="image && image.title || image && image.value && image.value.title"
+          class="page-body__asset-caption"
         >
           {{ graph.value.title }}
         </figcaption>
       </figure>
-    </section>
+    </div>
 
-    <section
+    <div
       v-if="video"
       class="page-body__video page-body__figure"
     >
@@ -78,46 +77,47 @@
         class="page-body__lazy-video"
         :video="video"
       />
-    </section>
+    </div>
 
-    <section
+    <div
       v-if="mapboxStyle"
       class="page-body__map page-body__figure"
     >
       <story-map :mapbox-style="mapboxStyle" />
-    </section>
+    </div>
 
-    <section class="page-body">
-      <section class="page-body__footer">
-        <ul
-          v-if="links"
-          class="page-body__links"
+    <div
+      v-if="links || partner && partner.name"
+      class="page-body page-body__footer"
+    >
+      <ul
+        v-if="links"
+        class="page-body__links"
+      >
+        <li
+          v-for="(link, index) in links"
+          :key="`${link.title}-${index}`"
         >
-          <li
-            v-for="(link, index) in links"
-            :key="`${link.title}-${index}`"
+          <a
+            target="_blank"
+            :href="link.path"
+          >{{ link.title }}</a>
+        </li>
+      </ul>
+      <div class="page-body__footer--partner">
+        <p v-if="partner && partner.name">
+          Created in partnership with:
+          <img
+            v-if="partner.logo && partner.logo.imgixHost"
+            :src="`${partner.logo.imgixHost}${partner.logo.value.path}?auto=compress&w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`"
+            class="page-body__partner-img"
+            :width="scaleMaxToSize(partner.logo, sizeLimit).w"
+            :height="scaleMaxToSize(partner.logo, sizeLimit).h"
           >
-            <a
-              target="_blank"
-              :href="link.path"
-            >{{ link.title }}</a>
-          </li>
-        </ul>
-        <div class="page-body__footer--partner">
-          <p v-if="partner && partner.name">
-            Created in partnership with:
-            <img
-              v-if="partner.logo && partner.logo.imgixHost"
-              :src="`${partner.logo.imgixHost}${partner.logo.value.path}?auto=compress&w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`"
-              class="page-body__partner-img"
-              :width="scaleMaxToSize(partner.logo, sizeLimit).w"
-              :height="scaleMaxToSize(partner.logo, sizeLimit).h"
-            >
-            {{ partner.name }}
-          </p>
-        </div>
-      </section>
-    </section>
+          {{ partner.name }}
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -169,22 +169,21 @@ export default {
 
 <style>
 .page-body {
-  padding: 1.5rem;
   color: var(--white);
 }
 
 .page-body p {
   margin-bottom: 1rem;
+  color: var(--white);
 }
 
 .page-body p:first-child {
   font-weight: bold;
 }
 
-@media only screen and (--sm-viewport) {
-  .page-body {
-    padding: 1rem 2.5rem;
-  }
+.page-body p:first-child {
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 
 .page-body p.intro {
@@ -193,6 +192,13 @@ export default {
 
 .page-body img {
   max-width: 100%;
+}
+
+.page-body__images:not(:last-child),
+.page-body__graphs,:not(:last-child)
+.page-body__video:not(:last-child),
+.page-body__map:not(:last-child) {
+  margin-bottom: 1rem;
 }
 
 .page-body__figure {
@@ -211,8 +217,16 @@ export default {
   vertical-align: bottom;
 }
 
-.page-body__asset-placeholder {
-  padding-top: 0.5rem;
+.page-body__asset-caption {
+  padding-top: .5rem;
+  background-color: var(--white);
+  margin: 0 auto;
+}
+
+@media only screen and (--sm-viewport) {
+  .page-body__asset-caption {
+    padding: 0.5rem 2.5rem 0 2.5rem;
+  }
 }
 
 .page-body__footer {
@@ -244,36 +258,5 @@ export default {
   margin: 0 4px;
   vertical-align: middle;
   display: inline-block;
-}
-
-/*
-* style rules for a minimal print layout
-*/
-
-@media print {
-  .page-body__links a:after,
-  .page-body p a:after {
-    content: " (" attr(href) ")";
-    font-size: 80%;
-  }
-  .page-body__video {
-    display: none;
-  }
-  .page-body__figure {
-    page-break-inside: avoid;
-    max-width: 100mm;
-  }
-  .page-body__links {
-    page-break-inside: avoid;
-  }
-  .page-body__images,
-  .page-body__graphs {
-    padding: 0 1.5rem;
-  }
-  .page-body__asset-placeholder {
-    max-width: none;
-    padding-left: 0;
-    padding-right: 0;
-  }
 }
 </style>

@@ -22,19 +22,9 @@
 
     <div
       class="page-body-title__keywords"
-      v-if="keywords && keywords.length || influences && influences.length || methodologies && methodologies.length"
+      v-if="influences && influences.length || methodologies && methodologies.length"
     >
       <ul class="list--inline">
-        <li
-          v-for="link in keywords"
-          :key="`keyword-${link.slug}`"
-          class="page-body-title__keyword"
-        >
-          <filter-tag
-            :title="link.title"
-            :url="link.path"
-          />
-        </li>
         <li
           v-for="link in methodologies"
           :key="`methodology-${link.slug}`"
@@ -92,7 +82,6 @@ export default {
     influences: Array,
     goals: Array,
     methodologies: Array,
-    keywords: Array,
     storyteller: Object,
     partner: Object,
     theme: Object,

@@ -6,7 +6,6 @@
         :influences="influences"
         :goals="goals"
         :methodologies="methodologies"
-        :keywords="keywords"
         :storyteller="storyteller"
         :theme="theme"
       />
@@ -84,6 +83,22 @@
 
     <section class="page-body">
       <section class="page-body__footer">
+        <div class="page-body__keywords">
+          <h5 class="page-body__keywords-title">
+            Keywords:
+          </h5>
+          <ul class="page-body__keywords-list">
+            <li
+              v-for="keyword in keywords"
+              :key="`keyword-${keyword.slug}`"
+              class="page-body__keyword"
+            >
+              <nuxt-link :to="keyword.path">
+                {{ keyword.title }}
+              </nuxt-link>
+            </li>
+          </ul>
+        </div>
         <ul
           v-if="links"
           class="page-body__links"
@@ -144,7 +159,12 @@ export default {
       default: 3 * 16,
     },
   },
-  components: { PageBodyTitle, StoryMap, ResponsiveImage, ResponsiveVideo },
+  components: {
+    PageBodyTitle,
+    StoryMap,
+    ResponsiveImage,
+    ResponsiveVideo,
+  },
   computed: {
     htmlBody () {
       return renderMarkedContent(this.body);
@@ -165,8 +185,7 @@ export default {
 <style>
 .page-body {
   padding: 1.5rem;
-  background-color: var(--white);
-  color: var(--blue-primary);
+  color: var(--white);
 }
 
 .page-body p {
@@ -223,6 +242,36 @@ export default {
   color: var(--blue-secondary);
   width: 100%;
   padding: 5px 0;
+}
+
+.page-body__keywords {
+  display: flex;
+}
+
+.page-body__keywords-title {
+  display: flex;
+  margin-right: 1rem;
+  font-weight: normal;
+  color: var(--white);
+}
+
+.page-body__keywords-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.page-body__keyword {
+  list-style-type: none;
+  margin-bottom: 0.5rem;
+  margin-right: 1rem;
+}
+
+.page-body__keyword a {
+  display: block;
+  font-size: .825rem;
+  font-weight: bold;
+  color: var(--blue-tertiary);
+  text-decoration: none;
 }
 
 .page-body__links {

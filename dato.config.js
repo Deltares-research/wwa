@@ -59,8 +59,8 @@ module.exports = (dato, root, i18n) => {
       generateByGoal(dato, root, i18n);
       break;
     case 'methodology':
-        generateByMethodology(dato, root, i18n);
-        break;
+      generateByMethodology(dato, root, i18n);
+      break;
     case 'keywords':
       generateByKeyword(dato, root, i18n);
       break;
@@ -458,21 +458,25 @@ function getPages (dato, chapterRef) {
       const influences = (page.influence) ? page.influence.map(tag => ({
         title: tag.title,
         slug: tag.slug,
+        icon: tag.icon,
         path: `/influences/${tag.slug}`,
       })) : [];
       const goals = (page.goal) ? page.goal.map(tag => ({
         title: tag.title,
         slug: tag.slug,
+        icon: tag.icon,
         path: `/goals/${tag.slug}`,
       })) : [];
       const methodologies = (page.methodology) ? page.methodology.map(tag => ({
         title: tag.title,
         slug: tag.slug,
+        icon: tag.icon,
         path: `/methodologies/${tag.slug}`,
       })) : [];
       const theme = (page.theme) ? {
         title: page.theme.title,
         slug: page.theme.slug,
+        icon: page.theme.icon,
         path: `/themes/${page.theme.slug}`,
       } : null;
       const location = (page.location) ? {

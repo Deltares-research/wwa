@@ -86,9 +86,9 @@
     </div>
 
     <div class="page-body__keywords">
-      <h5 class="page-body__keywords-title">
+      <div class="page-body__keywords-title">
         Keywords:
-      </h5>
+      </div>
       <ul class="page-body__keywords-list">
         <li
           v-for="keyword in keywords"
@@ -102,38 +102,37 @@
       </ul>
     </div>
 
-    <div
-      v-if="links || partner && partner.name"
-      class="page-body page-body__footer"
+    <ul
+      v-if="links"
+      class="page-body__links"
     >
-      <ul
-        v-if="links"
-        class="page-body__links"
+      <li
+        v-for="(link, index) in links"
+        :key="`${link.title}-${index}`"
+        class="page-body__link-item"
       >
-        <li
-          v-for="(link, index) in links"
-          :key="`${link.title}-${index}`"
-        >
-          <a
-            target="_blank"
-            :href="link.path"
-          >{{ link.title }}</a>
-        </li>
-      </ul>
-      <div class="page-body__footer--partner">
-        <p v-if="partner && partner.name">
-          Created in partnership with:
-          <img
-            v-if="partner.logo && partner.logo.imgixHost"
-            :src="`${partner.logo.imgixHost}${partner.logo.value.path}?auto=compress&w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`"
-            class="page-body__partner-img"
-            :width="scaleMaxToSize(partner.logo, sizeLimit).w"
-            :height="scaleMaxToSize(partner.logo, sizeLimit).h"
-          >
-          {{ partner.name }}
-        </p>
-      </div>
-    </div>
+        <a
+          target="_blank"
+          :href="link.path"
+        >{{ link.title }}</a>
+      </li>
+    </ul>
+
+    <p
+      v-if="partner && partner.name"
+      class="page-body__partners"
+    >
+      Created in partnership with:
+      <img
+        v-if="partner.logo && partner.logo.imgixHost"
+        :src="`${partner.logo.imgixHost}${partner.logo.value.path}?auto=compress&w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`"
+        class="page-body__partners-image"
+        :width="scaleMaxToSize(partner.logo, sizeLimit).w"
+        :height="scaleMaxToSize(partner.logo, sizeLimit).h"
+        alt=""
+      >
+      {{ partner.name }}
+    </p>
   </div>
 </template>
 
@@ -219,8 +218,20 @@ export default {
 .page-body__graphs,:not(:last-child)
 .page-body__video:not(:last-child),
 .page-body__map:not(:last-child),
-.page-body__figure:not(:last-child) {
+.page-body__figure:not(:last-child),
+.page-body__keywords:not(:last-child) {
   margin-bottom: 1rem;
+}
+
+@media (--md-viewport) {
+  .page-body__images:not(:last-child),
+  .page-body__graphs,:not(:last-child)
+  .page-body__video:not(:last-child),
+  .page-body__map:not(:last-child),
+  .page-body__figure:not(:last-child),
+  .page-body__keywords:not(:last-child) {
+    margin-bottom: 2rem;
+  }
 }
 
 .page-body__figure {
@@ -228,7 +239,7 @@ export default {
   position: relative;
 }
 
-@media only screen and (min-width: 1200px) {
+@media (min-width: 1200px) {
   .page-body__figure {
     width: calc(100% + 3rem);
     margin-left: -1.5rem;
@@ -245,15 +256,10 @@ export default {
   margin: 0 auto;
 }
 
-@media only screen and (--sm-viewport) {
+@media (--sm-viewport) {
   .page-body__asset-caption {
     padding: 0.5rem 2.5rem 0 2.5rem;
   }
-}
-
-.page-body__footer {
-  width: 100%;
-  padding: 5px 0;
 }
 
 .page-body__keywords {
@@ -263,7 +269,7 @@ export default {
 .page-body__keywords-title {
   display: flex;
   margin-right: 1rem;
-  font-weight: normal;
+  font-style: italic;
   color: var(--white);
 }
 
@@ -274,38 +280,41 @@ export default {
 
 .page-body__keyword {
   list-style-type: none;
-  margin-bottom: 0.5rem;
-  margin-right: 1rem;
+  margin-bottom: .25rem;
+  margin-right: .75rem;
 }
 
 .page-body__keyword a {
   display: block;
-  font-size: .825rem;
+  font-size: 1rem;
   font-weight: bold;
   color: var(--blue-tertiary);
   text-decoration: none;
 }
 
 .page-body__links {
-  list-style:none;
-  padding:0;
-}
-.page-body__links li {
   margin-bottom: 1rem;
+  list-style: none;
+  padding: 0;
 }
 
-.page-body__footer--partner {
-  text-align: center;
+@media (--md-viewport) {
+  .page-body__links {
+    margin-bottom: 2rem;
+  }
 }
 
-.page-body__partner {
-  text-align: center;
+.page-body__link-item {
+  margin-bottom: .5rem;
+}
+
+p.page-body__partners {
   display: inline-block;
+  margin-bottom: 0;
   vertical-align: middle;
-  font-style: italic;
 }
 
-.page-body__partner-img {
+.page-body__partners-image {
   margin: 0 4px;
   vertical-align: middle;
   display: inline-block;

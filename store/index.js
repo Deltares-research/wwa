@@ -32,6 +32,9 @@ const store = () => {
           return state.books.map(book => book.chapters).flat();
         }
       },
+      filteredChapterSlugs(state, getters) {
+        return getters.filteredChapters.map(chapter => chapter.slug)
+      }
     },
     actions: {
       async getBooks({ commit }) {

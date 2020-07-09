@@ -22,8 +22,8 @@ class Avatar {
 
     this.markers.forEach(marker => {
       marker.offsetLocation = {
-        lon: marker.location.lon,
-        lat: marker.location.lat,
+        lon: marker.location.longitude,
+        lat: marker.location.latitude,
         zoom: marker.location.zoom,
       };
     });

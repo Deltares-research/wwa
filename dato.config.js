@@ -1,6 +1,7 @@
 const pick = require('lodash/fp/pick');
 const uniq = require('lodash/uniq');
 const uniqBy = require('lodash/uniqBy');
+const flattendeep = require('lodash/flattenDeep');
 const slugify = require('slug');
 
 /**
@@ -82,6 +83,8 @@ module.exports = (dato, root, i18n) => {
       generateAppData(dato, root, i18n);
       generateStaticPages(dato, root, i18n);
       generateThemes(dato, root, i18n);
+
+      generateGlobeData(dato, root, i18n);
   }
 };
 
@@ -224,6 +227,34 @@ function generateKeywords (dato, root, i18n) {
     .flat(), 'slug');
 
   root.createDataFile(`static/data/keywords/index.json`, 'json', keywords);
+}
+
+function generateGlobeData (dato, root, i18n) {
+  const pages = flattendeep(dato.books
+    .filter(filterPublished)
+    .map(book => {
+      return book.chapters
+        .filter(filterPublished)
+        .map(chapter => {
+          const chapterSlug = chapter.slug
+          return chapter.pages.map(page => {
+            if (page.location) {
+              return {
+                chapterSlug,
+                location: page.location,
+                theme: {
+                  slug: page.theme ? page.theme.slug : 'too-much',
+                },
+                path: `/narratives/${book.slug}/${chapterSlug}#${page.slug}`,
+              }
+            } else {
+              return false
+            }
+          })
+            .filter(Boolean)
+        })
+    }))
+  root.createDataFile(`static/data/globeData/index.json`, 'json', pages);
 }
 
 /**

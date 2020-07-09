@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { Tween, autoPlay, Easing } from 'es6-tween';
 import { cartesian2polar, polar2cartesian, lat2theta, lon2phi, greatCircleDistance } from './common.js';
 import { OrbitControls } from './orbit-controls.js';
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { scaleLinear } from 'd3-scale';
 import dbscan from 'dbscanjs';
 import { nest } from 'd3-collection';
@@ -21,6 +21,8 @@ const vOffset = 15;
 const vOffsetFactor = vOffset / 100;
 const center = new THREE.Vector3(0, 0, 0);
 
+const globeData = require('~/static/data/globeData/index.json')
+
 export default {
   data () {
     return {
@@ -34,6 +36,7 @@ export default {
       connections: [],
       message: '',
       cameraDistance: 40,
+      globeData
     };
   },
   mounted () {
@@ -129,14 +132,17 @@ export default {
     },
   },
   computed: {
+    ...mapGetters(['filteredChapterSlugs']),
     ...mapState({
       activeFeature: state => state.activeFeature,
-      features: state => state.features,
       zoom: state => state.zoom,
       rotate: state => state.rotate,
       theme: state => state.theme,
       globeAutoRotation: state => state.globeAutoRotation,
     }),
+    features() {
+      return this.globeData.filter(page => this.filteredChapterSlugs.includes(page.chapterSlug));
+    },
     containerSize: {
       get () {
         // lookup the size of the globe card element
@@ -183,12 +189,12 @@ export default {
 
         return {
           from: {
-            lat: feature.location.lat,
-            lon: feature.location.lon,
+            lat: feature.location.latitude,
+            lon: feature.location.longitude,
           },
           to: {
-            lat: d.location.lat,
-            lon: d.location.lon,
+            lat: d.location.latitude,
+            lon: d.location.longitude,
           },
         };
       });
@@ -198,8 +204,8 @@ export default {
       // https://en.wikipedia.org/wiki/Spherical_coordinate_system
       const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z);
       const to = {};
-      to.theta = lat2theta(feature.location.lat);
-      to.phi = lon2phi(feature.location.lon);
+      to.theta = lat2theta(feature.location.latitude);
+      to.phi = lon2phi(feature.location.longitude);
       to.r = 40 - feature.location.zoom;
       this.panAndZoom(from, to);
     },

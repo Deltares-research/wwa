@@ -1,4 +1,5 @@
 import Vuex from 'vuex';
+const DEFAULT_THEME = 'too-much';
 
 const store = () => {
   return new Vuex.Store({
@@ -6,21 +7,29 @@ const store = () => {
     state: {
       activeFeature: null,
       description: '',
-      features: [],
       highlightedEvent: null,
       navigationLinks: [],
       rotate: true,
       zoom: true,
       globeInteraction: true,
-      theme: 'too-much',
+      theme: DEFAULT_THEME,
       globeAutoRotation: true,
       globePositionRight: false,
       filters: [],
+      books: [],
+      markerTypes: [],
+    },
+    actions: {
+      async getBooks({ commit }) {
+        const books = await import('~/static/data/books/index.json');
+        commit('setBooks', books.default);
+      },
     },
     mutations: {
       activateFeature (state, feature) {
         const { theme, location, slug, path } = feature;
         state.activeFeature = { location, slug, path, theme };
+        state.theme = feature.theme ? feature.theme.slug : DEFAULT_THEME;
       },
       deactivateFeature (state) {
         state.activeFeature = undefined;
@@ -28,8 +37,8 @@ const store = () => {
       replaceTheme (state, theme) {
         state.theme = theme;
       },
-      replaceFeatures (state, features) {
-        state.features = features;
+      resetTheme (state) {
+        state.theme = DEFAULT_THEME;
       },
       disableRotate (state) {
         state.rotate = false;
@@ -74,6 +83,12 @@ const store = () => {
       },
       setFilters (state, filters) {
         state.filters = filters;
+      },
+      setBooks (state, books) {
+        state.books = books;
+      },
+      setMarkerTypes (state, markerTypes) {
+        state.markerTypes = markerTypes;
       },
     },
   });

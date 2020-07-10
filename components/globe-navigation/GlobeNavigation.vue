@@ -29,7 +29,7 @@
       <section>
         <ul class="globe-navigation__tags list--inline">
           <li
-            v-for="currentFilter in currentFilters"
+            v-for="currentFilter in availableFilterItems"
             :key="currentFilter.slug"
             class="globe-navigation__tag"
           >
@@ -61,6 +61,8 @@
 <script>
 import debounce from 'lodash/debounce';
 import renderMarkedContent from '~/lib/marked';
+import getBookChapterSlugsByFilter from '~/lib/get-book-chapter-slugs-by-filter';
+import getBookChapterSlugsByFilterItem from '~/lib/get-book-chapter-slugs-by-filter-item';
 import FilterTag from '~/components/filter-tag/FilterTag';
 import { mapState } from 'vuex';
 
@@ -76,23 +78,23 @@ export default {
     };
   },
   computed: {
-    ...mapState(['filters']),
+    ...mapState(['books', 'filters']),
     activeFilter () {
       return this.filters.find(filter => filter.slug === this.activeFilterSlug);
     },
     activeFilterItem () {
-      return this.currentFilters.find(filter => filter.slug === this.activeFilterItemSlug);
+      return this.availableFilterItems.find(filter => filter.slug === this.activeFilterItemSlug);
     },
     activeFilterSlug () {
       const slug = this.$route.path.split('/')[1] ? this.$route.path.split('/')[1] : this.filters[0].slug;
       return slug;
     },
     activeFilterItemSlug () {
-      return this.$route.path.split('/')[2];
+      return this.$route.params.slug;
     },
-    currentFilters () {
-      const activeFilters = this.filters.find(filter => filter.slug === this.activeFilterSlug);
-      return activeFilters ? activeFilters.filterItems : [];
+    availableFilterItems () {
+      const availableFilters = this.filters.find(filter => filter.slug === this.activeFilterSlug);
+      return availableFilters ? availableFilters.filterItems : [];
     },
     filterDescription () {
       const description = this.activeFilterItemSlug
@@ -106,6 +108,15 @@ export default {
         : this.activeFilter ? this.activeFilter.title : '';
     },
   },
+  created() {
+    if (this.activeFilterSlug && !this.activeFilterItemSlug) {
+      const markerTypes = getBookChapterSlugsByFilter(this.books, this.activeFilterSlug);
+      this.$store.commit('setMarkerTypes', markerTypes);
+    } else if (this.activeFilterSlug && this.activeFilterItemSlug) {
+      const markerTypes = getBookChapterSlugsByFilterItem(this.books, this.activeFilterItemSlug);
+      this.$store.commit('setMarkerTypes', markerTypes);
+    }
+  },
   mounted () {
     this.tabsList = this.$refs.tabsList;
     this.tabLinks = this.$refs.tabLink;
@@ -113,6 +124,24 @@ export default {
     this.handleResize();
 
     window.addEventListener('resize', debounce(this.handleResize), 1000);
+  },
+  watch: {
+    activeFilterSlug(newValue) {
+      const markerTypes = getBookChapterSlugsByFilter(this.books, newValue);
+      this.$store.commit('setMarkerTypes', markerTypes);
+    },
+    activeFilterItemSlug (newValue) {
+      if (newValue) {
+        const markerTypes = getBookChapterSlugsByFilterItem(this.books, newValue);
+        this.$store.commit('setMarkerTypes', markerTypes);
+
+        if (newValue === 'too-much' || newValue === 'too-dirty' || newValue === 'too-little') {
+          this.$store.commit('replaceTheme', newValue);
+        } else {
+          this.$store.commit('resetTheme');
+        }
+      }
+    },
   },
   methods: {
     handleResize () {

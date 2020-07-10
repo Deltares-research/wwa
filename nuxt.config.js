@@ -125,4 +125,30 @@ export default {
     { src: '~/plugins/ga.js', mode: 'client' },
   ],
   target: 'static',
+  router: {
+    extendRoutes (routes, resolve) {
+      const ChapterListOverviewComponent = resolve(__dirname, 'components/chapter-list-overview-page/ChapterListOverviewPage.vue');
+      const ChapterListComponent = resolve(__dirname, 'components/chapter-list-page/ChapterListPage.vue');
+
+      const homeRoute = routes.find(route => route.name === 'index');
+      homeRoute.alias = '/themes';
+
+      const keywordsRoute = routes.find(route => route.name === 'keywords');
+      keywordsRoute.alias = '/keywords/:slug';
+
+      routes.unshift({
+        name: `methodologies`,
+        path: `/methodologies`,
+        component: ChapterListOverviewComponent,
+        alias: ['/influences', '/goals', '/narratives'],
+      });
+
+      routes.unshift({
+        name: 'methodologies-slug',
+        path: `/methodologies/:slug`,
+        component: ChapterListComponent,
+        alias: ['/influences/:slug', '/goals/:slug', '/narratives/:slug', '/themes/:slug'],
+      });
+    },
+  },
 };

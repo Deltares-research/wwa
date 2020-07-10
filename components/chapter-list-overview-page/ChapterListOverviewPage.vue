@@ -3,7 +3,7 @@
     <div class="globe-section layout-section">
       <book-list
         class="layout-section__container"
-        :books="books"
+        :books="availableBooks"
       >
         <chapter-list
           slot-scope="{ chapters, limit }"
@@ -24,26 +24,24 @@
 
   export default {
     layout: 'globe',
+    scrollToTop: false,
     components: { BookList, ChapterList },
     computed: {
-      ...mapState(['books']),
+      ...mapState(['books', 'markerTypes']),
+      availableBooks() {
+        return this.books.map(book => {
+          const filteredChapters = book.chapters.filter(chapter => {
+            return this.markerTypes.includes(chapter.slug);
+          });
+
+          if (filteredChapters.length) {
+            return {
+              ...book,
+              chapters: filteredChapters,
+            };
+          }
+        }).filter(Boolean);
+      },
     },
   };
 </script>
-
-<style>
-  .globe-section {
-    padding-top: 1rem;
-  }
-
-  [data-hero-hide-trigger] {
-    display: block;
-    position: absolute;
-    top: 1rem;
-    right: 0;
-    width: 1px;
-    height: 1px;
-    background-color: transparent;
-    z-index: 1;
-  }
-</style>

@@ -146,8 +146,8 @@
           },
         };
       });
-      this.$store.commit('replaceTheme', 'too-much');
-      this.$store.commit('replaceFeatures', this.markers);
+      this.$store.commit('resetTheme');
+      this.$store.commit('setMarkerTypes', ['event']);
       this.$store.commit('enableInteraction');
       this.$store.commit('enableGlobeAutoRotation');
     },

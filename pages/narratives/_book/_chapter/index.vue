@@ -32,7 +32,6 @@ import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter';
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader';
 import PageComponent from '~/components/page-component/PageComponent';
 import loadData from '~/lib/load-data';
-import fetchContent from '~/lib/fetch-content';
 
 export default {
   layout: 'globe',
@@ -50,7 +49,6 @@ export default {
   data: function () {
     return {
       activePage: null,
-      scrollIntoViewSupport: false,
       headerCondensed: false,
     };
   },
@@ -58,7 +56,7 @@ export default {
     ...mapState(['highlightedEvent']),
   },
   mounted () {
-    this.$store.commit('replaceFeatures', this.pages);
+    this.$store.commit('setMarkerTypes', [this.chapter.slug]);
     this.$store.commit('disableInteraction');
     this.$store.commit('disableGlobeAutoRotation');
     this.$store.commit('enableGlobePositionRight');

@@ -1,5 +1,11 @@
-import * as THREE from 'three';
-
+import {
+  TextureLoader,
+  Object3D,
+  Geometry,
+  PointsMaterial,
+  Points,
+  Vector3,
+} from 'three';
 import get from 'lodash.get';
 import dbscan from 'dbscanjs';
 import { greatCircleDistance } from './common.js';
@@ -9,11 +15,11 @@ import { mean } from 'd3-array';
 class Avatar {
   constructor (base) {
     this.textures = {};
-    this.textures['too-dirty'] = new THREE.TextureLoader().load(base + 'assets/too-dirty.png');
-    this.textures['too-much'] = new THREE.TextureLoader().load(base + 'assets/too-much.png');
-    this.textures['too-little'] = new THREE.TextureLoader().load(base + 'assets/too-little.png');
-    this.textures['event'] = new THREE.TextureLoader().load(base + 'assets/event-marker.png');
-    this.mesh = new THREE.Object3D();
+    this.textures['too-dirty'] = new TextureLoader().load(base + 'assets/too-dirty.png');
+    this.textures['too-much'] = new TextureLoader().load(base + 'assets/too-much.png');
+    this.textures['too-little'] = new TextureLoader().load(base + 'assets/too-little.png');
+    this.textures['event'] = new TextureLoader().load(base + 'assets/event-marker.png');
+    this.mesh = new Object3D();
   }
 
   offsetOverlappingMarkers () {
@@ -95,7 +101,7 @@ class Avatar {
       // if (avatarImgPath) {
       //   // Add texture only if it is not already defined
       //   if (!this.textures[avatarImgPath]) {
-      //     const textureLoader = new THREE.TextureLoader()
+      //     const textureLoader = new TextureLoader()
       //     textureLoader.setCrossOrigin('')
       //     this.textures[avatarImgPath] = textureLoader.load(`${avatarImgHost}${avatarImgPath}`)
       //   }
@@ -105,11 +111,11 @@ class Avatar {
       //   map = (themeSlug) ? this.textures[themeSlug] : null
       // }
 
-      const geometry = new THREE.Geometry();
-      const material = new THREE.PointsMaterial({ ...materialOptions, map });
-      const avatar = new THREE.Points(geometry, material);
+      const geometry = new Geometry();
+      const material = new PointsMaterial({ ...materialOptions, map });
+      const avatar = new Points(geometry, material);
 
-      geometry.vertices.push(new THREE.Vector3());
+      geometry.vertices.push(new Vector3());
 
       avatar.data = marker;
       avatar.data.originalTexture = map;

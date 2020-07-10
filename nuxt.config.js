@@ -4,7 +4,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import fetchContent from './lib/fetch-content';
 
-const threeMinifier = new ThreeMinifierResolver({/* options */});
+const threeMinifier = new ThreeMinifierResolver({});
 
 dotenv.config();
 

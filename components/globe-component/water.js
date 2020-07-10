@@ -1,10 +1,10 @@
-import * as THREE from 'three';
+import { MeshPhongMaterial, SphereGeometry, Mesh } from 'three';
 
 import { GLOBE_RADIUS } from './constants';
 
 class Water {
   constructor () {
-    this.geometry = new THREE.SphereGeometry(GLOBE_RADIUS - 0.02, 64, 64);
+    this.geometry = new SphereGeometry(GLOBE_RADIUS - 0.02, 64, 64);
 
     this.uniforms = {
       time: { value: 0 },
@@ -19,13 +19,13 @@ class Water {
     //   transparent: true
     // })
 
-    this.material = new THREE.MeshPhongMaterial({
+    this.material = new MeshPhongMaterial({
       color: 0x003355,
       transparent: true,
       opacity: 0.9,
     });
 
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.mesh = new Mesh(this.geometry, this.material);
   }
 }
 

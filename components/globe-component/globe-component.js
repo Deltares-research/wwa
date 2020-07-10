@@ -1,4 +1,16 @@
-import * as THREE from 'three';
+import {
+  Vector2,
+  Vector3,
+  Clock,
+  CanvasTexture,
+  WebGLRenderer,
+  Scene,
+  Object3D,
+  AmbientLight,
+  DirectionalLight,
+  Raycaster,
+  PerspectiveCamera,
+} from 'three';
 // import { MeshLine, MeshLineMaterial } from 'three.meshline'
 import { Tween, autoPlay, Easing } from 'es6-tween';
 import { cartesian2polar, polar2cartesian, lat2theta, lon2phi, greatCircleDistance } from './common.js';
@@ -19,7 +31,7 @@ import Particles from './particles';
 const tweenDuration = 1500;
 const vOffset = 15;
 const vOffsetFactor = vOffset / 100;
-const center = new THREE.Vector3(0, 0, 0);
+const center = new Vector3(0, 0, 0);
 
 export default {
   data() {
@@ -49,7 +61,7 @@ export default {
 
     this.updateAvatarPositions(this.cameraDistance);
 
-    this.clock = new THREE.Clock();
+    this.clock = new Clock();
 
     const rotateSpeed = scaleLinear();
 
@@ -62,14 +74,14 @@ export default {
     this.controls.addEventListener('change', () => {
       this.$store.commit('disableGlobeAutoRotation');
       this.cameraDistance = this.camera.position.distanceTo(center);
-      this.controls.rotateSpeed = rotateSpeed(this.camera.position.distanceTo(new THREE.Vector3(0, 0, 0)));
+      this.controls.rotateSpeed = rotateSpeed(this.camera.position.distanceTo(new Vector3(0, 0, 0)));
     });
 
     rotateSpeed
-      .domain([this.camera.position.distanceTo(new THREE.Vector3(0, 0, 0)), this.controls.minDistance])
-      .range([1, this.controls.minDistance / (2 * this.camera.position.distanceTo(new THREE.Vector3(0, 0, 0)))]);
+      .domain([this.camera.position.distanceTo(new Vector3(0, 0, 0)), this.controls.minDistance])
+      .range([1, this.controls.minDistance / (2 * this.camera.position.distanceTo(new Vector3(0, 0, 0)))]);
 
-    this.mouse = new THREE.Vector2();
+    this.mouse = new Vector2();
     this.intersections = [];
 
     this.createRaycaster();
@@ -276,7 +288,7 @@ export default {
 
               d.data.clusterSize = item.values.length;
 
-              const texture = new THREE.CanvasTexture(canvas);
+              const texture = new CanvasTexture(canvas);
               d.material.map = texture;
 
               texture.needsUpdate = true;
@@ -387,7 +399,7 @@ export default {
      * @returns {Renderer}
      */
     createRenderer() {
-      const renderer = new THREE.WebGLRenderer({
+      const renderer = new WebGLRenderer({
         alpha: false,
         antialias: true,
         autoClear: false,
@@ -408,9 +420,9 @@ export default {
      */
     createScene() {
       const { base = '/' } = this.$router.options;
-      const scene = new THREE.Scene();
+      const scene = new Scene();
 
-      const globe = new THREE.Object3D();
+      const globe = new Object3D();
       this.globe = globe;
       globe.position.set(0, 0, 0);
       scene.add(globe);
@@ -425,10 +437,10 @@ export default {
       this.avatar = new Avatar(base);
       this.avatar.load(this.features, avs => globe.add(avs));
 
-      const light = new THREE.AmbientLight(0xffffff);
+      const light = new AmbientLight(0xffffff);
       scene.add(light);
 
-      const dirLight = new THREE.DirectionalLight(0xffaa66, 4.2);
+      const dirLight = new DirectionalLight(0xffaa66, 4.2);
       dirLight.position.set(15, 13, 15);
 
       return scene;
@@ -441,7 +453,7 @@ export default {
      * @return {THEE.Raycaster} a THREE Raycaster
      */
     createRaycaster() {
-      this.raycaster = new THREE.Raycaster();
+      this.raycaster = new Raycaster();
       this.raycaster.params.Points.threshold = 0.1;
     },
 
@@ -455,7 +467,7 @@ export default {
       const height = this.containerSize[1];
       const renderWidth = this.containerSize[0];
       const renderHeight = this.containerSize[1] * (1 + vOffsetFactor);
-      const camera = new THREE.PerspectiveCamera(30, renderWidth / renderHeight, 0.1, 300);
+      const camera = new PerspectiveCamera(30, renderWidth / renderHeight, 0.1, 300);
 
       // lat, lon in radians
       const theta = lat2theta(40);
@@ -466,7 +478,7 @@ export default {
       camera.position.z = point.z;
 
       // TODO: somehow z is upside down, check why this is
-      camera.up = new THREE.Vector3(0, 0, -1);
+      camera.up = new Vector3(0, 0, -1);
 
       // set aspect ratio
       camera.setViewOffset(renderWidth, renderHeight, 0, height * vOffsetFactor, width, height);

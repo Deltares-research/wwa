@@ -1,4 +1,10 @@
-import * as THREE from 'three';
+import {
+  ShaderMaterial,
+  BufferGeometry,
+  Points,
+  Vector3,
+  BufferAttribute,
+} from 'three';
 import { loadData } from 'd3-jetpack';
 import { scaleLinear } from 'd3-scale';
 import { color } from 'd3-color';
@@ -28,7 +34,7 @@ class Particles {
       pointSize: { value: 10.0 },
     };
 
-    this.material = new THREE.ShaderMaterial({
+    this.material = new ShaderMaterial({
       uniforms: this.uniforms,
       vertexShader: require('./glsl/dot.vert.glsl'),
       fragmentShader: require('./glsl/dot.frag.glsl'),
@@ -36,8 +42,8 @@ class Particles {
       vertexColors: true,
     });
 
-    this.geometry = new THREE.BufferGeometry();
-    this.mesh = new THREE.Points(this.geometry, this.material);
+    this.geometry = new BufferGeometry();
+    this.mesh = new Points(this.geometry, this.material);
   }
 
   update () {
@@ -125,7 +131,7 @@ class Particles {
 
           const radius = GLOBE_RADIUS;
           const point = polar2cartesian(radius, particle.lat, particle.lon);
-          const pos = new THREE.Vector3(point.x, point.y, point.z);
+          const pos = new Vector3(point.x, point.y, point.z);
 
           metric.positions[(i * 3) + 0] = pos.x;
           metric.positions[(i * 3) + 1] = pos.y;
@@ -160,22 +166,22 @@ class Particles {
 
   initGeometry () {
     const positions = new Float32Array(MAX_PARTICLES * 3);
-    this.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    this.geometry.setAttribute('position', new BufferAttribute(positions, 3));
 
     const targetPositions = new Float32Array(MAX_PARTICLES * 3);
-    this.geometry.setAttribute('targetPosition', new THREE.BufferAttribute(targetPositions, 3));
+    this.geometry.setAttribute('targetPosition', new BufferAttribute(targetPositions, 3));
 
     this.colors = new Float32Array(MAX_PARTICLES * 3);
-    this.geometry.setAttribute('color', new THREE.BufferAttribute(this.colors, 3));
+    this.geometry.setAttribute('color', new BufferAttribute(this.colors, 3));
 
     this.targetColors = new Float32Array(MAX_PARTICLES * 3);
-    this.geometry.setAttribute('targetColor', new THREE.BufferAttribute(this.targetColors, 3));
+    this.geometry.setAttribute('targetColor', new BufferAttribute(this.targetColors, 3));
 
     this.values = new Float32Array(MAX_PARTICLES);
-    this.geometry.setAttribute('value', new THREE.BufferAttribute(this.values, 1));
+    this.geometry.setAttribute('value', new BufferAttribute(this.values, 1));
 
     this.indices = new Float32Array(MAX_PARTICLES);
-    this.geometry.setAttribute('ix', new THREE.BufferAttribute(this.indices, 1));
+    this.geometry.setAttribute('ix', new BufferAttribute(this.indices, 1));
 
     Object.keys(metrics).forEach((m) => {
       metrics[m].positions = new Float32Array(MAX_PARTICLES * 3);

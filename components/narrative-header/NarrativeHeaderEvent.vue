@@ -14,71 +14,27 @@
       >
     </div>
 
-    <div
-      v-if="chapter.pages.length > 1"
-      class="narrative-header-event__navigation"
-    >
-      <nuxt-link
-        :to="`/${this.$route.params.language}/events/${this.$route.params.event}`"
-        class="narrative-header-event__back-button"
-      >
-        Back
-      </nuxt-link>
-
-      <button
-        @click="toggleNavigation"
-        aria-controls="narrative-event-header-navigation"
-        aria-haspopup="true"
-        :aria-expanded="showNavigation ? 'true' : 'false'"
-        class="narrative-header-event__select"
-        :class="{ 'narrative-header-event__select--open': showNavigation }"
-      >
-        In this chapter
-      </button>
-    </div>
-
-    <nav
-      id="narrative-event-header-navigation"
-      class="narrative-header-event__dropdown"
-      :aria-hidden="showNavigation ? 'false' : 'true'"
-      :class="{ 'narrative-header-event__dropdown--visible': showNavigation }"
-    >
-      <ol>
-        <li
-          v-for="page in chapter.pages"
-          :key="page.slug"
-          class="narrative-header-event__list-item"
-        >
-          <a
-            :href="`#${page.slug}`"
-            class="narrative-header-event__link"
-            @click.prevent="navigate(page.slug)"
-          >
-            {{ page.title }}
-          </a>
-        </li>
-      </ol>
-    </nav>
+    <chapter-navigation
+      :pages="chapter.pages"
+      :with-background="true"
+      @scrollTo="onScrollTo"
+    />
   </header>
 </template>
 
 <script>
+  import ChapterNavigation from './ChapterNavigation';
+
   export default {
+    components: {
+      ChapterNavigation,
+    },
     props: {
       chapter: Object,
     },
-    data () {
-      return {
-        showNavigation: false,
-      };
-    },
     methods: {
-      toggleNavigation () {
-        this.showNavigation = !this.showNavigation;
-      },
-      navigate (slug) {
+      onScrollTo (slug) {
         this.$emit('scrollTo', slug);
-        this.showNavigation = false;
       },
     },
   };
@@ -153,126 +109,5 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-
-  .narrative-header-event__navigation {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .75rem 1rem;
-    background-color: var(--blue-secondary);
-    background-image: url('/assets/waves.svg');
-    background-repeat: no-repeat;
-    background-position: right center;
-    background-size: 30rem auto;
-  }
-
-  @media (--md-viewport) {
-    .narrative-header-event__navigation {
-      padding-left: 2rem;
-      padding-right: 2rem;
-    }
-  }
-
-  .narrative-header-event__back-button {
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-    text-decoration: none;
-    color: var(--white);
-  }
-
-  .narrative-header-event__back-button:hover,
-  .narrative-header-event__back-button:focus {
-    color: var(--white);
-  }
-
-  .narrative-header-event__back-button:before {
-    content: '';
-    margin: .1rem .5rem 0 0;
-    width: 5px;
-    height: 10px;
-    background-image: url('/assets/arrow-left.svg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
-  .narrative-header-event__select {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: .5rem .5rem .6rem .75rem;
-    max-width: 160px;
-    appearance: none;
-    background-color: var(--blue-primary);
-    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
-    border: none;
-    border-radius: 5px;
-    font-family: inherit;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--white);
-    cursor: pointer;
-  }
-
-  .narrative-header-event__select:after {
-    content: '';
-    display: block;
-    margin-left: .5rem;
-    width: 1.5rem;
-    height: 1.5rem;
-    background-image: url('/assets/arrow-down.svg');
-    background-size: 1rem;
-    background-repeat: no-repeat;
-    background-position: center;
-    transition: transform var(--narrative-header-event-transition-speed) linear;
-  }
-
-  .narrative-header-event__select--open:after {
-    transform: rotate(180deg);
-  }
-
-  .narrative-header-event__dropdown {
-    position: absolute;
-    padding: 1rem;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--white);
-    transition: transform var(--narrative-header-event-transition-speed) var(--narrative-header-event-transition-timing-hide);
-  }
-
-  @media (--sm-viewport) {
-    .narrative-header-event__dropdown {
-      left: auto;
-      max-width: 500px;
-    }
-  }
-
-  .narrative-header-event__dropdown--visible {
-    transition: transform var(--narrative-header-event-transition-speed) var(--narrative-header-event-transition-timing-reveal);
-    transform: translateY(100%);
-  }
-
-  .narrative-header-event__list-item:not(:last-child) {
-    margin-bottom: 1rem;
-  }
-
-  .narrative-header-event__link {
-    display: block;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-decoration: none;
-    color: var(--blue-secondary);
-  }
-
-  .narrative-header-event__link:hover,
-  .narrative-header-event__link:focus {
-    color: var(--blue-secondary);
   }
 </style>

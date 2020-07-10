@@ -9,6 +9,7 @@
         :title="chapter.title"
         :cover="chapter.cover"
         :pages="pages"
+        @scrollTo="smoothScroll"
       />
       <page-component
         data-page-component

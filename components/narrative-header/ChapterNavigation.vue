@@ -63,7 +63,6 @@
     },
     methods: {
       toggleNavigation () {
-        console.log('bruh');
         this.showNavigation = !this.showNavigation;
       },
       navigate (slug) {

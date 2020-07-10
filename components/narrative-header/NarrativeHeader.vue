@@ -3,6 +3,7 @@
     <chapter-navigation
       :pages="pages"
       :with-background="false"
+      @scrollTo="onScrollTo"
     />
 
     <h1 class="narrative-header__title">
@@ -29,6 +30,11 @@
       title: String,
       cover: Object,
       pages: Array,
+    },
+    methods: {
+      onScrollTo (slug) {
+        this.$emit('scrollTo', slug);
+      },
     },
   };
 </script>

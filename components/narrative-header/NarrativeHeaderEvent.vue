@@ -17,6 +17,7 @@
     <chapter-navigation
       :pages="chapter.pages"
       :with-background="true"
+      @scrollTo="onScrollTo"
     />
   </header>
 </template>
@@ -31,18 +32,9 @@
     props: {
       chapter: Object,
     },
-    data () {
-      return {
-        showNavigation: false,
-      };
-    },
     methods: {
-      toggleNavigation () {
-        this.showNavigation = !this.showNavigation;
-      },
-      navigate (slug) {
+      onScrollTo (slug) {
         this.$emit('scrollTo', slug);
-        this.showNavigation = false;
       },
     },
   };

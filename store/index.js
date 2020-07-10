@@ -1,6 +1,4 @@
 import Vuex from 'vuex';
-import getBookChaptersByFilter from '~/lib/get-book-chapters-by-filter';
-import getBookChaptersByFilterItem from '~/lib/get-book-chapters-by-filter-item';
 const DEFAULT_THEME = 'too-much';
 
 const store = () => {
@@ -18,29 +16,8 @@ const store = () => {
       globeAutoRotation: true,
       globePositionRight: false,
       filters: [],
-      activeFilter: null,
-      activeFilterItem: null,
       books: [],
-    },
-    getters: {
-      filteredChapters: (state) => {
-        if (state.activeFilter === 'event') {
-          return [{ slug: 'event'}];
-        } else if (state.activeFilter && !state.activeFilterItem) {
-          return getBookChaptersByFilterItem(state.books, state.activeFilter);
-        } else if (state.activeFilter && state.activeFilterItem) {
-         return getBookChaptersByFilter(state.books, state.activeFilterItem);
-        } else {
-          return state.books.map(book => book.chapters).flat();
-        }
-      },
-      filteredChapterSlugs(state, getters) {
-        return getters.filteredChapters.map(chapter => chapter.slug);
-      },
-      availableFilterItems (state) {
-        const availableFilters = state.filters.find(filter => filter.slug === state.activeFilter);
-        return availableFilters ? availableFilters.filterItems : [];
-      },
+      markerTypes: [],
     },
     actions: {
       async getBooks({ commit }) {
@@ -110,11 +87,8 @@ const store = () => {
       setBooks (state, books) {
         state.books = books;
       },
-      setActiveFilterItem (state, activeFilterItem) {
-        state.activeFilterItem = activeFilterItem;
-      },
-      setActiveFilter (state, activeFilter) {
-        state.activeFilter = activeFilter;
+      setMarkerTypes (state, markerTypes) {
+        state.markerTypes = markerTypes;
       },
     },
   });

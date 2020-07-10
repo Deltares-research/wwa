@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { Tween, autoPlay, Easing } from 'es6-tween';
 import { cartesian2polar, polar2cartesian, lat2theta, lon2phi, greatCircleDistance } from './common.js';
 import { OrbitControls } from './orbit-controls.js';
-import { mapGetters, mapState } from 'vuex';
+import { mapState } from 'vuex';
 import { scaleLinear } from 'd3-scale';
 import dbscan from 'dbscanjs';
 import { nest } from 'd3-collection';
@@ -21,7 +21,7 @@ const vOffset = 15;
 const vOffsetFactor = vOffset / 100;
 const center = new THREE.Vector3(0, 0, 0);
 
-const globeData = require('~/static/data/globeData/index.json');
+const allMarkers = require('~/static/data/markers/index.json');
 
 export default {
   data () {
@@ -36,7 +36,7 @@ export default {
       connections: [],
       message: '',
       cameraDistance: 40,
-      globeData,
+      allMarkers,
     };
   },
   mounted () {
@@ -128,16 +128,23 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['filteredChapterSlugs']),
-    ...mapState({
-      activeFeature: state => state.activeFeature,
-      zoom: state => state.zoom,
-      rotate: state => state.rotate,
-      theme: state => state.theme,
-      globeAutoRotation: state => state.globeAutoRotation,
-    }),
+    ...mapState([
+      'activeFeature',
+      'zoom',
+      'rotate',
+      'theme',
+      'globeAutoRotation',
+      'markerTypes',
+    ]),
     features() {
-      return this.globeData.filter(page => this.filteredChapterSlugs.includes(page.chapterSlug));
+     if (this.markerTypes.length) {
+       return this.allMarkers.filter(marker => {
+         return this.markerTypes.includes(marker.type) || this.markerTypes.some(type => marker.keywords ? marker.keywords.includes(type) : false);
+       });
+     } else {
+       // by default remove events type markers from default selection
+       return this.allMarkers.filter(marker => marker.type !== 'event');
+     }
     },
     containerSize: {
       get () {

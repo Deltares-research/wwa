@@ -13,14 +13,20 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapState } from 'vuex';
   import ChapterList from '~/components/chapter-list/ChapterList';
 
   export default {
     layout: 'globe',
     scrollToTop: false,
     computed: {
-      ...mapGetters(['filteredChapters']),
+      ...mapState(['books', 'markerTypes']),
+      filteredChapters () {
+        return this.books.map(book => {
+          return book.chapters.filter(chapter => this.markerTypes.includes(chapter.slug));
+        })
+          .flat();
+      },
     },
     mounted() {
       this.$store.commit('enableInteraction');

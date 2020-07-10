@@ -77,6 +77,7 @@
     created() {
       const activeKeywordsFromUrl = this.$route.path.split('/')[2];
       this.activeKeywordSlugs = activeKeywordsFromUrl ? [].concat(activeKeywordsFromUrl.split('+')) : [];
+      this.$store.commit('setMarkerTypes', this.activeKeywordSlugs);
     },
     components: {
       ChapterList,

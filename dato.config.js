@@ -73,8 +73,8 @@ module.exports = (dato, root, i18n) => {
     case 'themes':
       generateThemes(dato, root, i18n);
       break;
-    case 'globe_data':
-      generateThemes(dato, root, i18n);
+    case 'markers':
+      generateMarkers(dato, root, i18n);
       break;
     default:
       generateChapters(dato, root, i18n);
@@ -86,7 +86,7 @@ module.exports = (dato, root, i18n) => {
       generateAppData(dato, root, i18n);
       generateStaticPages(dato, root, i18n);
       generateThemes(dato, root, i18n);
-      generateGlobeData(dato, root, i18n);
+      generateMarkers(dato, root, i18n);
   }
 };
 
@@ -208,11 +208,11 @@ function generateKeywords (dato, root, i18n) {
   root.createDataFile(`static/data/keywords/index.json`, 'json', keywords);
 }
 
-function generateGlobeData (dato, root, i18n) {
+function generateMarkers (dato, root, i18n) {
   const events = [...dato.externalEvents, ...dato.internalEvents]
     .map(event => {
       return {
-        chapterSlug: 'event',
+        type: 'event',
         location: event.geolocation,
         theme: { slug: 'event' },
       };
@@ -228,7 +228,8 @@ function generateGlobeData (dato, root, i18n) {
           return chapter.pages.map(page => {
             if (page.location) {
               return {
-                chapterSlug,
+                type: chapterSlug,
+                keywords: page.keywords.split(',').map(string => slugify(string)),
                 location: page.location,
                 theme: {
                   slug: page.theme ? page.theme.slug : 'too-much',
@@ -242,7 +243,7 @@ function generateGlobeData (dato, root, i18n) {
             .filter(Boolean);
         });
     }));
-  root.createDataFile(`static/data/globeData/index.json`, 'json', [...pages, ...events]);
+  root.createDataFile(`static/data/markers/index.json`, 'json', [...pages, ...events]);
 }
 
 /**
@@ -395,7 +396,7 @@ function getBooksShort (dato) {
 
           const themesFilters = pages.map(page => page.theme ? page.theme.slug : false).filter(Boolean);
           const narrativeFilter = book.slug;
-          const keywords = pages.map(page => page.keywords.map(keyword => keyword.slug)).flat();
+          const keywords = uniq(pages.map(page => page.keywords.map(keyword => keyword.slug)).flat());
 
           const filters = uniq(influencesFilters.concat(goalsFilters, methodologiesFilters, themesFilters, narrativeFilter));
           const availableCategories = [
@@ -539,8 +540,8 @@ function getPages (dato, chapterRef) {
         path: `/themes/${page.theme.slug}`,
       } : null;
       const location = (page.location) ? {
-        lat: page.location.latitude,
-        lon: page.location.longitude,
+        latitude: page.location.latitude,
+        longitude: page.location.longitude,
         zoom: page.zoomlevel,
       } : null;
       const parentChapter = chapterRef || getParent(dato, page);
@@ -664,41 +665,6 @@ function getThemes (dato) {
     return { body, path, slug, icon, title };
   });
 }
-
-// /**
-//  * collect Chapter entities in object by keyword
-//  *
-//  * @param {DatoRecord[]} pages
-//  * @returns {object} arrays of Pages by tag
-//  */
-// function collectPagesByKeyword (pages) {
-//   return pages
-//     .map(page => {
-//       const { book, chapter, keywords, location, influences, goals, path, slug, storyteller, theme, title } = page;
-//       return {
-//         tags: page.keywords,
-//         page: { book, chapter, keywords, location, influences, goals, path, slug, storyteller, theme, title },
-//       };
-//     })
-//     .filter(match => Boolean(match.tags)) // filter falsy (false, undefined, '')
-//     .map(match => match.tags.map(tag => {
-//       return {
-//         tag: tag,
-//         page: match.page,
-//       };
-//     }))
-//     .reduce((a, b) => a.concat(b), []) // Flat array of keywords
-//     .reduce((tags, match) => {
-//       tags[match.tag.slug] = tags[match.tag.slug] || {
-//         title: match.tag.title,
-//         slug: match.tag.slug,
-//         path: match.tag.path,
-//         entries: [],
-//       };
-//       tags[match.tag.slug].entries.push(match.page);
-//       return tags;
-//     }, {});
-// }
 
 /**
  * Get unique array of tags from items

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapState } from 'vuex';
+  import { mapState } from 'vuex';
 
   import BookList from '~/components/book-list/BookList';
   import ChapterList from '~/components/chapter-list/ChapterList';
@@ -27,13 +27,11 @@
     scrollToTop: false,
     components: { BookList, ChapterList },
     computed: {
-      ...mapGetters(['availableFilterItems']),
-      ...mapState(['books']),
+      ...mapState(['books', 'markerTypes']),
       availableBooks() {
-        const availableFilterItemSlugs = this.availableFilterItems.map(category => category.slug);
         return this.books.map(book => {
           const filteredChapters = book.chapters.filter(chapter => {
-            return chapter.filters.some(categorySlug => availableFilterItemSlugs.includes(categorySlug));
+            return this.markerTypes.includes(chapter.slug);
           });
 
           if (filteredChapters.length) {

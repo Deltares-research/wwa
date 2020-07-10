@@ -39,7 +39,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapState } from 'vuex';
+  import { mapState } from 'vuex';
   import MainMenu from '~/components/main-menu/MainMenu';
   import GlobeHeader from '~/components/globe-header/GlobeHeader';
   import GlobeNavigation from '~/components/globe-navigation/GlobeNavigation';
@@ -61,7 +61,6 @@
     },
     components: { MainMenu, GlobeHeader, GlobeNavigation, AppFooter },
     computed: {
-      ...mapGetters(['filteredChapters']),
       ...mapState(['globePositionRight', 'highlightedEvent']),
       isFilterPage () {
         return this.$route.name === 'keywords-slug' || this.$route.name === 'keywords';

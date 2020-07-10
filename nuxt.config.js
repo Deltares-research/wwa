@@ -1,7 +1,10 @@
 import dotenv from 'dotenv-safe';
+const ThreeMinifierResolver = require('@yushijinhun/three-minifier-webpack');
 import { promises as fs } from 'fs';
 import path from 'path';
 import fetchContent from './lib/fetch-content';
+
+const threeMinifier = new ThreeMinifierResolver({/* options */});
 
 dotenv.config();
 
@@ -48,6 +51,12 @@ export default {
         test: /\.glsl$/,
         loader: 'webpack-glsl-loader',
       });
+
+      config.plugins.unshift(
+        threeMinifier,
+      );
+
+      config.resolve.plugins = [threeMinifier.resolver];
     },
     extractCSS: true,
     html: {

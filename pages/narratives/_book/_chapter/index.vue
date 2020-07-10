@@ -6,7 +6,9 @@
       :class="{ 'chapter-column--tall': highlightedEvent }"
     >
       <narrative-header
-        v-bind="chapter"
+        :title="chapter.title"
+        :cover="chapter.cover"
+        :pages="pages"
       />
       <page-component
         data-page-component
@@ -155,7 +157,7 @@ export default {
 }
 
 .chapter-column--tall {
-  margin-top: calc(-1 * var(--globe-spacing-tall));
+  margin-top: calc(-1 * var(--globe-spacing-tall) - 0.8vh);
 }
 
 @media (--sm-viewport) {

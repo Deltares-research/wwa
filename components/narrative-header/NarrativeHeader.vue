@@ -1,22 +1,35 @@
-<template functional>
+<template>
   <header class="narrative-header">
+    <chapter-navigation
+      :pages="pages"
+      :with-background="false"
+    />
+
     <h1 class="narrative-header__title">
-      {{ props.title }}
+      {{ title }}
     </h1>
 
     <img
-      v-if="props.cover"
+      v-if="cover"
       class="narrative-header__cover"
-      :src="`${props.cover.imgixHost}${props.cover.value.path}?auto=compress&w=700`"
+      :src="`${cover.imgixHost}${cover.value.path}?auto=compress&w=700`"
       alt=""
     >
   </header>
 </template>
 
 <script>
+  import ChapterNavigation from './ChapterNavigation';
+
   export default {
-    title: String,
-    cover: Object,
+    components: {
+      ChapterNavigation,
+    },
+    props: {
+      title: String,
+      cover: Object,
+      pages: Array,
+    },
   };
 </script>
 

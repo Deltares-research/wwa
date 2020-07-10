@@ -30,16 +30,20 @@ export default {
       type: Number,
       default: .1, // in seconds
     },
+    isIntersectionDisabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
-      isIntersected: false,
+      isIntersected: this.isIntersectionDisabled,
       observer: null,
-      isAnimated: false,
+      isAnimated: this.isIntersectionDisabled,
     };
   },
   mounted() {
-    if ('IntersectionObserver' in window) {
+    if ('IntersectionObserver' in window && !this.isIntersectionDisabled) {
       this.observe();
       this.setStagger();
       this.isAnimated = true;
@@ -64,7 +68,7 @@ export default {
       }
     },
     unobserve() {
-      if ('IntersectionObserver' in window) {
+      if ('IntersectionObserver' in window && !this.isIntersectionDisabled) {
         this.observer.unobserve(this.$el);
       }
     },
@@ -100,9 +104,15 @@ All animation types are nested in '.animator' to prevent unvisible content if 'I
 
   .animator.animator--active .animator__clip,
   .animator.animator--active .animator__clip-content {
-    transform: translateX(0);
-    transition: transform var(--animator-duration) var(--animator-delay) var(--animator-ease);
+    animation: animator__clip var(--animator-duration) var(--animator-delay) var(--animator-ease) forwards;
   }
+
+  @keyframes animator__clip {
+    100% {
+      transform: translateX(0);
+    }
+  }
+
 
   /*
     simple fade in
@@ -112,8 +122,13 @@ All animation types are nested in '.animator' to prevent unvisible content if 'I
   }
 
   .animator.animator--active .animator__fade {
-    opacity: 1;
-    transition: opacity var(--animator-duration) var(--animator-delay) linear;
+    animation: animator__fade var(--animator-duration) var(--animator-delay) linear forwards;
+  }
+
+  @keyframes animator__fade {
+    100% {
+      opacity: 1;
+    }
   }
 
   /*
@@ -125,11 +140,15 @@ All animation types are nested in '.animator' to prevent unvisible content if 'I
   }
 
   .animator.animator--active .animator__slide-in {
-    opacity: 1;
-    transform: translateX(0);
-    transition:
-      opacity var(--animator-duration) var(--animator-delay) linear,
-      transform var(--animator-duration) var(--animator-delay) var(--animator-ease);
+    animation:
+      animator__slide-in var(--animator-duration) var(--animator-delay) var(--animator-ease) forwards,
+      animator__fade var(--animator-duration) var(--animator-delay) linear forwards;
+  }
+
+  @keyframes animator__slide-in {
+    100% {
+      transform: translateX(0);
+    }
   }
 
   /*
@@ -141,11 +160,15 @@ All animation types are nested in '.animator' to prevent unvisible content if 'I
   }
 
   .animator.animator--active .animator__slide-up {
-    opacity: 1;
-    transform: translateY(0);
-    transition:
-      opacity var(--animator-duration) var(--animator-delay) linear,
-      transform var(--animator-duration) var(--animator-delay) var(--animator-ease);
+    animation:
+      animator__slide-up var(--animator-duration) var(--animator-delay) var(--animator-ease) forwards,
+      animator__fade var(--animator-duration) var(--animator-delay) linear forwards;
+  }
+
+  @keyframes animator__slide-up {
+    100% {
+      transform: translateY(0);
+    }
   }
 
   /*
@@ -166,33 +189,37 @@ All animation types are nested in '.animator' to prevent unvisible content if 'I
   }
 
   .animator.animator--active .animator__scale-up {
-    opacity: 1;
-    transform: scale(1.05);
-    transition:
-      opacity var(--animator-duration) var(--animator-delay) linear,
-      transform var(--animator-duration) var(--animator-delay) var(--animator-ease);
+    animation:
+      animator__scale-up var(--animator-duration) var(--animator-delay) var(--animator-ease) forwards,
+      animator__fade var(--animator-duration) var(--animator-delay) linear forwards;
+  }
+
+  @keyframes animator__scale-up {
+    100% {
+      transform: scale(1.05);
+    }
   }
 
   /*
     animation stagger
   */
   .animator.animator--active .animator--stagger-1 {
-    transition-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger)) );
+    animation-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger)) );
   }
 
   .animator.animator--active .animator--stagger-2 {
-    transition-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 2) );
+    animation-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 2) );
   }
 
   .animator.animator--active .animator--stagger-3 {
-    transition-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 3) );
+    animation-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 3) );
   }
 
   .animator.animator--active .animator--stagger-4 {
-    transition-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 4) );
+    animation-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 4) );
   }
 
   .animator.animator--active .animator--stagger-5 {
-    transition-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 5) );
+    animation-delay: calc( var(--animator-delay) * (1 + var(--animator-stagger) * 5) );
   }
 </style>

@@ -1,7 +1,10 @@
 <template>
   <div class="event">
     <header class="event__layout">
-      <animator :delay="0">
+      <animator
+        :delay="0"
+        :is-intersection-disabled="true"
+      >
         <event-header
           :name="internalEvent.name"
           :slug="internalEvent.slug"
@@ -10,7 +13,7 @@
         />
       </animator>
 
-      <animator>
+      <animator :is-intersection-disabled="true">
         <event-banner v-bind="internalEvent" />
       </animator>
     </header>
@@ -34,11 +37,12 @@
         }"
       >
         <div class="event-section__content">
-          <template v-for="block in section.blocks">
+          <template v-for="(block, blockIndex) in section.blocks">
             <animator
               v-if="block._modelApiKey === 'text_block'"
               :key="block.id"
               :id="block.slug"
+              :is-intersection-disabled="index === 0 && blockIndex === 0"
               class="event__layout event__layout--padded"
             >
               <event-block-text v-bind="block" />
@@ -47,6 +51,7 @@
               v-if="block._modelApiKey === 'media_block'"
               :key="block.id"
               :id="block.slug"
+              :is-intersection-disabled="index === 0 && blockIndex === 0"
               class="event__layout event__layout--padded"
             >
               <event-block-text-media v-bind="block" />
@@ -55,6 +60,7 @@
               v-if="block._modelApiKey === 'related_stories_block'"
               :key="block.id"
               :id="block.slug"
+              :is-intersection-disabled="index === 0 && blockIndex === 0"
               class="event__layout event__layout--padded"
             >
               <event-block-related-stories v-bind="block" />
@@ -63,6 +69,7 @@
               v-if="block._modelApiKey === 'chapters_block'"
               :key="block.id"
               :id="block.slug"
+              :is-intersection-disabled="index === 0 && blockIndex === 0"
               class="event__layout event__layout--padded"
             >
               <event-block-chapters
@@ -74,6 +81,7 @@
               v-if="block._modelApiKey === 'speakers_block'"
               :key="block.id"
               :id="block.slug"
+              :is-intersection-disabled="index === 0 && blockIndex === 0"
               class="event__layout event__layout--padded"
             >
               <event-block-speakers
@@ -89,6 +97,7 @@
               v-if="block._modelApiKey === 'colofon_block'"
               :key="block.id"
               :id="block.slug"
+              :is-intersection-disabled="index === 0 && blockIndex === 0"
               class="event__layout event__layout--padded"
             >
               <event-block-colofon v-bind="block" />

@@ -127,6 +127,7 @@ export default {
   target: 'static',
   router: {
     extendRoutes (routes, resolve) {
+      const ChapterListOverviewComponent = resolve(__dirname, 'components/chapter-list-overview-page/ChapterListOverviewPage.vue');
       const ChapterListComponent = resolve(__dirname, 'components/chapter-list-page/ChapterListPage.vue');
 
       const homeRoute = routes.find(route => route.name === 'index');
@@ -138,7 +139,7 @@ export default {
       routes.unshift({
         name: `methodologies`,
         path: `/methodologies`,
-        component: ChapterListComponent,
+        component: ChapterListOverviewComponent,
         alias: ['/influences', '/goals', '/narratives'],
       });
 

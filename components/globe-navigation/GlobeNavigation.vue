@@ -29,7 +29,7 @@
       <section>
         <ul class="globe-navigation__tags list--inline">
           <li
-            v-for="currentFilter in currentFilters"
+            v-for="currentFilter in availableFilterItems"
             :key="currentFilter.slug"
             class="globe-navigation__tag"
           >
@@ -62,7 +62,7 @@
 import debounce from 'lodash/debounce';
 import renderMarkedContent from '~/lib/marked';
 import FilterTag from '~/components/filter-tag/FilterTag';
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
   components: {
@@ -77,11 +77,12 @@ export default {
   },
   computed: {
     ...mapState(['filters']),
+    ...mapGetters(['availableFilterItems']),
     activeFilter () {
       return this.filters.find(filter => filter.slug === this.activeFilterSlug);
     },
     activeFilterItem () {
-      return this.currentFilters.find(filter => filter.slug === this.activeFilterItemSlug);
+      return this.availableFilterItems.find(filter => filter.slug === this.activeFilterItemSlug);
     },
     activeFilterSlug () {
       const slug = this.$route.path.split('/')[1] ? this.$route.path.split('/')[1] : this.filters[0].slug;
@@ -89,10 +90,6 @@ export default {
     },
     activeFilterItemSlug () {
       return this.$route.params.slug;
-    },
-    currentFilters () {
-      const activeFilters = this.filters.find(filter => filter.slug === this.activeFilterSlug);
-      return activeFilters ? activeFilters.filterItems : [];
     },
     filterDescription () {
       const description = this.activeFilterItemSlug

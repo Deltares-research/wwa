@@ -50,7 +50,6 @@ export default {
   data: function () {
     return {
       activePage: null,
-      scrollIntoViewSupport: false,
       headerCondensed: false,
     };
   },

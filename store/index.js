@@ -37,6 +37,10 @@ const store = () => {
       filteredChapterSlugs(state, getters) {
         return getters.filteredChapters.map(chapter => chapter.slug);
       },
+      availableFilterItems (state) {
+        const availableFilters = state.filters.find(filter => filter.slug === state.activeFilter);
+        return availableFilters ? availableFilters.filterItems : [];
+      },
     },
     actions: {
       async getBooks({ commit }) {

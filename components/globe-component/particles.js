@@ -160,22 +160,22 @@ class Particles {
 
   initGeometry () {
     const positions = new Float32Array(MAX_PARTICLES * 3);
-    this.geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+    this.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
     const targetPositions = new Float32Array(MAX_PARTICLES * 3);
-    this.geometry.addAttribute('targetPosition', new THREE.BufferAttribute(targetPositions, 3));
+    this.geometry.setAttribute('targetPosition', new THREE.BufferAttribute(targetPositions, 3));
 
     this.colors = new Float32Array(MAX_PARTICLES * 3);
-    this.geometry.addAttribute('color', new THREE.BufferAttribute(this.colors, 3));
+    this.geometry.setAttribute('color', new THREE.BufferAttribute(this.colors, 3));
 
     this.targetColors = new Float32Array(MAX_PARTICLES * 3);
-    this.geometry.addAttribute('targetColor', new THREE.BufferAttribute(this.targetColors, 3));
+    this.geometry.setAttribute('targetColor', new THREE.BufferAttribute(this.targetColors, 3));
 
     this.values = new Float32Array(MAX_PARTICLES);
-    this.geometry.addAttribute('value', new THREE.BufferAttribute(this.values, 1));
+    this.geometry.setAttribute('value', new THREE.BufferAttribute(this.values, 1));
 
     this.indices = new Float32Array(MAX_PARTICLES);
-    this.geometry.addAttribute('ix', new THREE.BufferAttribute(this.indices, 1));
+    this.geometry.setAttribute('ix', new THREE.BufferAttribute(this.indices, 1));
 
     Object.keys(metrics).forEach((m) => {
       metrics[m].positions = new Float32Array(MAX_PARTICLES * 3);

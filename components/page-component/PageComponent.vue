@@ -35,15 +35,38 @@ export default {
 <style>
 .page-component {
   min-height: 25vh;
-  max-width: 44rem;
-  margin: 3rem auto 0 auto;
+  margin: 2rem 1rem 0 1rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--black-tertiary);
 }
 
-@media only screen and (--sm-viewport) {
+.page-component:first-of-type {
+  position: relative;
+  z-index: 2;
+  margin-top: -8rem;
+}
+
+.page-component:last-of-type {
+  margin-bottom: 0;
+}
+
+@media (--md-viewport) {
   .page-component {
-    margin: 3.75rem auto 0 auto;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4rem;
+    max-width: 45rem;
+  }
+
+  .page-component:first-of-type {
+    margin-top: -5rem;
+  }
+}
+
+@media (--lg-viewport) {
+  .page-component {
+    margin-left: 2rem;
+    margin-right: 2rem;
   }
 }
 

@@ -1,6 +1,9 @@
 <template>
   <div
-    :class="{animator: isAnimated, 'animator--active': isIntersected}"
+    :class="{
+      animator: isAnimated,
+      'animator--active': isIntersected,
+    }"
     :style="{ '--animator-delay': delay + 's', '--animator-stagger': stagger }"
     ref="container"
   >
@@ -32,16 +35,16 @@ export default {
     return {
       isIntersected: false,
       observer: null,
-      isAnimated: true,
+      isAnimated: false,
     };
   },
   mounted() {
     if ('IntersectionObserver' in window) {
       this.observe();
       this.setStagger();
+      this.isAnimated = true;
     } else {
       this.isIntersected = true;
-      this.isAnimated = false;
     }
   },
   beforeDestroy() {

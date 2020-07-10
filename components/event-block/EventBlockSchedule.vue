@@ -226,6 +226,7 @@
     data({ eventDayToday, eventDays, timezone, timezoneComment }) {
       return {
         currentDate: new Date(),
+        interval: null,
         selectedEventDayId: '',
         displayTimezone: `${timezoneComment} UTC ${timezone.substr(0,3)}`,
       };
@@ -257,6 +258,14 @@
 
         return eventDayToday ? eventDayToday.id : eventDays[0].id;
       },
+    },
+    mounted() {
+      this.interval = setInterval(() => {
+        this.currentDate = new Date();
+      }, 1000 * 60);
+    },
+    beforeDestroy() {
+      clearInterval(this.interval);
     },
   };
 </script>

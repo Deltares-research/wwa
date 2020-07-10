@@ -130,8 +130,8 @@ export default {
       const markerTypes = getBookChapterSlugsByFilter(this.books, newValue);
       this.$store.commit('setMarkerTypes', markerTypes);
     },
-    activeFilterItemSlug: {
-      handler(newValue) {
+    activeFilterItemSlug (newValue) {
+      if (newValue) {
         const markerTypes = getBookChapterSlugsByFilterItem(this.books, newValue);
         this.$store.commit('setMarkerTypes', markerTypes);
 
@@ -140,8 +140,7 @@ export default {
         } else {
           this.$store.commit('resetTheme');
         }
-      },
-      immediate: true,
+      }
     },
   },
   methods: {

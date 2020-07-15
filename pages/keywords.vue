@@ -84,12 +84,11 @@
       FilterTag,
     },
     computed: {
-      ...mapState(['books']),
+      ...mapState(['chapters']),
       filteredChapters() {
-        return this.books.map(book => book.chapters.filter(chapter => {
+        return this.chapters.filter(chapter => {
           return this.activeKeywordSlugs.every(keyword => chapter.keywords.includes(keyword));
-        }))
-          .flat();
+        });
       },
       activeKeywords () {
         return this.keywords.filter(keyword => this.activeKeywordSlugs.includes(keyword.slug));

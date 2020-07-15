@@ -38,6 +38,9 @@ import loadData from '~/lib/load-data';
 
 export default {
   layout: 'globe',
+  middleware ({ store }) {
+    store.commit('enableGlobePositionRight');
+  },
   async asyncData (context) {
     const { pages, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params);
     const chapter = { path, slug, title, previousChapter, nextChapter, cover, related };
@@ -49,7 +52,7 @@ export default {
       title,
     };
   },
-  data: function () {
+  data () {
     return {
       activePage: null,
       headerCondensed: false,
@@ -62,7 +65,6 @@ export default {
     this.$store.commit('setMarkerTypes', [this.chapter.slug]);
     this.$store.commit('disableInteraction');
     this.$store.commit('disableGlobeAutoRotation');
-    this.$store.commit('enableGlobePositionRight');
     const pageSlug = this.$route.hash.replace(/^#/, '');
     this.updateActivePage(pageSlug);
     if (

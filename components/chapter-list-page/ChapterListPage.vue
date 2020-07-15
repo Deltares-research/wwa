@@ -20,12 +20,9 @@
     layout: 'globe',
     scrollToTop: false,
     computed: {
-      ...mapState(['books', 'markerTypes']),
+      ...mapState(['chapters', 'markerTypes']),
       filteredChapters () {
-        return this.books.map(book => {
-          return book.chapters.filter(chapter => this.markerTypes.includes(chapter.slug));
-        })
-          .flat();
+        return this.chapters.filter(chapter => this.markerTypes.includes(chapter.slug));
       },
     },
     mounted() {

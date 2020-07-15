@@ -35,7 +35,6 @@ const slugify = require('slug');
  */
 
 const includeUnpublished = !!process.env.UNPUBLISHED;
-const exportScope = process.env.DATO_EXPORT;
 const contentBasePath = '/narratives';
 
 module.exports = (dato, root, i18n) => {
@@ -45,49 +44,16 @@ module.exports = (dato, root, i18n) => {
     body,
   });
 
-  switch (exportScope) {
-    case 'books':
-      generateBooks(dato, root, i18n);
-      break;
-    case 'chapters':
-      generateChapters(dato, root, i18n);
-      break;
-    case 'app':
-        generateAppData(dato, root, i18n);
-        break;
-    case 'influences':
-      generateByInfluence(dato, root, i18n);
-      break;
-    case 'goals':
-      generateByGoal(dato, root, i18n);
-      break;
-    case 'methodology':
-      generateByMethodology(dato, root, i18n);
-      break;
-    case 'keywords':
-      generateKeywords(dato, root, i18n);
-      break;
-    case 'static_pages':
-      generateStaticPages(dato, root, i18n);
-      break;
-    case 'themes':
-      generateThemes(dato, root, i18n);
-      break;
-    case 'markers':
-      generateMarkers(dato, root, i18n);
-      break;
-    default:
-      generateChapters(dato, root, i18n);
-      generateBooks(dato, root, i18n);
-      generateByInfluence(dato, root, i18n);
-      generateByGoal(dato, root, i18n);
-      generateByMethodology(dato, root, i18n);
-      generateKeywords(dato, root, i18n);
-      generateAppData(dato, root, i18n);
-      generateStaticPages(dato, root, i18n);
-      generateThemes(dato, root, i18n);
-      generateMarkers(dato, root, i18n);
-  }
+  generateChapters(dato, root, i18n);
+  generateChapterOverview(dato, root, i18n);
+  generateByInfluence(dato, root, i18n);
+  generateByGoal(dato, root, i18n);
+  generateByMethodology(dato, root, i18n);
+  generateKeywords(dato, root, i18n);
+  generateAppData(dato, root, i18n);
+  generateStaticPages(dato, root, i18n);
+  generateThemes(dato, root, i18n);
+  generateMarkers(dato, root, i18n);
 };
 
 /**
@@ -97,9 +63,9 @@ module.exports = (dato, root, i18n) => {
  * @param {Root} root - Project root
  * @param {i18n} i18n
  */
-function generateBooks (dato, root, i18n) {
-  const allChapters = getBooksShort(dato);
-  root.createDataFile(`static/data/books/index.json`, 'json', allChapters);
+function generateChapterOverview (dato, root, i18n) {
+  const allChapters = getAllChapters(dato);
+  root.createDataFile(`static/data/chapters/index.json`, 'json', allChapters);
 }
 
 /**
@@ -364,12 +330,10 @@ function generateStaticPages (dato, root, i18n) {
  *
  * @param {Dato} dato
  */
-function getBooksShort (dato) {
+function getAllChapters (dato) {
   return dato.books
     .filter(filterPublished)
-    .map(book => {
-      const path = `${contentBasePath}/${book.slug}`;
-      const title = book.title;
+    .reduce((out, book) => {
       const chapters = getChapters(dato, book)
         .filter(filterPublished)
         .map(({ slug, title, cover, path, updatedAt, pages }) => {
@@ -409,8 +373,10 @@ function getBooksShort (dato) {
 
           return { slug, title, cover, path, updatedAt, filters, availableCategories, keywords };
         });
-      return { title, path, chapters };
-    });
+
+      out.push(...chapters);
+      return out;
+    }, []);
 }
 
 /**

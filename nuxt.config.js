@@ -123,6 +123,7 @@ export default {
   plugins: [
     { src: '~/plugins/smoothscroll', mode: 'client' },
     { src: '~/plugins/ga.js', mode: 'client' },
+    { src: '~/plugins/router-after-each.js', mode: 'client' },
   ],
   target: 'static',
   router: {

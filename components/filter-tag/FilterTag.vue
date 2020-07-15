@@ -9,6 +9,8 @@
       :src="`${icon.imgixHost}${icon.value.path}`"
       alt=""
       class="filter-tag__icon"
+      height="21px"
+      :width="icon.value.width / (icon.value.height / 21)"
     >
     {{ title }}
   </nuxt-link>
@@ -78,6 +80,5 @@
   .filter-tag__icon {
     display: block;
     margin-right: .5rem;
-    height: 1.3rem;
   }
 </style>

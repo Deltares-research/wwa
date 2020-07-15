@@ -1,7 +1,11 @@
 <template>
   <div class="globe-section layout-section invert">
     <ul class="book-list layout-section__container">
-      <li class="book-list__item" v-for="filter in chaptersGroupedByFilter">
+      <li
+        class="book-list__item"
+        v-for="filter in chaptersGroupedByFilter"
+        :key="filter.path"
+      >
         <h2 class="book-list__book-title">
           <nuxt-link
             class="book-list__book-title-link"
@@ -12,7 +16,10 @@
         </h2>
 
         <div class="book-list__content">
-          <chapter-list :chapters="filter.chapters" :limit="3" />
+          <chapter-list
+            :chapters="filter.chapters"
+            :limit="3"
+          />
         </div>
         <nuxt-link
           class="book-list__more-link"
@@ -36,7 +43,7 @@
     computed: {
       ...mapState(['chapters', 'availableFilterItems']),
       chaptersGroupedByFilter() {
-        const availableFilterItemSlugs =  this.availableFilterItems.map(filterItem => filterItem.slug)
+        const availableFilterItemSlugs =  this.availableFilterItems.map(filterItem => filterItem.slug);
 
         let output = this.availableFilterItems.reduce(( out, subFilter ) => {
           out[subFilter.slug] = {
@@ -52,10 +59,10 @@
             if (chapter.filters.includes(filterItemSlug)) {
               output[filterItemSlug].chapters.push(chapter);
             }
-          })
-        })
+          });
+        });
 
-        return output
+        return output;
       },
     },
   };

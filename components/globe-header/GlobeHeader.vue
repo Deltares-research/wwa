@@ -3,7 +3,7 @@
     <div class="layout-section__container">
       <app-description class="globe-header__description" />
       <next-event-card
-        v-if="highlightedEvent"
+        v-if="highlightedEvent && !globePositionRight"
         class="globe-header__event"
         :event="highlightedEvent"
       />
@@ -21,7 +21,7 @@ export default {
     AppDescription, NextEventCard,
   },
   computed: {
-    ...mapState(['highlightedEvent']),
+    ...mapState(['globePositionRight', 'highlightedEvent']),
   },
 };
 </script>

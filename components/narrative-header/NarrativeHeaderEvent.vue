@@ -17,6 +17,8 @@
     <chapter-navigation
       :pages="chapter.pages"
       :with-background="true"
+      :back-button-label="backButtonLabel"
+      :chapter-navigation-label="chapterNavigationLabel"
       @scrollTo="onScrollTo"
     />
   </header>
@@ -31,6 +33,8 @@
     },
     props: {
       chapter: Object,
+      backButtonLabel: String,
+      chapterNavigationLabel: String,
     },
     methods: {
       onScrollTo (slug) {

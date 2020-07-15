@@ -10,7 +10,7 @@
         :to="`/${this.$route.params.language}/events/${this.$route.params.event}`"
         class="chapter-navigation__back"
       >
-        Back
+        {{ backButtonLabel ? backButtonLabel : 'Back' }}
       </nuxt-link>
 
       <button
@@ -21,7 +21,7 @@
         class="chapter-navigation__select"
         :class="{ 'chapter-navigation__select--open': showNavigation }"
       >
-        In this chapter
+        {{ chapterNavigationLabel ? chapterNavigationLabel : 'In this chapter' }}
       </button>
     </div>
 
@@ -55,6 +55,8 @@
     props: {
       pages: Array,
       withBackground: Boolean,
+      backButtonLabel: String,
+      chapterNavigationLabel: String,
     },
     data () {
       return {

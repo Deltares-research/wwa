@@ -1,28 +1,28 @@
 <template>
   <div class="globe-section layout-section invert">
-    <ul class="book-list layout-section__container">
+    <ul class="chapter-list-overview-page layout-section__container">
       <li
-        class="book-list__item"
+        class="chapter-list-overview-page__item"
         v-for="filter in chaptersGroupedByFilter"
         :key="filter.path"
       >
-        <h2 class="book-list__book-title">
+        <h2 class="chapter-list-overview-page__title">
           <nuxt-link
-            class="book-list__book-title-link"
+            class="chapter-list-overview-page__title-link"
             :to="filter.path"
           >
             {{ filter.title }}
           </nuxt-link>
         </h2>
 
-        <div class="book-list__content">
+        <div class="chapter-list-overview-page__content">
           <chapter-list
             :chapters="filter.chapters"
             :limit="3"
           />
         </div>
         <nuxt-link
-          class="book-list__more-link"
+          class="chapter-list-overview-page__more-link"
           :to="filter.path"
         >
           View more {{ filter.title }}
@@ -69,23 +69,23 @@
 </script>
 
 <style>
-  .book-list {
+  .chapter-list-overview-page {
     list-style: none;
     padding: 0px;
   }
 
-  .book-list__item {
+  .chapter-list-overview-page__item {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin-bottom: 3rem;
   }
 
-  .book-list__item:last-child {
+  .chapter-list-overview-page__item:last-child {
     margin-bottom: 1rem;
   }
 
-  .book-list__book-title {
+  .chapter-list-overview-page__title {
     flex: 0 0 100%;
     margin-bottom: 1rem;
     font-size: 1.5rem;
@@ -93,20 +93,20 @@
     font-weight: 500;
   }
 
-  .book-list__book-title-link {
+  .chapter-list-overview-page__title-link {
     text-decoration: none;
   }
 
-  .book-list__book-title-link:hover,
-  .book-list__book-title-link:focus {
+  .chapter-list-overview-page__title-link:hover,
+  .chapter-list-overview-page__title-link:focus {
     text-decoration: underline;
   }
 
-  .book-list__content {
+  .chapter-list-overview-page__content {
     flex: 0 0 100%;
   }
 
-  .book-list__more-link {
+  .chapter-list-overview-page__more-link {
     display: inline-block;
     padding: 10px 15px;
     background: var(--blue-tertiary);
@@ -116,13 +116,13 @@
     border-radius: 5px;
   }
 
-  .book-list__more-link:hover,
-  .book-list__more-link:focus {
+  .chapter-list-overview-page__more-link:hover,
+  .chapter-list-overview-page__more-link:focus {
     color: var(--blue-primary);
   }
 
   @media (--sm-viewport) {
-    .book-list__book-title {
+    .chapter-list-overview-page__title {
       font-size: 2rem;
       line-height: 2.25rem;
     }

@@ -1,39 +1,43 @@
 <template>
   <div class="globe-section layout-section invert">
     <ul class="chapter-list-overview-page layout-section__container">
-      <li
-        class="chapter-list-overview-page__item"
+      <template
         v-for="filter in chaptersGroupedByFilter"
-        :key="filter.path"
       >
-        <h2 class="chapter-list-overview-page__title">
+        <li
+          v-if="filter.chapters.length"
+          :key="filter.path"
+          class="chapter-list-overview-page__item"
+        >
+          <h2 class="chapter-list-overview-page__title">
+            <nuxt-link
+              class="chapter-list-overview-page__title-link"
+              :to="filter.path"
+            >
+              {{ filter.title }}
+            </nuxt-link>
+          </h2>
+
+          <div class="chapter-list-overview-page__content">
+            <chapter-list
+              :chapters="filter.chapters"
+              :limit="3"
+            />
+          </div>
           <nuxt-link
-            class="chapter-list-overview-page__title-link"
+            class="chapter-list-overview-page__more-link"
             :to="filter.path"
           >
-            {{ filter.title }}
+            View more {{ filter.title }}
           </nuxt-link>
-        </h2>
-
-        <div class="chapter-list-overview-page__content">
-          <chapter-list
-            :chapters="filter.chapters"
-            :limit="3"
-          />
-        </div>
-        <nuxt-link
-          class="chapter-list-overview-page__more-link"
-          :to="filter.path"
-        >
-          View more {{ filter.title }}
-        </nuxt-link>
-      </li>
+        </li>
+      </template>
     </ul>
   </div>
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import {mapState} from 'vuex';
   import ChapterList from '~/components/chapter-list/ChapterList';
 
   export default {

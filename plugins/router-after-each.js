@@ -3,5 +3,5 @@ export default function ({ store, app }) {
     if (from.name && !store.state.historyAvailable) {
       store.commit('setHistoryAvailable');
     }
-  })
+  });
 }

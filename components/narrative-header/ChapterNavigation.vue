@@ -1,19 +1,27 @@
 <template>
   <div class="chapter-navigation">
     <div
-      v-if="pages.length > 1"
       class="chapter-navigation__body"
       :class="{ 'chapter-navigation__body--with-background': withBackground }"
     >
       <nuxt-link
-        v-if="this.$route.params.language"
-        :to="`/${this.$route.params.language}/events/${this.$route.params.event}`"
+        v-if="$route.params.language"
+        :to="`/${$route.params.language}/events/${$route.params.event}`"
         class="chapter-navigation__back"
       >
         {{ backButtonLabel ? backButtonLabel : 'Back' }}
       </nuxt-link>
+      <button
+        v-else
+        type="button"
+        class="chapter-navigation__back"
+        @click="goBack"
+      >
+        Back
+      </button>
 
       <button
+        v-if="pages.length > 1"
         @click="toggleNavigation"
         aria-controls="chapter-navigation"
         aria-haspopup="true"
@@ -51,6 +59,8 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
+
   export default {
     props: {
       pages: Array,
@@ -63,6 +73,9 @@
         showNavigation: false,
       };
     },
+    computed: {
+      ...mapState(['historyAvailable']),
+    },
     methods: {
       toggleNavigation () {
         this.showNavigation = !this.showNavigation;
@@ -70,6 +83,9 @@
       navigate (slug) {
         this.$emit('scrollTo', slug);
         this.showNavigation = false;
+      },
+      goBack () {
+        this.historyAvailable ? this.$router.back() : this.$router.push('/');
       },
     },
   };
@@ -84,13 +100,12 @@
     position: relative;
     z-index: 2;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     padding: .75rem 1rem;
   }
 
   .chapter-navigation__body--with-background {
-    justify-content: space-between;
     background-color: var(--blue-secondary);
     background-image: url('/assets/waves.svg');
     background-repeat: no-repeat;
@@ -108,9 +123,14 @@
   .chapter-navigation__back {
     display: flex;
     align-items: center;
+    font-size: inherit;
     font-weight: 500;
     text-decoration: none;
     color: var(--white);
+    background: none;
+    border: none;
+    cursor: pointer;
+    appearance: none;
   }
 
   .chapter-navigation__back:hover,

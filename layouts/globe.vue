@@ -48,7 +48,7 @@
   export default {
     async middleware ({ store }) {
       const app = await import('~/static/data/app.json');
-      await store.dispatch('getBooks');
+      await store.dispatch('getChapters');
       store.commit('setFilters', app.default.filters);
       store.commit('setDescription', app.default.description);
       store.commit('setHighlightedEvent', app.default.highlightedEvent);

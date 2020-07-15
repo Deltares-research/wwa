@@ -16,13 +16,13 @@ const store = () => {
       globeAutoRotation: true,
       globePositionRight: false,
       filters: [],
-      books: [],
+      chapters: [],
       markerTypes: [],
     },
     actions: {
-      async getBooks({ commit }) {
-        const books = await import('~/static/data/books/index.json');
-        commit('setBooks', books.default);
+      async getChapters({ commit }) {
+        const chapters = await import('~/static/data/chapters/index.json');
+        commit('setChapters', chapters.default);
       },
     },
     mutations: {
@@ -84,8 +84,8 @@ const store = () => {
       setFilters (state, filters) {
         state.filters = filters;
       },
-      setBooks (state, books) {
-        state.books = books;
+      setChapters (state, chapters) {
+        state.chapters = chapters;
       },
       setMarkerTypes (state, markerTypes) {
         state.markerTypes = markerTypes;

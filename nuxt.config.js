@@ -130,9 +130,6 @@ export default {
       const ChapterListOverviewComponent = resolve(__dirname, 'components/chapter-list-overview-page/ChapterListOverviewPage.vue');
       const ChapterListComponent = resolve(__dirname, 'components/chapter-list-page/ChapterListPage.vue');
 
-      const homeRoute = routes.find(route => route.name === 'index');
-      homeRoute.alias = '/themes';
-
       const keywordsRoute = routes.find(route => route.name === 'keywords');
       keywordsRoute.alias = '/keywords/:slug';
 
@@ -140,7 +137,7 @@ export default {
         name: `methodologies`,
         path: `/methodologies`,
         component: ChapterListOverviewComponent,
-        alias: ['/influences', '/goals', '/narratives'],
+        alias: ['/', 'themes', '/influences', '/goals', '/narratives'],
       });
 
       routes.unshift({

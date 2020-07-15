@@ -109,6 +109,7 @@ export default {
     },
   },
   created() {
+    this.$store.commit('setAvailableFilterItems', this.availableFilterItems);
     if (this.activeFilterSlug && !this.activeFilterItemSlug) {
       const markerTypes = getChapterSlugsByFilter(this.chapters, this.activeFilterSlug);
       this.$store.commit('setMarkerTypes', markerTypes);
@@ -127,6 +128,7 @@ export default {
   },
   watch: {
     activeFilterSlug(newValue) {
+      this.$store.commit('setAvailableFilterItems', this.availableFilterItems);
       const markerTypes = getChapterSlugsByFilter(this.chapters, newValue);
       this.$store.commit('setMarkerTypes', markerTypes);
     },

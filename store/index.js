@@ -16,6 +16,7 @@ const store = () => {
       globeAutoRotation: true,
       globePositionRight: false,
       filters: [],
+      availableFilterItems: [],
       chapters: [],
       markerTypes: [],
     },
@@ -83,6 +84,9 @@ const store = () => {
       },
       setFilters (state, filters) {
         state.filters = filters;
+      },
+      setAvailableFilterItems(state, filterItems) {
+        state.availableFilterItems = filterItems;
       },
       setChapters (state, chapters) {
         state.chapters = chapters;

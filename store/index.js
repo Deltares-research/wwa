@@ -93,7 +93,7 @@ const store = () => {
       },
       setHistoryAvailable (state) {
         state.historyAvailable = true;
-      }
+      },
     },
   });
 };

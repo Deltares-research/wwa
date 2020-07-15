@@ -239,13 +239,6 @@ export default {
   position: relative;
 }
 
-@media (min-width: 1200px) {
-  .page-body__figure {
-    width: calc(100% + 3rem);
-    margin-left: -1.5rem;
-  }
-}
-
 .page-body__lazy-image {
   vertical-align: bottom;
 }

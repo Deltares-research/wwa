@@ -35,14 +35,14 @@ const mapallInternalEventsToRedirects = () => fetchContent(`
 export default {
   build: {
     extend (config, context) {
-      if (context.isDev && context.isClient) {
-        config.module.rules.push({
-          enforce: "pre",
-          test: /\.(js|vue)$/,
-          loader: "eslint-loader",
-          exclude: /(node_modules)/,
-        });
-      }
+      // if (context.isDev && context.isClient) {
+      //   config.module.rules.push({
+      //     enforce: "pre",
+      //     test: /\.(js|vue)$/,
+      //     loader: "eslint-loader",
+      //     exclude: /(node_modules)/,
+      //   });
+      // }
 
       config.module.rules.push({
         test: /\.glsl$/,
@@ -137,7 +137,7 @@ export default {
         name: `methodologies`,
         path: `/methodologies`,
         component: ChapterListOverviewComponent,
-        alias: ['/', 'themes', '/influences', '/goals', '/narratives'],
+        alias: ['/', '/themes', '/influences', '/goals', '/narratives'],
       });
 
       routes.unshift({

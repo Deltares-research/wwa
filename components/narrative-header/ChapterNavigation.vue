@@ -181,6 +181,7 @@
 
   .chapter-navigation__dropdown--visible {
     z-index: 10;
+    transform: translateY(100%) translateY(3.3rem);
   }
 
   .chapter-navigation__body--with-background + .chapter-navigation__dropdown--visible {

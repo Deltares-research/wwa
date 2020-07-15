@@ -119,9 +119,5 @@
       font-size: 2rem;
       line-height: 2.25rem;
     }
-
-    .book-list__more {
-      margin-top: 0;
-    }
   }
 </style>

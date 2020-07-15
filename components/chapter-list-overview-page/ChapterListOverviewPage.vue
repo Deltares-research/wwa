@@ -41,14 +41,17 @@
     scrollToTop: false,
     components: { ChapterList },
     computed: {
-      ...mapState(['chapters', 'availableFilterItems']),
+      ...mapState(['filters', 'chapters', 'availableFilterItems']),
+      activeFilterSlug () {
+        return this.$route.path.split('/')[1] ? this.$route.path.split('/')[1] : this.filters[0].slug;
+      },
       chaptersGroupedByFilter() {
         const availableFilterItemSlugs =  this.availableFilterItems.map(filterItem => filterItem.slug);
 
         let output = this.availableFilterItems.reduce(( out, subFilter ) => {
           out[subFilter.slug] = {
             title: subFilter.title,
-            path: `/${this.$route.name}/${subFilter.slug}`,
+            path: `/${this.activeFilterSlug}/${subFilter.slug}`,
             chapters: [],
           };
           return out;

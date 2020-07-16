@@ -17,7 +17,7 @@
           <span class="event-block-chapters__item-title">{{ item.title }}</span>
           <img
             v-if="item.cover"
-            :data-src="`${item.cover.url}?auto=compress&w=530`"
+            :data-src="`${item.cover.url}?auto=compress,format&w=530`"
             alt=""
             class="event-block-chapters__item-image swiper-lazy"
             data-swiper-parallax="-10%"

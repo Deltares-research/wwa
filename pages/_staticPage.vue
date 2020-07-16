@@ -26,7 +26,7 @@
       <lazy-image
         :src-width="image.value.width"
         :src-height="image.value.height"
-        :src="`${image.imgixHost}${image.value.path}?auto=compress&w=640&q=65`"
+        :src="`${image.imgixHost}${image.value.path}?auto=compress,format&w=640&q=65`"
         :alt="image.value.alt"
         width="100%"
       />

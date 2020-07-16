@@ -7,7 +7,7 @@
       <img
         v-if="event.bannerIcon"
         alt=""
-        :src="`${event.bannerIcon.imgixHost}/${event.bannerIcon.value.path}?compress=auto&width=75`"
+        :src="`${event.bannerIcon.imgixHost}/${event.bannerIcon.value.path}?compress=auto,format&width=75`"
         :width="event.bannerIcon.value.width"
         :height="event.bannerIcon.value.height"
         class="next-event-card__icon"

@@ -104,7 +104,7 @@
         return cover.value.width * heigthFactor;
       },
       coverPath (chapter) {
-        return `${chapter.cover.imgixHost}${chapter.cover.value.path}?auto=compress`;
+        return `${chapter.cover.imgixHost}${chapter.cover.value.path}?auto=compress,format`;
       },
     },
   };
@@ -202,7 +202,7 @@
     }
 
     .chapter-list__item {
-      width: calc(100% / 3 - 14px);
+      width: calc(100% / 3);
     }
 
     .chapter-list__item-link {

@@ -64,7 +64,7 @@
                 <img
                   class="event-block-schedule-wide__speaker"
                   v-if="scheduleItem.speaker"
-                  :src="`${scheduleItem.speaker.image.url}?auto=format&mask=ellipse&w=60&h=60`"
+                  :src="`${scheduleItem.speaker.image.url}?auto=format,compress&mask=ellipse&w=60&h=60`"
                   alt=""
                 >
                 <div class="event-block-schedule__copy event-block-schedule-wide__copy">

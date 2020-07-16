@@ -61,7 +61,7 @@
             :to="link.path"
           >
             <img
-              :src="`${link.icon.imgixHost}${link.icon.value.path}`"
+              :src="`${link.icon.imgixHost}${link.icon.value.path}?auto=compress,format&w=100`"
               :alt="link.title"
               class="page-body-title__goal-icon"
             >

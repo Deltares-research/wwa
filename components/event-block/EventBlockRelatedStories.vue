@@ -44,7 +44,7 @@
           </div>
 
           <img
-            :src="`${linkedChapter.chapter.cover.url}?auto=compress&w=500&fit=crop&crop=entropy`"
+            :src="`${linkedChapter.chapter.cover.url}?auto=compress,format&w=500&fit=crop&crop=entropy`"
             alt=""
             class="event-block-related-stories__image"
           >

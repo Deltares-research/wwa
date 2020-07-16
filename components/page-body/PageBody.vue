@@ -27,7 +27,7 @@
       >
         <responsive-image
           class="page-body__lazy-image"
-          :src="`${image.url || `${image.imgixHost}${image.value.path}`}?auto=compress&w=640&q=65`"
+          :src="`${image.url || `${image.imgixHost}${image.value.path}`}?auto=compress,format&w=640&q=65`"
           :src-width="image.width || image.value && image.value.width"
           :src-height="image.height || image.value && image.value.height"
           :alt="image.alt || image.value && image.value.alt"
@@ -53,7 +53,7 @@
       >
         <responsive-image
           class="page-body__lazy-image"
-          :src="`${graph.imgixHost}${graph.value.path}?auto=compress&w=640&q=65`"
+          :src="`${graph.imgixHost}${graph.value.path}?auto=compress,format&w=640&q=65`"
           :src-width="graph.value.width"
           :src-height="graph.value.height"
           :alt="graph.value.alt"
@@ -125,7 +125,7 @@
       Created in partnership with:
       <img
         v-if="partner.logo && partner.logo.imgixHost"
-        :src="`${partner.logo.imgixHost}${partner.logo.value.path}?auto=compress&w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`"
+        :src="`${partner.logo.imgixHost}${partner.logo.value.path}?auto=compress,format&w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`"
         class="page-body__partners-image"
         :width="scaleMaxToSize(partner.logo, sizeLimit).w"
         :height="scaleMaxToSize(partner.logo, sizeLimit).h"

@@ -23,7 +23,7 @@
         class="event-block-credits__icons-item"
       >
         <img
-          :src="logo.url"
+          :src="`${logo.url}?auto=compress,format&h=75`"
           :alt="logo.alt"
         >
       </li>

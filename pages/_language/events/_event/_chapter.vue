@@ -54,7 +54,7 @@
             >
               <responsive-image
                 class="page-body__lazy-image"
-                :src="`${image.url}?auto=compress&w=640&q=65`"
+                :src="`${image.url}?auto=compress,format&w=640&q=65`"
                 :src-width="image.width"
                 :src-height="image.height"
                 :alt="image.alt"

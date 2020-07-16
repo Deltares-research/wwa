@@ -82,7 +82,7 @@
 
           <lazy-media class="event-overview-list__list-item-image">
             <img
-              :src="`${event.image.url}?auto=compress&w=600`"
+              :src="`${event.image.url}?auto=compress,format&w=600`"
               alt=""
             >
           </lazy-media>

@@ -38,12 +38,6 @@ const includeUnpublished = !!process.env.UNPUBLISHED;
 const contentBasePath = '/narratives';
 
 module.exports = (dato, root, i18n) => {
-  const { body } = dato.home;
-
-  root.createDataFile(`static/data/home.json`, 'json', {
-    body,
-  });
-
   generateChapters(dato, root, i18n);
   generateChapterOverview(dato, root, i18n);
   generateByInfluence(dato, root, i18n);

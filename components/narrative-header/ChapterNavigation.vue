@@ -31,10 +31,10 @@
       :aria-hidden="!showNavigation"
       :class="{ 'chapter-navigation__dropdown--visible': showNavigation }"
     >
-      <ol>
+      <ol class="chapter-navigation__list">
         <li
-          v-for="page in pages"
-          :key="page.slug"
+          v-for="(page, index) in pages"
+          :key="`${page.slug}-${index}`"
           class="chapter-navigation__list-item"
         >
           <a
@@ -210,6 +210,10 @@
     .chapter-navigation__body--with-background + .chapter-navigation__dropdown--visible {
       right: 2rem;
     }
+  }
+
+  .chapter-navigation__list {
+    list-style: none;
   }
 
   .chapter-navigation__list-item:not(:last-child) {

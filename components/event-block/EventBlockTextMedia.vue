@@ -140,7 +140,7 @@
   }
 
   .event-block-text-media__copy p:not(:last-child) {
-    margin-bottom: 3.8rem;
+    margin-bottom: 1.5rem;
   }
 
   .event-block-text-media__copy a,

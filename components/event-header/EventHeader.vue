@@ -1,7 +1,7 @@
 <template>
   <div class="animator__fade event-header">
     <img
-      :src="`${image.url}?auto=compress&fit=crop&w=80&h=80`"
+      :src="`${image.url}?auto=compress,format&fit=crop&w=80&h=80`"
       width="40"
       alt=""
       class="event-header__image"

@@ -21,24 +21,25 @@
             <picture>
               <source
                 :srcset="`
-                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=340&h=200&fit=crop 340w,
-                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=340&h=200&fit=crop&dpr=2 680w,
-                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=340&h=200&fit=crop&dpr=3 1140w`"
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=340&h=200&fit=crop 340w,
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=340&h=200&fit=crop&dpr=2 680w,
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=340&h=200&fit=crop&dpr=3 1140w`"
                 sizes="100vw"
                 media="(max-width: 599px)"
               >
               <source
                 :srcset="`
-                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=340&h=400&fit=crop 340w,
-                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=340&h=400&fit=crop&dpr=2 680w,
-                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=340&h=400&fit=crop&dpr=3 1140w`"
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=340&h=400&fit=crop 340w,
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=340&h=400&fit=crop&dpr=2 680w,
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=340&h=400&fit=crop&dpr=3 1140w`"
                 sizes="340px"
                 media="(min-width: 600px)"
               >
               <img
-                :src="`${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=270&h=340&fit=crop&q=65`"
+                :src="`${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=270&h=340&fit=crop&q=65`"
                 width="100%"
                 class="narrative-footer__related-image"
+                alt=""
               >
             </picture>
 

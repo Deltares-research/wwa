@@ -13,7 +13,7 @@
     <img
       v-if="cover"
       class="narrative-header__cover"
-      :src="`${cover.imgixHost}${cover.value.path}?auto=compress&w=700`"
+      :src="`${cover.imgixHost}${cover.value.path}?auto=compress,format&w=700`"
       alt=""
     >
   </header>

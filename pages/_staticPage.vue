@@ -17,7 +17,7 @@
     <h1>{{ title }}</h1>
     <section
       class="static-page__body"
-      v-html="htmlBody"
+      v-html="body"
     />
     <figure
       v-for="image in images"
@@ -26,7 +26,7 @@
       <lazy-image
         :src-width="image.value.width"
         :src-height="image.value.height"
-        :src="`${image.imgixHost}${image.value.path}?auto=compress&w=640&q=65`"
+        :src="`${image.imgixHost}${image.value.path}?auto=compress,format&w=640&q=65`"
         :alt="image.value.alt"
         width="100%"
       />
@@ -38,7 +38,6 @@
 <script>
 import loadData from '~/lib/load-data';
 import lazyImage from '~/components/lazy-media/LazyMedia';
-import renderMarkedContent from '~/lib/marked';
 
 export default {
   layout: 'static-page',
@@ -46,11 +45,6 @@ export default {
     const { title, body, images, video } = await loadData(context, context.params);
 
     return { title, body, images, video };
-  },
-  computed: {
-    htmlBody () {
-      return renderMarkedContent(this.body);
-    },
   },
   components: {
     lazyImage,

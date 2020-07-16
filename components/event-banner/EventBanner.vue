@@ -6,7 +6,7 @@
         <span class="event-banner__wave" />
         <img
           v-if="props.bannerIcon"
-          :src="props.bannerIcon.url"
+          :src="`${props.bannerIcon.url}?auto=compress,format&h=70`"
           :width="props.bannerIcon.width"
           :height="props.bannerIcon.height"
           alt=""

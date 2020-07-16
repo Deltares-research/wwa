@@ -10,9 +10,9 @@
         :theme="theme"
       />
       <div
-        v-if="htmlBody"
+        v-if="body"
         class="page-body__body"
-        v-html="htmlBody"
+        v-html="body"
       />
     </div>
 
@@ -24,10 +24,11 @@
         v-for="image in images"
         :key="image.id"
         class="page-body__figure"
+        :class="(image.value.width / image.value.height < .8) ? 'page-body__figure--is-portrait' : null"
       >
         <responsive-image
           class="page-body__lazy-image"
-          :src="`${image.url || `${image.imgixHost}${image.value.path}`}?auto=compress&w=640&q=65`"
+          :src="`${image.url || `${image.imgixHost}${image.value.path}`}?auto=compress,format&w=640&q=65`"
           :src-width="image.width || image.value && image.value.width"
           :src-height="image.height || image.value && image.value.height"
           :alt="image.alt || image.value && image.value.alt"
@@ -50,10 +51,11 @@
         v-for="graph in graphs"
         :key="graph.id"
         class="page-body__figure"
+        :class="(graph.value.width / graph.value.height < .8) ? 'page-body__figure--is-portrait' : null"
       >
         <responsive-image
           class="page-body__lazy-image"
-          :src="`${graph.imgixHost}${graph.value.path}?auto=compress&w=640&q=65`"
+          :src="`${graph.imgixHost}${graph.value.path}?auto=compress,format&w=640&q=65`"
           :src-width="graph.value.width"
           :src-height="graph.value.height"
           :alt="graph.value.alt"
@@ -125,7 +127,7 @@
       Created in partnership with:
       <img
         v-if="partner.logo && partner.logo.imgixHost"
-        :src="`${partner.logo.imgixHost}${partner.logo.value.path}?auto=compress&w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`"
+        :src="`${partner.logo.imgixHost}${partner.logo.value.path}?auto=compress,format&w=scaleMaxToSize(partner.logo, sizeLimit).w&q=65`"
         class="page-body__partners-image"
         :width="scaleMaxToSize(partner.logo, sizeLimit).w"
         :height="scaleMaxToSize(partner.logo, sizeLimit).h"
@@ -137,7 +139,6 @@
 </template>
 
 <script>
-import renderMarkedContent from '~/lib/marked';
 import PageBodyTitle from '~/components/page-body-title/PageBodyTitle';
 import StoryMap from '~/components/story-map/StoryMap';
 import ResponsiveImage from '~/components/responsive-image/ResponsiveImage';
@@ -169,11 +170,6 @@ export default {
     StoryMap,
     ResponsiveImage,
     ResponsiveVideo,
-  },
-  computed: {
-    htmlBody () {
-      return renderMarkedContent(this.body);
-    },
   },
   methods: {
     scaleMaxToSize: function (imgObj, sizeLimit) {
@@ -215,7 +211,7 @@ export default {
 }
 
 .page-body__images:not(:last-child),
-.page-body__graphs,:not(:last-child)
+.page-body__graphs:not(:last-child),
 .page-body__video:not(:last-child),
 .page-body__map:not(:last-child),
 .page-body__figure:not(:last-child),
@@ -225,7 +221,7 @@ export default {
 
 @media (--md-viewport) {
   .page-body__images:not(:last-child),
-  .page-body__graphs,:not(:last-child)
+  .page-body__graphs:not(:last-child),
   .page-body__video:not(:last-child),
   .page-body__map:not(:last-child),
   .page-body__figure:not(:last-child),
@@ -237,6 +233,21 @@ export default {
 .page-body__figure {
   margin: 0;
   position: relative;
+}
+
+.page-body__figure--is-portrait {
+  width: 50%;
+  margin: 0 auto;
+}
+
+@media (min-width: 1200px) {
+  .page-body__figure {
+    width: 100%;
+  }
+
+  .page-body__figure--is-portrait {
+    width: 50%;
+  }
 }
 
 .page-body__lazy-image {

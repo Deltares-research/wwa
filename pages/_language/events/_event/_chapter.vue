@@ -53,10 +53,11 @@
               v-for="image in page.images"
               :key="image.id"
               class="page-body__figure"
+              :class="image.width / image.height < 1.5 ? 'page-body__figure--is-portrait' : null"
             >
               <responsive-image
                 class="page-body__lazy-image"
-                :src="`${image.url}?auto=compress&w=640&q=65`"
+                :src="`${image.url}?auto=compress,format&w=640&q=65`"
                 :src-width="image.width"
                 :src-height="image.height"
                 :alt="image.alt"
@@ -203,6 +204,24 @@
   @media (--md-viewport) {
     .event-chapter__article {
       padding: 3rem 0;
+    }
+  }
+
+  .page-body__figure--is-portrait {
+    width: 75%;
+    margin: 0 auto;
+  }
+
+  @media (--sm-viewport) {
+    .page-body__figure--is-portrait {
+      width: 75%;
+    }
+  }
+
+  @media (--md-viewport) {
+    .page-body__figure--is-portrait {
+      width: 50%;
+      margin-left: 0;
     }
   }
 

@@ -6,7 +6,7 @@
   >
     <img
       v-if="icon"
-      :src="`${icon.imgixHost}${icon.value.path}`"
+      :src="`${icon.imgixHost}${icon.value.path}?h=21&auto=compress,format`"
       alt=""
       class="filter-tag__icon"
       height="21px"

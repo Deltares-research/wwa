@@ -242,12 +242,11 @@ export default {
 
 @media (min-width: 1200px) {
   .page-body__figure {
-    width: calc(100% + 3rem);
-    margin-left: -1.5rem;
+    width: 100%;
   }
 
   .page-body__figure--is-portrait {
-    width: calc(50% + 3rem);
+    width: 50%;
   }
 }
 

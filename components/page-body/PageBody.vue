@@ -211,7 +211,7 @@ export default {
 }
 
 .page-body__images:not(:last-child),
-.page-body__graphs,:not(:last-child),
+.page-body__graphs:not(:last-child),
 .page-body__video:not(:last-child),
 .page-body__map:not(:last-child),
 .page-body__figure:not(:last-child),
@@ -221,7 +221,7 @@ export default {
 
 @media (--md-viewport) {
   .page-body__images:not(:last-child),
-  .page-body__graphs,:not(:last-child),
+  .page-body__graphs:not(:last-child),
   .page-body__video:not(:last-child),
   .page-body__map:not(:last-child),
   .page-body__figure:not(:last-child),

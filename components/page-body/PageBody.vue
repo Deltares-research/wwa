@@ -10,9 +10,9 @@
         :theme="theme"
       />
       <div
-        v-if="htmlBody"
+        v-if="body"
         class="page-body__body"
-        v-html="htmlBody"
+        v-html="body"
       />
     </div>
 
@@ -137,7 +137,6 @@
 </template>
 
 <script>
-import renderMarkedContent from '~/lib/marked';
 import PageBodyTitle from '~/components/page-body-title/PageBodyTitle';
 import StoryMap from '~/components/story-map/StoryMap';
 import ResponsiveImage from '~/components/responsive-image/ResponsiveImage';
@@ -169,11 +168,6 @@ export default {
     StoryMap,
     ResponsiveImage,
     ResponsiveVideo,
-  },
-  computed: {
-    htmlBody () {
-      return renderMarkedContent(this.body);
-    },
   },
   methods: {
     scaleMaxToSize: function (imgObj, sizeLimit) {

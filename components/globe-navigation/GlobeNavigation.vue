@@ -60,7 +60,6 @@
 
 <script>
 import debounce from 'lodash/debounce';
-import renderMarkedContent from '~/lib/marked';
 import getChapterSlugsByFilter from '~/lib/get-chapter-slugs-by-filter';
 import getChapterSlugsByFilterItem from '~/lib/get-chapter-slugs-by-filter-item';
 import FilterTag from '~/components/filter-tag/FilterTag';
@@ -100,7 +99,7 @@ export default {
       const description = this.activeFilterItemSlug
         ? this.activeFilterItem ? this.activeFilterItem.description : ''
         : this.activeFilter ? this.activeFilter.description : '';
-      return renderMarkedContent(description);
+      return description;
     },
     filterTitle () {
       return this.activeFilterItemSlug

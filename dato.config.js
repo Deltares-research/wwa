@@ -1,3 +1,4 @@
+const renderMarkedContent = require('./lib/marked');
 const pick = require('lodash/fp/pick');
 const uniq = require('lodash/uniq');
 const uniqBy = require('lodash/uniqBy');
@@ -38,12 +39,6 @@ const includeUnpublished = !!process.env.UNPUBLISHED;
 const contentBasePath = '/narratives';
 
 module.exports = (dato, root, i18n) => {
-  const { body } = dato.home;
-
-  root.createDataFile(`static/data/home.json`, 'json', {
-    body,
-  });
-
   generateChapters(dato, root, i18n);
   generateChapterOverview(dato, root, i18n);
   generateByInfluence(dato, root, i18n);
@@ -235,12 +230,12 @@ function generateAppData (dato, root, i18n) {
     return {
       title: filter.title,
       slug: filter.slug,
-      description: filter.body,
+      description: renderMarkedContent(filter.body),
       filterItems: filter.filterItems.map(filterItem => {
         return {
           title: filterItem.title,
           slug: filterItem.slug,
-          description: filterItem.body,
+          description: renderMarkedContent(filterItem.body),
           icon: filterItem.icon,
         };
       }),
@@ -316,7 +311,13 @@ function generateStaticPages (dato, root, i18n) {
     .filter(filterPublished)
     .map(page => {
       const { body, images, slug, title, video } = page;
-      return { body, images, slug, title, video };
+      return {
+        body: renderMarkedContent(body),
+        images,
+        slug,
+        title,
+        video,
+      };
     });
   for (const page of staticPages) {
     root.createDataFile(`static/data/static-pages/${page.slug}.json`, 'json', page);
@@ -542,7 +543,7 @@ function getPages (dato, chapterRef) {
         };
       }
       return {
-        body,
+        body: renderMarkedContent(body),
         book,
         chapter,
         files,
@@ -583,7 +584,13 @@ function getInfluences (dato) {
   return influences.map(influence => {
     const { body, slug, icon, title } = influence;
     const path = `/influences/${slug}`;
-    return { body, path, slug, icon, title };
+    return {
+      body: renderMarkedContent(body),
+      path,
+      slug,
+      icon,
+      title,
+    };
   });
 }
 
@@ -598,7 +605,13 @@ function getGoals (dato) {
   return goals.map(goal => {
     const { body, slug, icon, title } = goal;
     const path = `/goals/${slug}`;
-    return { body, path, slug, icon, title };
+    return {
+      body: renderMarkedContent(body),
+      path,
+      slug,
+      icon,
+      title,
+    };
   });
 }
 
@@ -613,7 +626,13 @@ function getMethodologies (dato) {
   return methodologies.map(goal => {
     const { body, slug, icon, title } = goal;
     const path = `/methodologies/${slug}`;
-    return { body, path, slug, icon, title };
+    return {
+      body: renderMarkedContent(body),
+      path,
+      slug,
+      icon,
+      title,
+    };
   });
 }
 
@@ -628,7 +647,13 @@ function getThemes (dato) {
   return themes.map(theme => {
     const { body, slug, icon, title } = theme;
     const path = `/themes/${slug}`;
-    return { body, path, slug, icon, title };
+    return {
+      body: renderMarkedContent(body),
+      path,
+      slug,
+      icon,
+      title,
+    };
   });
 }
 

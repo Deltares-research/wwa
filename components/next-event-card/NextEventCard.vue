@@ -40,7 +40,7 @@ export default {
   font-weight: bold;
   color: var(--blue-primary);
   text-decoration: none;
-  background-image: url('/assets/event-wave.svg'), linear-gradient(137deg, #E9E6CF 14.18%, var(--blue-tertiary) 95.78%);
+  background-image: url('~assets/event-wave.svg'), linear-gradient(137deg, #E9E6CF 14.18%, var(--blue-tertiary) 95.78%);
   background-size: 100% auto;
   background-position: bottom center;
   border-radius: 5px;
@@ -54,7 +54,7 @@ export default {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-image: url('/assets/arrow-right.svg');
+  background-image: url('~assets/arrow-right.svg');
   background-color: var(--white);
   background-position: center;
   background-repeat: no-repeat;

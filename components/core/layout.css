@@ -98,19 +98,19 @@
 }
 
 .event-section--wave-top-black:before {
-  background-image: url('/section-wave-top-black.svg');
+  background-image: url('~assets/section-wave-top-black.svg');
 }
 
 .event-section--wave-top-blue:before {
-  background-image: url('/section-wave-top-blue.svg');
+  background-image: url('~assets/section-wave-top-blue.svg');
 }
 
 .event-section--wave-bottom-black:after {
-  background-image: url('/section-wave-bottom-black.svg');
+  background-image: url('~assets/section-wave-bottom-black.svg');
 }
 
 .event-section--wave-bottom-blue:after {
-  background-image: url('/section-wave-bottom-blue.svg');
+  background-image: url('~assets/section-wave-bottom-blue.svg');
 }
 
 .event-section--wave-top-bg-blue:before,

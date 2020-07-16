@@ -61,8 +61,8 @@
 <script>
 import debounce from 'lodash/debounce';
 import renderMarkedContent from '~/lib/marked';
-import getBookChapterSlugsByFilter from '~/lib/get-book-chapter-slugs-by-filter';
-import getBookChapterSlugsByFilterItem from '~/lib/get-book-chapter-slugs-by-filter-item';
+import getChapterSlugsByFilter from '~/lib/get-chapter-slugs-by-filter';
+import getChapterSlugsByFilterItem from '~/lib/get-chapter-slugs-by-filter-item';
 import FilterTag from '~/components/filter-tag/FilterTag';
 import { mapState } from 'vuex';
 
@@ -78,7 +78,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['books', 'filters']),
+    ...mapState(['chapters', 'filters']),
     activeFilter () {
       return this.filters.find(filter => filter.slug === this.activeFilterSlug);
     },
@@ -109,11 +109,12 @@ export default {
     },
   },
   created() {
+    this.$store.commit('setAvailableFilterItems', this.availableFilterItems);
     if (this.activeFilterSlug && !this.activeFilterItemSlug) {
-      const markerTypes = getBookChapterSlugsByFilter(this.books, this.activeFilterSlug);
+      const markerTypes = getChapterSlugsByFilter(this.chapters, this.activeFilterSlug);
       this.$store.commit('setMarkerTypes', markerTypes);
     } else if (this.activeFilterSlug && this.activeFilterItemSlug) {
-      const markerTypes = getBookChapterSlugsByFilterItem(this.books, this.activeFilterItemSlug);
+      const markerTypes = getChapterSlugsByFilterItem(this.chapters, this.activeFilterItemSlug);
       this.$store.commit('setMarkerTypes', markerTypes);
     }
   },
@@ -127,12 +128,13 @@ export default {
   },
   watch: {
     activeFilterSlug(newValue) {
-      const markerTypes = getBookChapterSlugsByFilter(this.books, newValue);
+      this.$store.commit('setAvailableFilterItems', this.availableFilterItems);
+      const markerTypes = getChapterSlugsByFilter(this.chapters, newValue);
       this.$store.commit('setMarkerTypes', markerTypes);
     },
     activeFilterItemSlug (newValue) {
       if (newValue) {
-        const markerTypes = getBookChapterSlugsByFilterItem(this.books, newValue);
+        const markerTypes = getChapterSlugsByFilterItem(this.chapters, newValue);
         this.$store.commit('setMarkerTypes', markerTypes);
 
         if (newValue === 'too-much' || newValue === 'too-dirty' || newValue === 'too-little') {

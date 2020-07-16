@@ -134,10 +134,10 @@ export default {
       keywordsRoute.alias = '/keywords/:slug';
 
       routes.unshift({
-        name: `methodologies`,
-        path: `/methodologies`,
+        name: `index`,
+        path: `/`,
         component: ChapterListOverviewComponent,
-        alias: ['/', '/themes', '/influences', '/goals', '/narratives'],
+        alias: ['/methodologies', '/themes', '/influences', '/goals', '/narratives'],
       });
 
       routes.unshift({

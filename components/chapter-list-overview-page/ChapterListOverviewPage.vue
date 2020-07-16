@@ -12,7 +12,7 @@
           <h2 class="chapter-list-overview-page__title">
             <nuxt-link
               class="chapter-list-overview-page__title-link"
-              :to="filter.path"
+              :to="`${filter.path}#globe-navigation`"
             >
               {{ filter.title }}
             </nuxt-link>
@@ -26,7 +26,7 @@
           </div>
           <nuxt-link
             class="chapter-list-overview-page__more-link"
-            :to="filter.path"
+            :to="`${filter.path}#globe-navigation`"
           >
             View more {{ filter.title }}
           </nuxt-link>

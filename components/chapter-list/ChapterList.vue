@@ -9,38 +9,40 @@
         class="chapter-list__item-link"
         :to="chapter.path"
       >
-        <picture v-if="chapter.cover">
-          <source
-            :srcset="`${coverPath(chapter)}&w=280&h=158&fit=crop 280w,
+        <lazy-media>
+          <picture v-if="chapter.cover">
+            <source
+              :srcset="`${coverPath(chapter)}&w=280&h=158&fit=crop 280w,
                       ${coverPath(chapter)}&w=360&h=202&fit=crop 360w,
                       ${coverPath(chapter)}&w=460&h=259&fit=crop 460w,
                       ${coverPath(chapter)}&w=559&h=314&fit=crop 559w,
                       ${coverPath(chapter)}&w=559&h=314&fit=crop&dpr=2 1118w,
                       ${coverPath(chapter)}&w=559&h=314&fit=crop&dpr=3 1677w`"
-            sizes="100vw"
-            media="(max-width: 599px)"
-          >
-          <source
-            :srcset="`${coverPath(chapter)}&w=157&h=232&fit=crop 157w,
+              sizes="100vw"
+              media="(max-width: 599px)"
+            >
+            <source
+              :srcset="`${coverPath(chapter)}&w=157&h=232&fit=crop 157w,
                       ${coverPath(chapter)}&w=190&h=282&fit=crop 190w,
                       ${coverPath(chapter)}&w=223&h=331&fit=crop 223w,
                       ${coverPath(chapter)}&w=240&h=356&fit=crop 240w,
                       ${coverPath(chapter)}&w=283&h=420&fit=crop 283w,
                       ${coverPath(chapter)}&w=283&h=420&fit=crop&dpr=2 566w,
                       ${coverPath(chapter)}&w=283&h=420&fit=crop&dpr=3 849w,`"
-            sizes="(min-width: 1024px) 17.6875rem, 26vw"
-            media="(min-width: 600px)"
-          >
+              sizes="(min-width: 1024px) 17.6875rem, 26vw"
+              media="(min-width: 600px)"
+            >
+            <img
+              :src="`${coverPath(chapter)}&w=157&h=232&fit=crop`"
+              alt=""
+            >
+          </picture>
           <img
-            :src="`${coverPath(chapter)}&w=157&h=232&fit=crop`"
+            v-else
+            :src="`/assets/${chapterTheme(chapter)}.svg`"
             alt=""
           >
-        </picture>
-        <img
-          v-else
-          :src="`/assets/${chapterTheme(chapter)}.svg`"
-          alt=""
-        >
+        </lazy-media>
         <span class="chapter-list__item-content">{{ chapter.title }}</span>
       </nuxt-link>
     </li>
@@ -49,8 +51,10 @@
 
 <script>
   import sortBy from 'lodash/fp/sortBy';
+  import LazyMedia from '~/components/lazy-media/LazyMedia'
 
   export default {
+    components: { LazyMedia },
     props: {
       chapters: {
         type: Array,
@@ -120,7 +124,7 @@
     padding-bottom: 56.1111111111%;
     margin-bottom: 1rem;
 
-    background-color: var(--white);
+    background-color: var(--blue-secondary);
     text-decoration: none;
   }
 

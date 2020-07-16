@@ -1,7 +1,6 @@
 <template>
   <lazy-media>
-    <picture
-      :src="src"
+    <span
       class="lazy-image fixed-ratio"
       :style="`padding-bottom:${Math.round(srcHeight/srcWidth * 10000)/100}%`"
       slot="content"
@@ -15,7 +14,7 @@
           @load="onLoad"
         >
       </transition>
-    </picture>
+    </span>
     <div
       class="lazy-placeholder fixed-ratio"
       slot="placeholder"

@@ -2,7 +2,7 @@
   <lazy-media>
     <span
       class="lazy-image fixed-ratio"
-      :style="`padding-bottom:${Math.round(srcHeight/srcWidth * 10000)/100}%`"
+      :style="`padding-bottom:${100 / (srcWidth / srcHeight)}%`"
       slot="content"
     >
       <transition name="fade">
@@ -18,7 +18,7 @@
     <div
       class="lazy-placeholder fixed-ratio"
       slot="placeholder"
-      :style="`padding-bottom:${Math.round(srcHeight/srcWidth * 10000)/100}%`"
+      :style="`padding-bottom:${100 / (srcWidth / srcHeight)}%`"
     />
   </lazy-media>
 </template>

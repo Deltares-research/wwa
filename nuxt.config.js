@@ -123,6 +123,7 @@ export default {
   plugins: [
     { src: '~/plugins/smoothscroll', mode: 'client' },
     { src: '~/plugins/ga.js', mode: 'client' },
+    { src: '~/plugins/router-after-each.js', mode: 'client' },
   ],
   target: 'static',
   router: {
@@ -134,10 +135,10 @@ export default {
       keywordsRoute.alias = '/keywords/:slug';
 
       routes.unshift({
-        name: `methodologies`,
-        path: `/methodologies`,
+        name: `index`,
+        path: `/`,
         component: ChapterListOverviewComponent,
-        alias: ['/', '/themes', '/influences', '/goals', '/narratives'],
+        alias: ['/methodologies', '/themes', '/influences', '/goals', '/narratives'],
       });
 
       routes.unshift({

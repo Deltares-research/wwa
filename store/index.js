@@ -19,6 +19,7 @@ const store = () => {
       availableFilterItems: [],
       chapters: [],
       markerTypes: [],
+      historyAvailable: false,
     },
     actions: {
       async getChapters({ commit }) {
@@ -93,6 +94,9 @@ const store = () => {
       },
       setMarkerTypes (state, markerTypes) {
         state.markerTypes = markerTypes;
+      },
+      setHistoryAvailable (state) {
+        state.historyAvailable = true;
       },
     },
   });

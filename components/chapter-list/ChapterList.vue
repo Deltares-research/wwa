@@ -99,10 +99,6 @@
           return 'too-dirty';
         }
       },
-      c (cover, maxElementHeight) {
-        const heigthFactor = maxElementHeight / cover.value.height;
-        return cover.value.width * heigthFactor;
-      },
       coverPath (chapter) {
         return `${chapter.cover.imgixHost}${chapter.cover.value.path}?auto=compress,format`;
       },

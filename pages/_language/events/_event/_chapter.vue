@@ -13,6 +13,8 @@
       <div class="event__layout event__layout--padded">
         <narrative-header-event
           :chapter="chapter"
+          :back-button-label="internalEvent.backButtonLabel"
+          :chapter-navigation-label="internalEvent.chapterNavigationLabel"
           @scrollTo="smoothScroll"
         />
       </div>
@@ -166,6 +168,8 @@
 
           internalEvent(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
             name
+            backButtonLabel
+            chapterNavigationLabel
             image {
               url
             }

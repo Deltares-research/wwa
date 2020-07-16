@@ -1,19 +1,27 @@
 <template>
   <div class="chapter-navigation">
     <div
-      v-if="pages.length > 1"
       class="chapter-navigation__body"
       :class="{ 'chapter-navigation__body--with-background': withBackground }"
     >
       <nuxt-link
-        v-if="this.$route.params.language"
-        :to="`/${this.$route.params.language}/events/${this.$route.params.event}`"
+        v-if="$route.params.language"
+        :to="`/${$route.params.language}/events/${$route.params.event}`"
         class="chapter-navigation__back"
       >
-        Back
+        {{ backButtonLabel ? backButtonLabel : 'Back' }}
       </nuxt-link>
+      <button
+        v-else
+        type="button"
+        class="chapter-navigation__back"
+        @click="goBack"
+      >
+        Back
+      </button>
 
       <button
+        v-if="pages.length > 1"
         @click="toggleNavigation"
         aria-controls="chapter-navigation"
         aria-haspopup="true"
@@ -21,7 +29,7 @@
         class="chapter-navigation__select"
         :class="{ 'chapter-navigation__select--open': showNavigation }"
       >
-        In this chapter
+        {{ chapterNavigationLabel ? chapterNavigationLabel : 'In this chapter' }}
       </button>
     </div>
 
@@ -51,15 +59,22 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
+
   export default {
     props: {
       pages: Array,
       withBackground: Boolean,
+      backButtonLabel: String,
+      chapterNavigationLabel: String,
     },
     data () {
       return {
         showNavigation: false,
       };
+    },
+    computed: {
+      ...mapState(['historyAvailable']),
     },
     methods: {
       toggleNavigation () {
@@ -68,6 +83,9 @@
       navigate (slug) {
         this.$emit('scrollTo', slug);
         this.showNavigation = false;
+      },
+      goBack () {
+        this.historyAvailable ? this.$router.back() : this.$router.push('/');
       },
     },
   };
@@ -82,13 +100,12 @@
     position: relative;
     z-index: 2;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     padding: .75rem 1rem;
   }
 
   .chapter-navigation__body--with-background {
-    justify-content: space-between;
     background-color: var(--blue-secondary);
     background-image: url('/assets/waves.svg');
     background-repeat: no-repeat;
@@ -106,9 +123,14 @@
   .chapter-navigation__back {
     display: flex;
     align-items: center;
+    font-size: inherit;
     font-weight: 500;
     text-decoration: none;
     color: var(--white);
+    background: none;
+    border: none;
+    cursor: pointer;
+    appearance: none;
   }
 
   .chapter-navigation__back:hover,
@@ -167,19 +189,19 @@
     padding: 1rem;
     left: 1rem;
     right: 1rem;
-    bottom: 0;
+    bottom: 100%;
     background: var(--white);
-    transition: transform var(--narrative-header-event-transition-speed) var(--narrative-header-event-transition-timing-hide);
   }
 
   .chapter-navigation__body--with-background + .chapter-navigation__dropdown {
     left: 0;
     right: 0;
+    transition: transform var(--narrative-header-event-transition-speed) var(--narrative-header-event-transition-timing-hide);
   }
 
   .chapter-navigation__dropdown--visible {
     z-index: 10;
-    transform: translateY(100%) translateY(-.75rem);
+    transform: translateY(100%) translateY(3.3rem);
   }
 
   .chapter-navigation__body--with-background + .chapter-navigation__dropdown--visible {
@@ -187,7 +209,7 @@
     left: 0;
     right: 0;
     transition: transform var(--narrative-header-event-transition-speed) var(--narrative-header-event-transition-timing-reveal);
-    transform: translateY(100%);
+    transform: translateY(100%) translateY(4rem);
   }
 
   @media (--sm-viewport) {

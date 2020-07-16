@@ -87,7 +87,7 @@
                 >
                   <img
                     class="event-block-schedule-wide__url-icon"
-                    src="/assets/play-icon-dark.svg"
+                    src="~/assets/play-icon-dark.svg"
                     alt=""
                   >
                   {{ scheduleItem.watchLabel }}
@@ -167,7 +167,7 @@
                   >
                     <img
                       class="event-block-schedule__url-icon"
-                      src="/assets/play-icon-light.svg"
+                      src="~/assets/play-icon-light.svg"
                       :alt="scheduleItem.watchLabel"
                     >
                   </a>
@@ -183,14 +183,14 @@
                     </span>
                     <img
                       class="event-block-schedule__icon-closed"
-                      src="/assets/plus-icon.svg"
+                      src="~/assets/plus-icon.svg"
                       width="16"
                       height="16"
                       alt=""
                     >
                     <img
                       class="event-block-schedule__icon-open"
-                      src="/assets/min-icon.svg"
+                      src="~/assets/min-icon.svg"
                       width="16"
                       height="2"
                       alt=""
@@ -415,7 +415,7 @@
     font-weight: 500;
     font-size: 1rem;
     border-radius: 4px;
-    background-image: url('/assets/arrow-icon.svg');
+    background-image: url('~assets/arrow-icon.svg');
     background-repeat: no-repeat;
     background-position: right 1rem center;
   }

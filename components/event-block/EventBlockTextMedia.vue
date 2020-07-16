@@ -2,7 +2,7 @@
   <div class="event-block-text-media">
     <img
       v-if="props.showWaveMarker"
-      src="/event-title-wave.svg"
+      src="~/assets/event-title-wave.svg"
       width="111"
       height="35"
       alt=""

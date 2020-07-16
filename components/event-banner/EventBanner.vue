@@ -109,7 +109,7 @@
   .event-banner__wave {
     z-index: 2;
 
-    background-image: url('/assets/event-wave.svg');
+    background-image: url('~assets/event-wave.svg');
     background-size: 105% auto;
     background-repeat: no-repeat;
     background-position: bottom 0% center;
@@ -180,7 +180,7 @@
     margin-right: .5rem;
     width: 32px;
     height: 30px;
-    background-image: url('/favicon-32x32.png');
+    background-image: url('~assets/globe-small.png');
   }
 
   .event-banner__credits-content {

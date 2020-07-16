@@ -107,7 +107,7 @@
 
   .chapter-navigation__body--with-background {
     background-color: var(--blue-secondary);
-    background-image: url('/assets/waves.svg');
+    background-image: url('~assets/waves.svg');
     background-repeat: no-repeat;
     background-position: right center;
     background-size: 30rem auto;
@@ -143,7 +143,7 @@
     margin: .1rem .5rem 0 0;
     width: 5px;
     height: 10px;
-    background-image: url('/assets/arrow-left.svg');
+    background-image: url('~assets/arrow-left.svg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -173,7 +173,7 @@
     margin-left: .5rem;
     width: 1.5rem;
     height: 1.5rem;
-    background-image: url('/assets/arrow-down.svg');
+    background-image: url('~assets/arrow-down.svg');
     background-size: 1rem;
     background-repeat: no-repeat;
     background-position: center;

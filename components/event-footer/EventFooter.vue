@@ -18,7 +18,7 @@
       </a>
       <img
         class="event-footer__background"
-        src="/assets/globe.png"
+        src="~/assets/globe.png"
         alt=""
       >
     </div>

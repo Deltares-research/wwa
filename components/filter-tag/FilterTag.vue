@@ -10,7 +10,7 @@
       alt=""
       class="filter-tag__icon"
       height="21px"
-      :width="icon.value.width / (icon.value.height / 21)"
+      :width="`${icon.value.width / (icon.value.height / 21)}px`"
     >
     {{ title }}
   </nuxt-link>

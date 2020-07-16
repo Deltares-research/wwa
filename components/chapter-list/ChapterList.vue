@@ -1,52 +1,50 @@
 <template>
-  <div class="chapter-list">
-    <ul class="chapter-list__list">
-      <li
-        class="chapter-list__item"
-        v-for="chapter in limitedChapters"
-        :key="chapter.slug"
+  <ul class="chapter-list">
+    <li
+      class="chapter-list__item"
+      v-for="chapter in limitedChapters"
+      :key="chapter.slug"
+    >
+      <nuxt-link
+        class="chapter-list__item-link"
+        :to="chapter.path"
       >
-        <nuxt-link
-          class="chapter-list__item-link"
-          :to="chapter.path"
-        >
-          <picture v-if="chapter.cover">
-            <source
-              :srcset="`${coverPath(chapter)}&w=280&h=158&fit=crop 280w,
-                          ${coverPath(chapter)}&w=360&h=202&fit=crop 360w,
-                          ${coverPath(chapter)}&w=460&h=259&fit=crop 460w,
-                          ${coverPath(chapter)}&w=559&h=314&fit=crop 559w,
-                          ${coverPath(chapter)}&w=559&h=314&fit=crop&dpr=2 1118w,
-                          ${coverPath(chapter)}&w=559&h=314&fit=crop&dpr=3 1677w`"
-              sizes="100vw"
-              media="(max-width: 599px)"
-            >
-            <source
-              :srcset="`${coverPath(chapter)}&w=157&h=232&fit=crop 157w,
-                          ${coverPath(chapter)}&w=190&h=282&fit=crop 190w,
-                          ${coverPath(chapter)}&w=223&h=331&fit=crop 223w,
-                          ${coverPath(chapter)}&w=240&h=356&fit=crop 240w,
-                          ${coverPath(chapter)}&w=283&h=420&fit=crop 283w,
-                          ${coverPath(chapter)}&w=283&h=420&fit=crop&dpr=2 566w,
-                          ${coverPath(chapter)}&w=283&h=420&fit=crop&dpr=3 849w,`"
-              sizes="(min-width: 1024px) 17.6875rem, 26vw"
-              media="(min-width: 600px)"
-            >
-            <img
-              :src="`${coverPath(chapter)}&w=157&h=232&fit=crop`"
-              alt=""
-            >
-          </picture>
+        <picture v-if="chapter.cover">
+          <source
+            :srcset="`${coverPath(chapter)}&w=280&h=158&fit=crop 280w,
+                      ${coverPath(chapter)}&w=360&h=202&fit=crop 360w,
+                      ${coverPath(chapter)}&w=460&h=259&fit=crop 460w,
+                      ${coverPath(chapter)}&w=559&h=314&fit=crop 559w,
+                      ${coverPath(chapter)}&w=559&h=314&fit=crop&dpr=2 1118w,
+                      ${coverPath(chapter)}&w=559&h=314&fit=crop&dpr=3 1677w`"
+            sizes="100vw"
+            media="(max-width: 599px)"
+          >
+          <source
+            :srcset="`${coverPath(chapter)}&w=157&h=232&fit=crop 157w,
+                      ${coverPath(chapter)}&w=190&h=282&fit=crop 190w,
+                      ${coverPath(chapter)}&w=223&h=331&fit=crop 223w,
+                      ${coverPath(chapter)}&w=240&h=356&fit=crop 240w,
+                      ${coverPath(chapter)}&w=283&h=420&fit=crop 283w,
+                      ${coverPath(chapter)}&w=283&h=420&fit=crop&dpr=2 566w,
+                      ${coverPath(chapter)}&w=283&h=420&fit=crop&dpr=3 849w,`"
+            sizes="(min-width: 1024px) 17.6875rem, 26vw"
+            media="(min-width: 600px)"
+          >
           <img
-            v-else
-            :src="`/assets/${chapterTheme(chapter)}.svg`"
+            :src="`${coverPath(chapter)}&w=157&h=232&fit=crop`"
             alt=""
           >
-          <span class="chapter-list__item-content">{{ chapter.title }}</span>
-        </nuxt-link>
-      </li>
-    </ul>
-  </div>
+        </picture>
+        <img
+          v-else
+          :src="`/assets/${chapterTheme(chapter)}.svg`"
+          alt=""
+        >
+        <span class="chapter-list__item-content">{{ chapter.title }}</span>
+      </nuxt-link>
+    </li>
+  </ul>
 </template>
 
 <script>
@@ -109,21 +107,9 @@
 </script>
 
 <style>
-  .chapter-list__list {
+  .chapter-list {
     list-style: none;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .chapter-list__list > * {
-    flex: 1;
-  }
-
-  .chapter-list__item {
-    display: block;
-    position: relative;
-    margin-bottom: 1rem;
   }
 
   .chapter-list__item-link {
@@ -132,6 +118,7 @@
     height: 0;
     overflow: hidden;
     padding-bottom: 56.1111111111%;
+    margin-bottom: 1rem;
 
     background-color: var(--white);
     text-decoration: none;
@@ -205,31 +192,21 @@
 
   @media (--sm-viewport) {
     .chapter-list {
+      display: flex;
+      flex-wrap: wrap;
       margin: 0 -6px;
     }
 
-    .chapter-list__list {
-      flex-direction: row;
-      flex-wrap: wrap;
+    .chapter-list__item {
+      width: calc(100% / 3 - 14px);
     }
 
-    .chapter-list__item {
-      flex-basis: calc(100% / 3 - 14px);
-      flex-grow: 0;
-    }
-
-    .chapter-list__item {
+    .chapter-list__item-link {
       margin: 0 7px 14px 7px;
     }
 
     .chapter-list__item-content {
       font-size: 1.5rem;
-    }
-  }
-
-  @media (--md-viewport) {
-    .chapter-list__item-content {
-      word-break: normal;
     }
   }
 </style>

@@ -24,6 +24,7 @@
         v-for="image in images"
         :key="image.id"
         class="page-body__figure"
+        :class="(image.value.width / image.value.height < .8) ? 'page-body__figure--is-portrait' : null"
       >
         <responsive-image
           class="page-body__lazy-image"
@@ -50,6 +51,7 @@
         v-for="graph in graphs"
         :key="graph.id"
         class="page-body__figure"
+        :class="(graph.value.width / graph.value.height < .8) ? 'page-body__figure--is-portrait' : null"
       >
         <responsive-image
           class="page-body__lazy-image"
@@ -233,10 +235,19 @@ export default {
   position: relative;
 }
 
+.page-body__figure--is-portrait {
+  width: 50%;
+  margin: 0 auto;
+}
+
 @media (min-width: 1200px) {
   .page-body__figure {
     width: calc(100% + 3rem);
     margin-left: -1.5rem;
+  }
+
+  .page-body__figure--is-portrait {
+    width: calc(50% + 3rem);
   }
 }
 

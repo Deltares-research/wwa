@@ -51,7 +51,7 @@
 
 <script>
   import sortBy from 'lodash/fp/sortBy';
-  import LazyMedia from '~/components/lazy-media/LazyMedia'
+  import LazyMedia from '~/components/lazy-media/LazyMedia';
 
   export default {
     components: { LazyMedia },

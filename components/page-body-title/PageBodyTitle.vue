@@ -3,7 +3,7 @@
     <img
       v-if="theme && theme.slug"
       class="theme-icon page-body-title__theme-icon"
-      :src="`/assets/${theme.slug}.png`"
+      :src="`/${theme.slug}.png`"
       width="30"
       height="30"
       alt=""

@@ -80,6 +80,7 @@
         position: null,
         tabsList: null,
         tabLinks: null,
+        debounceFunction: debounce(this.handleResize),
       };
     },
     computed: {
@@ -129,10 +130,10 @@
 
       this.handleResize();
 
-      window.addEventListener('resize', debounce(this.handleResize), 1000);
+      window.addEventListener('resize', this.debounceFunction, 1000);
     },
     beforeDestroy () {
-      window.removeEventListener('resize', debounce(this.handleResize), 1000);
+      window.removeEventListener('resize', this.debounceFunction, 1000);
     },
     watch: {
       activeFilterSlug(newValue) {

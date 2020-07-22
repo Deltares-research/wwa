@@ -61,7 +61,7 @@
 </template>
 
 <script>
-  import debounce from 'lodash/debounce';
+  import throttle from 'lodash/throttle';
   import { mapState } from 'vuex';
 
   export default {
@@ -76,6 +76,7 @@
         menuHeight: null,
         isFixed: false,
         showNavigation: false,
+        throttleFunction: throttle(this.handleScroll),
       };
     },
     computed: {
@@ -100,7 +101,7 @@
     mounted () {
       if (!this.isStatic) {
         this.handleScroll();
-        window.addEventListener('scroll', debounce(this.handleScroll), 1000);
+        window.addEventListener('scroll', this.throttleFunction, 1000);
 
         const mediaQuery = window.matchMedia('(min-width: 37.5rem)');
         mediaQuery.matches ? this.menuHeight = 90 : this.menuHeight = 52;
@@ -111,7 +112,7 @@
     },
     beforeDestroy () {
       if (!this.isStatic) {
-        window.removeEventListener('scroll', debounce(this.handleScroll), 1000);
+        window.removeEventListener('scroll', this.throttleFunction, 1000);
       }
     },
   };

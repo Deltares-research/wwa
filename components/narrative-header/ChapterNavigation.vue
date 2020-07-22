@@ -82,13 +82,9 @@
       ...mapState(['historyAvailable']),
     },
     methods: {
-      handleResize () {
-        const mediaQuery = window.matchMedia('(min-width: 37.5rem)');
-        mediaQuery.matches ? this.menuHeight = 90 : this.menuHeight = 52;
-      },
       handleScroll () {
         const navigationTop = this.$el.getBoundingClientRect().top;
-        navigationTop < this.menuHeight ? this.isFixed = true : this.isFixed = false;
+        this.isFixed = navigationTop < this.menuHeight;
       },
       toggleNavigation () {
         this.showNavigation = !this.showNavigation;
@@ -106,14 +102,16 @@
         this.handleScroll();
         window.addEventListener('scroll', debounce(this.handleScroll), 1000);
 
-        this.handleResize();
-        window.addEventListener('resize', debounce(this.handleResize), 1000);
+        const mediaQuery = window.matchMedia('(min-width: 37.5rem)');
+        mediaQuery.matches ? this.menuHeight = 90 : this.menuHeight = 52;
+        mediaQuery.addListener(event => {
+          event.matches ? this.menuHeight = 90 : this.menuHeight = 52;
+        });
       }
     },
     beforeDestroy () {
       if (!this.isStatic) {
         window.removeEventListener('scroll', debounce(this.handleScroll), 1000);
-        window.removeEventListener('resize', debounce(this.handleResize), 1000);
       }
     },
   };

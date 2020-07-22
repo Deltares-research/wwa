@@ -193,6 +193,19 @@ export default {
   color: var(--white);
 }
 
+.page-body ul,
+.page-body ol {
+  margin-bottom: 1rem;
+  padding-left: 1.1rem;
+  line-height: var(--line-height);
+}
+
+.page-body ul li,
+.page-body ol li {
+  margin-bottom: .5rem;
+  padding-left: .5rem;
+}
+
 .page-body p:first-child {
   font-weight: bold;
 }

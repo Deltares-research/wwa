@@ -36,10 +36,9 @@
       </button>
 
       <nav
+        v-if="showNavigation"
         id="chapter-navigation"
         class="chapter-navigation__dropdown"
-        :aria-hidden="!showNavigation"
-        :class="{ 'chapter-navigation__dropdown--visible': showNavigation }"
       >
         <ol class="chapter-navigation__list">
           <li
@@ -254,25 +253,10 @@
   .chapter-navigation__dropdown {
     position: absolute;
     padding: 1rem;
+    top: 3.3rem;
     left: 1rem;
     right: 1rem;
-    bottom: 100%;
     background: var(--white);
-  }
-
-  .chapter-navigation__body--static + .chapter-navigation__dropdown {
-    left: 0;
-    right: 0;
-  }
-
-  .chapter-navigation__dropdown--visible {
-    transform: translateY(100%) translateY(3.3rem);
-  }
-
-  .chapter-navigation__body--static + .chapter-navigation__dropdown--visible {
-    left: 0;
-    right: 0;
-    transform: translateY(100%) translateY(4rem);
   }
 
   @media (--sm-viewport) {
@@ -280,19 +264,10 @@
       left: auto;
       max-width: 500px;
     }
-
-    .chapter-navigation__body--static + .chapter-navigation__dropdown,
-    .chapter-navigation__dropdown--visible,
-    .chapter-navigation__body--static + .chapter-navigation__dropdown--visible {
-      left: auto;
-      right: 1rem;
-    }
   }
 
   @media (--md-viewport) {
-    .chapter-navigation__body--static + .chapter-navigation__dropdown,
-    .chapter-navigation__dropdown--visible,
-    .chapter-navigation__body--static + .chapter-navigation__dropdown--visible {
+    .chapter-navigation__dropdown {
       right: 2rem;
     }
   }

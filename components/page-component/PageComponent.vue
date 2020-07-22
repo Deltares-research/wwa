@@ -42,7 +42,6 @@ export default {
 
 .page-component:first-of-type {
   position: relative;
-  z-index: 2;
   margin-top: -8rem;
 }
 

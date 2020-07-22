@@ -2,7 +2,10 @@
   <div class="chapter-navigation">
     <div
       class="chapter-navigation__body"
-      :class="{ 'chapter-navigation__body--with-background': withBackground }"
+      :class="{
+        'chapter-navigation__body--static': isStatic,
+        'chapter-navigation__body--fixed': isFixed
+      }"
     >
       <nuxt-link
         v-if="$route.params.language"
@@ -31,52 +34,59 @@
       >
         {{ chapterNavigationLabel ? chapterNavigationLabel : 'In this chapter' }}
       </button>
-    </div>
 
-    <nav
-      id="chapter-navigation"
-      class="chapter-navigation__dropdown"
-      :aria-hidden="!showNavigation"
-      :class="{ 'chapter-navigation__dropdown--visible': showNavigation }"
-    >
-      <ol class="chapter-navigation__list">
-        <li
-          v-for="(page, index) in pages"
-          :key="`${page.slug}-${index}`"
-          class="chapter-navigation__list-item"
-        >
-          <a
-            :href="`#${page.slug}`"
-            class="chapter-navigation__link"
-            @click.prevent="navigate(page.slug)"
+      <nav
+        v-if="showNavigation"
+        id="chapter-navigation"
+        class="chapter-navigation__dropdown"
+      >
+        <ol class="chapter-navigation__list">
+          <li
+            v-for="(page, index) in pages"
+            :key="`${page.slug}-${index}`"
+            class="chapter-navigation__list-item"
           >
-            {{ page.title }}
-          </a>
-        </li>
-      </ol>
-    </nav>
+            <a
+              :href="`#${page.slug}`"
+              class="chapter-navigation__link"
+              @click.prevent="navigate(page.slug)"
+            >
+              {{ page.title }}
+            </a>
+          </li>
+        </ol>
+      </nav>
+    </div>
   </div>
 </template>
 
 <script>
+  import throttle from 'lodash/throttle';
   import { mapState } from 'vuex';
 
   export default {
     props: {
       pages: Array,
-      withBackground: Boolean,
+      isStatic: Boolean,
       backButtonLabel: String,
       chapterNavigationLabel: String,
     },
     data () {
       return {
+        menuHeight: null,
+        isFixed: false,
         showNavigation: false,
+        throttleFunction: throttle(this.handleScroll),
       };
     },
     computed: {
       ...mapState(['historyAvailable']),
     },
     methods: {
+      handleScroll () {
+        const navigationTop = this.$el.getBoundingClientRect().top;
+        this.isFixed = navigationTop < this.menuHeight;
+      },
       toggleNavigation () {
         this.showNavigation = !this.showNavigation;
       },
@@ -88,6 +98,23 @@
         this.historyAvailable ? this.$router.back() : this.$router.push('/');
       },
     },
+    mounted () {
+      if (!this.isStatic) {
+        this.handleScroll();
+        window.addEventListener('scroll', this.throttleFunction, 1000);
+
+        const mediaQuery = window.matchMedia('(min-width: 37.5rem)');
+        mediaQuery.matches ? this.menuHeight = 90 : this.menuHeight = 52;
+        mediaQuery.addListener(event => {
+          event.matches ? this.menuHeight = 90 : this.menuHeight = 52;
+        });
+      }
+    },
+    beforeDestroy () {
+      if (!this.isStatic) {
+        window.removeEventListener('scroll', this.throttleFunction, 1000);
+      }
+    },
   };
 </script>
 
@@ -98,19 +125,53 @@
 
   .chapter-navigation__body {
     position: relative;
-    z-index: 2;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: .75rem 1rem;
   }
 
-  .chapter-navigation__body--with-background {
+  .chapter-navigation__body:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--blue-primary);
+    opacity: 0;
+    transition: opacity .1s ease-out;
+  }
+
+  .chapter-navigation__body--static {
     background-color: var(--blue-secondary);
     background-image: url('~assets/waves.svg');
     background-repeat: no-repeat;
     background-position: right center;
     background-size: 30rem auto;
+  }
+
+  .chapter-navigation__body--fixed {
+    position: fixed;
+    top: 57px;
+    width: 100%;
+  }
+
+  @media (--sm-viewport) {
+    .chapter-navigation__body--fixed {
+      top: 90px;
+    }
+  }
+
+  @media (--lg-viewport) {
+    .chapter-navigation__body--fixed {
+      width: 45rem;
+    }
+  }
+
+  .chapter-navigation__body--fixed:after {
+    opacity: 1;
   }
 
   @media (--md-viewport) {
@@ -167,6 +228,10 @@
     cursor: pointer;
   }
 
+  .chapter-navigation__body--fixed .chapter-navigation__select {
+    background-color: var(--blue-primary--lighter);
+  }
+
   .chapter-navigation__select:after {
     content: '';
     display: block;
@@ -177,7 +242,7 @@
     background-size: 1rem;
     background-repeat: no-repeat;
     background-position: center;
-    transition: transform var(--narrative-header-event-transition-speed) linear;
+    transition: transform .3s ease
   }
 
   .chapter-navigation__select--open:after {
@@ -187,29 +252,10 @@
   .chapter-navigation__dropdown {
     position: absolute;
     padding: 1rem;
+    top: 3.3rem;
     left: 1rem;
     right: 1rem;
-    bottom: 100%;
     background: var(--white);
-  }
-
-  .chapter-navigation__body--with-background + .chapter-navigation__dropdown {
-    left: 0;
-    right: 0;
-    transition: transform var(--narrative-header-event-transition-speed) var(--narrative-header-event-transition-timing-hide);
-  }
-
-  .chapter-navigation__dropdown--visible {
-    z-index: 10;
-    transform: translateY(100%) translateY(3.3rem);
-  }
-
-  .chapter-navigation__body--with-background + .chapter-navigation__dropdown--visible {
-    z-index: 0;
-    left: 0;
-    right: 0;
-    transition: transform var(--narrative-header-event-transition-speed) var(--narrative-header-event-transition-timing-reveal);
-    transform: translateY(100%) translateY(4rem);
   }
 
   @media (--sm-viewport) {
@@ -217,19 +263,10 @@
       left: auto;
       max-width: 500px;
     }
-
-    .chapter-navigation__body--with-background + .chapter-navigation__dropdown,
-    .chapter-navigation__dropdown--visible,
-    .chapter-navigation__body--with-background + .chapter-navigation__dropdown--visible {
-      left: auto;
-      right: 1rem;
-    }
   }
 
   @media (--md-viewport) {
-    .chapter-navigation__body--with-background + .chapter-navigation__dropdown,
-    .chapter-navigation__dropdown--visible,
-    .chapter-navigation__body--with-background + .chapter-navigation__dropdown--visible {
+    .chapter-navigation__dropdown {
       right: 2rem;
     }
   }

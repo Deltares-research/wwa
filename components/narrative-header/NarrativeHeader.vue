@@ -2,8 +2,9 @@
   <header class="narrative-header">
     <chapter-navigation
       :pages="pages"
-      :with-background="false"
+      :is-static="false"
       @scrollTo="onScrollTo"
+      class="narrative-header__navigation"
     />
 
     <h1 class="narrative-header__title">
@@ -41,8 +42,8 @@
 
 <style>
   .narrative-header {
-    position: relative;
     z-index: 1;
+    position: relative;
     height: 25rem;
   }
 
@@ -53,7 +54,6 @@
   }
 
   .narrative-header:before {
-    z-index: 2;
     content: '';
     position: absolute;
     display: block;
@@ -64,8 +64,11 @@
     background: linear-gradient(180deg, rgba(8, 8, 8, 0) 0%, rgba(8, 8, 8, 0.7) 84%, var(--black-primary) 100%);
   }
 
+  .narrative-header__navigation {
+    z-index: 2;
+  }
+
   .narrative-header__title {
-    z-index: 3;
     position: absolute;
     top: 4rem;
     left: 1rem;
@@ -88,7 +91,7 @@
       transform: translateX(-50%);
       font-size: 3.75rem;
       line-height: 1.1;
-    -webkit-line-clamp: 4;
+      -webkit-line-clamp: 4;
     }
   }
 
@@ -99,7 +102,7 @@
   }
 
   .narrative-header__cover {
-    z-index: 1;
+    z-index: -1;
     position: absolute;
     left: 0;
     top: 0;

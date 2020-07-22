@@ -63,6 +63,7 @@ export default {
   },
   mounted () {
     this.$store.commit('setMarkerTypes', [this.chapter.slug]);
+    this.$store.commit('enableGlobePositionRight');
     this.$store.commit('disableInteraction');
     this.$store.commit('disableGlobeAutoRotation');
     const pageSlug = this.$route.hash.replace(/^#/, '');
@@ -75,9 +76,6 @@ export default {
       this.observeIntersectingChildren();
       this.observeScrolledToTop();
     }
-  },
-  destroyed () {
-    this.$store.commit('disableGlobePositionRight');
   },
   components: {
     NarrativeFooter,

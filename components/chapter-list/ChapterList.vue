@@ -103,6 +103,9 @@
         return `${chapter.cover.imgixHost}${chapter.cover.value.path}?auto=compress,format`;
       },
     },
+    mounted () {
+      this.$store.commit('disableGlobePositionRight');
+    },
   };
 </script>
 

@@ -111,6 +111,7 @@
       },
     },
     mounted () {
+      this.$store.commit('disableGlobePositionRight');
       this.$store.commit('resetTheme');
       this.$store.commit('enableInteraction');
       this.$store.commit('enableGlobeAutoRotation');

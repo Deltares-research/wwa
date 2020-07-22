@@ -332,6 +332,9 @@
         params,
       };
     },
+    mounted () {
+      this.$store.commit('disableGlobePositionRight');
+    },
   };
 </script>
 

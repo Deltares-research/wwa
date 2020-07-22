@@ -72,6 +72,9 @@
         return output;
       },
     },
+    mounted () {
+      this.$store.commit('disableGlobePositionRight');
+    },
   };
 </script>
 

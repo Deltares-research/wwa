@@ -244,6 +244,7 @@
     background-size: 1rem;
     background-repeat: no-repeat;
     background-position: center;
+    transition: transform .3s ease
   }
 
   .chapter-navigation__select--open:after {

@@ -193,15 +193,15 @@ export default {
   color: var(--white);
 }
 
-.page-body ul,
-.page-body ol {
+.page-body__body ul,
+.page-body__body ol {
   margin-bottom: 1rem;
   padding-left: 1.1rem;
   line-height: var(--line-height);
 }
 
-.page-body ul li,
-.page-body ol li {
+.page-body__body ul li,
+.page-body__body ol li {
   margin-bottom: .5rem;
   padding-left: .5rem;
 }

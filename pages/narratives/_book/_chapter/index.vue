@@ -148,7 +148,7 @@ export default {
 <style>
 .chapter-column {
   margin-top: calc(-1 * var(--globe-spacing-default));
-  padding-top: 64px;
+  padding-top: 60px;
   z-index: 0;
   width: 100vw;
   background-color: var(--black-primary);

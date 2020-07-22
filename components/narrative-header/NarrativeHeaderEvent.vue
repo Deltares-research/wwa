@@ -16,7 +16,7 @@
 
     <chapter-navigation
       :pages="chapter.pages"
-      :with-background="true"
+      :is-static="true"
       :back-button-label="backButtonLabel"
       :chapter-navigation-label="chapterNavigationLabel"
       @scrollTo="onScrollTo"
@@ -45,12 +45,6 @@
 </script>
 
 <style>
-  :root {
-    --narrative-header-event-transition-speed: 300ms;
-    --narrative-header-event-transition-timing-hide: cubic-bezier(0.83, 0, 0.73, 1);
-    --narrative-header-event-transition-timing-reveal: cubic-bezier(0.17, 0, 0.27, 1);
-  }
-
   .narrative-header-event {
     position: relative;
     margin: 0 -1rem 2rem -1rem;

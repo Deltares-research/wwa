@@ -131,6 +131,9 @@
 
       window.addEventListener('resize', debounce(this.handleResize), 1000);
     },
+    beforeDestroy () {
+      window.removeEventListener('resize', debounce(this.handleResize), 1000);
+    },
     watch: {
       activeFilterSlug(newValue) {
         this.$store.commit('setAvailableFilterItems', this.availableFilterItems);

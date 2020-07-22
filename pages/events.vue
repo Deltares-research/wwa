@@ -146,6 +146,7 @@
           },
         };
       });
+      this.$store.commit('disableGlobePositionRight');
       this.$store.commit('resetTheme');
       this.$store.commit('setMarkerTypes', ['event']);
       this.$store.commit('enableInteraction');

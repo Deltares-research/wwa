@@ -63,7 +63,7 @@
               <div class="event-block-schedule-wide__meta">
                 <img
                   class="event-block-schedule-wide__speaker"
-                  v-if="scheduleItem.speaker"
+                  v-if="scheduleItem.speaker && scheduleItem.speaker.image"
                   :src="`${scheduleItem.speaker.image.url}?auto=format,compress&mask=ellipse&w=60&h=60`"
                   alt=""
                 >
@@ -77,9 +77,11 @@
                 <span class="event-block-schedule__description-label">Description</span>
                 {{ scheduleItem.description }}
               </div>
-              <div class="event-block-schedule-wide__url-wrapper">
+              <div
+                v-if="scheduleItem.isNow && scheduleItem.watchUrl && scheduleItem.watchLabel"
+                class="event-block-schedule-wide__url-wrapper"
+              >
                 <a
-                  v-if="scheduleItem.isNow && scheduleItem.watchUrl"
                   class="event-block-schedule__url event-block-schedule-wide__url"
                   :href="scheduleItem.watchUrl"
                   target="_blank"
@@ -159,7 +161,7 @@
                   }"
                 >
                   <a
-                    v-if="scheduleItem.isNow && scheduleItem.watchUrl"
+                    v-if="scheduleItem.isNow && scheduleItem.watchUrl && scheduleItem.watchLabel"
                     class="event-block-schedule__url"
                     :href="scheduleItem.watchUrl"
                     target="_blank"
@@ -376,6 +378,7 @@
   }
 
   .event-block-schedule-wide__url-wrapper {
+    align-self: center;
     min-width: 10rem;
   }
 

@@ -47,7 +47,7 @@
 
           <div
             v-if="page.images && page.images.length"
-            class="event-chapter__block"
+            class="event-chapter__block event-chapter__block--images"
           >
             <figure
               v-for="image in page.images"
@@ -207,24 +207,6 @@
     }
   }
 
-  .page-body__figure--is-portrait {
-    width: 75%;
-    margin: 0 auto;
-  }
-
-  @media (--sm-viewport) {
-    .page-body__figure--is-portrait {
-      width: 75%;
-    }
-  }
-
-  @media (--md-viewport) {
-    .page-body__figure--is-portrait {
-      width: 50%;
-      margin-left: 0;
-    }
-  }
-
   .event-chapter__article--blue {
     background: var(--blue-primary);
   }
@@ -232,5 +214,31 @@
   .event-chapter__block:not(:last-child),
   .event-chapter__block .page-body__figure:not(:last-child) {
     margin-bottom: 2rem;
+  }
+
+  .event-chapter__block--images {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .event-chapter__block--images .page-body__figure {
+    width: 100%;
+  }
+
+  @media (--sm-viewport) {
+    .event-chapter__block--images .page-body__figure--is-portrait {
+      width: 75%;
+    }
+  }
+
+  @media (--md-viewport) {
+    .event-chapter__block--images {
+      justify-content: space-between;
+    }
+
+    .event-chapter__block--images .page-body__figure--is-portrait {
+      width: calc(50% - 1rem);
+    }
   }
 </style>

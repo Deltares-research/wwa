@@ -1,6 +1,6 @@
 <template>
-  <div class="animator__slide-up event-block-chapters">
-    <p class="event-block-chapters__title">
+  <div class="animator__slide-up event-block-chapters-carousel">
+    <p class="event-block-chapters-carousel__title">
       {{ title }}
     </p>
 
@@ -12,19 +12,19 @@
         <nuxt-link
           :to="item.slug"
           append
-          class="event-block-chapters__link"
+          class="event-block-chapters-carousel__link"
         >
-          <span class="event-block-chapters__item-title">{{ item.title }}</span>
+          <span class="event-block-chapters-carousel__item-title">{{ item.title }}</span>
           <img
             v-if="item.cover"
             :data-src="`${item.cover.url}?auto=compress,format&w=530`"
             alt=""
-            class="event-block-chapters__item-image swiper-lazy"
+            class="event-block-chapters-carousel__item-image swiper-lazy"
             data-swiper-parallax="-10%"
           >
           <div
             v-else
-            class="event-block-chapters__item-placeholder"
+            class="event-block-chapters-carousel__item-placeholder"
           />
           <div class="swiper-lazy-preloader swiper-lazy-preloader-white" />
         </nuxt-link>
@@ -101,26 +101,26 @@
 </script>
 
 <style>
-  .event-block-chapters__title {
+  .event-block-chapters-carousel__title {
     margin-bottom: .25rem;
     font-size: .75rem;
     text-transform: uppercase;
   }
 
   @media (--sm-viewport) {
-    .event-block-chapters__title {
+    .event-block-chapters-carousel__title {
       font-size: .875rem;
     }
   }
 
-  .event-block-chapters__link {
+  .event-block-chapters-carousel__link {
     position: relative;
     display: block;
     height: 265px;
     overflow: hidden;
   }
 
-  .event-block-chapters__link:before {
+  .event-block-chapters-carousel__link:before {
     content: '';
     position: absolute;
     top: 0;
@@ -130,7 +130,7 @@
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 38.44%, rgba(0, 0, 0, 0.7) 100%);
   }
 
-  .event-block-chapters__item-title {
+  .event-block-chapters-carousel__item-title {
     position: absolute;
     z-index: 12;
     left: 1rem;
@@ -142,7 +142,7 @@
     text-shadow: 1px 1px 1px var(--blue-primary);
   }
 
-  .event-block-chapters__item-image {
+  .event-block-chapters-carousel__item-image {
     position: relative;
     top: -20%;
     left: -20%;
@@ -152,7 +152,7 @@
     object-fit: cover;
   }
 
-  .event-block-chapters__item-placeholder {
+  .event-block-chapters-carousel__item-placeholder {
     position: absolute;
     z-index: 11;
     width: 100%;

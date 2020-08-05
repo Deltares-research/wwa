@@ -174,7 +174,7 @@
     position: absolute;
     left: 1rem;
     bottom: 1rem;
-    right: 0;
+    right: 1rem;
     z-index: 1;
     font-size: 1rem;
     font-weight: bold;

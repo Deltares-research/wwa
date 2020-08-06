@@ -121,8 +121,13 @@
 </script>
 
 <style>
+  :root {
+    --navigation-height: 66px;
+  }
+
   .chapter-navigation {
     position: relative;
+    height: var(--navigation-height);
   }
 
   .chapter-navigation__body {
@@ -130,7 +135,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: .75rem 1rem;
+    padding: 0 1rem;
+    height: var(--navigation-height);
   }
 
   .chapter-navigation__body:after {

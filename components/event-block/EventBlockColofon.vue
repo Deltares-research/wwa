@@ -141,6 +141,13 @@
     text-decoration: underline;
   }
 
+  .event-block-colofon__copy ul,
+  .event-block-colofon__copy ol {
+    margin-bottom: 1rem;
+    padding-left: 1.1rem;
+    line-height: var(--line-height);
+  }
+
   .event-block-colofon__logos {
     display: flex;
     flex-wrap: wrap;

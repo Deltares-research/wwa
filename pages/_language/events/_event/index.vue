@@ -72,9 +72,14 @@
               :is-intersection-disabled="index === 0 && blockIndex === 0"
               class="event__layout event__layout--padded"
             >
-              <event-block-chapters
+              <event-block-chapters-carousel
+                v-if="block.chapters.length > 3"
                 :title="block.title"
                 :items="block.chapters"
+              />
+              <event-block-chapters-list
+                v-else
+                v-bind="block"
               />
             </animator>
             <animator
@@ -130,7 +135,8 @@
   import fetchContent from '~/lib/fetch-content';
 
   import EventBanner from '~/components/event-banner/EventBanner';
-  import EventBlockChapters from '~/components/event-block/EventBlockChapters';
+  import EventBlockChaptersCarousel from '~/components/event-block/EventBlockChaptersCarousel';
+  import EventBlockChaptersList from '~/components/event-block/EventBlockChaptersList';
   import EventBlockColofon from '~/components/event-block/EventBlockColofon';
   import EventBlockSchedule from '~/components/event-block/EventBlockSchedule';
   import EventBlockText from '~/components/event-block/EventBlockText';
@@ -144,7 +150,8 @@
   export default {
     components: {
       EventBanner,
-      EventBlockChapters,
+      EventBlockChaptersCarousel,
+      EventBlockChaptersList,
       EventBlockColofon,
       EventBlockSchedule,
       EventBlockText,

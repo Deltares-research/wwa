@@ -65,7 +65,7 @@
               />
               <figcaption
                 v-if="image.title || image.value && image.value.title"
-                class="page-body__asset-placeholder"
+                class="event-chapter__caption"
               >
                 {{ image.title || image.value && image.value.title }}
               </figcaption>
@@ -148,6 +148,7 @@
                 url
                 width
                 height
+                title
                 alt
               }
               video {
@@ -232,5 +233,9 @@
   .event-chapter__block:not(:last-child),
   .event-chapter__block .page-body__figure:not(:last-child) {
     margin-bottom: 2rem;
+  }
+
+  .event-chapter__caption {
+    margin-top: .5rem;
   }
 </style>

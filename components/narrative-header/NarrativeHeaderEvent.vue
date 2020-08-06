@@ -16,7 +16,7 @@
 
     <chapter-navigation
       :pages="chapter.pages"
-      :is-static="true"
+      :is-event-chapter="true"
       :back-button-label="backButtonLabel"
       :chapter-navigation-label="chapterNavigationLabel"
       @scrollTo="onScrollTo"

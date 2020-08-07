@@ -3,7 +3,7 @@
     <div
       class="chapter-navigation__body"
       :class="{
-        'chapter-navigation__body--static': isStatic,
+        'chapter-navigation__body--event-chapter': isEventChapter,
         'chapter-navigation__body--fixed': isFixed
       }"
     >
@@ -67,7 +67,7 @@
   export default {
     props: {
       pages: Array,
-      isStatic: Boolean,
+      isEventChapter: Boolean,
       backButtonLabel: String,
       chapterNavigationLabel: String,
     },
@@ -99,7 +99,11 @@
       },
     },
     mounted () {
-      if (!this.isStatic) {
+      if (this.isEventChapter) {
+        this.handleScroll();
+        this.menuHeight = 0;
+        window.addEventListener('scroll', this.throttleFunction, 1000);
+      } else {
         this.handleScroll();
         window.addEventListener('scroll', this.throttleFunction, 1000);
 
@@ -111,16 +115,19 @@
       }
     },
     beforeDestroy () {
-      if (!this.isStatic) {
-        window.removeEventListener('scroll', this.throttleFunction, 1000);
-      }
+      window.removeEventListener('scroll', this.throttleFunction, 1000);
     },
   };
 </script>
 
 <style>
+  :root {
+    --navigation-height: 66px;
+  }
+
   .chapter-navigation {
     position: relative;
+    height: var(--navigation-height);
   }
 
   .chapter-navigation__body {
@@ -128,7 +135,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: .75rem 1rem;
+    padding: 0 1rem;
+    height: var(--navigation-height);
   }
 
   .chapter-navigation__body:after {
@@ -144,7 +152,7 @@
     transition: opacity .1s ease-out;
   }
 
-  .chapter-navigation__body--static {
+  .chapter-navigation__body--event-chapter {
     background-color: var(--blue-secondary);
     background-image: url('~assets/waves.svg');
     background-repeat: no-repeat;
@@ -158,20 +166,19 @@
     width: 100%;
   }
 
+  .chapter-navigation__body--event-chapter.chapter-navigation__body--fixed {
+    z-index: 1;
+    top: 0;
+  }
+
   @media (--sm-viewport) {
     .chapter-navigation__body--fixed {
       top: 90px;
     }
-  }
 
-  @media (--lg-viewport) {
-    .chapter-navigation__body--fixed {
-      width: 45rem;
+    .chapter-navigation__body--event-chapter.chapter-navigation__body--fixed {
+      width: calc(100% - 2rem);
     }
-  }
-
-  .chapter-navigation__body--fixed:after {
-    opacity: 1;
   }
 
   @media (--md-viewport) {
@@ -179,6 +186,24 @@
       padding-left: 2rem;
       padding-right: 2rem;
     }
+  }
+
+  @media (--lg-viewport) {
+    .chapter-navigation__body--fixed {
+      width: 45rem;
+    }
+
+    .chapter-navigation__body--event-chapter.chapter-navigation__body--fixed {
+      max-width: calc(var(--event-column-width) - 2rem);
+    }
+  }
+
+  .chapter-navigation__body--fixed:after {
+    opacity: 1;
+  }
+
+  .chapter-navigation__body--event-chapter.chapter-navigation__body--fixed:after {
+    display: none;
   }
 
   .chapter-navigation__back {

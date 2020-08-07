@@ -2,7 +2,7 @@
   <header class="narrative-header">
     <chapter-navigation
       :pages="pages"
-      :is-static="false"
+      :is-event-chapter="false"
       @scrollTo="onScrollTo"
       class="narrative-header__navigation"
     />

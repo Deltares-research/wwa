@@ -9,6 +9,7 @@
           :name="internalEvent.name"
           :slug="internalEvent.slug"
           :image="internalEvent.image"
+          :event-website="internalEvent.eventWebsite"
           :all-locales="internalEvent._allNameLocales"
         />
       </animator>
@@ -175,6 +176,7 @@
           internalEvent(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
             slug
             name
+            eventWebsite
             visuallyHideName
             timezone
             timezoneComment

@@ -5,6 +5,7 @@
         :name="internalEvent.name"
         :slug="internalEvent.slug"
         :image="internalEvent.image"
+        :event-website="internalEvent.eventWebsite"
         :all-locales="internalEvent._allNameLocales"
       />
     </header>
@@ -170,6 +171,7 @@
 
           internalEvent(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
             name
+            eventWebsite
             backButtonLabel
             chapterNavigationLabel
             image {

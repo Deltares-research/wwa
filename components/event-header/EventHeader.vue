@@ -7,8 +7,9 @@
       class="event-header__image"
     >
     <h1 class="event-header__name">
-      <nuxt-link
-        :to="`/${this.$route.params.language}/events/${this.$route.params.event}`"
+      <a
+        :href="eventWebsite"
+        target="_blank"
         v-html="name"
         class="event-header__name-link"
       />
@@ -20,7 +21,18 @@
           :key="locale"
           class="language-switch__item"
         >
+          <a
+            v-if="locale === 'zh'"
+            class="language-switch__link"
+            :hreflang="locale"
+            :lang="locale"
+            target="_blank"
+            href="https://guestcountry.sz.design"
+          >
+            {{ getNativeName(locale) }}
+          </a>
           <nuxt-link
+            v-else
             class="language-switch__link"
             :class="{ 'language-switch__link--active': route.params.language === locale }"
             rel="alternate"
@@ -47,6 +59,7 @@
       name: String,
       slug: String,
       image: Object,
+      eventWebsite: String,
       allLocales: Array,
     },
     data({ $route }) {

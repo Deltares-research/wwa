@@ -62,7 +62,10 @@
       class="animator__slide-up event-block-text-media__cta"
       animator-stagger
     >
-      <a :href="props.callToActionUrl">
+      <a
+        :href="props.callToActionUrl"
+        target="_blank"
+      >
         {{ props.callToActionLabel }}
       </a>
     </p>

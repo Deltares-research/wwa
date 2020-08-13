@@ -48,7 +48,7 @@ export default {
   components: { LazyMedia },
   computed: {
     aspectRatio () {
-      return this.video.height && this.video.width? Math.round(this.video.height/this.video.width * 10000)/100 : 62;
+      return this.video.height && this.video.width ? Math.round(this.video.height/this.video.width * 10000)/100 : 62;
     },
   },
 };

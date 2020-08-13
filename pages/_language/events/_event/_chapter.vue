@@ -40,13 +40,6 @@
           </div>
 
           <div
-            v-if="page.video"
-            class="event-chapter__block"
-          >
-            <responsive-video :video="page.video" />
-          </div>
-
-          <div
             v-if="page.images && page.images.length"
             class="event-chapter__block event-chapter__block--images"
           >
@@ -71,6 +64,13 @@
                 {{ image.title || image.value && image.value.title }}
               </figcaption>
             </figure>
+          </div>
+
+          <div
+            v-if="page.video"
+            class="event-chapter__block"
+          >
+            <responsive-video :video="page.video" />
           </div>
 
           <div
@@ -159,6 +159,7 @@
                 width
                 height
               }
+              videoChina
               mapboxStyle
               creditsTitle
               creditsBody(markdown: true)
@@ -184,8 +185,19 @@
         }
       `;
 
+      const content = await fetchContent(query);
+      content.chapter.pages.map(page => {
+        if (page.videoChina) {
+          const providerUid = /^https:\/\/v\.qq\.com\/x\/page\/([a-z0-9]+)\.html$/.exec(page.videoChina)[1];
+            page.video = {
+              provider: 'qq',
+              providerUid,
+            };
+        }
+      });
+
       return {
-        ...await fetchContent(query),
+        ...content,
         params,
       };
     },

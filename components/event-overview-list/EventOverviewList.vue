@@ -21,23 +21,6 @@
           Future events
         </a>
       </li>
-      <li
-        role="presentation"
-        class="event-overview-list__tabs-item"
-      >
-        <a
-          id="tab2"
-          href="#article2"
-          role="tab"
-          :aria-selected="currentTabId === 'tab2'"
-          :tabindex="currentTabId === 'tab2' ? '-1' : '0'"
-          @click.prevent="selectTab('tab2')"
-          class="event-overview-list__tab"
-          :class="{ 'event-overview-list__tab--selected': currentTabId === 'tab2' }"
-        >
-          Past events
-        </a>
-      </li>
     </ul>
 
     <article
@@ -45,7 +28,7 @@
       role="tabpanel"
       :aria-labelledby="`tab${index + 1}`"
       :hidden="currentTabId != `tab${index + 1}`"
-      v-for="(events, index) in [futureEvents, pastEvents]"
+      v-for="(events, index) in [futureEvents]"
       :key="index"
     >
       <ol class="event-overview-list__list">

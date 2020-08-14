@@ -21,18 +21,8 @@
           :key="locale"
           class="language-switch__item"
         >
-          <a
-            v-if="locale === 'zh'"
-            class="language-switch__link"
-            :hreflang="locale"
-            :lang="locale"
-            target="_blank"
-            href="https://guestcountry.sz.design"
-          >
-            {{ getNativeName(locale) }}
-          </a>
           <nuxt-link
-            v-else
+            v-if="locale !== 'zh'"
             class="language-switch__link"
             :class="{ 'language-switch__link--active': route.params.language === locale }"
             rel="alternate"

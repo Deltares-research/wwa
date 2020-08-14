@@ -38,3 +38,9 @@ You can add geographical data by using the following approach
 - You get back a mapbox://style/url
 - Add the mapbox://style/url to your story
 - Click publish
+
+## Codebase
+### Data fetching
+There are two ways data is fetched from DatoCMS:
+1. Classic way, dump data using `datocms-client`
+2. New preferred way, fetch using DatoCMS GraphQL API from Nuxt `asyncData`

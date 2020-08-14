@@ -1,18 +1,15 @@
 <template>
   <div>
     <div data-scrolled-to-top-trigger />
-    <scroll-indicator
-      v-if="pages.length > 1"
-      :pages="pages"
-      :activePage="activePage"
-    />
-    <div class="chapter chapter-column">
+    <div
+      class="chapter-column"
+      :class="{ 'chapter-column--tall': highlightedEvent }"
+    >
       <narrative-header
-        :chapter="chapter"
+        :title="chapter.title"
+        :cover="chapter.cover"
         :pages="pages"
-        :active-page="activePage && activePage.slug"
-        :condensed="headerCondensed"
-        @selectLink="smoothScroll"
+        @scrollTo="smoothScroll"
       />
       <page-component
         data-page-component
@@ -24,154 +21,158 @@
         :class="['chapter__page', `chapter__page--${index}`]"
       />
       <narrative-footer
-        :previousLink="chapter.previousChapter"
-        :nextLink="chapter.nextChapter"
+        :previous-link="chapter.previousChapter"
+        :next-link="chapter.nextChapter"
         :related="chapter.related"
       />
     </div>
-    <portal to="menu-center-content">
-      <menu-dropdown :book="book" :booksList="booksList" />
-    </portal>
   </div>
 </template>
 
 <script>
-import MenuDropdown from '~/components/menu-dropdown/MenuDropdown'
-import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter'
-import NarrativeHeader from '~/components/narrative-header/NarrativeHeader'
-import PageComponent from '~/components/page-component/PageComponent'
-import ScrollIndicator from '~/components/scroll-indicator/ScrollIndicator'
-import loadData from '~/lib/load-data'
+import { mapState } from 'vuex';
+import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter';
+import NarrativeHeader from '~/components/narrative-header/NarrativeHeader';
+import PageComponent from '~/components/page-component/PageComponent';
+import loadData from '~/lib/load-data';
 
 export default {
-  async asyncData (context) {
-    const { book, pages, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params)
-    const chapter = { path, slug, title, previousChapter, nextChapter, cover, related }
-    const booksList = await loadData(context, { booksList: 'index' })
-    return { book, chapter, pages, path, slug, title, booksList }
+  layout: 'globe',
+  middleware ({ store }) {
+    store.commit('enableGlobePositionRight');
   },
-  data: function () {
+  async asyncData (context) {
+    const { pages, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params);
+    const chapter = { path, slug, title, previousChapter, nextChapter, cover, related };
+    return {
+      chapter,
+      pages,
+      path,
+      slug,
+      title,
+    };
+  },
+  data () {
     return {
       activePage: null,
-      scrollIntoViewSupport: false,
-      headerCondensed: false
-    }
+      headerCondensed: false,
+    };
+  },
+  computed: {
+    ...mapState(['highlightedEvent']),
   },
   mounted () {
-    this.$store.commit('replaceFeatures', this.pages)
-    this.$store.commit('disableInteraction')
-    this.$store.commit('disableGlobeAutoRotation')
-    this.$store.commit('enableGlobePositionRight')
-    const pageSlug = this.$route.hash.replace(/^#/, '')
-    this.updateActivePage(pageSlug)
+    this.$store.commit('setMarkerTypes', [this.chapter.slug]);
+    this.$store.commit('enableGlobePositionRight');
+    this.$store.commit('disableInteraction');
+    this.$store.commit('disableGlobeAutoRotation');
+    const pageSlug = this.$route.hash.replace(/^#/, '');
+    this.updateActivePage(pageSlug);
     if (
       'IntersectionObserver' in window &&
       'IntersectionObserverEntry' in window &&
       'intersectionRatio' in window.IntersectionObserverEntry.prototype
     ) {
-      this.observeIntersectingChildren()
-      this.observeScrolledToTop()
+      this.observeIntersectingChildren();
+      this.observeScrolledToTop();
     }
-  },
-  destroyed () {
-    this.$store.commit('disableGlobePositionRight')
   },
   components: {
     NarrativeFooter,
     NarrativeHeader,
-    MenuDropdown,
     PageComponent,
-    ScrollIndicator
   },
   methods: {
     observeIntersectingChildren () {
       const trackVisibility = (entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            const pageSlug = entry.target.id
-            this.updateActivePage(pageSlug)
+            const pageSlug = entry.target.id;
+            this.updateActivePage(pageSlug);
           }
-        })
-      }
+        });
+      };
       const observer = new IntersectionObserver(trackVisibility, {
         // No explicit root, we want the viewport
         rootMargin: '-70% 0% -20% 0%',
-        thresholds: 0
-      })
-      const pageComponentsArray = [].slice.call(this.$el.querySelectorAll('[data-page-component]'))
-      pageComponentsArray.forEach(el => observer.observe(el))
+        thresholds: 0,
+      });
+      const pageComponentsArray = [].slice.call(this.$el.querySelectorAll('[data-page-component]'));
+      pageComponentsArray.forEach(el => observer.observe(el));
     },
     observeScrolledToTop () {
       const trackVisibility = (entries) => {
         entries.forEach(entry => {
-          this.headerCondensed = !entry.isIntersecting
-        })
-      }
+          this.headerCondensed = !entry.isIntersecting;
+        });
+      };
       const observer = new IntersectionObserver(trackVisibility, {
         // No explicit root, we want the viewport
         rootMargin: '0% 0% 0% 0%',
-        thresholds: 0
-      })
-      const triggerElement = this.$el.querySelector('[data-scrolled-to-top-trigger]')
-      observer.observe(triggerElement)
+        thresholds: 0,
+      });
+      const triggerElement = this.$el.querySelector('[data-scrolled-to-top-trigger]');
+      observer.observe(triggerElement);
     },
     scrollToSlug (pageSlug) {
-      const activeElement = document.getElementById(pageSlug)
+      const activeElement = document.getElementById(pageSlug);
       if (activeElement) {
-        activeElement.scrollIntoView()
+        activeElement.scrollIntoView();
       }
     },
     smoothScroll (slug) {
-      const element = this.$refs[slug][0].$el
-      const domRect = element.getBoundingClientRect()
-      window.scrollBy({ top: domRect.y - 160, behavior: 'smooth' })
+      const element = this.$refs[slug][0].$el;
+      const domRect = element.getBoundingClientRect();
+      window.scrollBy({ top: domRect.y - 160, behavior: 'smooth' });
     },
     updateActivePage (pageSlug) {
-      const activePages = (pageSlug) ? this.pages.filter(page => page.slug === pageSlug) : null
-      this.activePage = (activePages && activePages[0]) ? activePages[0] : this.pages[0]
+      const activePages = (pageSlug) ? this.pages.filter(page => page.slug === pageSlug) : null;
+      this.activePage = (activePages && activePages[0]) ? activePages[0] : this.pages[0];
     },
-    visibilityChanged (isVisible, entry) {
-      if (isVisible) {
-        this.updateActivePage(entry.target.id)
-      }
-    }
   },
   watch: {
     '$route' (to, from) {
       if ((to.path === from.path) && (to.hash !== from.hash)) {
-        this.scrollToSlug(to.hash.replace(/^#/, ''))
+        this.scrollToSlug(to.hash.replace(/^#/, ''));
       }
     },
     activePage (activePage) {
-      const path = this.$route.path.replace(/^\/\//, '/') // remove leading slash to maintain router base
-      history.replaceState({}, 'page', `${path}#${this.activePage.slug}`)
-      this.$store.commit('activateFeature', activePage)
-    }
-  }
-}
+      const path = this.$route.path.replace(/^\/\//, '/'); // remove leading slash to maintain router base
+      history.replaceState({}, 'page', `${path}#${this.activePage.slug}`);
+      this.$store.commit('activateFeature', activePage);
+    },
+  },
+};
 </script>
 
 <style>
 .chapter-column {
-  position: absolute;
-  top: 0;
-  left:0;
-  padding-top: 64px;
+  margin-top: calc(-1 * var(--globe-spacing-default));
+  padding-top: 60px;
   z-index: 0;
   width: 100vw;
-  background-color: #dde4eb;
+  background-color: var(--black-primary);
   overflow: hidden;
 }
 
-@media only screen and (min-width: 1024px) {
+.chapter-column--tall {
+  margin-top: calc(-1 * var(--globe-spacing-tall) - 0.8vh);
+}
+
+@media (--sm-viewport) {
   .chapter-column {
-    width: 67vw;
+    padding-top: 90px;
+    margin-top: calc(-1 * var(--globe-spacing-default--desktop));
+  }
+
+  .chapter-column--tall {
+    margin-top: calc(-1 * var(--globe-spacing-tall--desktop));
   }
 }
 
-@media only screen and (min-width: 1440px) {
+@media (--lg-viewport) {
   .chapter-column {
-    width: 50vw;
+    width: 45rem;
   }
 }
 
@@ -186,7 +187,7 @@ export default {
   z-index: 1;
 }
 
-@media (min-width: 768px) {
+@media (--md-viewport) {
   [data-scrolled-to-top-trigger] {
     top: calc(12.5rem + 1px);
   }
@@ -200,7 +201,7 @@ export default {
   .chapter-column {
     position: relative;
     padding: 0;
-    background-color: var(--ui--white);
+    background-color: var(--white);
   }
 }
 </style>

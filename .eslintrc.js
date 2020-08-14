@@ -2,25 +2,27 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    node: true
+    node: true,
   },
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: 'babel-eslint',
   },
   extends: [
     'eslint:recommended',
-    'plugin:vue/essential',
+    'plugin:vue/strongly-recommended',
   ],
   plugins: [
-    'vue'
+    'vue',
   ],
   rules: {
-    'no-prototype-builtins': ['off'],
-    'no-unused-vars': ['off'],
-    'no-case-declarations': ['off'],
-    'vue/no-unused-components': ['off'],
+    'no-prototype-builtins': 'off',
+    'no-unused-vars': 'off',
+    'no-case-declarations': 'off',
+    'vue/require-default-prop': 'off',
+    'semi': 'warn',
+    'comma-dangle': ['warn', 'always-multiline'],
+    'vue/no-unused-vars': 'warn',
+    'no-debugger': 'warn',
+    'no-unreachable': 'warn',
   },
-  globals: {
-    mapboxgl: true,
-  }
-}
+};

@@ -1,185 +1,151 @@
 <template>
-  <div class="menu">
-    <nav :class="[`main-menu main-menu--${variant}`, { 'main-menu--transparent' : navBackgroundTrans }]">
-      <div class="main-menu__container">
-        <div class="main-menu__section main-menu__section--no-padding">
-          <nuxt-link :class="`menu__item menu__item--home ${(variant === 'light') ? 'menu__item--dark-background' : ''}`" to="/" title="Go home">
-            <span class="sr-only">Return to the homepage</span>
-            <span class="main-menu__go-home-text">World Water<br/>Atlas</span>
-          </nuxt-link>
-        </div>
-        <div class="main-menu__section main-menu__section--align-center">
-          <portal-target name="menu-center-content" />
-        </div>
-        <div class="main-menu__section main-menu__section--align-right">
-          <nuxt-link :class="`menu__item menu__item--about h3 ${(variant === 'dark') ? 'invert' : ''}`"
-            to="/about">
-            About
-          </nuxt-link>
-          <nuxt-link :class="`menu__item menu__item--submit h3 ${(variant === 'dark') ? 'invert' : ''}`"
-            to="/submit-a-story">
-            Submit a story
-          </nuxt-link>
-        </div>
-      </div>
-    </nav>
-    <mobile-menu
-      :variant="variant"
-    />
-  </div>
+  <nav :class="`main-menu main-menu--${variant}`">
+    <div class="main-menu__section main-menu__logo">
+      <nuxt-link
+        class="main-menu__navigation-link"
+        to="/"
+      >
+        World Water<br>
+        Atlas
+      </nuxt-link>
+    </div>
+
+    <app-description class="main-menu__section main-menu__description" />
+
+    <ul class="main-menu__section main-menu__navigation list--inline">
+      <li
+        v-for="link in navigationLinks.mainNavigation"
+        :key="link.slug"
+      >
+        <nuxt-link
+          :to="`/${link.slug}`"
+          class="main-menu__navigation-link"
+        >
+          {{ link.title }}
+        </nuxt-link>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+  import { mapState } from 'vuex';
+  import AppDescription from '~/components/app-description/AppDescription';
 
-import MobileMenu from '~/components/mobile-menu/MobileMenu'
-
-export default {
-  components: { MobileMenu },
-  props: {
-    variant: {
-      type: String,
-      validator (val) {
-        return (val === 'dark' || val === 'light')
+  export default {
+    props: {
+      variant: {
+        type: String,
+        validator (val) {
+          return (val === 'dark' || val === 'light');
+        },
+        default () {
+          return 'dark';
+        },
       },
-      default () {
-        return 'dark'
-      }
-    }
-  },
-  computed: {
-    ...mapState(['navBackgroundTrans'])
-  }
-}
+    },
+    computed: {
+      ...mapState(['navigationLinks']),
+    },
+    components: {
+      AppDescription,
+    },
+  };
 </script>
 
 <style>
-@import '../colors/colors.css';
+  .main-menu {
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 3;
+  }
 
-.main-menu {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: auto;
-  color: var(--ui--white);
-  z-index: 2;
-}
+  .main-menu__section {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem;
+  }
 
-.main-menu__section {
-  flex: 1 1;
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  min-height: 3rem;
-}
+  .main-menu__logo {
+    flex-shrink: 0;
+    font-weight: bold;
+    line-height: 1.2;
+  }
 
-.main-menu__section--no-padding {
-  padding: 0;
-}
-
-.main-menu__section--align-center {
-  justify-content: center;
-}
-
-.main-menu__section--align-right {
-  justify-content: flex-end;
-}
-
-.main-menu__container {
-  position: relative;
-  display: flex;
-  justify-items: center;
-}
-
-.main-menu--dark {
-  background-color: var(--ui--blue);
-}
-
-.main-menu--light {
-  color: var(--ui--black);
-  background-color: var(--ui--white--trans);
-}
-
-.main-menu--transparent {
-  background: transparent;
-}
-
-.main-menu__go-home-text {
-  display: inline-block;
-}
-
-.menu__item {
-  display: inline-block;
-  padding: .5rem;
-  transition: .5s opacity;
-  font-weight: normal;
-  text-decoration: none;
-  color: inherit;
-  z-index: 2;
-}
-
-.menu__item--margin {
-  margin: 0 .5rem;
-}
-
-.menu__item--display-block {
-  display: block;
-}
-
-.menu__item .nuxt-link-active {
-  text-decoration: none;
-}
-
-.menu__item:hover,
-.menu__item:focus,
-.menu__item:active {
-  text-decoration: none;
-  opacity: 1;
-}
-.menu__item--home {
-  text-decoration: none;
-  text-align: left;
-  left:0;
-  top: 0;
-  margin: 0;
-  padding: 0.5em;
-  z-index: 100;
-  font-size: 1.375em;
-  line-height: 1.15;
-  font-weight: 600;
-  opacity: 1;
-  color: var(--ui--white);
-}
-.menu__item--dark-background,
-.menu__item--dark-background:hover {
-  background-color: var(--ui--black--trans);
-  color: var(--ui--white);
-}
-
-@media (max-width: 799px) {
-  .main-menu__section--align-right {
+  .main-menu__description {
     display: none;
   }
-  .menu__item--home {
-    display: none;
+
+  .main-menu__navigation {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 500;
   }
-}
 
-.menu__item--submit {
-  outline: 1px solid var(--ui--white);
-}
-.menu__item--submit::before {
-  content: '+ '
-}
-
-/*
-* style rules for a minimal print layout
-*/
-
-@media print {
-  .menu {
-    display: none;
+  .main-menu__navigation-link {
+    display: flex;
+    text-decoration: none;
   }
-}
+
+  .main-menu--dark {
+    background-color: var(--black-primary);
+  }
+
+  .main-menu--light {
+    background-color: var(--white);
+  }
+
+  .main-menu--light .main-menu__navigation-link,
+  .main-menu--light .main-menu__navigation-link:hover,
+  .main-menu--light .main-menu__logo .main-menu__navigation-link,
+  .main-menu--light .main-menu__logo .main-menu__navigation-link:hover {
+    color: var(--blue-primary);
+  }
+
+  .main-menu--dark .main-menu__navigation-link,
+  .main-menu--dark .main-menu__navigation-link:hover {
+    color: var(--white);
+  }
+
+  .main-menu--dark .main-menu__logo .main-menu__navigation-link,
+  .main-menu--dark .main-menu__logo .main-menu__navigation-link:hover {
+    color: var(--blue-tertiary);
+  }
+
+  @media (--sm-viewport) {
+    .main-menu__logo {
+      font-weight: 900;
+      font-size: 1.4rem;
+    }
+
+    .main-menu__navigation {
+      font-size: 1rem;
+      flex-wrap: nowrap;
+    }
+
+    .main-menu__navigation-link {
+      padding: 0.6rem;
+      font-weight: bold;
+    }
+  }
+
+  @media (--md-viewport) {
+    .main-menu__description {
+      display: block;
+      flex-basis: 18rem;
+      margin-left: 2rem;
+      margin-right: auto;
+      padding-top: 0;
+      padding-right: 0;
+      padding-bottom: 0;
+      align-self: center;
+    }
+  }
 </style>

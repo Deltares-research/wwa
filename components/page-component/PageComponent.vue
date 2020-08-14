@@ -6,44 +6,66 @@
       :graphs="page.graphs"
       :title="page.title"
       :video="page.video"
-      :mapboxStyle="page.mapboxStyle"
+      :mapbox-style="page.mapboxStyle"
       :links="page.links"
       :partner="page.partner"
       :influences="page.influences"
       :goals="page.goals"
+      :methodologies="page.methodologies"
       :keywords="page.keywords"
       :storyteller="page.storyteller"
-      :theme="page.theme" />
+      :theme="page.theme"
+    />
   </article>
 </template>
 
 <script>
-import PageBody from '~/components/page-body/PageBody'
+import PageBody from '~/components/page-body/PageBody';
 
 export default {
   props: {
-    page: { type: Object }
+    page: { type: Object },
   },
   components: {
-    PageBody
-  }
-}
+    PageBody,
+  },
+};
 </script>
 
 <style>
-@import '../colors/colors.css';
-
 .page-component {
   min-height: 25vh;
-  max-width: 40rem;
-  margin: 3rem auto 0 auto;
+  margin: 2rem 1rem 0 1rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--black-tertiary);
 }
 
-@media only screen and (min-width: 600px) {
+.page-component:first-of-type {
+  position: relative;
+  margin-top: -8rem;
+}
+
+.page-component:last-of-type {
+  margin-bottom: 0;
+}
+
+@media (--md-viewport) {
   .page-component {
-    margin: 3.75rem auto 0 auto;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4rem;
+    max-width: 45rem;
+  }
+
+  .page-component:first-of-type {
+    margin-top: -5rem;
+  }
+}
+
+@media (--lg-viewport) {
+  .page-component {
+    margin-left: 2rem;
+    margin-right: 2rem;
   }
 }
 

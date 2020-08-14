@@ -1,8 +1,10 @@
 <template>
   <article class="card-component">
     <nuxt-link :to="path">
-      <p class="subtitle h3">{{ subtitle }}</p>
-      <h2>{{title}}</h2>
+      <p class="subtitle h3">
+        {{ subtitle }}
+      </p>
+      <h2>{{ title }}</h2>
     </nuxt-link>
   </article>
 </template>
@@ -17,19 +19,17 @@ export default {
     slug: String,
     subtitle: String,
     theme: Object,
-    title: String
-  }
-}
+    title: String,
+  },
+};
 </script>
 
 <style>
-@import '../colors/colors.css';
-
 .card-component {
   width: 100%;
   padding: 1.5rem 1rem 0;
   box-sizing: border-box;
-  color: var(--ui--white);
+  color: var(--white);
 }
 
 .card-component:hover {
@@ -41,13 +41,13 @@ export default {
   content: '';
   display: block;
   height: 5rem;
-  background-color: var(--ui--white);
-  border-right: 2rem solid var(--ui--bg--light);
+  background-color: var(--white);
+  border-right: 2rem solid var(--black-secondary);
 }
 
 .card-component .subtitle {
   text-transform: uppercase;
-  color: var(--ui--text--light);
+  color: var(--blue-secondary);
   margin: 0;
 }
 .card-component a {

@@ -1,38 +1,71 @@
 <template>
   <section class="page-body-title">
-    <div class="page-body-title__theme">
-      <img v-if="theme && theme.slug" class="theme-icon page-body-title__theme-icon" :src="`/assets/${theme.slug}.png`" width="48" height="48" />
+    <img
+      v-if="theme && theme.slug"
+      class="theme-icon page-body-title__theme-icon"
+      :src="`/${theme.slug}.png`"
+      width="30"
+      height="30"
+      alt=""
+    >
+
+    <h2 class="page-body-title__title">
+      {{ pageTitle }}
+    </h2>
+
+    <div
+      v-if="storyteller && storyteller.name"
+      class="page-body-title__storyteller"
+    >
+      {{ storyteller.name }}
     </div>
 
-    <div class="page-body-title__storyteller">
-      <span v-if="storyteller && storyteller.name">
-        {{ storyteller.name }}
-      </span>
-    </div>
+    <ul
+      v-if="influences && influences.length || methodologies && methodologies.length"
+      class="page-body-title__tags list--inline"
+    >
+      <li
+        v-for="link in methodologies"
+        :key="`methodology-${link.slug}`"
+        class="page-body-title__tag"
+      >
+        <filter-tag
+          :title="link.title"
+          :url="link.path"
+          :icon="link.icon"
+        />
+      </li>
+      <li
+        v-for="link in influences"
+        :key="`influence-${link.slug}`"
+        class="page-body-title__tag"
+      >
+        <filter-tag
+          :title="link.title"
+          :url="link.path"
+          :icon="link.icon"
+        />
+      </li>
+    </ul>
 
-    <h1 class="page-body-title__title">{{ pageTitle }}</h1>
-
-    <div class="page-body-title__keywords" v-if="keywords && keywords.length || influences && influences.length">
+    <div
+      class="page-body-title__goals"
+      v-if="goals && goals.length"
+    >
       <ul class="list--inline">
-        <li v-for="link in keywords" :key="`keyword-${link.slug}`">
-          <nuxt-link class="tag" :to="link.path">{{ link.title }}</nuxt-link>
-        </li>
-        <li v-for="link in influences" :key="`influence-${link.slug}`">
-          <nuxt-link :to="link.path" :class="`tag tag--influence tag--${link.slug}`">{{ link.title }}</nuxt-link>
-        </li>
-      </ul>
-    </div>
-    <div class="page-body-title__goals" v-if="goals && goals.length">
-      <ul class="list--inline">
-        <li v-for="link in goals" :key="link.slug">
-            <nuxt-link
-              class="sdg-tag"
-              :style="{ backgroundImage: `url('/assets/E_SDG-goals_icons-individual-rgb-${link.slug.slice(0,2)}.png')` }"
-              :to="link.path"
-              :title="link.title"
-              >
-              <span class="sr-only">{{ link.title }}</span>
-            </nuxt-link>
+        <li
+          v-for="link in goals"
+          :key="link.slug"
+        >
+          <nuxt-link
+            :to="link.path"
+          >
+            <img
+              :src="`${link.icon.imgixHost}${link.icon.value.path}?auto=compress,format&w=100`"
+              :alt="link.title"
+              class="page-body-title__goal-icon"
+            >
+          </nuxt-link>
         </li>
       </ul>
     </div>
@@ -40,88 +73,67 @@
 </template>
 
 <script>
+import FilterTag from '~/components/filter-tag/FilterTag';
+
 export default {
+  components: {
+    FilterTag,
+  },
   props: {
     pageTitle: String,
     influences: Array,
     goals: Array,
-    keywords: Array,
+    methodologies: Array,
     storyteller: Object,
     partner: Object,
-    theme: Object
-  }
-}
+    theme: Object,
+  },
+};
 </script>
 
 <style>
-@import '../colors/colors.css';
-@import '../tag/tag.css';
-@import '../typography/typography.css';
-
-.page-body-title__title {
-  font-size: 1.5rem;
-  line-height: 1.75rem;
-  font-weight: bold;
-
-}
-
-@media (min-width: 768px) {
-  .page-body-title__title {
-    font-size: 2rem;
-    line-height: 2.5rem;
-  }
-}
-
-.page-body-title {
-  box-sizing: border-box;
-}
-
-.page-body-title__theme {
-  position: relative;
-  height: 1px;
-  margin-top: -1px;
-  position: relative;
-  margin-bottom: 1rem;
-}
-
-.page-body-title__theme-icon {
-  position: absolute;
-  top: calc(-1*(1.5rem + 24px));
-  left: 0;
-}
-
-.page-body-title__storyteller {
-  font-size: 0.75rem;
-  color: #3e677a;
-  margin-bottom: 0.5rem;
-}
-
-@media only screen and (min-width: 600px) {
-  .page-body-title__theme {
-    margin-bottom: 0;
-  }
-
   .page-body-title__theme-icon {
-    top: 0;
-    left: calc(-1*(2.5rem + 24px));
+    margin-bottom: .5rem;
+  }
+
+  .page-body-title__title {
+    margin-bottom: .5rem;
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  @media (--md-viewport) {
+    .page-body-title__title {
+      font-size: 2rem;
+    }
   }
 
   .page-body-title__storyteller {
-    line-height: 48px;
+    margin-bottom: 1rem;
+    font-weight: 500;
   }
-}
 
-/*
-* style rules for a minimal print layout
-*/
+  .page-body-title__tags {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: .5rem;
+  }
 
-@media print {
-  .page-body-title__theme {
-    height: auto;
+  .page-body-title__tag {
+    margin-bottom: .5rem;
   }
-  .page-body-title__theme-icon {
-    position: relative;
-    top: 0;
+
+  .page-body-title__goals {
+    margin-bottom: .75rem;
   }
-}
+
+  @media (--md-viewport) {
+    .page-body-title__goals {
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .page-body-title__goal-icon {
+    width: 50px;
+  }
 </style>

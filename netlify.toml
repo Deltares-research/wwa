@@ -1,5 +1,5 @@
 [build]
-  command = "npm run lint && npm run build && npm run generate"
+  command = "npm run lint -- --max-warnings 0 && npm run build && npm run generate"
   publish = "dist/"
   [build.environment]
     NODE_VERSION = "12"

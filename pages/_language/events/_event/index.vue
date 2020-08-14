@@ -1,0 +1,362 @@
+<template>
+  <div class="event">
+    <header class="event__layout">
+      <animator
+        :delay="0"
+        :is-intersection-disabled="true"
+      >
+        <event-header
+          :name="internalEvent.name"
+          :slug="internalEvent.slug"
+          :image="internalEvent.image"
+          :event-website="internalEvent.eventWebsite"
+          :all-locales="internalEvent._allNameLocales"
+        />
+      </animator>
+
+      <animator :is-intersection-disabled="true">
+        <event-banner v-bind="internalEvent" />
+      </animator>
+    </header>
+
+    <main class="event__content">
+      <section
+        v-for="(section, index) in internalEvent.eventSections"
+        :key="section.id"
+        class="event-section"
+        :class="{
+          'event-section--wave-top-black': section.showTopWave && section.backgroundColor === 'black',
+          'event-section--wave-top-blue': section.showTopWave && section.backgroundColor === 'blue',
+          'event-section--wave-bottom-black': section.showBottomWave && section.backgroundColor === 'black',
+          'event-section--wave-bottom-blue': section.showBottomWave && section.backgroundColor === 'blue',
+          'event-section--wave-top-bg-blue': section.showTopWave && internalEvent.eventSections[index - 1] && internalEvent.eventSections[index - 1].backgroundColor === 'blue',
+          'event-section--wave-top-bg-black': section.showTopWave && internalEvent.eventSections[index - 1] && internalEvent.eventSections[index - 1].backgroundColor === 'black',
+          'event-section--wave-bottom-bg-blue': section.showBottomWave && internalEvent.eventSections[index + 1] && internalEvent.eventSections[index + 1].backgroundColor === 'blue',
+          'event-section--wave-bottom-bg-black': section.showBottomWave && internalEvent.eventSections[index + 1] && internalEvent.eventSections[index + 1].backgroundColor === 'black',
+          'event__layout--background-black': section.backgroundColor === 'black',
+          'event__layout--background-blue': section.backgroundColor === 'blue',
+        }"
+      >
+        <div class="event-section__content">
+          <template v-for="(block, blockIndex) in section.blocks">
+            <animator
+              v-if="block._modelApiKey === 'text_block'"
+              :key="block.id"
+              :id="block.slug"
+              :is-intersection-disabled="index === 0 && blockIndex === 0"
+              class="event__layout event__layout--padded"
+            >
+              <event-block-text v-bind="block" />
+            </animator>
+            <animator
+              v-if="block._modelApiKey === 'media_block'"
+              :key="block.id"
+              :id="block.slug"
+              :is-intersection-disabled="index === 0 && blockIndex === 0"
+              class="event__layout event__layout--padded"
+            >
+              <event-block-text-media v-bind="block" />
+            </animator>
+            <animator
+              v-if="block._modelApiKey === 'related_stories_block'"
+              :key="block.id"
+              :id="block.slug"
+              :is-intersection-disabled="index === 0 && blockIndex === 0"
+              class="event__layout event__layout--padded"
+            >
+              <event-block-related-stories v-bind="block" />
+            </animator>
+            <animator
+              v-if="block._modelApiKey === 'chapters_block'"
+              :key="block.id"
+              :id="block.slug"
+              :is-intersection-disabled="index === 0 && blockIndex === 0"
+              class="event__layout event__layout--padded"
+            >
+              <event-block-chapters-carousel
+                v-if="block.chapters.length > 3"
+                :title="block.title"
+                :items="block.chapters"
+              />
+              <event-block-chapters-list
+                v-else
+                v-bind="block"
+              />
+            </animator>
+            <animator
+              v-if="block._modelApiKey === 'speakers_block'"
+              :key="block.id"
+              :id="block.slug"
+              :is-intersection-disabled="index === 0 && blockIndex === 0"
+              class="event__layout event__layout--padded"
+            >
+              <event-block-speakers
+                :show-wave-marker="block.showWaveMarker"
+                :image="block.image"
+                :title="block.title"
+                :subtitle="block.subtitle"
+                :title-color="block.titleColor"
+                :speakers="block.speakers"
+              />
+            </animator>
+            <animator
+              v-if="block._modelApiKey === 'colofon_block'"
+              :key="block.id"
+              :id="block.slug"
+              :is-intersection-disabled="index === 0 && blockIndex === 0"
+              class="event__layout event__layout--padded"
+            >
+              <event-block-colofon v-bind="block" />
+            </animator>
+            <div
+              v-if="block._modelApiKey === 'schedule_block'"
+              :key="block.id"
+              :id="block.slug"
+              class="event__layout event__layout--padded"
+            >
+              <h3 class="event-block__title">
+                Schedule
+              </h3>
+              <event-block-schedule
+                :event-days="block.eventDays"
+                :timezone="internalEvent.timezone"
+                :timezone-comment="internalEvent.timezoneComment"
+                :language="params.language"
+              />
+            </div>
+          </template>
+        </div>
+      </section>
+    </main>
+    <event-footer v-bind="internalEvent" />
+  </div>
+</template>
+
+<script>
+  import fetchContent from '~/lib/fetch-content';
+
+  import EventBanner from '~/components/event-banner/EventBanner';
+  import EventBlockChaptersCarousel from '~/components/event-block/EventBlockChaptersCarousel';
+  import EventBlockChaptersList from '~/components/event-block/EventBlockChaptersList';
+  import EventBlockColofon from '~/components/event-block/EventBlockColofon';
+  import EventBlockSchedule from '~/components/event-block/EventBlockSchedule';
+  import EventBlockText from '~/components/event-block/EventBlockText';
+  import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia';
+  import EventBlockRelatedStories from '~/components/event-block/EventBlockRelatedStories';
+  import EventBlockSpeakers from '~/components/event-block/EventBlockSpeakers';
+  import EventHeader from '~/components/event-header/EventHeader';
+  import EventFooter from '~/components/event-footer/EventFooter';
+  import Animator from '~/components/animator/Animator';
+
+  export default {
+    components: {
+      EventBanner,
+      EventBlockChaptersCarousel,
+      EventBlockChaptersList,
+      EventBlockColofon,
+      EventBlockSchedule,
+      EventBlockText,
+      EventBlockTextMedia,
+      EventBlockRelatedStories,
+      EventBlockSpeakers,
+      EventHeader,
+      EventFooter,
+      Animator,
+    },
+    head ({ params }) {
+      return {
+        htmlAttrs: {
+          lang: params.language,
+        },
+      };
+    },
+    async asyncData({ params }) {
+      const query = `
+        {
+          internalEvent(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
+            slug
+            name
+            eventWebsite
+            visuallyHideName
+            timezone
+            timezoneComment
+            displayDate
+            image {
+              url
+            }
+            bannerIcon {
+              url
+              width
+              height
+            }
+            bannerTagline
+
+            _allNameLocales {
+              locale
+            }
+
+            eventSections {
+              backgroundColor
+              showBottomWave
+              showTopWave
+
+              blocks {
+                ... on ChaptersBlockRecord {
+                  _modelApiKey
+                  id
+                  title
+                  slug
+                  chapters {
+                    title
+                    slug
+                    cover {
+                      url
+                    }
+                  }
+                }
+                ... on ColofonBlockRecord {
+                  _modelApiKey
+                  id
+                  title
+                  slug
+                  titleColor
+                  showWaveMarker
+                  body(markdown: true)
+                  logos {
+                    id
+                    url
+                    alt
+                  }
+                }
+                ... on TextBlockRecord {
+                  _modelApiKey
+                  id
+                  title
+                  slug
+                  titleColor
+                  showWaveMarker
+                  body(markdown: true)
+                  callToActionLabel
+                  callToActionUrl
+                }
+                ... on MediaBlockRecord {
+                  _modelApiKey
+                  id
+                  title
+                  slug
+                  titleColor
+                  showWaveMarker
+                  internalButtonLabel
+                  internalButtonSlug
+                  body(markdown: true)
+                  callToActionLabel
+                  callToActionUrl
+                  mirrorLayout
+                  image {
+                    alt
+                    portrait: responsiveImage(imgixParams: {auto: compress, w: "550", h: "660", fit: crop, crop: entropy}) {
+                      src
+                      srcSet
+                      sizes
+                    }
+                    landscape: responsiveImage(imgixParams: {auto: compress, w: "600", h: "270", fit: crop, crop: entropy}) {
+                      srcSet
+                      sizes
+                    }
+                  }
+                }
+                ... on RelatedStoriesBlockRecord {
+                  _modelApiKey
+                  id
+                  title
+                  slug
+                  subtitle
+                  titleColor
+                  showWaveMarker
+                  linkedChapters {
+                    id
+                    book {
+                      slug
+                    }
+                    chapter {
+                      slug
+                      title
+                      cover {
+                        url
+                      }
+                    }
+                  }
+                }
+                ... on SpeakersBlockRecord {
+                  _modelApiKey
+                  id
+                  showWaveMarker
+                  subtitle
+                  title
+                  slug
+                  titleColor
+                  speakers {
+                    id
+                    name
+                    organization
+                    subject
+                    subjectLabel
+                    image {
+                      url
+                    }
+                  }
+                }
+                ... on ScheduleBlockRecord {
+                  _modelApiKey
+                  id
+                  slug
+                  eventDays {
+                    id
+                    date
+                    scheduleItems {
+                      id
+                      title
+                      topic
+                      startTime
+                      endTime
+                      description
+                      watchLabel
+                      watchUrl
+                      speaker {
+                        image {
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      `;
+
+      return {
+        ...await fetchContent(query),
+        params,
+      };
+    },
+    mounted () {
+      this.$store.commit('disableGlobePositionRight');
+    },
+  };
+</script>
+
+<style>
+  .event-block__title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+  }
+
+  @media (--md-viewport) {
+    .event-block__title {
+      font-size: 3.75rem;
+    }
+  }
+</style>

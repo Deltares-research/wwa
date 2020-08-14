@@ -1,71 +1,110 @@
-const dotenv = require('dotenv-safe')
+import dotenv from 'dotenv-safe';
+import { promises as fs } from 'fs';
+import path from 'path';
+import fetchContent from './lib/fetch-content';
 
-const books = require('./static/data/books/index.json')
-const themes = require('./static/data/themes/index.json')
-const goals = require('./static/data/goals/index.json')
-const influences = require('./static/data/influences/index.json')
-const keywords = require('./static/data/keywords/index.json')
-const staticPages = require('./static/data/static-pages/index.json')
+dotenv.config();
 
-dotenv.config()
-
-const chapters = books
-  .reduce((chapters, book) => {
-    const bookChapters = book.chapters.map(chapter => {
-      chapter.book = { slug: book.slug }
-      return chapter
-    })
-    return chapters.concat(bookChapters)
-  }, [])
-// Generate routes
-const routes = books
-  .concat(chapters)
-  .concat(themes)
-  .concat(goals)
-  .concat(influences)
-  .concat(keywords)
-  .concat(staticPages)
-  .map(item => item.path)
-
-const postcss = {
-  plugins: {
-    'postcss-import': {},
-    'postcss-calc': {},
-    'postcss-custom-properties': {},
+const mapallInternalEventsToRedirects = () => fetchContent(`
+  {
+    allInternalEvents {
+      slug
+      countryCode
+      nativeLocale
+      _allNameLocales {
+        locale
+      }
+    }
   }
-}
+`)
+  .then(({ allInternalEvents }) => (
+    allInternalEvents
+      .map((event) => [
+        // `/events/${event.slug} /${event.nativeLocale}/events/${event.slug} 302 Country=${event.countryCode}`,
+        ...event._allNameLocales
+          .filter(({ locale }) => locale !== 'en')
+          .map(({ locale }) =>
+            `/events/${event.slug} /${locale}/events/${event.slug} 302 Language=${locale}`,
+          ),
+        `/events/${event.slug} /en/events/${event.slug} 302`,
+      ])
+      .flat()
+      .join('\n')
+  ));
 
-const routerBase = {
-  router: {
-    base: '/'
-  }
-}
+export default {
+  build: {
+    extend (config, context) {
+      if (context.isDev && context.isClient) {
+        config.module.rules.push({
+          enforce: "pre",
+          test: /\.(js|vue)$/,
+          loader: "eslint-loader",
+          exclude: /(node_modules)/,
+        });
+      }
 
-const env = {
-  // Allow to choose a baseurl (should only be used during generate)
-  baseUrl: process.env.BASE_URL || 'http://localhost:3000',
-  DATO_API_TOKEN: process.env.DATO_API_TOKEN ,
-}
-
-module.exports = {
-  // Css entry file
+      config.module.rules.push({
+        test: /\.glsl$/,
+        loader: 'webpack-glsl-loader',
+      });
+    },
+    extractCSS: true,
+    html: {
+      // disable minify CSS and JS to improve build times
+      // https://www.voorhoede.nl/en/blog/10x-faster-nuxt-builds-on-netlify/
+      minify: {
+        collapseBooleanAttributes: true,
+        decodeEntities: true,
+        minifyCSS: false,
+        minifyJS: false,
+        processConditionalComments: true,
+        removeEmptyAttributes: true,
+        removeRedundantAttributes: true,
+        trimCustomFragments: true,
+        useShortDoctype: true,
+      },
+    },
+    postcss: {
+      plugins: {
+        'postcss-custom-media': {
+          importFrom: 'components/core/index.css',
+        },
+        'postcss-calc': {},
+        'postcss-custom-properties': {},
+      },
+    },
+  },
   css: [
-    'normalize.css',
-    '~/base.css'
+    '~/components/core/index.css',
+    'typeface-roboto',
   ],
+  env: {
+    DATO_API_TOKEN: process.env.DATO_API_TOKEN ,
+  },
+  generate: {
+    exclude: [
+      /^\/events\/.+/,
+      /^\/narratives\/undefined/,
+    ],
+  },
+  hooks: {
+    export: {
+      done (generator) {
+        return mapallInternalEventsToRedirects().then(redirectRules => {
+          return fs.writeFile(path.join(generator.distPath, '_redirects'), redirectRules);
+        });
+      },
+    },
+  },
   head: {
     title: 'World Water Atlas',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'World Water Atlas' },
-      { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' }
-    ],
-    script: [
-      { src: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js', defer: true }
     ],
     link: [
-      { href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css', rel: 'stylesheet' },
       { rel: 'apple-touch-icon', sizes: '57x57', href: '/apple-icon-57x57.png' },
       { rel: 'apple-touch-icon', sizes: '60x60', href: '/apple-icon-60x60.png' },
       { rel: 'apple-touch-icon', sizes: '72x72', href: '/apple-icon-72x72.png' },
@@ -78,51 +117,36 @@ module.exports = {
       { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/android-icon-192x192.png' },
       { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
       { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicon-96x96.png' },
-      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' }
-    ]
+      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+    ],
   },
-
   plugins: [
-    { src: '~/plugins/smoothscroll', ssr: false },
-    { src: '~/plugins/vue-portal', ssr: true },
-    { src: '~/plugins/ga.js', ssr: false }
+    { src: '~/plugins/smoothscroll', mode: 'client' },
+    { src: '~/plugins/ga.js', mode: 'client' },
+    { src: '~/plugins/router-after-each.js', mode: 'client' },
   ],
-
+  target: 'static',
   router: {
-    base: routerBase.router.base,
-    scrollBehavior: (to, from) => {
-      if (
-        (to.name !== 'themes-theme') &&
-        (from.name !== 'themes-theme' || from.name !== 'index')
-      ) {
-        return { x: 0, y: 0 }
-      }
-    }
-  },
+    extendRoutes (routes, resolve) {
+      const ChapterListOverviewComponent = resolve(__dirname, 'components/chapter-list-overview-page/ChapterListOverviewPage.vue');
+      const ChapterListComponent = resolve(__dirname, 'components/chapter-list-page/ChapterListPage.vue');
 
-  build: {
-    extend (config, context) {
-      if (context.isDev && context.isClient) {
-        config.module.rules.push({
-          enforce: "pre",
-          test: /\.(js|vue)$/,
-          loader: "eslint-loader",
-          exclude: /(node_modules)/
-        })
-      }
+      const keywordsRoute = routes.find(route => route.name === 'keywords');
+      keywordsRoute.alias = '/keywords/:slug';
 
-      config.module.rules.push({
-        test: /\.glsl$/,
-        loader: 'webpack-glsl-loader'
-      })
+      routes.unshift({
+        name: `index`,
+        path: `/`,
+        component: ChapterListOverviewComponent,
+        alias: ['/methodologies', '/themes', '/influences', '/goals', '/narratives'],
+      });
+
+      routes.unshift({
+        name: 'methodologies-slug',
+        path: `/methodologies/:slug`,
+        component: ChapterListComponent,
+        alias: ['/influences/:slug', '/goals/:slug', '/narratives/:slug', '/themes/:slug'],
+      });
     },
-    // Create separate css file
-    extractCSS: true,
-    postcss,
   },
-  env,
-  // Define dynamic routes to generate for dist,
-  generate: {
-    routes
-  }
-}
+};

@@ -1,55 +1,75 @@
 <template>
   <nav class="narrative-footer">
-    <section v-if="related.length" class="narrative-footer__related">
-      <h3 class="h2">Similar Stories</h3>
+    <div
+      v-if="related.length"
+      class="narrative-footer__related"
+    >
+      <h3 class="h2 narrative-footer__title">
+        Similar Stories
+      </h3>
       <ul class="narrative-footer__related-list">
         <li
           v-for="relatedChapter in related"
           :key="relatedChapter.path"
           class="narrative-footer__related-item"
         >
-          <nuxt-link :to="relatedChapter.path" :title="relatedChapter.title" class="narrative-footer__related-link">
+          <nuxt-link
+            :to="relatedChapter.path"
+            :title="relatedChapter.title"
+            class="narrative-footer__related-link"
+          >
             <picture>
               <source
                 :srcset="`
-                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=340&h=200&fit=crop 340w,
-                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=340&h=200&fit=crop&dpr=2 680w,
-                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=340&h=200&fit=crop&dpr=3 1140w`"
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=340&h=200&fit=crop 340w,
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=340&h=200&fit=crop&dpr=2 680w,
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=340&h=200&fit=crop&dpr=3 1140w`"
                 sizes="100vw"
                 media="(max-width: 599px)"
-              />
+              >
               <source
                 :srcset="`
-                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=340&h=400&fit=crop 340w,
-                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=340&h=400&fit=crop&dpr=2 680w,
-                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=340&h=400&fit=crop&dpr=3 1140w`"
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=340&h=400&fit=crop 340w,
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=340&h=400&fit=crop&dpr=2 680w,
+                  ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=340&h=400&fit=crop&dpr=3 1140w`"
                 sizes="340px"
                 media="(min-width: 600px)"
-              />
+              >
               <img
-                :src="`${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress&w=270&h=340&fit=crop&q=65`"
+                :src="`${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=270&h=340&fit=crop&q=65`"
                 width="100%"
                 class="narrative-footer__related-image"
-              />
+                alt=""
+              >
             </picture>
 
             <span class="narrative-footer__related-title">
               <small class="narrative-footer__related-book-title">{{ relatedChapter.bookTitle }}</small>
-                <br />
+              <br>
               <span class="narrative-footer__related-chapter-title">{{ relatedChapter.title }}</span>
             </span>
           </nuxt-link>
         </li>
       </ul>
-    </section>
-    <section class="narrative-footer__prev-next">
-      <nuxt-link v-if="previousLink" :to="previousLink.path" class="h2 narrative-footer__link" :title="previousLink.title">
+    </div>
+    <div class="narrative-footer__prev-next">
+      <nuxt-link
+        v-if="previousLink"
+        :to="previousLink.path"
+        class="h2 narrative-footer__link"
+        :title="previousLink.title"
+      >
         <span class="sr-only">Continue reading about</span> {{ previousLink.title }}
       </nuxt-link>
-      <nuxt-link v-if="nextLink" :to="nextLink.path" class="h2 narrative-footer__link narrative-footer__link--next" :title="nextLink.title">
+      <nuxt-link
+        v-if="nextLink"
+        :to="nextLink.path"
+        class="h2 narrative-footer__link narrative-footer__link--next"
+        :title="nextLink.title"
+      >
         <span class="sr-only">Continue reading about</span> {{ nextLink.title }}
       </nuxt-link>
-    </section>
+    </div>
   </nav>
 </template>
 
@@ -58,25 +78,42 @@ export default {
   props: {
     previousLink: {
       type: Object,
-      required: false
+      required: false,
     },
     nextLink: {
       type: Object,
-      required: false
+      required: false,
     },
     related: {
       type: Array,
-      default: () => []
-    }
-  }
-}
+      default: () => [],
+    },
+  },
+};
 </script>
 
 <style>
-@import '../colors/colors.css';
-
 .narrative-footer {
-  padding: 2rem;
+  padding: 2rem 1rem;
+}
+
+@media (--md-viewport) {
+  .narrative-footer {
+    margin: 0 auto;
+    padding: 2rem 0;
+    max-width: 45rem;
+  }
+}
+
+@media (--lg-viewport) {
+  .narrative-footer {
+    padding: 2rem;
+    max-width: auto;
+  }
+}
+
+.narrative-footer__title {
+  margin-bottom: .5rem;
 }
 
 .narrative-footer__prev-next {
@@ -100,7 +137,7 @@ export default {
 }
 
 .narrative-footer__link:hover {
-  color: var(--or--3-5);
+  color: var(--white);
 }
 
 .narrative-footer__link::before {
@@ -123,11 +160,6 @@ export default {
   content: '❯';
   right: 0;
   left: auto
-}
-
-.narrative-footer {
-  max-width: 40rem;
-  margin: auto;
 }
 
 .narrative-footer__related-list {
@@ -155,7 +187,7 @@ export default {
   left: 0;
   padding: 1.5rem;
   margin: 0;
-  color: var(--ui--white);
+  color: var(--white);
   font-weight: bold;
   font-size: 1.5rem;
   background-image: linear-gradient(to bottom, rgba(1, 0, 42, 0), rgba(1, 0, 42, 1));
@@ -185,9 +217,13 @@ export default {
   text-decoration: underline;
 }
 
-@media (min-width: 600px) {
+@media (--sm-viewport) {
   .narrative-footer__related-item {
-    width: 48%;
+    margin-bottom: 1.5rem;
+  }
+
+  .narrative-footer__related-item:not(:last-child) {
+    margin-right: 1rem;
   }
 
   .narrative-footer__related-list {

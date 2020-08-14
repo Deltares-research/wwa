@@ -5,27 +5,15 @@
   "author": "Fedor Baart <fedor.baart@deltares.nl>",
   "private": true,
   "scripts": {
-    "dev": "npm-run-all build:assets dev:data dev:app",
-    "dev:app": "nuxt",
-    "dev:data": "cross-env UNPUBLISHED=1 dato dump",
-    "build": "npm-run-all build:data build:assets",
-    "build:app": "cross-env NODE_ENV=production nuxt build",
-    "build:data": "npm run data:build",
-    "build:assets": "cpy ./components/*/assets/*.* ./static/assets",
-    "generate": "cross-env NODE_ENV=production nuxt generate",
-    "postgenerate": "cp ./dist/200.html ./dist/index.html",
+    "dev": "npm-run-all build dev:app",
+    "dev:app": "nuxt dev",
+    "build": "npm-run-all build:*",
+    "build:data": "dato dump",
+    "build:assets": "cpy ./components/**/assets/*.* ./static/assets",
+    "generate": "nuxt build && nuxt export --fail-on-error",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
-    "precommit": "npm run lint",
-    "data:build": "dato dump",
-    "data:dev": "cross-env UNPUBLISHED=1 dato dump",
-    "data:backup": "dato dump --config dato.backup.js",
-    "data:books": "cross-env DATO_EXPORT=books dato dump",
-    "data:chapters": "cross-env DATO_EXPORT=chapters dato dump",
-    "data:keywords": "cross-env DATO_EXPORT=keywords dato dump",
-    "data:influences": "cross-env DATO_EXPORT=influences dato dump",
-    "data:static-pages": "cross-env DATO_EXPORT=static_pages dato dump",
-    "data:themes": "cross-env DATO_EXPORT=themes dato dump"
+    "lint:fix": "npm run lint -- --fix",
+    "data:backup": "dato dump --config dato.backup.js"
   },
   "babel": {
     "presets": [
@@ -41,14 +29,18 @@
     "d3-scale-chromatic": "^1.5.0",
     "dbscanjs": "^1.0.1",
     "es6-tween": "^5.5.11",
+    "iso-639-1": "^2.1.1",
+    "isomorphic-unfetch": "^3.0.0",
     "lodash.get": "^4.4.2",
+    "mapbox-gl": "^1.11.0",
     "marked": "^1.1.0",
-    "normalize.css": "^8.0.1",
-    "nuxt": "^2.12.2",
-    "portal-vue": "^2.1.7",
+    "nuxt": "^2.13.1",
     "smoothscroll-polyfill": "^0.4.4",
+    "swiper": "^5.4.5",
     "three": "^0.116.1",
-    "three.meshline": "^1.2.0"
+    "three.meshline": "^1.2.0",
+    "typeface-roboto": "0.0.75",
+    "vue-awesome-swiper": "^4.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
@@ -64,8 +56,8 @@
     "npm-run-all": "^4.1.5",
     "postcss": "^7.0.30",
     "postcss-calc": "^7.0.2",
+    "postcss-custom-media": "^7.0.8",
     "postcss-custom-properties": "^9.1.1",
-    "postcss-import": "^12.0.1",
     "slug": "^2.1.1",
     "webpack-glsl-loader": "^1.0.1"
   }

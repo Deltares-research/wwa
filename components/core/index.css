@@ -1,0 +1,23 @@
+@import './colors.css';
+@import './reset.css';
+@import './layout.css';
+@import './a11y.css';
+@import './list.css';
+@import './typography.css';
+@import './swiper.css';
+@import './animations.css';
+
+:root {
+  --globe-spacing-default: 83vh;
+  --globe-spacing-default--desktop: 73vh;
+  --globe-spacing-tall: 90vh;
+  --globe-spacing-tall--desktop: 85vh;
+  --wwa-column-width: 60rem;
+  --event-column-width: 70rem;
+}
+
+@custom-media --sm-viewport (min-width: 37.5rem);
+@custom-media --md-viewport (min-width: 48rem);
+@custom-media --lg-viewport (min-width: 64rem);
+@custom-media --column-viewport (min-width: 70rem);
+@custom-media --xl-viewport (min-width: 90rem);

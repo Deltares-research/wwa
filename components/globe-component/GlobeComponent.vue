@@ -1,10 +1,6 @@
 <template>
   <div class="globe-container">
-    <div class="globe">
-      <div class="fallback hidden">
-        <div>backup globe</div>
-      </div>
-    </div>
+    <div class="globe" />
   </div>
 </template>
 
@@ -14,10 +10,6 @@
 .globe-container {
   width: 100vw;
   height: 100vh;
-}
-
-.hidden {
-  display: none;
 }
 
 @media print {

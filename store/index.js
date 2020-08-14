@@ -1,73 +1,105 @@
-import Vuex from 'vuex'
+import Vuex from 'vuex';
+const DEFAULT_THEME = 'too-much';
 
 const store = () => {
   return new Vuex.Store({
     strict: true,
     state: {
       activeFeature: null,
-      features: [],
+      description: '',
+      highlightedEvent: null,
+      navigationLinks: [],
       rotate: true,
       zoom: true,
       globeInteraction: true,
-      theme: 'too-much',
+      theme: DEFAULT_THEME,
       globeAutoRotation: true,
       globePositionRight: false,
-      navBackgroundTrans: false
+      filters: [],
+      availableFilterItems: [],
+      chapters: [],
+      markerTypes: [],
+      historyAvailable: false,
+    },
+    actions: {
+      async getChapters({ commit }) {
+        const chapters = await import('~/static/data/chapters/index.json');
+        commit('setChapters', chapters.default);
+      },
     },
     mutations: {
       activateFeature (state, feature) {
-        const { theme, location, slug, path } = feature
-        state.activeFeature = { location, slug, path, theme }
+        const { theme, location, slug, path } = feature;
+        state.activeFeature = { location, slug, path, theme };
+        state.theme = feature.theme ? feature.theme.slug : DEFAULT_THEME;
       },
-      deactivateFeature (state, feature) {
-        state.activeFeature = undefined
+      deactivateFeature (state) {
+        state.activeFeature = undefined;
       },
       replaceTheme (state, theme) {
-        state.theme = theme
+        state.theme = theme;
       },
-      replaceFeatures (state, features) {
-        state.features = features
+      resetTheme (state) {
+        state.theme = DEFAULT_THEME;
       },
       disableRotate (state) {
-        state.rotate = false
+        state.rotate = false;
       },
       enableRotate (state) {
-        state.rotate = true
+        state.rotate = true;
       },
       disableZoom (state) {
-        state.zoom = false
+        state.zoom = false;
       },
       enableZoom (state) {
-        state.zoom = true
+        state.zoom = true;
       },
       disableInteraction (state) {
-        state.zoom = false
-        state.rotate = false
+        state.zoom = false;
+        state.rotate = false;
       },
       enableInteraction (state) {
-        state.zoom = true
-        state.rotate = true
+        state.zoom = true;
+        state.rotate = true;
       },
       disableGlobeAutoRotation (state) {
-        state.globeAutoRotation = false
+        state.globeAutoRotation = false;
       },
       enableGlobeAutoRotation (state) {
-        state.globeAutoRotation = true
+        state.globeAutoRotation = true;
       },
       disableGlobePositionRight (state) {
-        state.globePositionRight = false
+        state.globePositionRight = false;
       },
       enableGlobePositionRight (state) {
-        state.globePositionRight = true
+        state.globePositionRight = true;
       },
-      disableNavBackgroundTrans (state) {
-        state.navBackgroundTrans = false
+      setDescription (state, description) {
+        state.description = description;
       },
-      enableNavBackgroundTrans (state) {
-        state.navBackgroundTrans = true
-      }
-    }
-  })
-}
+      setHighlightedEvent (state, highlightedEvent) {
+        state.highlightedEvent = highlightedEvent;
+      },
+      setNavigationLinks (state, navigationLinks) {
+        state.navigationLinks = navigationLinks;
+      },
+      setFilters (state, filters) {
+        state.filters = filters;
+      },
+      setAvailableFilterItems(state, filterItems) {
+        state.availableFilterItems = filterItems;
+      },
+      setChapters (state, chapters) {
+        state.chapters = chapters;
+      },
+      setMarkerTypes (state, markerTypes) {
+        state.markerTypes = markerTypes;
+      },
+      setHistoryAvailable (state) {
+        state.historyAvailable = true;
+      },
+    },
+  });
+};
 
-export default store
+export default store;

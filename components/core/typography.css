@@ -1,0 +1,147 @@
+:root {
+  /* Scales */
+  --minor-second: 1.067;
+  --major-second: 1.125;
+  --minor-third: 1.200;
+  --major-third: 1.250;
+  --perfect-fourth: 1.333;
+  --augm-fourth: 1.414;
+  --perfect-fifth: 1.500;
+  --golden-ratio: 1.618;
+  /* Setup */
+  --base-size: .875; /* implied rems */
+  --min-viewport: 20; /* implied rems */
+  --max-viewport: 60; /* implied rems */
+  --lower-ratio: var(--major-second); /* One of the above scales */
+  --upper-ratio: var(--minor-third); /* One of the above scales */
+  --line-height: var(--perfect-fifth);
+
+  /* Calculated */
+  --min-viewport-units: calc(1rem * var(--min-viewport));
+  --max-viewport-units: calc(1rem * var(--max-viewport));
+  --viewport-range: calc(var(--max-viewport) - var(--min-viewport));  /* static unitless */
+  --curr-viewport-min-overshoot: calc(100vw - var(--min-viewport-units));  /* dynamic */
+  --curr-viewport-factor: calc(var(--curr-viewport-min-overshoot) / var(--viewport-range));  /* dynamic */
+  --ratio-range: calc(var(--upper-ratio) - var(--lower-ratio)); /* static unitless */
+
+}
+
+@media screen and (max-width: 20rem) {
+  :root {
+    --curr-viewport-factor: 0rem
+  }
+}
+@media screen and (min-width: 60rem) {
+  :root {
+    --curr-viewport-factor: 1rem
+  }
+}
+
+p, .p {
+  line-height: var(--line-height);
+  margin-top: 0;
+}
+
+html {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-weight: bold;
+  line-height: var(--upper-ratio);
+  margin-top: 0;
+}
+
+.invert {
+  color: var(--white);
+  text-shadow: 0 0 2rem var(--blue-primary);
+}
+
+.h4,
+.h5,
+.h6 {
+  font-size: var(--base-size);
+}
+
+.h3,
+/* Style intro text as h3 only when there are no other classes */
+p.intro {
+  --min-height: calc(
+    var(--base-size)
+    * var(--lower-ratio)
+  );
+  --max-height: calc(
+    var(--base-size)
+    * var(--upper-ratio)
+  );
+
+  --height-range: calc(var(--max-height) - var(--min-height)); /* static unitless */
+  --height-responsive: calc(
+    calc(1rem * var(--min-height))
+      +
+    calc(var(--height-range) * var(--curr-viewport-factor))
+  );
+  font-size: 1.125rem;
+  font-size: var(--height-responsive);
+  font-weight: bold;
+}
+
+.h2 {
+  --min-height: calc(
+    var(--base-size)
+    * var(--lower-ratio)
+    * var(--lower-ratio)
+  );
+  --max-height: calc(
+    var(--base-size)
+    * var(--upper-ratio)
+    * var(--upper-ratio)
+  );
+
+  --height-range: calc(var(--max-height) - var(--min-height)); /* static unitless */
+  --height-responsive: calc(
+    calc(1rem * var(--min-height))
+      +
+    calc(var(--height-range) * var(--curr-viewport-factor))
+  );
+  font-size: 1.25rem;
+  font-size: var(--height-responsive);
+}
+
+.h1 {
+  --min-height: calc(
+    var(--base-size)
+    * var(--lower-ratio)
+    * var(--lower-ratio)
+    * var(--lower-ratio)
+  );
+  --max-height: calc(
+    var(--base-size)
+    * var(--upper-ratio)
+    * var(--upper-ratio)
+    * var(--upper-ratio)
+  );
+
+  --height-range: calc(var(--max-height) - var(--min-height)); /* static unitless */
+  --height-responsive: calc(
+    calc(1rem * var(--min-height))
+      +
+    calc(var(--height-range) * var(--curr-viewport-factor))
+  );
+  font-size: 1.5rem;
+  font-size: var(--height-responsive);
+}
+
+a:hover,
+a:focus,
+a:active,
+a {
+  color: inherit;
+}

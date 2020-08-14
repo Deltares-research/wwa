@@ -1,14 +1,27 @@
 <template>
   <div class="card-list">
-    <header class="card-list__header" v-show="$slots.header">
-      <slot name="header"></slot>
+    <header
+      class="card-list__header"
+      v-show="$slots.header"
+    >
+      <slot name="header" />
     </header>
-    <transition-group v-if="cards" class="card-list__list" name="slideUp" tag="ul" appear disappear :duration="animationDuration">
-      <li v-for="card in cards"
+    <transition-group
+      v-if="cards"
+      class="card-list__list"
+      name="slideUp"
+      tag="ul"
+      appear
+      disappear
+      :duration="animationDuration"
+    >
+      <li
+        v-for="card in cards"
         :key="card.slug"
         :id="card.slug"
         class="card-list__item"
-        data-list-item>
+        data-list-item
+      >
         <card-component
           :subtitle="(card.book) ? card.book.title : subtitle"
           :title="card.title"
@@ -18,25 +31,24 @@
       </li>
     </transition-group>
   </div>
-
 </template>
 
 <script>
-import CardComponent from '~/components/card-component/CardComponent'
+import CardComponent from '~/components/card-component/CardComponent';
 export default {
   data () {
     return {
-      animationDuration: 3000
-    }
+      animationDuration: 3000,
+    };
   },
   props: {
     cards: Array,
     subtitle: {
       type: String,
       default () {
-        return ''
-      }
-    }
+        return '';
+      },
+    },
   },
   mounted () {
   },
@@ -44,14 +56,11 @@ export default {
   },
   methods: {
   },
-  components: { CardComponent }
-}
+  components: { CardComponent },
+};
 </script>
 
 <style>
-@import '../colors/colors.css';
-@import '../animations/animations.css';
-
 .card-list {
   position: relative;
   width: 100%;
@@ -117,8 +126,8 @@ export default {
   width: 2rem;
   height: 2rem;
   border-radius: 1rem;
-  background-color: var(--ui--black--trans);
-  box-shadow: 2rem 2rem 4rem 4rem var(--ui--black--trans);
+  background-color: var(--black-primary);
+  box-shadow: 2rem 2rem 4rem 4rem var(--black-primary);
   z-index: 1;
   font-size: 2rem;
   text-align: center;

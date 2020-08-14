@@ -22,6 +22,7 @@
           class="language-switch__item"
         >
           <nuxt-link
+            v-if="locale !== 'zh'"
             class="language-switch__link"
             :class="{ 'language-switch__link--active': route.params.language === locale }"
             rel="alternate"

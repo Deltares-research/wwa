@@ -5,20 +5,22 @@ import fetchContent from './lib/fetch-content';
 
 dotenv.config();
 
-const mapallInternalEventsToRedirects = () => fetchContent(`
-  {
-    allInternalEvents {
-      slug
-      countryCode
-      nativeLocale
-      _allNameLocales {
-        locale
-      }
+const fetchingAllInternalEvents = fetchContent(`
+{
+  allInternalEvents {
+    slug
+    countryCode
+    nativeLocale
+    _allNameLocales {
+      locale
     }
   }
-`)
-  .then(({ allInternalEvents }) => (
-    allInternalEvents
+}
+`).then(({ allInternalEvents }) => allInternalEvents);
+
+const mapallInternalEventsToRedirects = () => fetchingAllInternalEvents
+  .then(events => (
+    events
       .map((event) => [
         `/events/${event.slug} /${event.nativeLocale}/events/${event.slug} 302 Country=${event.countryCode}`,
         ...event._allNameLocales
@@ -87,6 +89,15 @@ export default {
       /^\/events\/.+/,
       /^\/narratives\/undefined/,
     ],
+    routes() {
+      return fetchingAllInternalEvents
+      .then(events => (
+        events.map((event) => {
+            return event._allNameLocales
+              .map(({ locale }) => `/${locale}/events/${event.slug}/`);
+        }).flat()
+      ));
+    },
   },
   hooks: {
     export: {

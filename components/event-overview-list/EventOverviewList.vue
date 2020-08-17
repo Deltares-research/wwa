@@ -54,13 +54,13 @@
             >
               {{ event.urlLabel }}
             </a>
-            <nuxt-link
+            <a
               v-else
-              :to="`/en/events/${event.slug}`"
+              :href="`/events/${event.slug}/`"
               class="event-overview-list__link event-overview-list__link--internal"
             >
               Go to event page
-            </nuxt-link>
+            </a>
           </div>
 
           <lazy-media class="event-overview-list__list-item-image">

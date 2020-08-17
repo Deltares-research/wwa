@@ -28,12 +28,12 @@
           <p class="event-preview__highlight-summary">
             {{ app.highlightedEvent.summary }}
           </p>
-          <nuxt-link
+          <a
             class="event-preview__highlight-link"
-            :to="`/en/events/${app.highlightedEvent.slug}`"
+            :href="`/events/${app.highlightedEvent.slug}/`"
           >
             Go to event page
-          </nuxt-link>
+          </a>
         </div>
       </section>
 

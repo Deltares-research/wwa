@@ -22,7 +22,7 @@ const mapallInternalEventsToRedirects = () => fetchContent(`
       .map((event) => [
         // `/events/${event.slug} /${event.nativeLocale}/events/${event.slug} 302 Country=${event.countryCode}`,
         ...event._allNameLocales
-          .filter(({ locale }) => locale !== 'en')
+          .filter(({ locale }) => !['en', 'zh'].includes(locale))
           .map(({ locale }) =>
             `/events/${event.slug} /${locale}/events/${event.slug} 302 Language=${locale}`,
           ),

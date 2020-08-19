@@ -115,13 +115,17 @@
               class="event__layout event__layout--padded"
             >
               <h3 class="event-block__title">
-                Schedule
+                {{ block.scheduleLabel }}
               </h3>
               <event-block-schedule
                 :event-days="block.eventDays"
                 :timezone="internalEvent.timezone"
                 :timezone-comment="internalEvent.timezoneComment"
                 :language="params.language"
+                :topic-label="block.topicLabel"
+                :now-label="block.nowLabel"
+                :description-label="block.descriptionLabel"
+                :speakers-label="block.speakersLabel"
               />
             </div>
           </template>
@@ -310,6 +314,11 @@
                   _modelApiKey
                   id
                   slug
+                  topicLabel
+                  scheduleLabel
+                  nowLabel
+                  descriptionLabel
+                  speakersLabel
                   eventDays {
                     id
                     date
@@ -322,10 +331,9 @@
                       description
                       watchLabel
                       watchUrl
-                      speaker {
-                        image {
-                          url
-                        }
+                      speakers {
+                        id
+                        name
                       }
                     }
                   }

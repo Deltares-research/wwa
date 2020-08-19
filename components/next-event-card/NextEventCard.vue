@@ -1,6 +1,6 @@
 <template>
   <a
-    :href="`/events/${event.slug}`"
+    :href="`/events/${event.slug}/`"
     class="next-event-card"
   >
     <div class="next-event-card__content">

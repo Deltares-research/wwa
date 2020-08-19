@@ -48,7 +48,7 @@
                 v-if="scheduleItem.isNow"
                 class="event-block-schedule__now-notice"
               >
-                now
+                {{ nowLabel }}
               </span>
               <span class="event-block-schedule-wide__time">
                 {{ scheduleItem.startTime }} - {{ scheduleItem.endTime }}
@@ -69,13 +69,32 @@
                 >
                 <div class="event-block-schedule__copy event-block-schedule-wide__copy">
                   <span class="event-block-schedule-wide__copy-title">{{ scheduleItem.title }}</span>
-                  <span class="event-block-schedule__description-label">Topic</span>
+                  <span class="event-block-schedule__description-label">
+                    {{ topicLabel }}
+                  </span>
                   <span class="event-block-schedule__topic">{{ scheduleItem.topic }}</span>
                 </div>
               </div>
               <div class="event-block-schedule-wide__description">
-                <span class="event-block-schedule__description-label">Description</span>
+                <span class="event-block-schedule__description-label">
+                  {{ descriptionLabel }}
+                </span>
+
                 {{ scheduleItem.description }}
+
+                <span class="event-block-schedule__description-label">
+                  {{ speakersLabel }}
+                </span>
+
+                <ul class="list--inline">
+                  <li
+                    v-for="speaker in scheduleItem.speakers"
+                    :key="speaker.id"
+                    class="event-block-schedule__description-speaker"
+                  >
+                    {{ speaker.name }}
+                  </li>
+                </ul>
               </div>
               <div
                 v-if="scheduleItem.isNow && scheduleItem.watchUrl && scheduleItem.watchLabel"
@@ -149,7 +168,7 @@
                   v-if="scheduleItem.isNow"
                   class="event-block-schedule__now-notice"
                 >
-                  now
+                  {{ nowLabel }}
                 </span>
                 <span class="event-block-schedule__time">
                   {{ scheduleItem.startTime }} - {{ scheduleItem.endTime }}
@@ -206,8 +225,25 @@
                   'event-block-schedule__body--active': scheduleItem.isNow,
                 }"
               >
-                <span class="event-block-schedule__description-label">Description</span>
+                <span class="event-block-schedule__description-label">
+                  {{ descriptionLabel }}
+                </span>
+
                 {{ scheduleItem.description }}
+
+                <span class="event-block-schedule__description-label">
+                  {{ speakersLabel }}
+                </span>
+
+                <ul class="list--inline">
+                  <li
+                    v-for="speaker in scheduleItem.speakers"
+                    :key="speaker.id"
+                    class="event-block-schedule__description-speaker"
+                  >
+                    {{ speaker.name }}
+                  </li>
+                </ul>
               </div>
             </details>
           </li>
@@ -224,6 +260,10 @@
       timezoneComment: String,
       eventDays: Array,
       language: String,
+      topicLabel: String,
+      nowLabel: String,
+      descriptionLabel: String,
+      speakersLabel: String,
     },
     data({ eventDayToday, eventDays, timezone, timezoneComment }) {
       return {
@@ -513,6 +553,16 @@
     font-size: 0.8rem;
     color: var(--black-tertiary);
     text-transform: uppercase;
+  }
+
+  .event-block-schedule__description-label:not(:first-of-type) {
+    margin-top: 1rem;
+  }
+
+  .event-block-schedule__description-speaker:not(:last-child):after {
+    content: '-';
+    margin-left: .25rem;
+    display: inline-block;
   }
 
   .event-block-schedule__body--active {

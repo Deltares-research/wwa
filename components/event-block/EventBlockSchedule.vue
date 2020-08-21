@@ -97,7 +97,7 @@
                 </ul>
               </div>
               <div
-                v-if="scheduleItem.isNow && scheduleItem.watchUrl && scheduleItem.watchLabel"
+                v-if="scheduleItem.watchUrl && scheduleItem.watchLabel"
                 class="event-block-schedule-wide__url-wrapper"
               >
                 <a
@@ -111,7 +111,9 @@
                     src="~/assets/play-icon-dark.svg"
                     alt=""
                   >
-                  {{ scheduleItem.watchLabel }}
+                  <span class="event-block-schedule-wide__url-label">
+                    {{ scheduleItem.watchLabel }}
+                  </span>
                 </a>
               </div>
             </div>
@@ -180,7 +182,7 @@
                   }"
                 >
                   <a
-                    v-if="scheduleItem.isNow && scheduleItem.watchUrl && scheduleItem.watchLabel"
+                    v-if="scheduleItem.watchUrl && scheduleItem.watchLabel"
                     class="event-block-schedule__url"
                     :href="scheduleItem.watchUrl"
                     target="_blank"
@@ -435,6 +437,13 @@
     box-shadow: 0px 6px 16px rgba(84, 66, 56, 0.45);
   }
 
+  .event-block-schedule-wide__url-label {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .event-block-schedule-wide__speaker {
     border-radius: 100%;
     border: 4px solid var(--white);
@@ -583,15 +592,20 @@
     text-decoration: none;
     color: var(--blue-primary);
     border-radius: 4px;
-    white-space: nowrap;
+    background: var(--white);
   }
 
   .event-block-schedule__url-icon {
-    margin-right: 0.6rem;
     padding: 0.6rem;
     border-radius: 50%;
     background-color: var(--blue-primary);
     box-shadow: 0px 6px 16px rgba(84, 66, 56, 0.45);
+  }
+
+  @media (--md-viewport) {
+    .event-block-schedule__url-icon {
+      margin-right: 0.6rem;
+    }
   }
 
   .event-block-schedule__now-notice {

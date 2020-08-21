@@ -541,9 +541,7 @@
   }
 
   .event-block-schedule__description {
-    padding-right: 1rem;
-    padding-bottom: 1rem;
-    padding-left: 1rem;
+    padding: 1rem;
     background-color: var(--black-secondary);
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;
@@ -593,6 +591,11 @@
     color: var(--blue-primary);
     border-radius: 4px;
     background: var(--white);
+  }
+
+  .event-block-schedule__url:hover,
+  .event-block-schedule__url:focus {
+    color: var(--blue-primary);
   }
 
   .event-block-schedule__url-icon {

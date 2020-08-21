@@ -89,14 +89,16 @@ export default {
       /^\/events\/.+/,
       /^\/narratives\/undefined/,
     ],
-    routes() {
-      return fetchingAllInternalEvents
-      .then(events => (
-        events.map((event) => {
-            return event._allNameLocales
-              .map(({ locale }) => `/${locale}/events/${event.slug}/`);
-        }).flat()
-      ));
+    async routes() {
+      const events = await fetchingAllInternalEvents;
+      const eventUrls = events.map((event) => {
+        return event._allNameLocales
+          .map(({ locale }) => `/${locale}/events/${event.slug}/`);
+      }).flat();
+      return [
+        ...eventUrls,
+        '/credits/',
+      ];
     },
   },
   hooks: {

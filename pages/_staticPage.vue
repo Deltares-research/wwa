@@ -64,6 +64,9 @@ export default {
   padding: 10rem 1rem;
 }
 
+.static-page__body p {
+  margin-bottom: 1rem;
+}
 .static-page__body p:first-child {
   font-weight: bold;
 }

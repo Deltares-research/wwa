@@ -1,7 +1,7 @@
 <template>
-  <main class="layout layout--static-page">
+  <main class="layout-static-page layout-static-page--light">
     <main-menu variant="light" />
-    <nuxt />
+    <nuxt class="layout-section__container" />
   </main>
 </template>
 

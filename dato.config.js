@@ -4,6 +4,7 @@ const uniq = require('lodash/uniq');
 const uniqBy = require('lodash/uniqBy');
 const flattendeep = require('lodash/flattenDeep');
 const slugify = require('slug');
+const { filter } = require('lodash');
 
 /**
  * @typedef Dato
@@ -49,6 +50,7 @@ module.exports = (dato, root, i18n) => {
   generateStaticPages(dato, root, i18n);
   generateThemes(dato, root, i18n);
   generateMarkers(dato, root, i18n);
+  generateFeatures(dato, root, i18n);
 };
 
 /**
@@ -324,6 +326,29 @@ function generateStaticPages (dato, root, i18n) {
   }
   const staticPageIndex = staticPages.map(page => ({ path: `/${page.slug}` }));
   root.createDataFile('static/data/static-pages/index.json', 'json', staticPageIndex);
+}
+
+function generateFeatures (dato, root, i18n) {
+  const featurePages = dato.features
+    .filter(filterPublished)
+    .map(page => {
+      const { title, slug, icon, sections } = page;
+      return {
+        title,
+        slug,
+        icon,
+        sections: sections.toMap(),
+      };
+    });
+  for (const page of featurePages) {
+    root.createDataFile(`static/data/features/${page.slug}.json`, 'json', page);
+  }
+  const featurePageIndex = featurePages.map(page => ({
+    id: page.id,
+    title: page.title,
+    path: `features/${page.slug}`,
+  }));
+  root.createDataFile('static/data/features/index.json', 'json', featurePageIndex);
 }
 
 /**

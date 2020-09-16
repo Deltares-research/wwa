@@ -1,6 +1,5 @@
-
 <template>
-  <article class="static-page">
+  <article>
     <section
       v-if="video"
       class="static-page__video static-page__fixed-ratio"
@@ -40,7 +39,7 @@ import loadData from '~/lib/load-data';
 import lazyImage from '~/components/lazy-media/LazyMedia';
 
 export default {
-  layout: 'static-page',
+  layout: 'static-page-light',
   async asyncData (context) {
     const { title, body, images, video } = await loadData(context, context.params);
 
@@ -54,16 +53,8 @@ export default {
   },
 };
 </script>
-<style>
-.static-page {
-  box-sizing: border-box;
-  width: 100%;
-  height: auto;
-  max-width: var(--wwa-column-width);
-  margin: auto;
-  padding: 10rem 1rem;
-}
 
+<style>
 .static-page__body p:first-child {
   font-weight: bold;
 }

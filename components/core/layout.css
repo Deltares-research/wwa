@@ -1,5 +1,17 @@
-.layout--static-page {
+.layout-static-page {
   width: 100%;
+  background-color: var(--blue-primary);
+  color: var(--white);
+  padding: 6rem 0;
+}
+
+@media (--sm-viewport) {
+  .layout-static-page {
+    padding: 10rem 0;
+  }
+}
+
+.layout-static-page--light {
   background-color: var(--white);
   color: var(--blue-primary);
 }
@@ -15,7 +27,8 @@
 
 .layout-section__container {
   width: 100%;
-  max-width: 950px;
+  max-width: var(--wwa-column-width);
+  margin: 0 auto;
   z-index: 1;
 }
 

@@ -1,11 +1,11 @@
 <template>
-  <div class="features-page">
-    <ul class="flat-list">
+  <div>
+    <ul>
       <li
-        v-for="feature in features"
-        :key="feature.id"
+        v-for="feature in allFeatures"
+        :key="feature.slug"
       >
-        <nuxt-link :to="feature.path">
+        <nuxt-link :to="`/features/${feature.slug}`">
           {{ feature.title }}
         </nuxt-link>
       </li>
@@ -14,20 +14,23 @@
 </template>
 
 <script>
+  import fetchContent from '~/lib/fetch-content';
+
   export default {
     layout: 'static-page-dark',
-    async asyncData (context) {
-      const data = await import('~/static/data/features/index.json');
+    async asyncData () {
+      const query = `
+          {
+            allFeatures {
+              slug
+              title
+            }
+          }
+        `;
+
       return {
-        features: data.default,
+        ...await fetchContent(query),
       };
     },
   };
 </script>
-
-<style>
-  .features-page {
-    margin: 0 auto;
-    max-width: var(--wwa-column-width);
-  }
-</style>

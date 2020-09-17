@@ -148,7 +148,6 @@
         {{ displayTimezone }}
       </p>
 
-
       <section
         v-for="eventDay in parsedEventDays"
         :key="`section-${eventDay.id}`"
@@ -261,18 +260,18 @@
       timezone: String,
       timezoneComment: String,
       eventDays: Array,
-      language: String,
       topicLabel: String,
       nowLabel: String,
       descriptionLabel: String,
       speakersLabel: String,
     },
-    data({ eventDayToday, eventDays, timezone, timezoneComment }) {
+    data() {
       return {
         currentDate: new Date(),
         interval: null,
         selectedEventDayId: '',
-        displayTimezone: `${timezoneComment} UTC ${timezone.substr(0,3)}`,
+        displayTimezone: `${this.timezoneComment} UTC ${this.timezone.substr(0,3)}`,
+        language: this.$route.params.language || 'en',
       };
     },
     computed: {

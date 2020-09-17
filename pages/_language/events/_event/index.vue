@@ -1,6 +1,6 @@
 <template>
   <div class="event">
-    <header class="event__layout">
+    <header class="layout-section__container">
       <animator
         :delay="0"
         :is-intersection-disabled="true"

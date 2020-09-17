@@ -1,31 +1,25 @@
 <template>
   <div>
-    <img
-      :src="feature.icon.url"
-      alt=""
-    >
+    <feature-header
+      :icon-url="feature.icon.url"
+      :title="feature.title"
+    />
 
-    <h1>{{ feature.title }}</h1>
-
-    <button
-      type="button"
-      @click="goBack"
-    >
-      Back
-    </button>
-
-    <section-blocks :sections="feature.sections" />
+    <section-blocks
+      :sections="feature.sections"
+    />
   </div>
 </template>
 
 <script>
   import fetchContent from '~/lib/fetch-content';
-  import { mapState } from 'vuex';
+  import FeatureHeader from '~/components/feature-header/FeatureHeader';
   import SectionBlocks from '~/components/section-blocks/SectionBlocks';
 
   export default {
     layout: 'static-page-dark',
     components: {
+      FeatureHeader,
       SectionBlocks,
     },
     async asyncData({ params }) {
@@ -187,14 +181,6 @@
       return {
         ...await fetchContent(query),
       };
-    },
-    computed: {
-      ...mapState(['historyAvailable']),
-    },
-    methods: {
-      goBack () {
-        this.historyAvailable ? this.$router.back() : this.$router.push('/');
-      },
     },
   };
 </script>

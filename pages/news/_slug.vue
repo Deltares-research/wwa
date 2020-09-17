@@ -28,19 +28,6 @@ export default {
               showTopWave
 
               blocks {
-                ... on ChaptersBlockRecord {
-                  _modelApiKey
-                  id
-                  title
-                  slug
-                  chapters {
-                    title
-                    slug
-                    cover {
-                      url
-                    }
-                  }
-                }
                 ... on ColofonBlockRecord {
                   _modelApiKey
                   id
@@ -110,55 +97,6 @@ export default {
                       title
                       cover {
                         url
-                      }
-                    }
-                  }
-                }
-                ... on SpeakersBlockRecord {
-                  _modelApiKey
-                  id
-                  showWaveMarker
-                  subtitle
-                  title
-                  slug
-                  titleColor
-                  speakers {
-                    id
-                    name
-                    organization
-                    subject
-                    subjectLabel
-                    image {
-                      url
-                    }
-                  }
-                }
-                ... on ScheduleBlockRecord {
-                  _modelApiKey
-                  id
-                  slug
-                  timezone
-                  timezoneComment
-                  topicLabel
-                  scheduleLabel
-                  nowLabel
-                  descriptionLabel
-                  speakersLabel
-                  eventDays {
-                    id
-                    date
-                    scheduleItems {
-                      id
-                      title
-                      topic
-                      startTime
-                      endTime
-                      description
-                      watchLabel
-                      watchUrl
-                      speakers {
-                        id
-                        name
                       }
                     }
                   }

@@ -1,6 +1,6 @@
 <template>
   <div class="event">
-    <header class="event__layout">
+    <header class="layout-section__container">
       <animator
         :delay="0"
         :is-intersection-disabled="true"
@@ -33,7 +33,7 @@
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';
   import Animator from '~/components/animator/Animator';
-  import SectionBlocks from '~/components/section-blocks/SectionBlocks'
+  import SectionBlocks from '~/components/section-blocks/SectionBlocks';
 
   export default {
     components: {

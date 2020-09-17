@@ -1,36 +1,38 @@
 <template>
-  <article>
-    <section
-      v-if="video"
-      class="static-page__video static-page__fixed-ratio"
-      :style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`"
-    >
-      <iframe
-        class="static-page__video"
-        allowfullscreen="allowfullscreen"
-        :src="`//www.${video.provider}.com/embed/${video.providerUid}`"
-        width="100%"
-        height="100%"
+  <article class="layout-section static-page">
+    <div class="layout-section__container">
+      <section
+        v-if="video"
+        class="static-page__video static-page__fixed-ratio"
+        :style="`padding-bottom:${Math.round(video.height/video.width * 10000)/100}%`"
+      >
+        <iframe
+          class="static-page__video"
+          allowfullscreen="allowfullscreen"
+          :src="`//www.${video.provider}.com/embed/${video.providerUid}`"
+          width="100%"
+          height="100%"
+        />
+      </section>
+      <h1>{{ title }}</h1>
+      <section
+        class="static-page__body"
+        v-html="body"
       />
-    </section>
-    <h1>{{ title }}</h1>
-    <section
-      class="static-page__body"
-      v-html="body"
-    />
-    <figure
-      v-for="image in images"
-      :key="image.id"
-    >
-      <lazy-image
-        :src-width="image.value.width"
-        :src-height="image.value.height"
-        :src="`${image.imgixHost}${image.value.path}?auto=compress,format&w=640&q=65`"
-        :alt="image.value.alt"
-        width="100%"
-      />
-      <figcaption>{{ image.value.title }}</figcaption>
-    </figure>
+      <figure
+        v-for="image in images"
+        :key="image.id"
+      >
+        <lazy-image
+          :src-width="image.value.width"
+          :src-height="image.value.height"
+          :src="`${image.imgixHost}${image.value.path}?auto=compress,format&w=640&q=65`"
+          :alt="image.value.alt"
+          width="100%"
+        />
+        <figcaption>{{ image.value.title }}</figcaption>
+      </figure>
+    </div>
   </article>
 </template>
 
@@ -55,6 +57,10 @@ export default {
 </script>
 
 <style>
+.static-page {
+  padding-bottom: 1rem;
+}
+
 .static-page__body p:first-child {
   font-weight: bold;
 }
@@ -69,6 +75,7 @@ export default {
   color: var(--blue-secondary);
   background-color: var(--black-secondary);
 }
+
 .static-page__fixed-ratio > * {
   position: absolute;
 }

@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="app-footer layout-section"
+    class="app-footer layout-section layout-section--background-black"
     :class="{ 'app-footer--small': isBookChapter }"
   >
     <div class="app-footer__content layout-section__container">

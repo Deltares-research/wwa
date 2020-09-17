@@ -1,5 +1,5 @@
 <template>
-  <main class="layout-section layout-section--background-black layout-section--events">
+  <main class="layout-section layout-section--events">
     <div class="layout-section__container">
       <h1 class="events-title">
         Events

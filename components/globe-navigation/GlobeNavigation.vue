@@ -57,16 +57,7 @@
             v-if="filterDescription"
             v-html="filterDescription"
             class="globe-navigation__description"
-            :class="{ 'globe-navigation__description--spacing-small': filterFeature }"
           />
-
-          <nuxt-link
-            v-if="filterFeature"
-            :to="`/features/${filterFeature.slug}`"
-            class="globe-navigation__feature-link"
-          >
-            Explore {{ filterFeature.title }}
-          </nuxt-link>
         </template>
       </section>
     </div>
@@ -116,12 +107,6 @@
           ? this.activeFilterItem ? this.activeFilterItem.description : ''
           : this.activeFilter ? this.activeFilter.description : '';
         return description;
-      },
-      filterFeature () {
-        const feature = this.activeFilterItemSlug
-          ? this.activeFilterItem ? this.activeFilterItem.feature : ''
-          : this.activeFilter ? this.activeFilter.feature : '';
-        return feature;
       },
       filterTitle () {
         return this.activeFilterItemSlug
@@ -331,10 +316,6 @@
     line-height: 1.5;
   }
 
-  .globe-navigation__description--spacing-small {
-    margin-bottom: 1rem;
-  }
-
   .globe-navigation__description p {
     margin-bottom: .5rem;
   }
@@ -347,36 +328,5 @@
     .globe-navigation__description {
       max-width: 66%;
     }
-  }
-
-  .globe-navigation__feature-link {
-    display: inline-flex;
-    align-items: center;
-    margin-bottom: 3rem;
-    padding: .3rem .9rem .3rem 1rem;
-    min-height: 2rem;
-    background: var(--black-secondary);
-    border-radius: 5px;
-    font-size: .825rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: var(--white);
-  }
-
-  .globe-navigation__feature-link:hover,
-  .globe-navigation__feature-link:focus {
-    color: var(--white);
-  }
-
-  .globe-navigation__feature-link:after {
-    content: '';
-    display: block;
-    margin-left: .4rem;
-    width: 10px;
-    height: 10px;
-    background-image: url('~assets/arrow-right--white.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 100%;
   }
 </style>

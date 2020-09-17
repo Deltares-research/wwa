@@ -1,5 +1,5 @@
 <template functional>
-  <footer class="event-footer layout-section__container layout-section__container--padded">
+  <footer class="event-footer event__layout event__layout--padded">
     <div class="event-footer__body">
       <p class="event-footer__copy">
         <span v-html="props.name" />

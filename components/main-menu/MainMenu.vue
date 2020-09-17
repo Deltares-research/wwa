@@ -119,10 +119,6 @@
     color: var(--blue-tertiary);
   }
 
-  .main-menu--dark .main-menu__description {
-    color: var(--white);
-  }
-
   @media (--sm-viewport) {
     .main-menu__logo {
       font-weight: 900;

@@ -1,6 +1,6 @@
 <template>
   <div class="event">
-    <header class="layout-section__container">
+    <header class="event__layout">
       <event-header
         :name="internalEvent.name"
         :slug="internalEvent.slug"
@@ -10,8 +10,8 @@
       />
     </header>
 
-    <main class="event__content">
-      <div class="layout-section__container layout-section__container--padded">
+    <main class="event-section event__content">
+      <div class="event__layout event__layout--padded">
         <narrative-header-event
           :chapter="chapter"
           :back-button-label="internalEvent.backButtonLabel"
@@ -27,7 +27,7 @@
         class="event-chapter__article"
         :class="{ 'event-chapter__article--blue': index % 2 != 0}"
       >
-        <div class="layout-section__container layout-section__container--padded">
+        <div class="event__layout event__layout--padded">
           <div class="event-chapter__block">
             <event-block-text
               :show-wave-marker="true"

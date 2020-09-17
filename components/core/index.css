@@ -4,7 +4,6 @@
 @import './a11y.css';
 @import './list.css';
 @import './typography.css';
-@import './buttons.css';
 @import './swiper.css';
 @import './animations.css';
 
@@ -13,7 +12,8 @@
   --globe-spacing-default--desktop: 73vh;
   --globe-spacing-tall: 90vh;
   --globe-spacing-tall--desktop: 85vh;
-  --wwa-column-width: 70rem;
+  --wwa-column-width: 60rem;
+  --event-column-width: 70rem;
 }
 
 @custom-media --sm-viewport (min-width: 37.5rem);

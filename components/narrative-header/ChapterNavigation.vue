@@ -10,14 +10,14 @@
       <nuxt-link
         v-if="$route.params.language"
         :to="`/${$route.params.language}/events/${$route.params.event}`"
-        class="button__back"
+        class="chapter-navigation__back"
       >
         {{ backButtonLabel ? backButtonLabel : 'Back' }}
       </nuxt-link>
       <button
         v-else
         type="button"
-        class="button__back"
+        class="chapter-navigation__back"
         @click="goBack"
       >
         Back
@@ -204,6 +204,35 @@
 
   .chapter-navigation__body--event-chapter.chapter-navigation__body--fixed:after {
     display: none;
+  }
+
+  .chapter-navigation__back {
+    display: flex;
+    align-items: center;
+    font-size: inherit;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--white);
+    background: none;
+    border: none;
+    cursor: pointer;
+    appearance: none;
+  }
+
+  .chapter-navigation__back:hover,
+  .chapter-navigation__back:focus {
+    color: var(--white);
+  }
+
+  .chapter-navigation__back:before {
+    content: '';
+    margin: .1rem .5rem 0 0;
+    width: 5px;
+    height: 10px;
+    background-image: url('~assets/arrow-left.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   .chapter-navigation__select {

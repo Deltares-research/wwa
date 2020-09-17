@@ -1,5 +1,5 @@
 <template>
-  <div class="globe-section layout-section invert">
+  <div class="globe-section layout-section layout-section--background-black invert">
     <ul class="chapter-list-overview-page layout-section__container">
       <template
         v-for="filter in chaptersGroupedByFilter"

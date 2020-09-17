@@ -5,17 +5,17 @@
       :key="section.id"
       class="event-section"
       :class="{
-          'event-section--wave-top-black': section.showTopWave && section.backgroundColor === 'black',
-          'event-section--wave-top-blue': section.showTopWave && section.backgroundColor === 'blue',
-          'event-section--wave-bottom-black': section.showBottomWave && section.backgroundColor === 'black',
-          'event-section--wave-bottom-blue': section.showBottomWave && section.backgroundColor === 'blue',
-          'event-section--wave-top-bg-blue': section.showTopWave && sections[index - 1] && sections[index - 1].backgroundColor === 'blue',
-          'event-section--wave-top-bg-black': section.showTopWave && sections[index - 1] && sections[index - 1].backgroundColor === 'black',
-          'event-section--wave-bottom-bg-blue': section.showBottomWave && sections[index + 1] && sections[index + 1].backgroundColor === 'blue',
-          'event-section--wave-bottom-bg-black': section.showBottomWave && sections[index + 1] && sections[index + 1].backgroundColor === 'black',
-          'event__layout--background-black': section.backgroundColor === 'black',
-          'event__layout--background-blue': section.backgroundColor === 'blue',
-        }"
+        'event-section--wave-top-black': section.showTopWave && section.backgroundColor === 'black',
+        'event-section--wave-top-blue': section.showTopWave && section.backgroundColor === 'blue',
+        'event-section--wave-bottom-black': section.showBottomWave && section.backgroundColor === 'black',
+        'event-section--wave-bottom-blue': section.showBottomWave && section.backgroundColor === 'blue',
+        'event-section--wave-top-bg-blue': section.showTopWave && sections[index - 1] && sections[index - 1].backgroundColor === 'blue',
+        'event-section--wave-top-bg-black': section.showTopWave && sections[index - 1] && sections[index - 1].backgroundColor === 'black',
+        'event-section--wave-bottom-bg-blue': section.showBottomWave && sections[index + 1] && sections[index + 1].backgroundColor === 'blue',
+        'event-section--wave-bottom-bg-black': section.showBottomWave && sections[index + 1] && sections[index + 1].backgroundColor === 'black',
+        'event__layout--background-black': section.backgroundColor === 'black',
+        'event__layout--background-blue': section.backgroundColor === 'blue',
+      }"
     >
       <div class="event-section__content">
         <template v-for="(block, blockIndex) in section.blocks">
@@ -114,15 +114,15 @@
 </template>
 
 <script>
-import EventBlockChaptersCarousel from '~/components/event-block/EventBlockChaptersCarousel'
-import EventBlockChaptersList from '~/components/event-block/EventBlockChaptersList'
-import EventBlockColofon from '~/components/event-block/EventBlockColofon'
-import EventBlockSchedule from '~/components/event-block/EventBlockSchedule'
-import EventBlockText from '~/components/event-block/EventBlockText'
-import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia'
-import EventBlockRelatedStories from '~/components/event-block/EventBlockRelatedStories'
-import EventBlockSpeakers from '~/components/event-block/EventBlockSpeakers'
-import Animator from '~/components/animator/Animator'
+import EventBlockChaptersCarousel from '~/components/event-block/EventBlockChaptersCarousel';
+import EventBlockChaptersList from '~/components/event-block/EventBlockChaptersList';
+import EventBlockColofon from '~/components/event-block/EventBlockColofon';
+import EventBlockSchedule from '~/components/event-block/EventBlockSchedule';
+import EventBlockText from '~/components/event-block/EventBlockText';
+import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia';
+import EventBlockRelatedStories from '~/components/event-block/EventBlockRelatedStories';
+import EventBlockSpeakers from '~/components/event-block/EventBlockSpeakers';
+import Animator from '~/components/animator/Animator';
 
 export default {
   components: {
@@ -139,7 +139,7 @@ export default {
   props: {
     sections: {
       type: Array,
-      required: true
+      required: true,
     },
   },
 };

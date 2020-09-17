@@ -114,15 +114,15 @@
 </template>
 
 <script>
-import EventBlockChaptersCarousel from '~/components/event-block/EventBlockChaptersCarousel'
-import EventBlockChaptersList from '~/components/event-block/EventBlockChaptersList'
-import EventBlockColofon from '~/components/event-block/EventBlockColofon'
-import EventBlockSchedule from '~/components/event-block/EventBlockSchedule'
-import EventBlockText from '~/components/event-block/EventBlockText'
-import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia'
-import EventBlockRelatedStories from '~/components/event-block/EventBlockRelatedStories'
-import EventBlockSpeakers from '~/components/event-block/EventBlockSpeakers'
-import Animator from '~/components/animator/Animator'
+import EventBlockChaptersCarousel from '~/components/event-block/EventBlockChaptersCarousel';
+import EventBlockChaptersList from '~/components/event-block/EventBlockChaptersList';
+import EventBlockColofon from '~/components/event-block/EventBlockColofon';
+import EventBlockSchedule from '~/components/event-block/EventBlockSchedule';
+import EventBlockText from '~/components/event-block/EventBlockText';
+import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia';
+import EventBlockRelatedStories from '~/components/event-block/EventBlockRelatedStories';
+import EventBlockSpeakers from '~/components/event-block/EventBlockSpeakers';
+import Animator from '~/components/animator/Animator';
 
 export default {
   components: {
@@ -139,7 +139,7 @@ export default {
   props: {
     sections: {
       type: Array,
-      required: true
+      required: true,
     },
   },
 };

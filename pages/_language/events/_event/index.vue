@@ -33,7 +33,7 @@
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';
   import Animator from '~/components/animator/Animator';
-  import SectionBlocks from '~/components/section-blocks/SectionBlocks'
+  import SectionBlocks from '~/components/section-blocks/SectionBlocks';
 
   export default {
     components: {

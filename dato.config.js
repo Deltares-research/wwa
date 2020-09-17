@@ -238,6 +238,10 @@ function generateAppData (dato, root, i18n) {
           title: filterItem.title,
           slug: filterItem.slug,
           description: renderMarkedContent(filterItem.body),
+          feature: filterItem.feature ? {
+            title: filterItem.feature.title,
+            slug: filterItem.feature.slug,
+          } : null,
           icon: filterItem.icon,
         };
       }),

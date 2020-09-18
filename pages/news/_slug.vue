@@ -134,8 +134,8 @@ export default {
   },
   computed: {
     formattedDate() {
-      return new Date(this.newsArticle.date).toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' })
-    }
+      return new Date(this.newsArticle.date).toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' });
+    },
   },
 };
 </script>

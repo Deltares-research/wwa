@@ -28,7 +28,12 @@
         <h1 class="page-header__title">
           {{ title }}
         </h1>
-        <p v-if="subTitle" class="page-header__subtitle">{{ subTitle }}</p>
+        <p
+          v-if="subTitle"
+          class="page-header__subtitle"
+        >
+          {{ subTitle }}
+        </p>
       </div>
     </div>
   </header>
@@ -41,12 +46,12 @@
     props: {
       heroImageUrl: {
         type: String,
-        required: true
+        required: true,
       },
       iconUrl: String,
       title: {
         type: String,
-        required: true
+        required: true,
       },
       subTitle: String,
     },

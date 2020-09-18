@@ -1,6 +1,9 @@
 <template>
   <div class="app-description">
-    <nuxt-link to="/about/" class="app-description__link">
+    <nuxt-link
+      to="/about/"
+      class="app-description__link"
+    >
       {{ description }}
     </nuxt-link>
   </div>

@@ -19,12 +19,16 @@
       {{ title }}
     </h3>
 
-    <news-list class="animator__slide-up" animator-stagger :news-articles="newsArticles" />
+    <news-list
+      class="animator__slide-up"
+      animator-stagger
+      :news-articles="newsArticles"
+    />
   </div>
 </template>
 
 <script>
-  import NewsList from '@/components/news-list/NewsList'
+  import NewsList from '@/components/news-list/NewsList';
   export default {
     components: {NewsList},
     props: {
@@ -33,8 +37,8 @@
       titleColor: String,
       newsArticles: {
         type: Array,
-        required: true
-      }
+        required: true,
+      },
     },
   };
 </script>

@@ -8,10 +8,16 @@
       class="news-list__item"
     >
       <div class="news-list__item-content">
-        <nuxt-link :to="`/news/${article.slug}`" class="news-list__item-title">
+        <nuxt-link
+          :to="`/news/${article.slug}`"
+          class="news-list__item-title"
+        >
           <h2>{{ article.title }}</h2>
         </nuxt-link>
-        <time class="news-list__item-date" :datetime="article.date">{{ formatDate(article.date) }}</time>
+        <time
+          class="news-list__item-date"
+          :datetime="article.date"
+        >{{ formatDate(article.date) }}</time>
       </div>
       <div class="news-list__item-image">
         <img
@@ -21,7 +27,8 @@
                     ${article.heroImage.url}?auto=compress,format&w=900 900w`"
           sizes="(min-width: 768px) 290px, 100vw"
           :src="`${article.heroImage.url}?auto=compress,format&w=400`"
-          alt="">
+          alt=""
+        >
       </div>
     </li>
   </ul>
@@ -37,10 +44,10 @@ export default {
   },
   methods: {
     formatDate(date) {
-      return new Date(date).toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' })
-    }
-  }
-}
+      return new Date(date).toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' });
+    },
+  },
+};
 </script>
 
 <style>

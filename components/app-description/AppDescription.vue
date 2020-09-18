@@ -3,6 +3,7 @@
     <nuxt-link
       to="/about/"
       class="app-description__link"
+      :class="{ 'app-description__link--dark': variant === 'dark' }"
     >
       {{ description }}
     </nuxt-link>
@@ -13,6 +14,17 @@
 import { mapState } from 'vuex';
 
 export default {
+  props: {
+    variant: {
+      type: String,
+      validator (val) {
+        return (val === 'dark' || val === 'light');
+      },
+      default () {
+        return 'dark';
+      },
+    },
+  },
   computed: {
     ...mapState(['description']),
   },
@@ -46,10 +58,25 @@ export default {
   display: inline-block;
   vertical-align: middle;
   width: 10px;
-  height: 10px;
-  background-image: url('~assets/arrow-right--white.svg');
+  height: 12px;
+  background-image: url('~assets/arrow-right.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100%;
+  border-bottom: 1px solid transparent;
+}
+
+.app-description__link--dark:after {
+  background-image: url('~assets/arrow-right--white.svg');
+}
+
+.app-description__link:hover:after,
+.app-description__link:focus:after {
+  border-bottom: 1px solid var(--blue-secondary);
+}
+
+.app-description__link--dark:hover:after,
+.app-description__link--dark:focus:after {
+  border-bottom: 1px solid var(--white);
 }
 </style>

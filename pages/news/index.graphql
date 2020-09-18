@@ -1,0 +1,10 @@
+query Index {
+  allNewsArticles {
+    slug
+    title
+    date
+    heroImage {
+      url
+    }
+  }
+}

@@ -1,0 +1,9 @@
+query Index {
+  allFeatures {
+    slug
+    title
+    icon {
+      url
+    }
+  }
+}

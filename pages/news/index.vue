@@ -13,26 +13,14 @@
 <script>
 import fetchContent from '~/lib/fetch-content';
 import NewsList from '@/components/news-list/NewsList';
+import query from './index.graphql'
 
 export default {
   components: { NewsList },
   layout: 'static-page-dark',
   async asyncData () {
-    const query = `
-        {
-          allNewsArticles {
-            slug
-            title
-            date
-            heroImage {
-              url
-            }
-          }
-        }
-      `;
-
     return {
-      ...await fetchContent(query),
+      ...await fetchContent({ query }),
     };
   },
 };

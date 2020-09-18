@@ -28,24 +28,13 @@
 
 <script>
   import fetchContent from '~/lib/fetch-content';
+  import query from './index.graphql';
 
   export default {
     layout: 'static-page-dark',
     async asyncData () {
-      const query = `
-          {
-            allFeatures {
-              slug
-              title
-              icon {
-                url
-              }
-            }
-          }
-        `;
-
       return {
-        ...await fetchContent(query),
+        ...await fetchContent({ query }),
       };
     },
   };

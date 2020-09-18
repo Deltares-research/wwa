@@ -1,6 +1,8 @@
 <template>
   <div class="app-description">
-    {{ description }}
+    <nuxt-link to="/about/" class="app-description__link">
+      {{ description }}
+    </nuxt-link>
   </div>
 </template>
 
@@ -25,5 +27,26 @@ export default {
   .app-description {
     font-weight: normal;
   }
+}
+
+.app-description__link {
+  text-decoration: none;
+}
+
+.app-description__link:hover,
+.app-description__link:focus {
+  text-decoration: underline;
+}
+
+.app-description__link:after {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 10px;
+  height: 10px;
+  background-image: url('~assets/arrow-right--white.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 </style>

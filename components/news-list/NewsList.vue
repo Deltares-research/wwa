@@ -8,9 +8,9 @@
       class="news-list__item"
     >
       <div class="news-list__item-content">
-        <a :href="`/news/${article.slug}`" class="news-list__item-title">
+        <nuxt-link :to="`/news/${article.slug}`" class="news-list__item-title">
           <h2>{{ article.title }}</h2>
-        </a>
+        </nuxt-link>
         <time class="news-list__item-date" :datetime="article.date">{{ formatDate(article.date) }}</time>
       </div>
       <div class="news-list__item-image">

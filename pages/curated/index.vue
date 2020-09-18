@@ -2,7 +2,7 @@
   <section class="layout-section">
     <div class="layout-section__container layout-section__container--padded">
       <h1 class="features__title">
-        Features
+        Curated
       </h1>
 
       <ul class="features__content">
@@ -17,7 +17,7 @@
               alt=""
             >
           </div>
-          <nuxt-link :to="`/features/${feature.slug}`">
+          <nuxt-link :to="`/curated/${feature.slug}`">
             {{ feature.title }}
           </nuxt-link>
         </li>

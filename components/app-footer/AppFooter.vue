@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="app-footer layout-section"
+    class="app-footer layout-section layout-section--background-black"
     :class="{ 'app-footer--small': isBookChapter }"
   >
     <div class="app-footer__content layout-section__container">
@@ -43,7 +43,7 @@
       </nav>
 
       <div v-once>
-        &copy; {{ currentYear }} World Water Atlas
+        &copy; {{ currentYear }} <span lang="en">World Water Atlas</span>
       </div>
     </div>
   </footer>
@@ -73,19 +73,32 @@ export default {
 }
 
 .app-footer--small {
-  width: 67vw;
+  padding: 2rem 1rem 0 1rem;
+}
+
+@media (--sm-viewport) {
+  .app-footer--small .app-footer__content {
+    max-width: 45rem;
+  }
+}
+
+@media (--lg-viewport) {
+  .app-footer--small {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    width: 45rem;
+  }
 }
 
 .app-footer__content {
   padding: 2rem 0;
-  border-top: 1px solid var(--grey--light);
-  color: var(--grey--light);
+  border-top: 1px solid var(--black-tertiary);
+  color: var(--black-tertiary);
 }
 
 .app-footer__logo {
   display: inline-block;
   margin-bottom: 1rem;
-  font-size: 1rem;
   font-weight: 500;
   line-height: 1.25;
   text-decoration: none;
@@ -99,7 +112,7 @@ export default {
 }
 
 .app-footer__logo-highlight {
-  color: var(--tertiary-blue);
+  color: var(--blue-tertiary);
 }
 
 @media (--sm-viewport) {
@@ -110,7 +123,6 @@ export default {
 
 .app-footer__navigation {
   margin-bottom: 2rem;
-  font-size: 1rem;
   font-weight: bold;
 }
 

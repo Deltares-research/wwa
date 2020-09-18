@@ -9,9 +9,10 @@ import { mean } from 'd3-array';
 class Avatar {
   constructor (base) {
     this.textures = {};
-    this.textures['too-dirty'] = new THREE.TextureLoader().load(base + 'assets/too-dirty.png');
-    this.textures['too-much'] = new THREE.TextureLoader().load(base + 'assets/too-much.png');
-    this.textures['too-little'] = new THREE.TextureLoader().load(base + 'assets/too-little.png');
+    this.textures['too-dirty'] = new THREE.TextureLoader().load(base + 'too-dirty.png');
+    this.textures['too-much'] = new THREE.TextureLoader().load(base + 'too-much.png');
+    this.textures['too-little'] = new THREE.TextureLoader().load(base + 'too-little.png');
+    this.textures['event'] = new THREE.TextureLoader().load(base + 'event-marker.png');
     this.mesh = new THREE.Object3D();
   }
 
@@ -21,8 +22,8 @@ class Avatar {
 
     this.markers.forEach(marker => {
       marker.offsetLocation = {
-        lon: marker.location.lon,
-        lat: marker.location.lat,
+        lon: marker.location.longitude,
+        lat: marker.location.latitude,
         zoom: marker.location.zoom,
       };
     });

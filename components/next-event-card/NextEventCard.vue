@@ -1,15 +1,27 @@
 <template>
   <a
-    :href="`/events/${event.slug}`"
+    :href="`/events/${event.slug}/`"
     class="next-event-card"
   >
-    <span class="next-event-card__title h3">
-      {{ event.title }}
-    </span>
+    <div class="next-event-card__content">
+      <img
+        v-if="event.bannerIcon"
+        alt=""
+        :src="`${event.bannerIcon.imgixHost}/${event.bannerIcon.value.path}?compress=auto,format&width=75`"
+        :width="event.bannerIcon.value.width"
+        :height="event.bannerIcon.value.height"
+        class="next-event-card__icon"
+      >
 
-    <span class="next-event-card__description">
-      <time :datetime="event.startDate">{{ event.displayDate }}</time>
-    </span>
+      <span
+        v-html="event.name"
+        class="next-event-card__title h3"
+      />
+
+      <span class="next-event-card__description">
+        <time :datetime="event.startDate">{{ event.displayDate }}</time>
+      </span>
+    </div>
   </a>
 </template>
 
@@ -24,11 +36,11 @@ export default {
 <style>
 .next-event-card {
   display: block;
-  padding: .5rem .7rem;
+  padding: 1rem;
   font-weight: bold;
-  color: var(--primary-blue);
+  color: var(--blue-primary);
   text-decoration: none;
-  background-image: url('/assets/event-wave.svg'), linear-gradient(137deg, #E9E6CF 14.18%, var(--tertiary-blue) 95.78%);
+  background-image: url('~assets/event-wave.svg'), linear-gradient(137deg, #E9E6CF 14.18%, var(--blue-tertiary) 95.78%);
   background-size: 100% auto;
   background-position: bottom center;
   border-radius: 5px;
@@ -42,7 +54,7 @@ export default {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-image: url('/assets/arrow-right.svg');
+  background-image: url('~assets/arrow-right.svg');
   background-color: var(--white);
   background-position: center;
   background-repeat: no-repeat;
@@ -51,19 +63,42 @@ export default {
 
 .next-event-card:hover,
 .next-event-card:focus {
-  color: var(--primary-blue);
+  color: var(--blue-primary);
+}
+
+.next-event-card__icon {
+  float: left;
+  width: 20%;
 }
 
 .next-event-card__title,
 .next-event-card__description {
   display: block;
+  padding-left: .5rem;
   width: 100%;
-  white-space: nowrap;
+  max-width: 75%;
+}
+
+.next-event-card__title {
+  display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.next-event-card__title em {
+  font-style: normal;
 }
 
 .next-event-card__description {
   margin-bottom: .25rem;
+  font-size: 1.125rem;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

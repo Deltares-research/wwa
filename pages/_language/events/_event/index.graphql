@@ -2,9 +2,8 @@ query Index($locale: SiteLocale, $slug: String) {
   internalEvent(locale: $locale, filter: { slug: { eq: $slug } }) {
     slug
     name
+    eventWebsite
     visuallyHideName
-    location
-    timezone
     displayDate
     image {
       url
@@ -14,6 +13,7 @@ query Index($locale: SiteLocale, $slug: String) {
       width
       height
     }
+    bannerTagline
 
     _allNameLocales {
       locale
@@ -25,39 +25,138 @@ query Index($locale: SiteLocale, $slug: String) {
       showTopWave
 
       blocks {
+        ... on ChaptersBlockRecord {
+          _modelApiKey
+          id
+          title
+          slug
+          chapters {
+            title
+            slug
+            cover {
+              url
+            }
+          }
+        }
+        ... on ColofonBlockRecord {
+          _modelApiKey
+          id
+          title
+          slug
+          titleColor
+          showWaveMarker
+          body(markdown: true)
+          logos {
+            id
+            url
+            alt
+          }
+        }
+        ... on TextBlockRecord {
+          _modelApiKey
+          id
+          title
+          slug
+          titleColor
+          showWaveMarker
+          body(markdown: true)
+          callToActionLabel
+          callToActionUrl
+        }
         ... on MediaBlockRecord {
           _modelApiKey
           id
           title
+          slug
           titleColor
           showWaveMarker
+          internalButtonLabel
+          internalButtonSlug
           body(markdown: true)
+          callToActionLabel
+          callToActionUrl
+          mirrorLayout
           image {
             alt
-
             portrait: responsiveImage(imgixParams: {auto: compress, w: "550", h: "660", fit: crop, crop: entropy}) {
               src
               srcSet
               sizes
-              width
             }
-            landscape: responsiveImage(imgixParams: {auto: compress, w: "550"}) {
+            landscape: responsiveImage(imgixParams: {auto: compress, w: "600", h: "270", fit: crop, crop: entropy}) {
               srcSet
               sizes
+            }
+          }
+        }
+        ... on RelatedStoriesBlockRecord {
+          _modelApiKey
+          id
+          title
+          slug
+          subtitle
+          titleColor
+          showWaveMarker
+          linkedChapters {
+            id
+            book {
+              slug
+            }
+            chapter {
+              slug
+              title
+              cover {
+                url
+              }
             }
           }
         }
         ... on SpeakersBlockRecord {
           _modelApiKey
           id
+          showWaveMarker
+          subtitle
           title
+          slug
+          titleColor
           speakers {
             id
             name
             organization
             subject
+            subjectLabel
             image {
               url
+            }
+          }
+        }
+        ... on ScheduleBlockRecord {
+          _modelApiKey
+          id
+          slug
+          timezone
+          timezoneComment
+          topicLabel
+          scheduleLabel
+          nowLabel
+          descriptionLabel
+          speakersLabel
+          eventDays {
+            id
+            date
+            scheduleItems {
+              id
+              title
+              topic
+              startTime
+              endTime
+              description
+              watchLabel
+              watchUrl
+              speakers {
+                id
+                name
+              }
             }
           }
         }

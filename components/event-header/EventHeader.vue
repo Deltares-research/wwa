@@ -1,13 +1,18 @@
 <template>
-  <div class="event-header">
+  <div class="animator__fade event-header">
     <img
-      :src="`${image.url}?auto=compress&fit=crop&w=80&h=80`"
+      :src="`${image.url}?auto=compress,format&fit=crop&w=80&h=80`"
+      width="40"
       alt=""
       class="event-header__image"
     >
     <h1 class="event-header__name">
-      <span class="event-header__location">{{ location }}</span>
-      {{ name }}
+      <a
+        :href="eventWebsite"
+        target="_blank"
+        v-html="name"
+        class="event-header__name-link"
+      />
     </h1>
     <nav class="language-switch">
       <ul class="language-switch__list">
@@ -41,8 +46,9 @@
     },
     props: {
       name: String,
+      slug: String,
       image: Object,
-      location: String,
+      eventWebsite: String,
       allLocales: Array,
     },
     data({ $route }) {
@@ -56,7 +62,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: .5rem 1rem;
+    padding: 0.6rem 1rem;
   }
 
   @media (--sm-viewport) {
@@ -66,8 +72,7 @@
   }
 
   .event-header__image {
-    margin-right: .5rem;
-    width: 40px;
+    margin-right: 0.6rem;
     border-radius: 50%;
   }
 
@@ -81,7 +86,9 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    font-weight: 500;
     font-size: 1rem;
+    line-height: 1.2;
   }
 
   @media (--sm-viewport) {
@@ -90,15 +97,13 @@
     }
   }
 
-  .event-header__location {
-    display: block;
-    color: var(--tertiary-blue);
+  .event-header__name em {
+    font-style: normal;
+    color: var(--blue-tertiary);
   }
 
-  @media (--sm-viewport) {
-    .event-header__location {
-      margin-right: 0.4rem;
-    }
+  .event-header__name-link {
+    text-decoration: none;
   }
 
   .language-switch {
@@ -119,10 +124,10 @@
     border-radius: 0.3rem;
     padding: 0.5rem 1rem;
     text-decoration: none;
+    font-weight: 500;
   }
 
   .language-switch__link--active {
-    background-color: var(--grey);
-    font-weight: bold;
+    background-color: var(--black-secondary);
   }
 </style>

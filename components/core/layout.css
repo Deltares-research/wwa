@@ -1,7 +1,20 @@
-.layout--static-page {
+.layout-static-page {
   width: 100%;
+  min-height: 100vh;
+  background-color: var(--blue-primary);
+  color: var(--white);
+  padding: 4rem 0 0 0;
+}
+
+@media (--sm-viewport) {
+  .layout-static-page {
+    padding: 7rem 0 0 0;
+  }
+}
+
+.layout-static-page--light {
   background-color: var(--white);
-  color: var(--primary-blue);
+  color: var(--blue-primary);
 }
 
 .layout-section {
@@ -10,13 +23,6 @@
   position: relative;
   padding: 0 20px;
   width: 100%;
-  background: var(--black);
-}
-
-.layout-section__container {
-  width: 100%;
-  max-width: 950px;
-  z-index: 1;
 }
 
 @media (--sm-viewport) {
@@ -25,53 +31,50 @@
   }
 }
 
-.event {
-  background: var(--black);
+.layout-section__container {
+  width: 100%;
+  max-width: var(--wwa-column-width);
+  margin: 0 auto;
+  z-index: 1;
 }
 
-.event__layout {
-  max-width: var(--event-column-width);
-  margin-right: auto;
-  margin-left: auto;
-}
-
-.event__layout--padded {
+.layout-section__container--padded {
   padding-right: 1rem;
   padding-left: 1rem;
 }
 
-.event__content .event__layout:not(:last-child) {
-  margin-bottom: 2rem;
-}
-
-@media (--sm-viewport) {
-  .event__content .event__layout:not(:last-child) {
-    margin-bottom: 3rem;
-  }
-}
-
-.event__content {
+.layout-section__container:not(:last-child) {
   margin-bottom: 3rem;
 }
 
 @media (--sm-viewport) {
-  .event__content {
+  .layout-section__container:not(:last-child) {
     margin-bottom: 4rem;
   }
 }
 
-.event__layout--background-black {
-  background-color: var(--black);
+.layout-section__content {
+  padding: 2rem 0;
 }
 
-.event__layout--background-blue {
-  background-color: var(--primary-blue);
+@media (--sm-viewport) {
+  .layout-section__content {
+    padding: 3rem 0;
+  }
 }
 
-.event-section--wave-top-black:before,
-.event-section--wave-top-blue:before,
-.event-section--wave-bottom-black:after,
-.event-section--wave-bottom-blue:after {
+.layout-section--background-black {
+  background-color: var(--black-primary);
+}
+
+.layout-section--background-blue {
+  background-color: var(--blue-primary);
+}
+
+.layout-section--wave-top-black:before,
+.layout-section--wave-top-blue:before,
+.layout-section--wave-bottom-black:after,
+.layout-section--wave-bottom-blue:after {
   content: '';
   display: block;
   padding-bottom: 18%;
@@ -82,53 +85,57 @@
 }
 
 @media (--sm-viewport) {
-  .event-section--wave-top-black:before,
-  .event-section--wave-top-blue:before {
+  .layout-section--wave-top-black:before,
+  .layout-section--wave-top-blue:before {
     padding-bottom: 0;
     height: 233px;
     background-size: auto 297px;
   }
 
-  .event-section--wave-bottom-black:after,
-  .event-section--wave-bottom-blue:after {
+  .layout-section--wave-bottom-black:after,
+  .layout-section--wave-bottom-blue:after {
     padding-bottom: 0;
     height: 200px;
     background-size: auto 200px;
   }
 }
 
-.event-section--wave-top-black:before {
-  background-image: url('/section-wave-top-black.svg');
+.layout-section--wave-top-black:before {
+  background-image: url('~assets/section-wave-top-black.svg');
 }
 
-.event-section--wave-top-blue:before {
-  background-image: url('/section-wave-top-blue.svg');
+.layout-section--wave-top-blue:before {
+  background-image: url('~assets/section-wave-top-blue.svg');
 }
 
-.event-section--wave-bottom-black:after {
-  background-image: url('/section-wave-bottom-black.svg');
+.layout-section--wave-bottom-black:after {
+  background-image: url('~assets/section-wave-bottom-black.svg');
 }
 
-.event-section--wave-bottom-blue:after {
-  background-image: url('/section-wave-bottom-blue.svg');
+.layout-section--wave-bottom-blue:after {
+  background-image: url('~assets/section-wave-bottom-blue.svg');
 }
 
-.event-section--wave-top-bg-blue:before,
-.event-section--wave-bottom-bg-blue:after {
-  background-color: var(--primary-blue);
+.layout-section--wave-top-bg-blue:before,
+.layout-section--wave-bottom-bg-blue:after {
+  background-color: var(--blue-primary);
 }
 
-.event-section--wave-top-bg-black:before,
-.event-section--wave-bottom-bg-black:after {
-  background-color: var(--black);
+.layout-section--wave-top-bg-black:before,
+.layout-section--wave-bottom-bg-black:after {
+  background-color: var(--black-primary);
 }
 
-.event-section__content {
-  padding: 2rem 0;
+.event {
+  background: var(--black-primary);
+}
+
+.event__content {
+  margin-bottom: 3rem;
 }
 
 @media (--sm-viewport) {
-  .event-section__content {
-    padding: 3rem 0;
+  .event__content {
+    margin-bottom: 4rem;
   }
 }

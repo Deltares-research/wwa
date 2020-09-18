@@ -17,7 +17,6 @@
   --line-height: var(--perfect-fifth);
 
   /* Calculated */
-  --base-size-units: calc(1rem * var(--base-size));
   --min-viewport-units: calc(1rem * var(--min-viewport));
   --max-viewport-units: calc(1rem * var(--max-viewport));
   --viewport-range: calc(var(--max-viewport) - var(--min-viewport));  /* static unitless */
@@ -45,22 +44,16 @@ p, .p {
 
 html {
   font-family: Roboto, sans-serif;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
 
-body {
-  font-size: var(--base-size-units);
-}
-
-h1, .h1,
-h2, .h2,
-h3, .h3,
-h4, .h4,
-h5, .h5,
-h6, .h6 {
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   font-weight: bold;
   line-height: var(--upper-ratio);
   margin-top: 0;
@@ -68,16 +61,16 @@ h6, .h6 {
 
 .invert {
   color: var(--white);
-  text-shadow: 0 0 2rem var(--primary-blue);
+  text-shadow: 0 0 2rem var(--blue-primary);
 }
 
-h4, .h4,
-h5, .h5,
-h6, .h6 {
+.h4,
+.h5,
+.h6 {
   font-size: var(--base-size);
 }
 
-h3, .h3,
+.h3,
 /* Style intro text as h3 only when there are no other classes */
 p.intro {
   --min-height: calc(
@@ -100,7 +93,7 @@ p.intro {
   font-weight: bold;
 }
 
-h2, .h2 {
+.h2 {
   --min-height: calc(
     var(--base-size)
     * var(--lower-ratio)
@@ -122,7 +115,7 @@ h2, .h2 {
   font-size: var(--height-responsive);
 }
 
-h1, .h1 {
+.h1 {
   --min-height: calc(
     var(--base-size)
     * var(--lower-ratio)

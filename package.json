@@ -13,16 +13,7 @@
     "generate": "nuxt build && nuxt export --fail-on-error",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:fix": "npm run lint -- --fix",
-    "data:backup": "dato dump --config dato.backup.js",
-    "data:app": "cross-env DATO_EXPORT=app dato dump",
-    "data:books": "cross-env DATO_EXPORT=books dato dump",
-    "data:chapters": "cross-env DATO_EXPORT=chapters dato dump",
-    "data:keywords": "cross-env DATO_EXPORT=keywords dato dump",
-    "data:influences": "cross-env DATO_EXPORT=influences dato dump",
-    "data:static-pages": "cross-env DATO_EXPORT=static_pages dato dump",
-    "data:themes": "cross-env DATO_EXPORT=themes dato dump",
-    "data:goals": "cross-env DATO_EXPORT=goals dato dump",
-    "data:methodologies": "cross-env DATO_EXPORT=methodologies dato dump"
+    "data:backup": "dato dump --config dato.backup.js"
   },
   "babel": {
     "presets": [
@@ -45,9 +36,11 @@
     "marked": "^1.1.0",
     "nuxt": "^2.13.1",
     "smoothscroll-polyfill": "^0.4.4",
+    "swiper": "^5.4.5",
     "three": "^0.116.1",
     "three.meshline": "^1.2.0",
-    "typeface-roboto": "0.0.75"
+    "typeface-roboto": "0.0.75",
+    "vue-awesome-swiper": "^4.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

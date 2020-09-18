@@ -5,7 +5,7 @@ import fetchContent from './lib/fetch-content';
 
 dotenv.config();
 
-const mapallInternalEventsToRedirects = () => fetchContent({ query: `
+const fetchingAllInternalEvents = fetchContent({ query: `
   {
     allInternalEvents {
       slug
@@ -16,9 +16,11 @@ const mapallInternalEventsToRedirects = () => fetchContent({ query: `
       }
     }
   }
-`})
-  .then(({ allInternalEvents }) => (
-    allInternalEvents
+`}).then(({ allInternalEvents }) => allInternalEvents);
+
+const mapallInternalEventsToRedirects = () => fetchingAllInternalEvents
+  .then(events => (
+    events
       .map((event) => [
         `/events/${event.slug} /${event.nativeLocale}/events/${event.slug} 302 Country=${event.countryCode}`,
         ...event._allNameLocales
@@ -92,6 +94,15 @@ export default {
       /^\/events\/.+/,
       /^\/narratives\/undefined/,
     ],
+    routes() {
+      return fetchingAllInternalEvents
+      .then(events => (
+        events.map((event) => {
+            return event._allNameLocales
+              .map(({ locale }) => `/${locale}/events/${event.slug}/`);
+        }).flat()
+      ));
+    },
   },
   hooks: {
     export: {
@@ -128,6 +139,30 @@ export default {
   plugins: [
     { src: '~/plugins/smoothscroll', mode: 'client' },
     { src: '~/plugins/ga.js', mode: 'client' },
+    { src: '~/plugins/router-after-each.js', mode: 'client' },
   ],
   target: 'static',
+  router: {
+    extendRoutes (routes, resolve) {
+      const ChapterListOverviewComponent = resolve(__dirname, 'components/chapter-list-overview-page/ChapterListOverviewPage.vue');
+      const ChapterListComponent = resolve(__dirname, 'components/chapter-list-page/ChapterListPage.vue');
+
+      const keywordsRoute = routes.find(route => route.name === 'keywords');
+      keywordsRoute.alias = '/keywords/:slug';
+
+      routes.unshift({
+        name: `index`,
+        path: `/`,
+        component: ChapterListOverviewComponent,
+        alias: ['/methodologies', '/themes', '/influences', '/goals', '/narratives'],
+      });
+
+      routes.unshift({
+        name: 'methodologies-slug',
+        path: `/methodologies/:slug`,
+        component: ChapterListComponent,
+        alias: ['/influences/:slug', '/goals/:slug', '/narratives/:slug', '/themes/:slug'],
+      });
+    },
+  },
 };

@@ -1,5 +1,10 @@
+const renderMarkedContent = require('./lib/marked');
 const pick = require('lodash/fp/pick');
+const uniq = require('lodash/uniq');
+const uniqBy = require('lodash/uniqBy');
+const flattendeep = require('lodash/flattenDeep');
 const slugify = require('slug');
+const { filter } = require('lodash');
 
 /**
  * @typedef Dato
@@ -32,68 +37,31 @@ const slugify = require('slug');
  */
 
 const includeUnpublished = !!process.env.UNPUBLISHED;
-const exportScope = process.env.DATO_EXPORT;
 const contentBasePath = '/narratives';
 
 module.exports = (dato, root, i18n) => {
-  const { body } = dato.home;
-
-  root.createDataFile(`static/data/home.json`, 'json', {
-    body,
-  });
-
-  switch (exportScope) {
-    case 'books':
-      generateBooks(dato, root, i18n);
-      break;
-    case 'chapters':
-      generateChapters(dato, root, i18n);
-      break;
-    case 'app':
-        generateAppData(dato, root, i18n);
-        break;
-    case 'influences':
-      generateByInfluence(dato, root, i18n);
-      break;
-    case 'goals':
-      generateByGoal(dato, root, i18n);
-      break;
-    case 'methodology':
-        generateByMethodology(dato, root, i18n);
-        break;
-    case 'keywords':
-      generateByKeyword(dato, root, i18n);
-      break;
-    case 'static_pages':
-      generateStaticPages(dato, root, i18n);
-      break;
-    case 'themes':
-      generateThemes(dato, root, i18n);
-      break;
-    default:
-      generateChapters(dato, root, i18n);
-      generateBooks(dato, root, i18n);
-      generateByInfluence(dato, root, i18n);
-      generateByGoal(dato, root, i18n);
-      generateByMethodology(dato, root, i18n);
-      generateByKeyword(dato, root, i18n);
-      generateAppData(dato, root, i18n);
-      generateStaticPages(dato, root, i18n);
-      generateThemes(dato, root, i18n);
-  }
+  generateChapters(dato, root, i18n);
+  generateChapterOverview(dato, root, i18n);
+  generateByInfluence(dato, root, i18n);
+  generateByGoal(dato, root, i18n);
+  generateByMethodology(dato, root, i18n);
+  generateKeywords(dato, root, i18n);
+  generateAppData(dato, root, i18n);
+  generateStaticPages(dato, root, i18n);
+  generateThemes(dato, root, i18n);
+  generateMarkers(dato, root, i18n);
 };
 
 /**
- * Write out Book JSONs
+ * Write out Book JSON
  *
  * @param {Dato} dato - DatoCMS API
  * @param {Root} root - Project root
  * @param {i18n} i18n
  */
-function generateBooks (dato, root, i18n) {
-  const books = getBooks(dato);
-  books.forEach(book => root.createDataFile(`static/data/books/${book.slug}/index.json`, 'json', book));
-  root.createDataFile(`static/data/books/index.json`, 'json', books);
+function generateChapterOverview (dato, root, i18n) {
+  const allChapters = getAllChapters(dato);
+  root.createDataFile(`static/data/chapters/index.json`, 'json', allChapters);
 }
 
 /**
@@ -137,7 +105,6 @@ function generateByInfluence (dato, root, i18n) {
       .filter(chapter => chapter.influences.some(chapterInfluence => chapterInfluence.slug === influence.slug));
     root.createDataFile(`static/data/influences/${influence.slug}.json`, 'json', { ...influence, entries: chaptersByInfluences });
   }
-  root.createDataFile('static/data/influences/index.json', 'json', influences);
 }
 
 /**
@@ -163,7 +130,6 @@ function generateByGoal (dato, root, i18n) {
       .filter(chapter => chapter.goals.some(chapterGoal => chapterGoal.slug === goal.slug));
     root.createDataFile(`static/data/goals/${goal.slug}.json`, 'json', { ...goal, entries: chaptersByGoals });
   }
-  root.createDataFile('static/data/goals/index.json', 'json', goals);
 }
 
 /**
@@ -189,28 +155,57 @@ function generateByMethodology (dato, root, i18n) {
       .filter(chapter => chapter.methodologies.some(chapterMethodology => chapterMethodology.slug === methodology.slug));
     root.createDataFile(`static/data/methodologies/${methodology.slug}.json`, 'json', { ...methodology, entries: chaptersByMethodology });
   }
-  root.createDataFile('static/data/methodologies/index.json', 'json', methodologies);
 }
 
-/**
- * Write out JSON files by keyword
- *
- * @param {Dato} dato - DatoCMS API
- * @param {Root} root - Project root
- * @param {i18n} i18n
- */
-function generateByKeyword (dato, root, i18n) {
-  const pages = getPages(dato);
-  const tags = collectPagesByKeyword(pages);
-  const index = [];
-  for (const tag in tags) {
-    const pages = tags[tag];
-    const tagObj = Object.assign({}, tags[tag]);
-    delete tagObj.entries; // not needed in index
-    index.push(tagObj);
-    root.createDataFile(`static/data/keywords/${tagObj.slug}.json`, 'json', pages);
-  }
-  root.createDataFile(`static/data/keywords/index.json`, 'json', index.filter(i => i.slug !== 'unfiled'));
+function generateKeywords (dato, root, i18n) {
+  const keywords = uniqBy(dato.books
+    .filter(filterPublished)
+    .map(book => {
+      return getChapters(dato, book)
+        .filter(filterPublished)
+        .map(({pages}) => pages.map(page => page.keywords).flat()).flat();
+    })
+    .flat(), 'slug');
+
+  root.createDataFile(`static/data/keywords/index.json`, 'json', keywords);
+}
+
+function generateMarkers (dato, root, i18n) {
+  const events = [...dato.externalEvents, ...dato.internalEvents]
+    .map(event => {
+      return {
+        type: 'event',
+        location: event.geolocation,
+        theme: { slug: 'event' },
+      };
+  });
+
+  const pages = flattendeep(dato.books
+    .filter(filterPublished)
+    .map(book => {
+      return book.chapters
+        .filter(filterPublished)
+        .map(chapter => {
+          const chapterSlug = chapter.slug;
+          return chapter.pages.map(page => {
+            if (page.location) {
+              return {
+                type: chapterSlug,
+                keywords: page.keywords.split(',').map(string => slugify(string)),
+                location: page.location,
+                theme: {
+                  slug: page.theme ? page.theme.slug : 'too-much',
+                },
+                path: `/narratives/${book.slug}/${chapterSlug}#${page.slug}`,
+              };
+            } else {
+              return false;
+            }
+          })
+            .filter(Boolean);
+        });
+    }));
+  root.createDataFile(`static/data/markers/index.json`, 'json', [...pages, ...events]);
 }
 
 /**
@@ -224,10 +219,11 @@ function generateAppData (dato, root, i18n) {
   const description = dato.app.description;
 
   const highlightedEvent = dato.app.highlightedEvent ? {
-    title: dato.app.highlightedEvent.name,
+    name: dato.app.highlightedEvent.name,
     slug: dato.app.highlightedEvent.slug,
     startDate: dato.app.highlightedEvent.startDate,
     endDate: dato.app.highlightedEvent.endDate,
+    bannerIcon: dato.app.highlightedEvent.bannerIconSmall,
     displayDate: dato.app.highlightedEvent.displayDate,
   } : null;
 
@@ -235,12 +231,16 @@ function generateAppData (dato, root, i18n) {
     return {
       title: filter.title,
       slug: filter.slug,
-      description: filter.body,
+      description: renderMarkedContent(filter.body),
       filterItems: filter.filterItems.map(filterItem => {
         return {
           title: filterItem.title,
           slug: filterItem.slug,
-          description: filterItem.body,
+          description: renderMarkedContent(filterItem.body),
+          feature: filterItem.feature ? {
+            title: filterItem.feature.title,
+            slug: filterItem.feature.slug,
+          } : null,
           icon: filterItem.icon,
         };
       }),
@@ -254,8 +254,8 @@ function generateAppData (dato, root, i18n) {
         slug: 'events',
       },
       {
-        title: 'About',
-        slug: 'about',
+        title: 'News',
+        slug: 'news',
       },
       {
         title: 'Submit story',
@@ -302,7 +302,6 @@ function generateThemes (dato, root, i18n) {
     const chaptersByTheme = chapters.filter(chapter => chapter.theme.slug === theme.slug);
     root.createDataFile(`static/data/themes/${theme.slug}.json`, 'json', { ...theme, entries: chaptersByTheme });
   }
-  root.createDataFile(`static/data/themes/index.json`, 'json', themes);
 }
 
 /**
@@ -317,7 +316,13 @@ function generateStaticPages (dato, root, i18n) {
     .filter(filterPublished)
     .map(page => {
       const { body, images, slug, title, video } = page;
-      return { body, images, slug, title, video };
+      return {
+        body: renderMarkedContent(body),
+        images,
+        slug,
+        title,
+        video,
+      };
     });
   for (const page of staticPages) {
     root.createDataFile(`static/data/static-pages/${page.slug}.json`, 'json', page);
@@ -325,31 +330,59 @@ function generateStaticPages (dato, root, i18n) {
   const staticPageIndex = staticPages.map(page => ({ path: `/${page.slug}` }));
   root.createDataFile('static/data/static-pages/index.json', 'json', staticPageIndex);
 }
+
 /**
- * Get Dato Book entities
+ * Get Dato Book entities in a short format
  *
  * @param {Dato} dato
  */
-function getBooks (dato) {
+function getAllChapters (dato) {
   return dato.books
     .filter(filterPublished)
-    .map(book => {
-      const { body, slug, icon, title } = book;
-      const path = `${contentBasePath}/${slug}`;
+    .reduce((out, book) => {
       const chapters = getChapters(dato, book)
         .filter(filterPublished)
-        .map(chapter => {
-          const { location, pages, path, slug, title, influences, goals, methodologies, keywords, createdAt, updatedAt, cover } = chapter;
-          const theme = getDominantTheme(pages);
-          return { influences, goals, methodologies, keywords, location, path, slug, title, theme, createdAt, updatedAt, cover };
+        .map(({ slug, title, cover, path, updatedAt, pages }) => {
+          const influencesFilters = pages.map(page => page.influences
+            ? page.influences.map(influence => {
+              return influence.slug;
+            })
+            : [])
+            .flat();
+
+          const goalsFilters = pages.map(page => page.goals
+            ? page.goals.map(goal => {
+              return goal.slug;
+            })
+            : [])
+            .flat();
+
+          const methodologiesFilters = pages.map(page => page.methodologies
+            ? page.methodologies.map(methodology => {
+              return methodology.slug;
+            })
+            : [])
+            .flat();
+
+          const themesFilters = pages.map(page => page.theme ? page.theme.slug : false).filter(Boolean);
+          const narrativeFilter = book.slug;
+          const keywords = uniq(pages.map(page => page.keywords.map(keyword => keyword.slug)).flat());
+
+          const filters = uniq(influencesFilters.concat(goalsFilters, methodologiesFilters, themesFilters, narrativeFilter));
+          const availableCategories = [
+            ...(influencesFilters.length ? ['influences'] : []),
+            ...(goalsFilters.length ? ['goals'] : []),
+            ...(methodologiesFilters.length ? ['methodologies'] : []),
+            ...(themesFilters.length ? ['themes'] : []),
+            'narratives',
+          ];
+
+          return { slug, title, cover, path, updatedAt, filters, availableCategories, keywords };
         });
-      const theme = getDominantTheme(chapters);
-      const influences = collectUniqueTags(chapters, 'influences');
-      const goals = collectUniqueTags(chapters, 'goals');
-      const methodologies = collectUniqueTags(chapters, 'methodologies');
-      const keywords = collectUniqueTags(chapters, 'keywords');
-      return { body, chapters, influences, goals, methodologies, keywords, path, slug, icon, title, theme };
-    });
+
+      out.push(...chapters);
+      return out;
+    }, []);
 }
 
 /**
@@ -453,30 +486,34 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, keywords, slug, title, video, mapboxStyle } = page;
+      const { body, files, graphs, images, keywords, slug, title, mapboxStyle } = page;
       const influences = (page.influence) ? page.influence.map(tag => ({
         title: tag.title,
         slug: tag.slug,
+        icon: tag.icon,
         path: `/influences/${tag.slug}`,
       })) : [];
       const goals = (page.goal) ? page.goal.map(tag => ({
         title: tag.title,
         slug: tag.slug,
+        icon: tag.icon,
         path: `/goals/${tag.slug}`,
       })) : [];
       const methodologies = (page.methodology) ? page.methodology.map(tag => ({
         title: tag.title,
         slug: tag.slug,
+        icon: tag.icon,
         path: `/methodologies/${tag.slug}`,
       })) : [];
       const theme = (page.theme) ? {
         title: page.theme.title,
         slug: page.theme.slug,
+        icon: page.theme.icon,
         path: `/themes/${page.theme.slug}`,
       } : null;
       const location = (page.location) ? {
-        lat: page.location.latitude,
-        lon: page.location.longitude,
+        latitude: page.location.latitude,
+        longitude: page.location.longitude,
         zoom: page.zoomlevel,
       } : null;
       const parentChapter = chapterRef || getParent(dato, page);
@@ -502,8 +539,16 @@ function getPages (dato, chapterRef) {
             path: path,
           };
         }) : null;
+      let video = page.video;
+      if (page.videoChina) {
+        const providerUid = /^https:\/\/v\.qq\.com\/x\/page\/([a-z0-9]+)\.html$/.exec(page.videoChina)[1];
+        video = {
+            provider: 'qq',
+            providerUid,
+        };
+      }
       return {
-        body,
+        body: renderMarkedContent(body),
         book,
         chapter,
         files,
@@ -544,7 +589,13 @@ function getInfluences (dato) {
   return influences.map(influence => {
     const { body, slug, icon, title } = influence;
     const path = `/influences/${slug}`;
-    return { body, path, slug, icon, title };
+    return {
+      body: renderMarkedContent(body),
+      path,
+      slug,
+      icon,
+      title,
+    };
   });
 }
 
@@ -559,7 +610,13 @@ function getGoals (dato) {
   return goals.map(goal => {
     const { body, slug, icon, title } = goal;
     const path = `/goals/${slug}`;
-    return { body, path, slug, icon, title };
+    return {
+      body: renderMarkedContent(body),
+      path,
+      slug,
+      icon,
+      title,
+    };
   });
 }
 
@@ -574,7 +631,13 @@ function getMethodologies (dato) {
   return methodologies.map(goal => {
     const { body, slug, icon, title } = goal;
     const path = `/methodologies/${slug}`;
-    return { body, path, slug, icon, title };
+    return {
+      body: renderMarkedContent(body),
+      path,
+      slug,
+      icon,
+      title,
+    };
   });
 }
 
@@ -589,43 +652,14 @@ function getThemes (dato) {
   return themes.map(theme => {
     const { body, slug, icon, title } = theme;
     const path = `/themes/${slug}`;
-    return { body, path, slug, icon, title };
+    return {
+      body: renderMarkedContent(body),
+      path,
+      slug,
+      icon,
+      title,
+    };
   });
-}
-
-/**
- * collect Chapter entities in object by keyword
- *
- * @param {DatoRecord[]} pages
- * @returns {object} arrays of Pages by tag
- */
-function collectPagesByKeyword (pages) {
-  return pages
-    .map(page => {
-      const { book, chapter, keywords, location, influences, goals, path, slug, storyteller, theme, title } = page;
-      return {
-        tags: page.keywords,
-        page: { book, chapter, keywords, location, influences, goals, path, slug, storyteller, theme, title },
-      };
-    })
-    .filter(match => Boolean(match.tags)) // filter falsy (false, undefined, '')
-    .map(match => match.tags.map(tag => {
-      return {
-        tag: tag,
-        page: match.page,
-      };
-    }))
-    .reduce((a, b) => a.concat(b), []) // Flat array of keywords
-    .reduce((tags, match) => {
-      tags[match.tag.slug] = tags[match.tag.slug] || {
-        title: match.tag.title,
-        slug: match.tag.slug,
-        path: match.tag.path,
-        entries: [],
-      };
-      tags[match.tag.slug].entries.push(match.page);
-      return tags;
-    }, {});
 }
 
 /**

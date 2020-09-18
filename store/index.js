@@ -1,4 +1,5 @@
 import Vuex from 'vuex';
+const DEFAULT_THEME = 'too-much';
 
 const store = () => {
   return new Vuex.Store({
@@ -6,21 +7,31 @@ const store = () => {
     state: {
       activeFeature: null,
       description: '',
-      features: [],
       highlightedEvent: null,
       navigationLinks: [],
       rotate: true,
       zoom: true,
       globeInteraction: true,
-      theme: 'too-much',
+      theme: DEFAULT_THEME,
       globeAutoRotation: true,
       globePositionRight: false,
       filters: [],
+      availableFilterItems: [],
+      chapters: [],
+      markerTypes: [],
+      historyAvailable: false,
+    },
+    actions: {
+      async getChapters({ commit }) {
+        const chapters = await import('~/static/data/chapters/index.json');
+        commit('setChapters', chapters.default);
+      },
     },
     mutations: {
       activateFeature (state, feature) {
         const { theme, location, slug, path } = feature;
         state.activeFeature = { location, slug, path, theme };
+        state.theme = feature.theme ? feature.theme.slug : DEFAULT_THEME;
       },
       deactivateFeature (state) {
         state.activeFeature = undefined;
@@ -28,8 +39,8 @@ const store = () => {
       replaceTheme (state, theme) {
         state.theme = theme;
       },
-      replaceFeatures (state, features) {
-        state.features = features;
+      resetTheme (state) {
+        state.theme = DEFAULT_THEME;
       },
       disableRotate (state) {
         state.rotate = false;
@@ -74,6 +85,18 @@ const store = () => {
       },
       setFilters (state, filters) {
         state.filters = filters;
+      },
+      setAvailableFilterItems(state, filterItems) {
+        state.availableFilterItems = filterItems;
+      },
+      setChapters (state, chapters) {
+        state.chapters = chapters;
+      },
+      setMarkerTypes (state, markerTypes) {
+        state.markerTypes = markerTypes;
+      },
+      setHistoryAvailable (state) {
+        state.historyAvailable = true;
       },
     },
   });

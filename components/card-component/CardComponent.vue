@@ -42,12 +42,12 @@ export default {
   display: block;
   height: 5rem;
   background-color: var(--white);
-  border-right: 2rem solid var(--grey);
+  border-right: 2rem solid var(--black-secondary);
 }
 
 .card-component .subtitle {
   text-transform: uppercase;
-  color: var(--secondary-blue);
+  color: var(--blue-secondary);
   margin: 0;
 }
 .card-component a {

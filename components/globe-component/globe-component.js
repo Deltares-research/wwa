@@ -21,6 +21,8 @@ const vOffset = 15;
 const vOffsetFactor = vOffset / 100;
 const center = new THREE.Vector3(0, 0, 0);
 
+const allMarkers = require('~/static/data/markers/index.json');
+
 export default {
   data () {
     return {
@@ -34,6 +36,7 @@ export default {
       connections: [],
       message: '',
       cameraDistance: 40,
+      allMarkers,
     };
   },
   mounted () {
@@ -57,6 +60,7 @@ export default {
     this.controls.enablePan = false;
     this.controls.minDistance = 5.3;
     this.controls.maxDistance = 50;
+    this.controls.enableZoom = true;
 
     this.controls.addEventListener('change', () => {
       this.$store.commit('disableGlobeAutoRotation');
@@ -100,15 +104,11 @@ export default {
     if (this.activateFeature && this.activateFeature.theme) {
       this.theme = this.activateFeature.theme.slug || this.theme;
     }
-    this.replaceTheme(this.theme);
+    this.applyTheme(this.theme);
   },
   watch: {
     activeFeature (val) {
       this.activateFeature(val);
-      if (val.theme && val.theme.slug) {
-        this.replaceTheme(val.theme.slug);
-      }
-
       this.disableGlobeAutoRotation();
     },
     features (val) {
@@ -121,22 +121,31 @@ export default {
       this.setEnableZoom(val);
     },
     theme (val, old) {
-      this.replaceTheme(val, old);
-      // this.disableGlobeAutoRotation()
+      this.applyTheme(val, old);
     },
     cameraDistance (val) {
       this.updateAvatarPositions();
     },
   },
   computed: {
-    ...mapState({
-      activeFeature: state => state.activeFeature,
-      features: state => state.features,
-      zoom: state => state.zoom,
-      rotate: state => state.rotate,
-      theme: state => state.theme,
-      globeAutoRotation: state => state.globeAutoRotation,
-    }),
+    ...mapState([
+      'activeFeature',
+      'zoom',
+      'rotate',
+      'theme',
+      'globeAutoRotation',
+      'markerTypes',
+    ]),
+    features() {
+     if (this.markerTypes.length) {
+       return this.allMarkers.filter(marker => {
+         return this.markerTypes.includes(marker.type) || this.markerTypes.some(type => marker.keywords ? marker.keywords.includes(type) : false);
+       });
+     } else {
+       // by default remove events type markers from default selection
+       return this.allMarkers.filter(marker => marker.type !== 'event');
+     }
+    },
     containerSize: {
       get () {
         // lookup the size of the globe card element
@@ -183,12 +192,12 @@ export default {
 
         return {
           from: {
-            lat: feature.location.lat,
-            lon: feature.location.lon,
+            lat: feature.location.latitude,
+            lon: feature.location.longitude,
           },
           to: {
-            lat: d.location.lat,
-            lon: d.location.lon,
+            lat: d.location.latitude,
+            lon: d.location.longitude,
           },
         };
       });
@@ -198,8 +207,8 @@ export default {
       // https://en.wikipedia.org/wiki/Spherical_coordinate_system
       const from = cartesian2polar(this.camera.position.x, this.camera.position.y, this.camera.position.z);
       const to = {};
-      to.theta = lat2theta(feature.location.lat);
-      to.phi = lon2phi(feature.location.lon);
+      to.theta = lat2theta(feature.location.latitude);
+      to.phi = lon2phi(feature.location.longitude);
       to.r = 40 - feature.location.zoom;
       this.panAndZoom(from, to);
     },
@@ -300,7 +309,7 @@ export default {
      * Animates the particles on the globe to the colors associated with the provided theme slug.
      * @param {String} slug one of the theme slugs: too-little, too-much or too-dirty
      */
-    replaceTheme (slug) {
+    applyTheme (slug) {
       this.particles.replaceTheme(slug);
     },
     setEnableZoom (val) {
@@ -362,9 +371,9 @@ export default {
     },
     handleMouseMove (event) {
       event.preventDefault();
-
+      const canvasDistanceTop = this.renderer.domElement.getBoundingClientRect().top;
       this.mouse.x = ((event.clientX / this.renderer.domElement.clientWidth) * 2) - 1;
-      this.mouse.y = -((event.clientY / this.renderer.domElement.clientHeight) * 2) + 1;
+      this.mouse.y = -((event.clientY - canvasDistanceTop) / this.renderer.domElement.clientHeight) * 2 + 1;
     },
     /**
      * Pan to the active story

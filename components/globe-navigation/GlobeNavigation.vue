@@ -62,7 +62,7 @@
 
           <nuxt-link
             v-if="filterFeature"
-            :to="`/features/${filterFeature.slug}`"
+            :to="`/curated/${filterFeature.slug}`"
             class="globe-navigation__feature-link"
           >
             Explore {{ filterFeature.title }}

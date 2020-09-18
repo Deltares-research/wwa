@@ -1,6 +1,6 @@
 <template>
   <div>
-    <feature-header
+    <page-header
       :icon-url="feature.icon.url"
       :title="feature.title"
       :hero-image-url="feature.heroImage.url"
@@ -14,13 +14,13 @@
 
 <script>
   import fetchContent from '~/lib/fetch-content';
-  import FeatureHeader from '~/components/feature-header/FeatureHeader';
+  import PageHeader from '~/components/page-header/PageHeader';
   import SectionBlocks from '~/components/section-blocks/SectionBlocks';
 
   export default {
     layout: 'static-page-dark',
     components: {
-      FeatureHeader,
+      PageHeader,
       SectionBlocks,
     },
     async asyncData({ params }) {

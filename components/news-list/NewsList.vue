@@ -16,7 +16,11 @@
       <div class="news-list__item-image">
         <img
           v-if="article.heroImage"
-          :src="`${article.heroImage.url}?auto=compress,format&w=600`"
+          :srcset="`${article.heroImage.url}?auto=compress,format&w=300 300w,
+                    ${article.heroImage.url}?auto=compress,format&w=600 600w,
+                    ${article.heroImage.url}?auto=compress,format&w=900 900w`"
+          sizes="(min-width: 768px) 290px, 100vw"
+          :src="`${article.heroImage.url}?auto=compress,format&w=400`"
           alt="">
       </div>
     </li>

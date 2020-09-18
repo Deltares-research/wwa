@@ -1,27 +1,21 @@
 <template>
-  <div>
-    <h1 class="h1">
-      News
-    </h1>
+  <div class="layout-section ">
+    <div class="layout-section__container">
+      <h1 class="news__title">
+        News
+      </h1>
 
-    <ul>
-      <li
-        v-for="article in allNewsArticles"
-        :key="article.path"
-      >
-        <nuxt-link :to="{ name: 'news-slug', params: { slug: article.slug }}">
-          <time :datetime="article.date">{{ article.date }}</time>
-          {{ article.title }}
-        </nuxt-link>
-      </li>
-    </ul>
+      <news-list :news-articles="allNewsArticles" />
+    </div>
   </div>
 </template>
 
 <script>
 import fetchContent from '~/lib/fetch-content';
+import NewsList from '@/components/news-list/NewsList';
 
 export default {
+  components: { NewsList },
   layout: 'static-page-dark',
   async asyncData () {
     const query = `
@@ -30,6 +24,9 @@ export default {
             slug
             title
             date
+            heroImage {
+              url
+            }
           }
         }
       `;
@@ -42,4 +39,18 @@ export default {
 </script>
 
 <style>
+.news__title {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1.2;
+  color: var(--blue-tertiary);
+}
+
+@media (--md-viewport) {
+  .news__title {
+    margin-bottom: 2rem;
+    font-size: 3.75rem;
+  }
+}
 </style>

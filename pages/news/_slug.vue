@@ -1,9 +1,10 @@
 <template>
   <article>
-    <h1 class="events-title">
-      {{ newsArticle.title }}
-    </h1>
-    <time :datetime="newsArticle.date">{{ newsArticle.date }}</time>
+    <page-header
+      :title="newsArticle.title"
+      :sub-title="formattedDate"
+      :hero-image-url="newsArticle.heroImage.url"
+    />
 
     <section-blocks :sections="newsArticle.sections" />
   </article>
@@ -12,8 +13,9 @@
 <script>
 import fetchContent from '~/lib/fetch-content';
 import SectionBlocks from '~/components/section-blocks/SectionBlocks';
+import PageHeader from '~/components/page-header/PageHeader';
 export default {
-  components: { SectionBlocks },
+  components: { PageHeader, SectionBlocks },
   layout: 'static-page-dark',
   async asyncData({ params }) {
     const query = `
@@ -22,6 +24,9 @@ export default {
             slug
             title
             date
+            heroImage {
+              url
+            }
             sections {
               backgroundColor
               showBottomWave
@@ -101,6 +106,22 @@ export default {
                     }
                   }
                 }
+                ... on NewsBlockRecord {
+                  _modelApiKey
+                  id
+                  title
+                  slug
+                  titleColor
+                  showWaveMarker
+                  newsArticles {
+                    slug
+                    title
+                    date
+                    heroImage {
+                      url
+                    }
+                  }
+                }
               }
             }
           }
@@ -110,6 +131,11 @@ export default {
     return {
       ...await fetchContent(query),
     };
+  },
+  computed: {
+    formattedDate() {
+      return new Date(this.newsArticle.date).toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' })
+    }
   },
 };
 </script>

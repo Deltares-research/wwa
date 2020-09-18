@@ -17,7 +17,9 @@
         <time
           class="news-list__item-date"
           :datetime="article.date"
-        >{{ formatDate(article.date) }}</time>
+        >
+          {{ formatDate(article.date) }}
+        </time>
       </div>
       <div class="news-list__item-image">
         <img

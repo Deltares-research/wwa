@@ -28,9 +28,9 @@
 </template>
 
 <script>
-  import NewsList from '@/components/news-list/NewsList';
+  import NewsList from '~/components/news-list/NewsList';
   export default {
-    components: {NewsList},
+    components: { NewsList },
     props: {
       title: String,
       showWaveMarker: Boolean,

@@ -29,7 +29,7 @@
       >
         <div class="layout-section__container layout-section__container--padded">
           <div class="event-chapter__block">
-            <event-block-text
+            <section-block-text
               :show-wave-marker="true"
               :title="page.title"
               :subtitle="page.storyteller"
@@ -84,7 +84,7 @@
             v-if="page.creditsTitle || page.creditsBody || page.creditsLogos"
             class="event-chapter__block"
           >
-            <event-block-credits
+            <section-block-credits
               :title="page.creditsTitle"
               :body="page.creditsBody"
               :logos="page.creditsLogos"
@@ -100,13 +100,13 @@
 
 <script>
   import fetchContent from '~/lib/fetch-content';
-  import EventBlockText from '~/components/event-block/EventBlockText';
+  import SectionBlockText from '~/components/section-blocks/SectionBlockText';
   import eventHeader from '~/components/event-header/EventHeader';
   import NarrativeHeaderEvent from '~/components/narrative-header/NarrativeHeaderEvent';
   import StoryMap from '~/components/story-map/StoryMap';
   import ResponsiveImage from '~/components/responsive-image/ResponsiveImage';
   import ResponsiveVideo from '~/components/responsive-video/ResponsiveVideo';
-  import EventBlockCredits from '~/components/event-block/EventBlockCredits';
+  import SectionBlockCredits from '~/components/section-blocks/SectionBlockCredits';
   import eventFooter from '~/components/event-footer/EventFooter';
 
   export default {
@@ -116,8 +116,8 @@
       StoryMap,
       ResponsiveImage,
       ResponsiveVideo,
-      EventBlockText,
-      EventBlockCredits,
+      SectionBlockText,
+      SectionBlockCredits,
       eventFooter,
     },
     head ({ params }) {

@@ -1,6 +1,14 @@
 <template>
-  <header class="layout-section--wave-bottom-blue">
-    <div class="layout-section__container layout-section__container--padded">
+  <header class="feature-header layout-section__container layout-section__container--padded">
+    <div class="feature-header__hero">
+      <img
+        class="feature-header__hero-image"
+        :src="`${heroImageUrl}?auto=compress,format&w=1080&h=400&fit=crop`"
+        alt=""
+      >
+    </div>
+
+    <div class="feature-header__content">
       <button
         type="button"
         @click="goBack"
@@ -29,6 +37,7 @@
 
   export default {
     props: {
+      heroImageUrl: String,
       iconUrl: String,
       title: String,
     },
@@ -44,13 +53,56 @@
 </script>
 
 <style>
+  .feature-header {
+    position: relative;
+  }
+
+  .feature-header__hero {
+    position: relative;
+    height: 0;
+    padding-bottom: 36%;
+  }
+
+  .feature-header__hero:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg,rgba(8,8,8,0),rgba(8,8,8,.7) 84%,var(--black-primary));
+  }
+
+  .feature-header__hero-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  .feature-header__content {
+    position: absolute;
+    left: 2rem;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  @media (--md-viewport) {
+    .feature-header__content {
+      left: 3rem;
+      right: 3rem;
+    }
+  }
+
   .feature-header__back-button {
-    margin-bottom: 1rem;
+    margin-bottom: .5rem;
   }
 
   .feature-header__banner {
     display: flex;
-    margin-bottom: 1rem;
   }
 
   .feature-header__icon {

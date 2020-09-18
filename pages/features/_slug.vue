@@ -3,6 +3,7 @@
     <feature-header
       :icon-url="feature.icon.url"
       :title="feature.title"
+      :hero-image-url="feature.heroImage.url"
     />
 
     <section-blocks
@@ -29,6 +30,9 @@
               slug
               title
               icon {
+                url
+              }
+              heroImage {
                 url
               }
               sections {

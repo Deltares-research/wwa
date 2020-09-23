@@ -106,15 +106,6 @@
               :speakers-label="block.speakersLabel"
             />
           </div>
-          <animator
-            v-if="block._modelApiKey === 'news_block'"
-            :key="block.id"
-            :id="block.slug"
-            :is-intersection-disabled="index === 0 && blockIndex === 0"
-            class="layout-section__container layout-section__container--padded"
-          >
-            <section-block-news v-bind="block" />
-          </animator>
         </template>
       </div>
     </section>
@@ -125,7 +116,6 @@
 import SectionBlockChaptersCarousel from '~/components/section-blocks/SectionBlockChaptersCarousel';
 import SectionBlockChaptersList from '~/components/section-blocks/SectionBlockChaptersList';
 import SectionBlockColofon from '~/components/section-blocks/SectionBlockColofon';
-import SectionBlockNews from '@/components/section-blocks/SectionBlockNews';
 import SectionBlockSchedule from '~/components/section-blocks/SectionBlockSchedule';
 import SectionBlockText from '~/components/section-blocks/SectionBlockText';
 import SectionBlockTextMedia from '~/components/section-blocks/SectionBlockTextMedia';
@@ -138,7 +128,6 @@ export default {
     SectionBlockChaptersCarousel,
     SectionBlockChaptersList,
     SectionBlockColofon,
-    SectionBlockNews,
     SectionBlockSchedule,
     SectionBlockText,
     SectionBlockTextMedia,

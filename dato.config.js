@@ -254,8 +254,8 @@ function generateAppData (dato, root, i18n) {
         slug: 'events',
       },
       {
-        title: 'News',
-        slug: 'news',
+        title: 'About',
+        slug: 'about',
       },
       {
         title: 'Submit story',

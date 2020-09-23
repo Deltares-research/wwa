@@ -69,6 +69,7 @@ export default {
 }
 
 .news-list__item:last-child {
+  margin-bottom: 3rem;
   padding-bottom: 0;
   border-bottom: none;
 }

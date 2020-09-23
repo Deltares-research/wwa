@@ -74,7 +74,19 @@
   .page-header__hero {
     position: relative;
     height: 0;
-    padding-bottom: 36%;
+    padding-bottom: 80%;
+  }
+
+  @media (--sm-viewport) {
+    .page-header__hero {
+      padding-bottom: 45%;
+    }
+  }
+
+  @media (--md-viewport) {
+    .page-header__hero {
+      padding-bottom: 36%;
+    }
   }
 
   .page-header__hero:after {
@@ -133,13 +145,13 @@
   }
 
   .page-header__title {
-    font-size: 2rem;
+    font-size: 1.8rem;
     line-height: 1;
   }
 
   @media (--md-viewport) {
     .page-header__title {
-      font-size: 4rem;
+      font-size: 3rem;
       line-height: 1;
     }
   }

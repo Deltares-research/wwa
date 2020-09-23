@@ -19,7 +19,6 @@
 
       <div class="page-header__banner">
         <img
-          v-if="iconUrl"
           :src="iconUrl"
           alt=""
           class="page-header__icon"
@@ -28,12 +27,6 @@
         <h1 class="page-header__title">
           {{ title }}
         </h1>
-        <p
-          v-if="subTitle"
-          class="page-header__subtitle"
-        >
-          {{ subTitle }}
-        </p>
       </div>
     </div>
   </header>
@@ -44,16 +37,9 @@
 
   export default {
     props: {
-      heroImageUrl: {
-        type: String,
-        required: true,
-      },
+      heroImageUrl: String,
       iconUrl: String,
-      title: {
-        type: String,
-        required: true,
-      },
-      subTitle: String,
+      title: String,
     },
     computed: {
       ...mapState(['historyAvailable']),
@@ -117,7 +103,6 @@
 
   .page-header__banner {
     display: flex;
-    flex-wrap: wrap;
   }
 
   .page-header__icon {
@@ -140,20 +125,6 @@
   @media (--md-viewport) {
     .page-header__title {
       font-size: 4rem;
-      line-height: 1;
-    }
-  }
-
-  .page-header__subtitle {
-    width: 100%;
-    font-size: 1.3rem;
-    line-height: 1;
-    margin-top: .5rem;
-  }
-
-  @media (--md-viewport) {
-    .page-header__subtitle {
-      font-size: 1.6rem;
       line-height: 1;
     }
   }

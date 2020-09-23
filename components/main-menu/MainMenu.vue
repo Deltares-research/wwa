@@ -10,10 +10,7 @@
       </nuxt-link>
     </div>
 
-    <app-description
-      class="main-menu__section main-menu__description"
-      :variant="variant"
-    />
+    <app-description class="main-menu__section main-menu__description" />
 
     <ul class="main-menu__section main-menu__navigation list--inline">
       <li

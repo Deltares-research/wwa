@@ -39,6 +39,15 @@
         {{ callToActionLabel }}
       </a>
     </p>
+    <p
+      v-if="file"
+      class="animator__slide-up event-block-text__cta"
+      animator-stagger
+    >
+      <a :href="file.url">
+        {{ file.title }}
+      </a>
+    </p>
   </div>
 </template>
 
@@ -52,6 +61,7 @@
       body: String,
       callToActionLabel: String,
       callToActionUrl: String,
+      file: String,
       showSmallTitle: Boolean,
     },
   };

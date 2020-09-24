@@ -65,6 +65,10 @@
                     body(markdown: true)
                     callToActionLabel
                     callToActionUrl
+                    file {
+                      url
+                      title
+                    }
                   }
                   ... on MediaBlockRecord {
                     _modelApiKey

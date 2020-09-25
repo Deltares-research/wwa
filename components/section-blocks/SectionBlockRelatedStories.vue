@@ -35,16 +35,16 @@
         animator-stagger
       >
         <nuxt-link
-          :to="`/narratives/${linkedChapter.book.slug}/${linkedChapter.chapter.slug}`"
+          :to="`/narratives/${linkedChapter.bookSlug}/${linkedChapter.chapterSlug}`"
           class="event-block-related-stories__link"
           lang="en"
         >
           <div class="event-block-related-stories__chapter-title">
-            {{ linkedChapter.chapter.title }}
+            {{ linkedChapter.title }}
           </div>
 
           <img
-            :src="`${linkedChapter.chapter.cover.url}?auto=compress,format&w=500&fit=crop&crop=entropy`"
+            :src="`${linkedChapter.coverUrl}?auto=compress,format&w=500&fit=crop&crop=entropy`"
             alt=""
             class="event-block-related-stories__image"
           >

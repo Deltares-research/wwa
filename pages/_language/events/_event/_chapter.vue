@@ -1,12 +1,12 @@
 <template>
   <div class="event">
-    <header class="layout-section__container">
+    <header class="layout-section__container event__header">
       <event-header
-        :name="internalEvent.name"
-        :slug="internalEvent.slug"
-        :image="internalEvent.image"
-        :event-website="internalEvent.eventWebsite"
-        :all-locales="internalEvent._allNameLocales"
+        :name="chapter.internalEvent.name"
+        :slug="chapter.internalEvent.slug"
+        :image="chapter.internalEvent.image"
+        :event-website="chapter.internalEvent.eventWebsite"
+        :all-locales="chapter.internalEvent.allLocales"
       />
     </header>
 
@@ -14,8 +14,8 @@
       <div class="layout-section__container layout-section__container--padded">
         <narrative-header-event
           :chapter="chapter"
-          :back-button-label="internalEvent.backButtonLabel"
-          :chapter-navigation-label="internalEvent.chapterNavigationLabel"
+          :back-button-label="chapter.internalEvent.backButtonLabel"
+          :chapter-navigation-label="chapter.internalEvent.chapterNavigationLabel"
           @scrollTo="smoothScroll"
         />
       </div>
@@ -94,12 +94,11 @@
       </article>
     </main>
 
-    <event-footer v-bind="internalEvent" />
+    <event-footer v-bind="chapter.internalEvent" />
   </div>
 </template>
 
 <script>
-  import fetchContent from '~/lib/fetch-content';
   import SectionBlockText from '~/components/section-blocks/SectionBlockText';
   import eventHeader from '~/components/event-header/EventHeader';
   import NarrativeHeaderEvent from '~/components/narrative-header/NarrativeHeaderEvent';
@@ -120,86 +119,9 @@
       SectionBlockCredits,
       eventFooter,
     },
-    head ({ params }) {
-      return {
-        htmlAttrs: {
-          lang: params.language,
-        },
-      };
-    },
     async asyncData({ params }) {
-      const query = `
-        {
-          chapter(locale: ${params.language}, filter: { slug: { eq: "${params.chapter}" } }) {
-            title
-            cover {
-              responsiveImage(imgixParams: {auto: compress, w: 1120, h: 360}) {
-                src
-                srcSet
-                sizes
-              }
-            }
-            pages {
-              slug
-              title
-              storyteller
-              body(markdown: true)
-              images {
-                id
-                url
-                width
-                height
-                title
-                alt
-              }
-              video {
-                url
-                provider
-                providerUid
-                width
-                height
-              }
-              videoChina
-              mapboxStyle
-              creditsTitle
-              creditsBody(markdown: true)
-              creditsLogos {
-                url
-                alt
-              }
-            }
-          }
-
-          internalEvent(locale: ${params.language}, filter: { slug: { eq: "${params.event}" } }) {
-            name
-            eventWebsite
-            backButtonLabel
-            chapterNavigationLabel
-            image {
-              url
-            }
-            _allNameLocales {
-              locale
-            }
-          }
-        }
-      `;
-
-      const content = await fetchContent(query);
-      content.chapter.pages.map(page => {
-        if (page.videoChina) {
-          const providerUid = /^https:\/\/v\.qq\.com\/x\/page\/([a-z0-9]+)\.html$/.exec(page.videoChina)[1];
-            page.video = {
-              provider: 'qq',
-              providerUid,
-            };
-        }
-      });
-
-      return {
-        ...content,
-        params,
-      };
+      const data = await import(`~/static/data/events/${params.language}/chapters/${params.chapter}.json`);
+      return { chapter: data.default };
     },
     methods: {
       smoothScroll (slug) {
@@ -212,6 +134,10 @@
 </script>
 
 <style>
+  .event__header.layout-section__container {
+    margin-bottom: var(--spacing-half);
+  }
+
   .event-chapter__article {
     padding: 1rem 0 2rem 0;
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="invert">
-    <div class="layout-section">
+    <div class="layout-section layout-section--background-black">
       <div class="layout-section__container">
         <chapter-list
           :chapters="filteredChapters"

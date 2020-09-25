@@ -17,17 +17,22 @@
         Back
       </button>
 
-      <div class="page-header__banner">
-        <img
-          :src="iconUrl"
-          alt=""
-          class="page-header__icon"
-        >
+      <img
+        v-if="iconUrl"
+        :src="iconUrl"
+        alt=""
+        class="page-header__icon"
+      >
 
-        <h1 class="page-header__title">
-          {{ title }}
-        </h1>
-      </div>
+      <h1 class="page-header__title">
+        {{ title }}
+      </h1>
+      <p
+        v-if="subTitle"
+        class="page-header__subtitle"
+      >
+        {{ subTitle }}
+      </p>
     </div>
   </header>
 </template>
@@ -37,9 +42,16 @@
 
   export default {
     props: {
-      heroImageUrl: String,
+      heroImageUrl: {
+        type: String,
+        required: true,
+      },
       iconUrl: String,
-      title: String,
+      title: {
+        type: String,
+        required: true,
+      },
+      subTitle: String,
     },
     computed: {
       ...mapState(['historyAvailable']),
@@ -60,7 +72,19 @@
   .page-header__hero {
     position: relative;
     height: 0;
-    padding-bottom: 36%;
+    padding-bottom: 80%;
+  }
+
+  @media (--sm-viewport) {
+    .page-header__hero {
+      padding-bottom: 45%;
+    }
+  }
+
+  @media (--md-viewport) {
+    .page-header__hero {
+      padding-bottom: 36%;
+    }
   }
 
   .page-header__hero:after {
@@ -101,30 +125,40 @@
     margin-bottom: .5rem;
   }
 
-  .page-header__banner {
-    display: flex;
-  }
-
   .page-header__icon {
-    margin: .1rem .5rem 0 0;
+    margin: .2rem 0 .5rem 0;
     height: 30px;
   }
 
   @media (--md-viewport) {
     .page-header__icon {
-      margin: .6rem 1rem 0 0;
+      margin: .7rem 0 .7rem 0;
       height: 50px;
     }
   }
 
   .page-header__title {
-    font-size: 2rem;
+    font-size: 1.8rem;
     line-height: 1;
   }
 
   @media (--md-viewport) {
     .page-header__title {
-      font-size: 4rem;
+      font-size: 3rem;
+      line-height: 1;
+    }
+  }
+
+  .page-header__subtitle {
+    width: 100%;
+    font-size: 1.3rem;
+    line-height: 1;
+    margin-top: .5rem;
+  }
+
+  @media (--md-viewport) {
+    .page-header__subtitle {
+      font-size: 1.6rem;
       line-height: 1;
     }
   }

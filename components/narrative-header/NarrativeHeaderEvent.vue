@@ -6,9 +6,7 @@
       </h1>
       <img
         v-if="chapter.cover"
-        :src="chapter.cover.responsiveImage.src"
-        :srcset="chapter.cover.responsiveImage.srcSet"
-        :sizes="chapter.cover.responsiveImage.sizes"
+        :src="chapter.cover"
         alt=""
         class="narrative-header-event__header-image"
       >

@@ -727,7 +727,7 @@ function generateContentPage (chapters, page) {
   return {
     slug,
     title,
-    icon,
+    iconUrl: icon ? `${icon.imgixHost}${icon.value.path}` : null,
     heroImage,
     sections: sectionsList,
   };

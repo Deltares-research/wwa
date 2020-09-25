@@ -17,24 +17,22 @@
         Back
       </button>
 
-      <div class="page-header__banner">
-        <img
-          v-if="iconUrl"
-          :src="iconUrl"
-          alt=""
-          class="page-header__icon"
-        >
+      <img
+        v-if="iconUrl"
+        :src="iconUrl"
+        alt=""
+        class="page-header__icon"
+      >
 
-        <h1 class="page-header__title">
-          {{ title }}
-        </h1>
-        <p
-          v-if="subTitle"
-          class="page-header__subtitle"
-        >
-          {{ subTitle }}
-        </p>
-      </div>
+      <h1 class="page-header__title">
+        {{ title }}
+      </h1>
+      <p
+        v-if="subTitle"
+        class="page-header__subtitle"
+      >
+        {{ subTitle }}
+      </p>
     </div>
   </header>
 </template>
@@ -127,19 +125,14 @@
     margin-bottom: .5rem;
   }
 
-  .page-header__banner {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
   .page-header__icon {
-    margin: .1rem .5rem 0 0;
+    margin: .2rem 0 .5rem 0;
     height: 30px;
   }
 
   @media (--md-viewport) {
     .page-header__icon {
-      margin: .6rem 1rem 0 0;
+      margin: .7rem 0 .7rem 0;
       height: 50px;
     }
   }

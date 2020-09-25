@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header
-      :icon-url="icon.url"
+      :icon-url="iconUrl"
       :title="title"
       :hero-image-url="`${heroImage.imgixHost}${heroImage.value.path}`"
     />

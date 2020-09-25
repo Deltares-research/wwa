@@ -540,7 +540,7 @@ function generateEventPages (dato, root, i18n) {
                   slug: block.slug,
                   timezone: block.timezone,
                   timezoneComment: block.timezoneComment,
-                  topiclabel: block.topicLabel,
+                  topicLabel: block.topicLabel,
                   scheduleLabel: block.scheduleLabel,
                   nowLabel: block.nowLabel,
                   descriptionLabel: block.descriptionLabel,
@@ -602,7 +602,7 @@ function generateEventPages (dato, root, i18n) {
   });
 }
 
-function generateEventChapter(chapter, event, root, i18n, allLocales) {
+function generateEventChapter(chapter, event, root, i18n) {
   i18n.availableLocales.forEach(locale => {
     i18n.withLocale(locale, () => {
       const { name, eventWebsite, backButtonLabel, chapterNavigationLabel, image } = event;
@@ -612,14 +612,31 @@ function generateEventChapter(chapter, event, root, i18n, allLocales) {
         backButtonLabel,
         chapterNavigationLabel,
         image,
-        allLocales: i18n.allAvailableLocales,
+        allLocales: i18n.availableLocales,
       };
 
       const page = {
         title: chapter.title,
         cover: chapter.cover.url(),
         pages: chapter.pages.map(page => {
-          const { slug, title, storyteller, body, videoChina, mapboxStyle, creditsTitle, creditsBody } = page;
+          const { slug, title, storyteller, body, video, videoChina, mapboxStyle, creditsTitle, creditsBody } = page;
+
+          let videoComputed = video ? {
+            url: page.video.url,
+            provider: page.video.provider,
+            providerUid: page.video.providerUid,
+            width: page.video.width,
+            height: page.video.height,
+          } : null;
+
+          if (videoChina) {
+            const providerUid = /^https:\/\/v\.qq\.com\/x\/page\/([a-z0-9]+)\.html$/.exec(page.videoChina)[1];
+            videoComputed = {
+              provider: 'qq',
+              providerUid: providerUid,
+            };
+          }
+
           return {
             slug,
             title,
@@ -635,14 +652,7 @@ function generateEventChapter(chapter, event, root, i18n, allLocales) {
                 alt: image.alt,
               };
             }),
-            video: page.video ? {
-              url: page.video.url,
-              provider: page.video.provider,
-              providerUid: page.video.providerUid,
-              width: page.video.width,
-              height: page.video.height,
-            } : null,
-            videoChina,
+            video: videoComputed,
             mapboxStyle,
             creditsTitle,
             creditsBody: renderMarkedContent(creditsBody),

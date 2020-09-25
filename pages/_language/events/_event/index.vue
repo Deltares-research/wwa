@@ -27,8 +27,6 @@
 </template>
 
 <script>
-  import fetchContent from '~/lib/fetch-content';
-
   import EventBanner from '~/components/event-banner/EventBanner';
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';

@@ -99,7 +99,6 @@
 </template>
 
 <script>
-  import fetchContent from '~/lib/fetch-content';
   import SectionBlockText from '~/components/section-blocks/SectionBlockText';
   import eventHeader from '~/components/event-header/EventHeader';
   import NarrativeHeaderEvent from '~/components/narrative-header/NarrativeHeaderEvent';

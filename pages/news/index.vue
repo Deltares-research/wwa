@@ -11,29 +11,14 @@
 </template>
 
 <script>
-import fetchContent from '~/lib/fetch-content';
 import NewsList from '@/components/news-list/NewsList';
 
 export default {
   components: { NewsList },
   layout: 'static-page-dark',
-  async asyncData () {
-    const query = `
-        {
-          allNewsArticles {
-            slug
-            title
-            date
-            heroImage {
-              url
-            }
-          }
-        }
-      `;
-
-    return {
-      ...await fetchContent(query),
-    };
+  async asyncData({ params }) {
+    const data = await import(`~/static/data/news/index.json`);
+    return { allNewsArticles: data.default };
   },
 };
 </script>

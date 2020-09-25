@@ -596,6 +596,14 @@ function generateFeaturePages (dato, root, i18n) {
   for (const page of featurePages) {
     root.createDataFile(`static/data/features/${page.slug}.json`, 'json', page);
   }
+  const staticPageIndex = featurePages.map(page => {
+    return {
+      path: `/${page.slug}`,
+      title: page.title,
+      iconUrl: page.iconUrl,
+    };
+  });
+  root.createDataFile('static/data/features/index.json', 'json', staticPageIndex);
 }
 
 /**
@@ -614,10 +622,19 @@ function generateNewsPages (dato, root, i18n) {
   for (const page of newsPages) {
     root.createDataFile(`static/data/news/${page.slug}.json`, 'json', page);
   }
+  const staticPageIndex = newsPages.map(page => {
+    return {
+      slug: page.slug,
+      title: page.title,
+      date: page.date,
+      heroImage: `${page.heroImage.imgixHost}${page.heroImage.value.path}`,
+    };
+  });
+  root.createDataFile('static/data/news/index.json', 'json', staticPageIndex);
 }
 
 function generateContentPage (chapters, page) {
-  const { slug, title, icon, heroImage, sections } = page;
+  const { slug, title, icon, date, heroImage, sections } = page;
   const sectionsList = sections.toMap()
     .map(section => {
       const sectionBlocks = section.blocks.map(block => {
@@ -728,6 +745,7 @@ function generateContentPage (chapters, page) {
     slug,
     title,
     iconUrl: icon ? `${icon.imgixHost}${icon.value.path}` : null,
+    date: date ? date : null,
     heroImage,
     sections: sectionsList,
   };

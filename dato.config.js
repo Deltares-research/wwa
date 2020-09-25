@@ -428,7 +428,7 @@ function generateEventPages (dato, root, i18n) {
                   title: block.title,
                   slug: block.slug,
                   chapters: block.chapters.map(chapter => {
-                    generateEventChapter(chapter, page, root, locale, i18n.availableLocales);
+                    generateEventChapter(chapter, page, root, i18n);
                     return {
                       title: chapter.title,
                       slug: chapter.slug,
@@ -602,60 +602,64 @@ function generateEventPages (dato, root, i18n) {
   });
 }
 
-function generateEventChapter(chapter, event, root, locale, allLocales) {
-  const { name, eventWebsite, backButtonLabel, chapterNavigationLabel, image } = event;
-  const internalEvent = {
-    name,
-    eventWebsite,
-    backButtonLabel,
-    chapterNavigationLabel,
-    image,
-    allLocales,
-  };
-
-  const page = {
-    title: chapter.title,
-    cover: chapter.cover.url(),
-    pages: chapter.pages.map(page => {
-      const { slug, title, storyteller, body, videoChina, mapboxStyle, creditsTitle, creditsBody } = page;
-      return {
-        slug,
-        title,
-        storyteller,
-        body: renderMarkedContent(body),
-        images: page.images.map(image => {
-          return {
-            id: image.id,
-            url: image.url(),
-            width: image.width,
-            height: image.height,
-            title: image.title,
-            alt: image.alt,
-          };
-        }),
-        video: page.video ? {
-          url: page.video.url,
-          provider: page.video.provider,
-          providerUid: page.video.providerUid,
-          width: page.video.width,
-          height: page.video.height,
-        } : null,
-        videoChina,
-        mapboxStyle,
-        creditsTitle,
-        creditsBody: renderMarkedContent(creditsBody),
-        creditsLogos: page.creditsLogos.map(creditsLogo => {
-          return {
-            url: creditsLogo.url(),
-            alt: creditsLogo.alt,
-          };
-        }),
+function generateEventChapter(chapter, event, root, i18n, allLocales) {
+  i18n.availableLocales.forEach(locale => {
+    i18n.withLocale(locale, () => {
+      const { name, eventWebsite, backButtonLabel, chapterNavigationLabel, image } = event;
+      const internalEvent = {
+        name,
+        eventWebsite,
+        backButtonLabel,
+        chapterNavigationLabel,
+        image,
+        allLocales: i18n.allAvailableLocales,
       };
-    }),
-    internalEvent,
-  };
 
-  root.createDataFile(`static/data/events/${locale}/chapters/${chapter.slug}.json`, 'json', page);
+      const page = {
+        title: chapter.title,
+        cover: chapter.cover.url(),
+        pages: chapter.pages.map(page => {
+          const { slug, title, storyteller, body, videoChina, mapboxStyle, creditsTitle, creditsBody } = page;
+          return {
+            slug,
+            title,
+            storyteller,
+            body: renderMarkedContent(body),
+            images: page.images.map(image => {
+              return {
+                id: image.id,
+                url: image.url(),
+                width: image.width,
+                height: image.height,
+                title: image.title,
+                alt: image.alt,
+              };
+            }),
+            video: page.video ? {
+              url: page.video.url,
+              provider: page.video.provider,
+              providerUid: page.video.providerUid,
+              width: page.video.width,
+              height: page.video.height,
+            } : null,
+            videoChina,
+            mapboxStyle,
+            creditsTitle,
+            creditsBody: renderMarkedContent(creditsBody),
+            creditsLogos: page.creditsLogos.map(creditsLogo => {
+              return {
+                url: creditsLogo.url(),
+                alt: creditsLogo.alt,
+              };
+            }),
+          };
+        }),
+        internalEvent,
+      };
+
+      root.createDataFile(`static/data/events/${locale}/chapters/${chapter.slug}.json`, 'json', page);
+    });
+  });
 }
 
 /**

@@ -1,6 +1,6 @@
 <template>
   <div class="event">
-    <header class="layout-section__container">
+    <header class="layout-section__container event__header">
       <event-header
         :name="chapter.internalEvent.name"
         :slug="chapter.internalEvent.slug"
@@ -135,6 +135,10 @@
 </script>
 
 <style>
+  .event__header.layout-section__container {
+    margin-bottom: var(--spacing-half);
+  }
+
   .event-chapter__article {
     padding: 1rem 0 2rem 0;
   }

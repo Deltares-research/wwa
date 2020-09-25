@@ -23,7 +23,7 @@
           </div>
 
           <img
-            :src="chapter.cover.url"
+            :src="chapter.coverUrl"
             alt=""
             class="event-block-chapters-list__image"
           >

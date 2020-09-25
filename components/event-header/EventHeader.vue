@@ -1,7 +1,7 @@
 <template>
   <div class="animator__fade event-header">
     <img
-      :src="`${image.url}?auto=compress,format&fit=crop&w=80&h=80`"
+      :src="`${image.imgixHost}${image.value.path}?auto=compress,format&fit=crop&w=80&h=80`"
       width="40"
       alt=""
       class="event-header__image"
@@ -17,7 +17,7 @@
     <nav class="language-switch">
       <ul class="language-switch__list">
         <li
-          v-for="{ locale } in allLocales"
+          v-for="locale in allLocales"
           :key="locale"
           class="language-switch__item"
         >

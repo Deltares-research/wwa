@@ -278,7 +278,7 @@
       parsedEventDays({ eventDays, currentDate, timezone }) {
         return eventDays.map(eventDay => ({
           ...eventDay,
-          parsedDate: new Date(`${eventDay.date}T07:00${timezone}`),
+          parsedDate: new Date(`${eventDay.date.substr(0, 10)}T07:00${timezone}`),
           scheduleItems: eventDay.scheduleItems.map(scheduleItem => ({
             ...scheduleItem,
             isNow:

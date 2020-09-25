@@ -36,11 +36,11 @@
         class="animator__scale-container "
       >
         <source
-          :srcset="props.image.url"
+          :srcset="`${props.image.url}?auto=compress&w=550&h=660&fit=crop&crop=entropy`"
           media="(min-width: 48rem)"
         >
         <source
-          :srcset="props.image.url"
+          :srcset="`${props.image.url}?auto=compress&w=600&h=270&fit=crop&crop=entropy`"
           media="(max-width: 48rem)"
         >
         <img

@@ -73,15 +73,7 @@ export default {
                   mirrorLayout
                   image {
                     alt
-                    portrait: responsiveImage(imgixParams: {auto: compress, w: "550", h: "660", fit: crop, crop: entropy}) {
-                      src
-                      srcSet
-                      sizes
-                    }
-                    landscape: responsiveImage(imgixParams: {auto: compress, w: "600", h: "270", fit: crop, crop: entropy}) {
-                      srcSet
-                      sizes
-                    }
+                    url
                   }
                 }
                 ... on RelatedStoriesBlockRecord {

@@ -36,18 +36,16 @@
         class="animator__scale-container "
       >
         <source
-          :srcset="props.image.portrait.srcSet"
-          :sizes="props.image.portrait.sizes"
+          :srcset="props.image.url"
           media="(min-width: 48rem)"
         >
         <source
-          :srcset="props.image.landscape.srcSet"
-          :sizes="props.image.landscape.sizes"
+          :srcset="props.image.url"
           media="(max-width: 48rem)"
         >
         <img
           class="animator__scale-up animator__scale-image event-block-text-media__image"
-          :src="props.image.portrait.src"
+          :src="props.image.url"
           :alt="props.image.alt"
         >
       </picture>

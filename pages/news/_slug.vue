@@ -1,132 +1,29 @@
 <template>
   <article>
     <page-header
-      :title="newsArticle.title"
+      :title="title"
       :sub-title="formattedDate"
-      :hero-image-url="newsArticle.heroImage.url"
+      :hero-image-url="`${heroImage.imgixHost}${heroImage.value.path}`"
     />
 
-    <section-blocks :sections="newsArticle.sections" />
+    <section-blocks :sections="sections" />
   </article>
 </template>
 
 <script>
-import fetchContent from '~/lib/fetch-content';
 import SectionBlocks from '~/components/section-blocks/SectionBlocks';
 import PageHeader from '~/components/page-header/PageHeader';
+
 export default {
   components: { PageHeader, SectionBlocks },
   layout: 'static-page-dark',
   async asyncData({ params }) {
-    const query = `
-        {
-          newsArticle(filter: { slug: { eq: "${params.slug}" } }) {
-            slug
-            title
-            date
-            heroImage {
-              url
-            }
-            sections {
-              backgroundColor
-              showBottomWave
-              showTopWave
-
-              blocks {
-                ... on ColofonBlockRecord {
-                  _modelApiKey
-                  id
-                  title
-                  slug
-                  titleColor
-                  showWaveMarker
-                  body(markdown: true)
-                  logos {
-                    id
-                    url
-                    alt
-                  }
-                }
-                ... on TextBlockRecord {
-                  _modelApiKey
-                  id
-                  title
-                  slug
-                  titleColor
-                  showWaveMarker
-                  body(markdown: true)
-                  callToActionLabel
-                  callToActionUrl
-                }
-                ... on MediaBlockRecord {
-                  _modelApiKey
-                  id
-                  title
-                  slug
-                  titleColor
-                  showWaveMarker
-                  internalButtonLabel
-                  internalButtonSlug
-                  body(markdown: true)
-                  callToActionLabel
-                  callToActionUrl
-                  mirrorLayout
-                  image {
-                    alt
-                    url
-                  }
-                }
-                ... on RelatedStoriesBlockRecord {
-                  _modelApiKey
-                  id
-                  title
-                  slug
-                  subtitle
-                  titleColor
-                  showWaveMarker
-                  linkedChapters {
-                    id
-                    book {
-                      slug
-                    }
-                    chapter {
-                      slug
-                      title
-                      cover {
-                        url
-                      }
-                    }
-                  }
-                }
-                ... on NewsBlockRecord {
-                  _modelApiKey
-                  id
-                  title
-                  slug
-                  titleColor
-                  showWaveMarker
-                  newsArticles {
-                    slug
-                    title
-                    date
-                    heroImage {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      `;
-
-    return {
-      ...await fetchContent(query),
-    };
+    const data = await import(`~/static/data/news/${params.slug}.json`);
+    return data.default;
   },
   computed: {
     formattedDate() {
-      return new Date(this.newsArticle.date).toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' });
+      return new Date(this.date).toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' });
     },
   },
 };

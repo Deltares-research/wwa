@@ -51,6 +51,7 @@ module.exports = (dato, root, i18n) => {
   generateThemes(dato, root, i18n);
   generateMarkers(dato, root, i18n);
   generateFeaturePages(dato, root, i18n);
+  generateNewsPages(dato, root, i18n);
 };
 
 /**
@@ -590,126 +591,146 @@ function generateFeaturePages (dato, root, i18n) {
 
   const featurePages = dato.features
     .filter(filterPublished)
-    .map(page => {
-      const { slug, title, icon, heroImage, sections } = page;
-      const sectionsList = sections.toMap()
-        .map(section => {
-          const sectionBlocks = section.blocks.map(block => {
-            if(block.itemType === 'text_block') {
-              return {
-                _modelApiKey: block.itemType,
-                id: block.id,
-                title: block.title,
-                slug: block.slug,
-                titleColor: block.titleColor,
-                showWaveMarker: block.showWaveMarker,
-                body: block.body,
-                callToActionLabel: block.callToActionLabel,
-                callToActionUrl: block.callToActionUrl,
-              };
-            } else if(block.itemType === 'media_block') {
-              return {
-                _modelApiKey: block.itemType,
-                id: block.id,
-                title: block.title,
-                slug: block.slug,
-                titleColor: block.titleColor,
-                showWaveMarker: block.showWaveMarker,
-                body: block.body,
-                internalButtonLabel: block.internalButtonLabel,
-                internalButtonSlug: block.internalButtonSlug,
-                callToActionLabel: block.callToActionLabel,
-                callToActionUrl: block.callToActionUrl,
-                mirrorLayout: block.mirrorLayout,
-                image: {
-                  alt: block.image.alt,
-                  url: block.image.url,
-                },
-              };
-            } else if(block.itemType === 'colofon_block') {
-              return {
-                _modelApiKey: block.itemType,
-                id: block.id,
-                title: block.title,
-                slug: block.slug,
-                titleColor: block.titleColor,
-                showWaveMarker: block.showWaveMarker,
-                body: block.body,
-                logos: block.logos ? block.logos.map(logo => {
-                  return {
-                    id: logo.id,
-                    url: logo.url,
-                    alt: logo.alt,
-                  };
-                }) : null,
-              };
-            } else if(block.itemType === 'news_block') {
-              return {
-                _modelApiKey: block.itemType,
-                id: block.id,
-                title: block.title,
-                slug: block.slug,
-                titleColor: block.titleColor,
-                showWaveMarker: block.showWaveMarker,
-                newsArticles: block.newsArticles ? block.newsArticles.map(newsArticle => {
-                  return {
-                    id: newsArticle.id,
-                    slug: newsArticle.slug,
-                    title: newsArticle.title,
-                    date: newsArticle.date,
-                    image: {
-                      alt: newsArticle.heroImage.alt,
-                      url: newsArticle.heroImage.url,
-                    },
-                  };
-                }) : null,
-              };
-            } else if(block.itemType === 'related_stories_block') {
-              const linkedChapters = block.linkedChapters.map(linkedChapter => {
-                const chapter = chapters.find(chapter => chapter.slug === linkedChapter.slug);
-                const bookSlug = chapter.book.slug;
-
-                return {
-                  title: chapter.title,
-                  chapterSlug: chapter.slug,
-                  bookSlug,
-                  coverUrl: `${chapter.cover.imgixHost}${chapter.cover.value.path}`,
-                };
-              });
-
-              return {
-                _modelApiKey: block.itemType,
-                id: block.id,
-                title: block.title,
-                slug: block.slug,
-                subtitle: block.subtitle,
-                titleColor: block.titleColor,
-                showWaveMarker: block.showWaveMarker,
-                linkedChapters,
-              };
-            }
-          });
-
-          return {
-            backgroundColor: section.backgroundColor,
-            showBottomWave: section.showBottomWave,
-            showTopWave: section.showTopWave,
-            blocks: sectionBlocks,
-          };
-      });
-
-      return {
-        slug,
-        title,
-        icon,
-        heroImage,
-        sections: sectionsList,
-      };
-    });
+    .map(page => generateContentPage(chapters, page));
 
   for (const page of featurePages) {
     root.createDataFile(`static/data/features/${page.slug}.json`, 'json', page);
   }
+}
+
+/**
+ * Get all news pages
+ *
+ * @param {Dato} dato
+ * @returns {Object}
+*/
+function generateNewsPages (dato, root, i18n) {
+  const chapters = getChapters(dato);
+
+  const newsPages = dato.newsArticles
+    .filter(filterPublished)
+    .map(page => generateContentPage(chapters, page));
+
+  for (const page of newsPages) {
+    root.createDataFile(`static/data/news/${page.slug}.json`, 'json', page);
+  }
+}
+
+function generateContentPage (chapters, page) {
+  const { slug, title, icon, heroImage, sections } = page;
+  const sectionsList = sections.toMap()
+    .map(section => {
+      const sectionBlocks = section.blocks.map(block => {
+        if(block.itemType === 'text_block') {
+          return {
+            _modelApiKey: block.itemType,
+            id: block.id,
+            title: block.title,
+            slug: block.slug,
+            titleColor: block.titleColor,
+            showWaveMarker: block.showWaveMarker,
+            body: renderMarkedContent(block.body),
+            callToActionLabel: block.callToActionLabel,
+            callToActionUrl: block.callToActionUrl,
+          };
+        } else if(block.itemType === 'media_block') {
+          return {
+            _modelApiKey: block.itemType,
+            id: block.id,
+            title: block.title,
+            slug: block.slug,
+            titleColor: block.titleColor,
+            showWaveMarker: block.showWaveMarker,
+            body: renderMarkedContent(block.body),
+            internalButtonLabel: block.internalButtonLabel,
+            internalButtonSlug: block.internalButtonSlug,
+            callToActionLabel: block.callToActionLabel,
+            callToActionUrl: block.callToActionUrl,
+            mirrorLayout: block.mirrorLayout,
+            image: {
+              alt: block.image.alt,
+              url: block.image.url,
+            },
+          };
+        } else if(block.itemType === 'colofon_block') {
+          return {
+            _modelApiKey: block.itemType,
+            id: block.id,
+            title: block.title,
+            slug: block.slug,
+            titleColor: block.titleColor,
+            showWaveMarker: block.showWaveMarker,
+            body: renderMarkedContent(block.body),
+            logos: block.logos ? block.logos.map(logo => {
+              return {
+                id: logo.id,
+                url: logo.url,
+                alt: logo.alt,
+              };
+            }) : null,
+          };
+        } else if(block.itemType === 'news_block') {
+          return {
+            _modelApiKey: block.itemType,
+            id: block.id,
+            title: block.title,
+            slug: block.slug,
+            titleColor: block.titleColor,
+            showWaveMarker: block.showWaveMarker,
+            newsArticles: block.newsArticles ? block.newsArticles.map(newsArticle => {
+              return {
+                id: newsArticle.id,
+                slug: newsArticle.slug,
+                title: newsArticle.title,
+                date: newsArticle.date,
+                image: {
+                  alt: newsArticle.heroImage.alt,
+                  url: newsArticle.heroImage.url,
+                },
+              };
+            }) : null,
+          };
+        } else if(block.itemType === 'related_stories_block') {
+          const linkedChapters = block.linkedChapters.map(linkedChapter => {
+            const chapter = chapters.find(chapter => chapter.slug === linkedChapter.slug);
+            const bookSlug = chapter.book.slug;
+
+            return {
+              title: chapter.title,
+              chapterSlug: chapter.slug,
+              bookSlug,
+              coverUrl: `${chapter.cover.imgixHost}${chapter.cover.value.path}`,
+            };
+          });
+
+          return {
+            _modelApiKey: block.itemType,
+            id: block.id,
+            title: block.title,
+            slug: block.slug,
+            subtitle: block.subtitle,
+            titleColor: block.titleColor,
+            showWaveMarker: block.showWaveMarker,
+            linkedChapters,
+          };
+        }
+      });
+
+      return {
+        backgroundColor: section.backgroundColor,
+        showBottomWave: section.showBottomWave,
+        showTopWave: section.showTopWave,
+        blocks: sectionBlocks,
+      };
+  });
+
+  return {
+    slug,
+    title,
+    icon,
+    heroImage,
+    sections: sectionsList,
+  };
 }
 
 /**

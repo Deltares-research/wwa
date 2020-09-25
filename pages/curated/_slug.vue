@@ -13,7 +13,6 @@
 </template>
 
 <script>
-  import fetchContent from '~/lib/fetch-content';
   import PageHeader from '~/components/page-header/PageHeader';
   import SectionBlocks from '~/components/section-blocks/SectionBlocks';
 

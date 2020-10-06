@@ -1046,7 +1046,7 @@ function generateContentPage (chapters, page) {
             slug: block.slug,
             titleColor: block.titleColor,
             showWaveMarker: block.showWaveMarker,
-            newsArticles: block.newsArticles ? block.newsArticles.map(newsArticle => {
+            newsArticles: block.newsArticles ? block.newsArticles.sort((a, b) => new Date(b.date) - new Date(a.date)).map(newsArticle => {
               return {
                 id: newsArticle.id,
                 slug: newsArticle.slug,

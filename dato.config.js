@@ -50,6 +50,9 @@ module.exports = (dato, root, i18n) => {
   generateStaticPages(dato, root, i18n);
   generateThemes(dato, root, i18n);
   generateMarkers(dato, root, i18n);
+  generateEventPages(dato, root, i18n);
+  generateFeaturePages(dato, root, i18n);
+  generateNewsPages(dato, root, i18n);
 };
 
 /**
@@ -254,8 +257,8 @@ function generateAppData (dato, root, i18n) {
         slug: 'events',
       },
       {
-        title: 'About',
-        slug: 'about',
+        title: 'News',
+        slug: 'news',
       },
       {
         title: 'Submit story',
@@ -332,6 +335,344 @@ function generateStaticPages (dato, root, i18n) {
 }
 
 /**
+ * Write out JSON files for event pages
+ *
+ * @param {Dato} dato - DatoCMS API
+ * @param {Root} root - Project root
+ * @param {i18n} i18n
+ */
+function generateEventPages (dato, root, i18n) {
+  const highlightedEvent = dato.app.highlightedEvent;
+  const highlightedEventData = {
+    slug: highlightedEvent.slug,
+    name: highlightedEvent.name,
+    displayDate: highlightedEvent.displayDate,
+    summary: highlightedEvent.summary,
+    imageUrl: highlightedEvent.image.url(),
+  };
+
+  const externalEvents = dato.externalEvents
+    .filter(filterPublished)
+    .map(event => {
+      return {
+        id: event.id,
+        name: event.name,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        displayDate: event.displayDate,
+        summary: event.summary,
+        location: event.location,
+        url: event.url,
+        urlLabel: event.urlLabel,
+        geolocation: {
+          latitude: event.geolocation.latitude,
+          longitude: event.geolocation.longitude,
+        },
+        image: {
+          url: event.image.url(),
+          width: event.image.width,
+          height: event.image.height,
+        },
+      };
+    });
+
+  const internalEvents = dato.internalEvents
+    .filter(filterPublished)
+    .map(event => {
+      return {
+        id: event.id,
+        name: event.name,
+        slug: event.slug,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        displayDate: event.displayDate,
+        summary: event.summary,
+        location: event.location,
+        geolocation: {
+          latitude: event.geolocation.latitude,
+          longitude: event.geolocation.longitude,
+        },
+        image: {
+          url: event.image.url(),
+          width: event.image.width,
+          height: event.image.height,
+        },
+      };
+    });
+
+  const eventPageIndex = {
+    highlightedEvent: highlightedEventData,
+    allExternalEvents: externalEvents,
+    allInternalEvents: internalEvents,
+  };
+
+  root.createDataFile('static/data/events/index.json', 'json', eventPageIndex);
+
+  const chapters = getChapters(dato);
+
+  i18n.availableLocales.forEach(locale => {
+    i18n.withLocale(locale, () => {
+      const internalEventPages = dato.internalEvents
+        .filter(filterPublished)
+        .map(page => {
+          const { slug, name, eventWebsite, visuallyHideName, displayDate, image, bannerIcon, bannerTagline } = page;
+
+          const sections = page.sections.map(section => {
+            const { backgroundColor, showBottomWave, showTopWave } = section;
+
+            const sectionBlocks = section.blocks.map(block => {
+              if(block.itemType.apiKey === 'chapters_block') {
+                return {
+                  _modelApiKey: block.itemType.apiKey,
+                  id: block.id,
+                  title: block.title,
+                  slug: block.slug,
+                  chapters: block.chapters.map(chapter => {
+                    generateEventChapter(chapter, page, root, i18n);
+                    return {
+                      title: chapter.title,
+                      slug: chapter.slug,
+                      coverUrl: chapter.cover.url(),
+                    };
+                  }),
+                };
+              }
+              if(block.itemType.apiKey === 'colofon_block') {
+                return {
+                  _modelApiKey: block.itemType.apiKey,
+                  id: block.id,
+                  title: block.title,
+                  slug: block.slug,
+                  titleColor: block.titleColor,
+                  showWaveMarker: block.showWaveMarker,
+                  body: renderMarkedContent(block.body),
+                  logos: block.logos.map(logo => {
+                    return {
+                      id: logo.id,
+                      url: logo.url(),
+                      alt: logo.alt,
+                    };
+                  }),
+                };
+              }
+              if(block.itemType.apiKey === 'text_block') {
+                return {
+                  _modelApiKey: block.itemType.apiKey,
+                  id: block.id,
+                  title: block.title,
+                  slug: block.slug,
+                  titleColor: block.titleColor,
+                  showWaveMarker: block.showWaveMarker,
+                  body: renderMarkedContent(block.body),
+                  callToActionLabel: block.callToActionLabel,
+                  callToActionUrl: block.callToActionUrl,
+                };
+              }
+              if(block.itemType.apiKey === 'media_block') {
+                return {
+                  _modelApiKey: block.itemType.apiKey,
+                  id: block.id,
+                  title: block.title,
+                  slug: block.slug,
+                  titleColor: block.titleColor,
+                  showWaveMarker: block.showWaveMarker,
+                  body: renderMarkedContent(block.body),
+                  internalButtonLabel: block.internalButtonLabel,
+                  internalButtonSlug: block.internalButtonSlug,
+                  callToActionLabel: block.callToActionLabel,
+                  callToActionUrl: block.callToActionUrl,
+                  mirrorLayout: block.mirrorLayout,
+                  image: {
+                    alt: block.image.alt,
+                    url: block.image.url(),
+                  },
+                };
+              }
+              if(block.itemType.apiKey === 'related_stories_block') {
+                const linkedChapters = block.linkedChapters.map(linkedChapter => {
+                  const chapter = chapters.find(chapter => chapter.slug === linkedChapter.slug);
+                  const bookSlug = chapter.book.slug;
+
+                  return {
+                    title: chapter.title,
+                    chapterSlug: chapter.slug,
+                    bookSlug,
+                    coverUrl: `${chapter.cover.imgixHost}${chapter.cover.value.path}`,
+                  };
+                });
+
+                return {
+                  _modelApiKey: block.itemType.apiKey,
+                  id: block.id,
+                  title: block.title,
+                  slug: block.slug,
+                  subtitle: block.subtitle,
+                  titleColor: block.titleColor,
+                  showWaveMarker: block.showWaveMarker,
+                  linkedChapters: linkedChapters,
+                };
+              }
+              if(block.itemType.apiKey === 'speakers_block') {
+                return {
+                  _modelApiKey: block.itemType.apiKey,
+                  id: block.id,
+                  showWaveMarker: block.showWaveMarker,
+                  subtitle: block.subtitle,
+                  title: block.title,
+                  slug: block.slug,
+                  titleColor: block.titleColor,
+                  speakers: block.speakers.map(speaker => {
+                    return {
+                      id: speaker.id,
+                      name: speaker.name,
+                      organization: speaker.organization,
+                      subject: speaker.subject,
+                      subjectLabel: speaker.subjectLabel,
+                      imageUrl: speaker.image.url(),
+                    };
+                  }),
+                };
+              }
+              if(block.itemType.apiKey === 'schedule_block') {
+                return {
+                  _modelApiKey: block.itemType.apiKey,
+                  id: block.id,
+                  slug: block.slug,
+                  timezone: block.timezone,
+                  timezoneComment: block.timezoneComment,
+                  topicLabel: block.topicLabel,
+                  scheduleLabel: block.scheduleLabel,
+                  nowLabel: block.nowLabel,
+                  descriptionLabel: block.descriptionLabel,
+                  speakersLabel: block.speakersLabel,
+                  eventDays: block.eventDays.map(eventDay => {
+                    return {
+                      id: eventDay.id,
+                      date: eventDay.date,
+                      scheduleItems: eventDay.scheduleItems.map(scheduleItem => {
+                        return {
+                          id: scheduleItem.id,
+                          title: scheduleItem.title,
+                          topic: scheduleItem.topic,
+                          startTime: scheduleItem.startTime,
+                          endTime: scheduleItem.endTime,
+                          description: scheduleItem.description,
+                          watchLabel: scheduleItem.watchLabel,
+                          watchUrl: scheduleItem.watchUrl,
+                          speakers: scheduleItem.speakers.map(speaker => {
+                            return {
+                              id: speaker.id,
+                              name: speaker.name,
+                            };
+                          }),
+                        };
+                      }),
+                    };
+                  }),
+                };
+              }
+            });
+
+            return {
+              backgroundColor,
+              showBottomWave,
+              showTopWave,
+              blocks: sectionBlocks,
+            };
+          });
+
+          return {
+            slug,
+            name,
+            eventWebsite,
+            visuallyHideName,
+            displayDate,
+            image,
+            bannerIcon,
+            bannerTagline,
+            allLocales: i18n.availableLocales,
+            sections,
+          };
+        });
+
+      for (const page of internalEventPages) {
+        root.createDataFile(`static/data/events/${locale}/${page.slug}.json`, 'json', page);
+      }
+    });
+  });
+}
+
+function generateEventChapter(chapter, event, root, i18n) {
+  i18n.availableLocales.forEach(locale => {
+    i18n.withLocale(locale, () => {
+      const { name, eventWebsite, backButtonLabel, chapterNavigationLabel, image } = event;
+      const internalEvent = {
+        name,
+        eventWebsite,
+        backButtonLabel,
+        chapterNavigationLabel,
+        image,
+        allLocales: i18n.availableLocales,
+      };
+
+      const page = {
+        title: chapter.title,
+        cover: chapter.cover.url(),
+        pages: chapter.pages.map(page => {
+          const { slug, title, storyteller, body, video, videoChina, mapboxStyle, creditsTitle, creditsBody } = page;
+
+          let videoComputed = video ? {
+            url: page.video.url,
+            provider: page.video.provider,
+            providerUid: page.video.providerUid,
+            width: page.video.width,
+            height: page.video.height,
+          } : null;
+
+          if (videoChina) {
+            const providerUid = /^https:\/\/v\.qq\.com\/x\/page\/([a-z0-9]+)\.html$/.exec(page.videoChina)[1];
+            videoComputed = {
+              provider: 'qq',
+              providerUid: providerUid,
+            };
+          }
+
+          return {
+            slug,
+            title,
+            storyteller,
+            body: renderMarkedContent(body),
+            images: page.images.map(image => {
+              return {
+                id: image.id,
+                url: image.url(),
+                width: image.width,
+                height: image.height,
+                title: image.title,
+                alt: image.alt,
+              };
+            }),
+            video: videoComputed,
+            mapboxStyle,
+            creditsTitle,
+            creditsBody: renderMarkedContent(creditsBody),
+            creditsLogos: page.creditsLogos.map(creditsLogo => {
+              return {
+                url: creditsLogo.url(),
+                alt: creditsLogo.alt,
+              };
+            }),
+          };
+        }),
+        internalEvent,
+      };
+
+      root.createDataFile(`static/data/events/${locale}/chapters/${chapter.slug}.json`, 'json', page);
+    });
+  });
+}
+
+/**
  * Get Dato Book entities in a short format
  *
  * @param {Dato} dato
@@ -339,7 +680,8 @@ function generateStaticPages (dato, root, i18n) {
 function getAllChapters (dato) {
   return dato.books
     .filter(filterPublished)
-    .reduce((out, book) => {
+    .reduce((out,
+      book) => {
       const chapters = getChapters(dato, book)
         .filter(filterPublished)
         .map(({ slug, title, cover, path, updatedAt, pages }) => {
@@ -576,6 +918,177 @@ function getPages (dato, chapterRef) {
         mapboxStyle,
       };
     });
+}
+
+/**
+ * Get all feature pages
+ *
+ * @param {Dato} dato
+ * @returns {Object}
+*/
+function generateFeaturePages (dato, root, i18n) {
+  const chapters = getChapters(dato);
+
+  const featurePages = dato.features
+    .filter(filterPublished)
+    .map(page => generateContentPage(chapters, page));
+
+  for (const page of featurePages) {
+    root.createDataFile(`static/data/features/${page.slug}.json`, 'json', page);
+  }
+  const staticPageIndex = featurePages.map(page => {
+    return {
+      path: `/${page.slug}`,
+      title: page.title,
+      iconUrl: page.iconUrl,
+    };
+  });
+  root.createDataFile('static/data/features/index.json', 'json', staticPageIndex);
+}
+
+/**
+ * Get all news pages
+ *
+ * @param {Dato} dato
+ * @returns {Object}
+*/
+function generateNewsPages (dato, root, i18n) {
+  const chapters = getChapters(dato);
+
+  const newsPages = dato.newsArticles
+    .filter(filterPublished)
+    .map(page => generateContentPage(chapters, page));
+
+  for (const page of newsPages) {
+    root.createDataFile(`static/data/news/${page.slug}.json`, 'json', page);
+  }
+  const staticPageIndex = newsPages.slice(0).reverse().map(page => {
+    return {
+      slug: page.slug,
+      title: page.title,
+      date: page.date,
+      heroImage: `${page.heroImage.imgixHost}${page.heroImage.value.path}`,
+    };
+  });
+  root.createDataFile('static/data/news/index.json', 'json', staticPageIndex);
+}
+
+function generateContentPage (chapters, page) {
+  const { slug, title, icon, date, heroImage, sections } = page;
+  const sectionsList = sections.toMap()
+    .map(section => {
+      const sectionBlocks = section.blocks.map(block => {
+        if(block.itemType === 'text_block') {
+          return {
+            _modelApiKey: block.itemType,
+            id: block.id,
+            title: block.title,
+            slug: block.slug,
+            titleColor: block.titleColor,
+            showWaveMarker: block.showWaveMarker,
+            body: renderMarkedContent(block.body),
+            callToActionLabel: block.callToActionLabel,
+            callToActionUrl: block.callToActionUrl,
+          };
+        } else if(block.itemType === 'media_block') {
+          return {
+            _modelApiKey: block.itemType,
+            id: block.id,
+            title: block.title,
+            slug: block.slug,
+            titleColor: block.titleColor,
+            showWaveMarker: block.showWaveMarker,
+            body: renderMarkedContent(block.body),
+            internalButtonLabel: block.internalButtonLabel,
+            internalButtonSlug: block.internalButtonSlug,
+            callToActionLabel: block.callToActionLabel,
+            callToActionUrl: block.callToActionUrl,
+            mirrorLayout: block.mirrorLayout,
+            image: {
+              alt: block.image.alt,
+              url: block.image.url,
+            },
+          };
+        } else if(block.itemType === 'colofon_block') {
+          return {
+            _modelApiKey: block.itemType,
+            id: block.id,
+            title: block.title,
+            slug: block.slug,
+            titleColor: block.titleColor,
+            showWaveMarker: block.showWaveMarker,
+            body: renderMarkedContent(block.body),
+            logos: block.logos ? block.logos.map(logo => {
+              return {
+                id: logo.id,
+                url: logo.url,
+                alt: logo.alt,
+              };
+            }) : null,
+          };
+        } else if(block.itemType === 'news_block') {
+          return {
+            _modelApiKey: block.itemType,
+            id: block.id,
+            title: block.title,
+            slug: block.slug,
+            titleColor: block.titleColor,
+            showWaveMarker: block.showWaveMarker,
+            newsArticles: block.newsArticles ? block.newsArticles.map(newsArticle => {
+              return {
+                id: newsArticle.id,
+                slug: newsArticle.slug,
+                title: newsArticle.title,
+                date: newsArticle.date,
+                image: {
+                  alt: newsArticle.heroImage.alt,
+                  url: newsArticle.heroImage.url,
+                },
+              };
+            }) : null,
+          };
+        } else if(block.itemType === 'related_stories_block') {
+          const linkedChapters = block.linkedChapters.map(linkedChapter => {
+            const chapter = chapters.find(chapter => chapter.slug === linkedChapter.slug);
+            const bookSlug = chapter.book.slug;
+
+            return {
+              title: chapter.title,
+              chapterSlug: chapter.slug,
+              bookSlug,
+              coverUrl: `${chapter.cover.imgixHost}${chapter.cover.value.path}`,
+            };
+          });
+
+          return {
+            _modelApiKey: block.itemType,
+            id: block.id,
+            title: block.title,
+            slug: block.slug,
+            subtitle: block.subtitle,
+            titleColor: block.titleColor,
+            showWaveMarker: block.showWaveMarker,
+            linkedChapters,
+          };
+        }
+      });
+
+      return {
+        backgroundColor: section.backgroundColor,
+        showBottomWave: section.showBottomWave,
+        showTopWave: section.showTopWave,
+        blocks: sectionBlocks,
+      };
+  });
+
+  return {
+    slug,
+    title,
+    iconUrl: icon ? `${icon.imgixHost}${icon.value.path}` : null,
+    date: date ? date : null,
+    heroImage,
+    sections: sectionsList,
+  };
 }
 
 /**

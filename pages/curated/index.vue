@@ -13,7 +13,7 @@
         >
           <div class="features__icon">
             <img
-              :src="feature.icon.url"
+              :src="feature.iconUrl"
               alt=""
             >
           </div>
@@ -27,26 +27,11 @@
 </template>
 
 <script>
-  import fetchContent from '~/lib/fetch-content';
-
   export default {
     layout: 'static-page-dark',
-    async asyncData () {
-      const query = `
-          {
-            allFeatures {
-              slug
-              title
-              icon {
-                url
-              }
-            }
-          }
-        `;
-
-      return {
-        ...await fetchContent(query),
-      };
+    async asyncData({ params }) {
+      const data = await import(`~/static/data/features/index.json`);
+      return { allFeatures: data.default };
     },
   };
 </script>

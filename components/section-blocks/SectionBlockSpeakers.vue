@@ -40,7 +40,7 @@
         <div class="event-block-speakers__speaker-wrapper">
           <div class="event-block-speakers__speaker-heading">
             <img
-              :src="`${speaker.image.url}?auto=compress,format&w=95&h=95&fit=crop&crop=entropy`"
+              :src="`${speaker.imageUrl}?auto=compress,format&w=95&h=95&fit=crop&crop=entropy`"
               alt=""
               class="event-block-speakers__speaker-image"
             >

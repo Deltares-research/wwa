@@ -6,9 +6,9 @@
         <span class="event-banner__wave" />
         <img
           v-if="props.bannerIcon"
-          :src="`${props.bannerIcon.url}?auto=compress,format&h=70`"
-          :width="props.bannerIcon.width"
-          :height="props.bannerIcon.height"
+          :src="`${props.bannerIcon.imgixHost}${props.bannerIcon.value.path}?auto=compress,format&h=70`"
+          :width="props.bannerIcon.value.width"
+          :height="props.bannerIcon.value.height"
           alt=""
           class="animator__slide-in event-banner__icon"
           animator-stagger

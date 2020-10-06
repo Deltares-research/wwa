@@ -21,7 +21,7 @@
           <animator
             v-if="block._modelApiKey === 'text_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
@@ -30,7 +30,7 @@
           <animator
             v-if="block._modelApiKey === 'media_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
@@ -39,7 +39,7 @@
           <animator
             v-if="block._modelApiKey === 'related_stories_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
@@ -48,7 +48,7 @@
           <animator
             v-if="block._modelApiKey === 'chapters_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
@@ -65,7 +65,7 @@
           <animator
             v-if="block._modelApiKey === 'speakers_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
@@ -81,7 +81,7 @@
           <animator
             v-if="block._modelApiKey === 'colofon_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
@@ -90,7 +90,7 @@
           <div
             v-if="block._modelApiKey === 'schedule_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             class="layout-section__container layout-section__container--padded"
           >
             <h3 class="event-block__title">
@@ -106,6 +106,15 @@
               :speakers-label="block.speakersLabel"
             />
           </div>
+          <animator
+            v-if="block._modelApiKey === 'news_block'"
+            :key="block.id"
+            :id="block.id"
+            :is-intersection-disabled="index === 0 && blockIndex === 0"
+            class="layout-section__container layout-section__container--padded"
+          >
+            <section-block-news v-bind="block" />
+          </animator>
         </template>
       </div>
     </section>
@@ -116,6 +125,7 @@
 import SectionBlockChaptersCarousel from '~/components/section-blocks/SectionBlockChaptersCarousel';
 import SectionBlockChaptersList from '~/components/section-blocks/SectionBlockChaptersList';
 import SectionBlockColofon from '~/components/section-blocks/SectionBlockColofon';
+import SectionBlockNews from '@/components/section-blocks/SectionBlockNews';
 import SectionBlockSchedule from '~/components/section-blocks/SectionBlockSchedule';
 import SectionBlockText from '~/components/section-blocks/SectionBlockText';
 import SectionBlockTextMedia from '~/components/section-blocks/SectionBlockTextMedia';
@@ -128,6 +138,7 @@ export default {
     SectionBlockChaptersCarousel,
     SectionBlockChaptersList,
     SectionBlockColofon,
+    SectionBlockNews,
     SectionBlockSchedule,
     SectionBlockText,
     SectionBlockTextMedia,

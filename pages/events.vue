@@ -12,25 +12,23 @@
       <section class="event-preview__highlight">
         <img
           class="event-preview__highlight-image"
-          :src="app.highlightedEvent.image.responsiveImage.src"
-          :srcset="app.highlightedEvent.image.responsiveImage.srcSet"
-          :sizes="app.highlightedEvent.image.responsiveImage.sizes"
+          :src="`${highlightedEvent.imageUrl}?auto=compress,format&w=1080&h=400&fit=crop`"
           alt=""
         >
         <div class="event-preview__highlight-copy">
           <h2
             class="event-preview__highlight-title"
-            v-html="app.highlightedEvent.name"
+            v-html="highlightedEvent.name"
           />
           <p class="event-preview__highlight-date">
-            {{ app.highlightedEvent.displayDate }}
+            {{ highlightedEvent.displayDate }}
           </p>
           <p class="event-preview__highlight-summary">
-            {{ app.highlightedEvent.summary }}
+            {{ highlightedEvent.summary }}
           </p>
           <a
             class="event-preview__highlight-link"
-            :href="`/events/${app.highlightedEvent.slug}/`"
+            :href="`/events/${highlightedEvent.slug}/`"
           >
             Go to event page
           </a>
@@ -47,7 +45,6 @@
 
 <script>
   import { mapState } from 'vuex';
-  import fetchContent from '~/lib/fetch-content';
   import EventOverviewList from '~/components/event-overview-list/EventOverviewList';
 
   export default {
@@ -58,71 +55,9 @@
       store.commit('setHighlightedEvent', app.default.highlightedEvent);
       store.commit('setNavigationLinks', app.default.navigationLinks);
     },
-    async asyncData() {
-      const query = `
-        {
-          app {
-            highlightedEvent {
-              slug
-              name
-              displayDate
-              summary
-              image {
-                responsiveImage(imgixParams: {auto: compress, w: 950, h: 410}) {
-                  src
-                  srcSet
-                  sizes
-                }
-              }
-            }
-          }
-
-          allExternalEvents {
-            id
-            name
-            startDate
-            endDate
-            displayDate
-            summary
-            location
-            url
-            urlLabel
-            geolocation {
-              latitude
-              longitude
-            }
-            image {
-              url
-              width
-              height
-            }
-          }
-
-          allInternalEvents {
-            id
-            name
-            slug
-            startDate
-            endDate
-            displayDate
-            summary
-            location
-            geolocation {
-              latitude
-              longitude
-            }
-            image {
-              url
-              width
-              height
-            }
-          }
-        }
-      `;
-
-      return {
-        ...await fetchContent(query),
-      };
+    async asyncData({ params }) {
+      const data = await import(`~/static/data/events/index.json`);
+      return data.default;
     },
     components: { EventOverviewList },
     computed: {

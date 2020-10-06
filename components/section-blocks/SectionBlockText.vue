@@ -39,6 +39,21 @@
         {{ callToActionLabel }}
       </a>
     </p>
+    <ul
+      v-if="files && files.length"
+      class="animator__slide-up list--inline"
+      animator-stagger
+    >
+      <li
+        v-for="file in files"
+        :key="file.url"
+        class="event-block-text__cta"
+      >
+        <a :href="file.url">
+          {{ file.label }}
+        </a>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -52,6 +67,7 @@
       body: String,
       callToActionLabel: String,
       callToActionUrl: String,
+      files: Array,
       showSmallTitle: Boolean,
     },
   };
@@ -107,6 +123,10 @@
 
   .event-block-text__copy p:not(:last-child) {
     margin-bottom: 1.5rem;
+  }
+
+  li.event-block-text__cta {
+    margin-right: 1rem;
   }
 
   .event-block-text__cta a,

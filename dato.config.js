@@ -654,6 +654,12 @@ function generateEventChapter(chapter, event, root, i18n) {
             }),
             video: videoComputed,
             mapboxStyle,
+            files: page.files.map(file => {
+              return {
+                url: `${file.file.imgixHost}${file.file.value.path}`,
+                label: file.title,
+              };
+            }),
             creditsTitle,
             creditsBody: renderMarkedContent(creditsBody),
             creditsLogos: page.creditsLogos.map(creditsLogo => {
@@ -889,11 +895,17 @@ function getPages (dato, chapterRef) {
             providerUid,
         };
       }
+      const filesList = files.map(file => {
+        return {
+          url: `${file.file.imgixHost}${file.file.value.path}`,
+          label: file.title,
+        };
+      });
       return {
         body: renderMarkedContent(body),
         book,
         chapter,
-        files,
+        files: filesList,
         graphs,
         images,
         keywords: (keywords) ? tagStringToLinkObjects(keywords, 'keywords') : [],

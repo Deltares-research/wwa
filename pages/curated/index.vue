@@ -17,7 +17,7 @@
               alt=""
             >
           </div>
-          <nuxt-link :to="`/curated/${feature.slug}`">
+          <nuxt-link :to="`/curated${feature.path}`">
             {{ feature.title }}
           </nuxt-link>
         </li>

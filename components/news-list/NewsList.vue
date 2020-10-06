@@ -56,15 +56,25 @@ export default {
 .news-list__item {
   display: flex;
   flex-direction: column;
-  margin-top: 3rem;
+  margin-top: 2rem;
   padding-bottom: 1rem;
 }
 
 @media (--md-viewport) {
   .news-list__item {
+    display: inline-block;
     flex-direction: row;
     justify-content: space-between;
     margin-top: 2.5rem;
+    width: 50%;
+  }
+
+  .news-list__item:nth-child(odd) {
+    padding-right: 1.5rem;
+  }
+
+  .news-list__item:nth-child(even) {
+    padding-left: 1.5rem;
   }
 }
 
@@ -96,7 +106,7 @@ export default {
 @media (--md-viewport) {
   .news-list__item-title {
     margin-bottom: .5rem;
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 }
 

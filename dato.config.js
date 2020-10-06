@@ -656,8 +656,8 @@ function generateEventChapter(chapter, event, root, i18n) {
             mapboxStyle,
             files: page.files.map(file => {
               return {
-                url: `${file.imgixHost}${file.value.path}`,
-                label: file.value.title ? file.value.title : file.value.alt ? file.value.alt : 'download file',
+                url: `${file.file.imgixHost}${file.file.value.path}`,
+                label: file.title,
               };
             }),
             creditsTitle,
@@ -897,8 +897,8 @@ function getPages (dato, chapterRef) {
       }
       const filesList = files.map(file => {
         return {
-          url: `${file.imgixHost}${file.value.path}`,
-          label: file.value.title ? file.value.title : file.value.alt ? file.value.alt : 'download file',
+          url: `${file.file.imgixHost}${file.file.value.path}`,
+          label: file.title,
         };
       });
       return {

@@ -36,6 +36,7 @@
               title-color="white"
               :body="page.body"
               :show-small-title="true"
+              :files="page.files"
             />
           </div>
 

@@ -7,6 +7,17 @@
       :key="article.id"
       class="news-list__item"
     >
+      <div class="news-list__item-image">
+        <img
+          v-if="article.heroImage"
+          :srcset="`${article.heroImage}?auto=compress,format&w=300 300w,
+                    ${article.heroImage}?auto=compress,format&w=600 600w,
+                    ${article.heroImage}?auto=compress,format&w=900 900w`"
+          sizes="(min-width: 768px) 290px, 100vw"
+          :src="`${article.heroImage}?auto=compress,format&w=400`"
+          alt=""
+        >
+      </div>
       <div class="news-list__item-content">
         <nuxt-link
           :to="`/news/${article.slug}`"
@@ -20,17 +31,6 @@
         >
           {{ formatDate(article.date) }}
         </time>
-      </div>
-      <div class="news-list__item-image">
-        <img
-          v-if="article.heroImage"
-          :srcset="`${article.heroImage}?auto=compress,format&w=300 300w,
-                    ${article.heroImage}?auto=compress,format&w=600 600w,
-                    ${article.heroImage}?auto=compress,format&w=900 900w`"
-          sizes="(min-width: 768px) 290px, 100vw"
-          :src="`${article.heroImage}?auto=compress,format&w=400`"
-          alt=""
-        >
       </div>
     </li>
   </ul>
@@ -62,9 +62,7 @@ export default {
 
 @media (--md-viewport) {
   .news-list__item {
-    display: inline-block;
-    flex-direction: row;
-    justify-content: space-between;
+    display: inline-flex;
     margin-top: 2.5rem;
     width: 50%;
   }
@@ -126,17 +124,13 @@ export default {
 }
 
 .news-list__item-image img {
+  margin-bottom: 1rem;
   width: 100%;
   height: 160px;
   object-fit: cover;
 }
 
 @media (--md-viewport) {
-  .news-list__item-image {
-    flex: 0 0 290px;
-    margin-left: 2rem;
-  }
-
   .news-list__item-image img {
     height: 197px;
   }

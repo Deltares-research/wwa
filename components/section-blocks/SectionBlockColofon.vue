@@ -93,12 +93,13 @@
 
   .section-block-colofon__copy {
     max-width: 30rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
   }
 
   @media (--md-viewport) {
     .section-block-colofon__copy {
       max-width: 100%;
+      margin-bottom: 3rem;
       column-count: 2;
       column-gap: 1.5rem;
     }
@@ -151,11 +152,22 @@
   .section-block-colofon__logos {
     display: flex;
     flex-wrap: wrap;
-    max-width: 30rem;
   }
 
-  .section-block-colofon__logo-item {
-    margin-bottom: .5rem;
+  @media (--lg-viewport) {
+    .section-block-colofon__logos {
+      max-width: 50rem;
+    }
+  }
+
+  li.section-block-colofon__logo-item {
+    margin: 0 1.5rem 1.5rem 0;
+  }
+
+  @media (--md-viewport) {
+    li.section-block-colofon__logo-item {
+      margin: 0 2rem 2rem 0;
+    }
   }
 
   .section-block-colofon__logo {

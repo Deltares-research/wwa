@@ -30,8 +30,8 @@
   import EventBanner from '~/components/event-banner/EventBanner';
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';
-  import Animator from '~/components/animator/Animator';
   import SectionBlocks from '~/components/section-blocks/SectionBlocks';
+  import Animator from '~/components/animator/Animator';
 
   export default {
     components: {
@@ -52,14 +52,14 @@
 </script>
 
 <style>
-  .event-block__title {
+  .section-block__title {
     font-size: 2rem;
     font-weight: 900;
     margin-bottom: 1rem;
   }
 
   @media (--md-viewport) {
-    .event-block__title {
+    .section-block__title {
       font-size: 3.75rem;
     }
   }

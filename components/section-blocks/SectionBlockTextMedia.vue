@@ -1,18 +1,18 @@
 <template functional>
-  <div class="event-block-text-media">
+  <div class="section-block-text-media">
     <img
       v-if="props.showWaveMarker"
       src="~/assets/event-title-wave.svg"
       width="111"
       height="35"
       alt=""
-      class="animator__slide-up event-block-text-media__icon"
+      class="animator__slide-up section-block-text-media__icon"
     >
     <h3
-      class="animator__slide-up event-block-text-media__title"
+      class="animator__slide-up section-block-text-media__title"
       :class="{
-        'event-block-text-media__title--orange': props.titleColor === 'orange',
-        'event-block-text-media__title--blue': props.titleColor === 'blue',
+        'section-block-text-media__title--orange': props.titleColor === 'orange',
+        'section-block-text-media__title--blue': props.titleColor === 'blue',
       }"
       animator-stagger
     >
@@ -21,14 +21,14 @@
     <a
       v-if="props.internalButtonLabel"
       :href="`#${props.internalButtonSlug}`"
-      class="animator__slide-up event-block-text-media__button"
+      class="animator__slide-up section-block-text-media__button"
       animator-stagger
     >
       {{ props.internalButtonLabel }}
     </a>
     <div
-      class="animator__slide-up event-block-text-media__image-wrapper"
-      :class="{ 'event-block-text-media__image-wrapper--mirrored': props.mirrorLayout }"
+      class="animator__slide-up section-block-text-media__image-wrapper"
+      :class="{ 'section-block-text-media__image-wrapper--mirrored': props.mirrorLayout }"
       animator-stagger
     >
       <picture
@@ -44,20 +44,20 @@
           media="(max-width: 48rem)"
         >
         <img
-          class="animator__scale-up animator__scale-image event-block-text-media__image"
+          class="animator__scale-up animator__scale-image section-block-text-media__image"
           :src="props.image.url"
           :alt="props.image.alt"
         >
       </picture>
     </div>
     <div
-      class="animator__slide-up event-block-text-media__copy"
+      class="animator__slide-up section-block-text-media__copy"
       v-html="props.body"
       animator-stagger
     />
     <p
       v-if="props.callToActionLabel && props.callToActionUrl"
-      class="animator__slide-up event-block-text-media__cta"
+      class="animator__slide-up section-block-text-media__cta"
       animator-stagger
     >
       <a
@@ -88,29 +88,29 @@
 </script>
 
 <style>
-  .event-block-text-media {
+  .section-block-text-media {
     margin-bottom: 2rem;
   }
 
-  .event-block-text-media__icon {
+  .section-block-text-media__icon {
     margin-bottom: .25rem;
   }
 
-  .event-block-text-media__title {
+  .section-block-text-media__title {
     font-size: 2rem;
     font-weight: 900;
     margin-bottom: 1rem;
   }
 
-  .event-block-text-media__title--orange {
+  .section-block-text-media__title--orange {
     color: var(--orange);
   }
 
-  .event-block-text-media__title--blue {
+  .section-block-text-media__title--blue {
     color: var(--blue-tertiary);
   }
 
-  .event-block-text-media__button {
+  .section-block-text-media__button {
     display: inline-flex;
     align-items: center;
     padding: 0.5rem 1rem;
@@ -122,45 +122,45 @@
     border-radius: 2px;
   }
 
-  .event-block-text-media__button:hover {
+  .section-block-text-media__button:hover {
     color: var(--white);
     background-color: var(--blue-secondary);
   }
 
-  .event-block-text-media__image-wrapper picture {
+  .section-block-text-media__image-wrapper picture {
     display: block;
     margin-bottom: 1rem;
   }
 
-  .event-block-text-media__copy {
+  .section-block-text-media__copy {
     max-width: 30rem;
   }
 
-  .event-block-text-media__copy p {
+  .section-block-text-media__copy p {
     line-height: 1.8;
   }
 
-  .event-block-text-media__copy p:not(:last-child) {
+  .section-block-text-media__copy p:not(:last-child) {
     margin-bottom: 1.5rem;
   }
 
-  .event-block-text-media__copy a,
-  .event-block-text-media__cta a {
+  .section-block-text-media__copy a,
+  .section-block-text-media__cta a {
     line-height: 1.9;
     font-weight: bold;
     color: var(--blue-tertiary);
     text-decoration: none;
   }
 
-  .event-block-text-media__cta a:hover,
-  .event-block-text-media__cta a:focus,
-  .event-block-text-media__copy a:hover,
-  .event-block-text-media__copy a:focus {
+  .section-block-text-media__cta a:hover,
+  .section-block-text-media__cta a:focus,
+  .section-block-text-media__copy a:hover,
+  .section-block-text-media__copy a:focus {
     text-decoration: underline;
   }
 
   @media (--md-viewport) {
-    .event-block-text-media {
+    .section-block-text-media {
       display: inline-grid;
       grid-column-gap: 3rem;
       grid-template-columns: 1fr 1fr;
@@ -168,23 +168,23 @@
       margin-bottom: 0;
     }
 
-    .event-block-text-media__icon {
+    .section-block-text-media__icon {
       margin-bottom: 1rem;
     }
 
-    .event-block-text-media__title {
+    .section-block-text-media__title {
       font-size: 3.75rem;
       line-height: 1.1;
     }
 
-    .event-block-text-media__image-wrapper {
+    .section-block-text-media__image-wrapper {
       margin-bottom: 0;
       grid-column-start: 2;
       grid-row-start: 1;
       grid-row-end: 99;
     }
 
-    .event-block-text-media__image-wrapper--mirrored {
+    .section-block-text-media__image-wrapper--mirrored {
       grid-column-start: 1;
     }
   }

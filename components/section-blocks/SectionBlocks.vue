@@ -93,7 +93,7 @@
             :id="block.id"
             class="layout-section__container layout-section__container--padded"
           >
-            <h3 class="event-block__title">
+            <h3 class="section-block__title">
               {{ block.scheduleLabel }}
             </h3>
             <section-block-schedule

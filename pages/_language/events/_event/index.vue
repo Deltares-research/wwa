@@ -30,8 +30,8 @@
   import EventBanner from '~/components/event-banner/EventBanner';
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';
-  import Animator from '~/components/animator/Animator';
   import SectionBlocks from '~/components/section-blocks/SectionBlocks';
+  import Animator from '~/components/animator/Animator';
 
   export default {
     components: {

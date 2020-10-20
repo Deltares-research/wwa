@@ -397,7 +397,6 @@ function generateEventPages (dato, root, i18n) {
     });
 
   const eventPageIndex = {
-    highlightedEvent: highlightedEventData,
     allExternalEvents: externalEvents,
     allInternalEvents: internalEvents,
   };

@@ -6,13 +6,13 @@
       width="111"
       height="35"
       alt=""
-      class="animator__slide-up event-block-text__icon"
+      class="animator__slide-up section-block-text__icon"
     >
     <h3
-      class="animator__slide-up event-block-text__title"
+      class="animator__slide-up section-block-text__title"
       :class="{
-        'event-block-text__title--orange': titleColor === 'orange',
-        'event-block-text__title--blue': titleColor === 'blue',
+        'section-block-text__title--orange': titleColor === 'orange',
+        'section-block-text__title--blue': titleColor === 'blue',
       }"
       animator-stagger
     >

@@ -52,14 +52,14 @@
 </script>
 
 <style>
-  .event-block__title {
+  .section-block__title {
     font-size: 2rem;
     font-weight: 900;
     margin-bottom: 1rem;
   }
 
   @media (--md-viewport) {
-    .event-block__title {
+    .section-block__title {
       font-size: 3.75rem;
     }
   }

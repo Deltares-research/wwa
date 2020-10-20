@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="event-block-schedule-wide">
+    <div class="section-block-schedule-wide">
       <div
-        class="event-block-schedule-wide__tablist"
+        class="section-block-schedule-wide__tablist"
         role="tablist"
       >
         <a
           v-for="eventDay in parsedEventDays"
           :key="`tab-wide-${eventDay.id}`"
-          class="event-block-schedule-wide__tablink"
+          class="section-block-schedule-wide__tablink"
           role="tab"
           href="#"
           :id="`tab-wide-${eventDay.id}`"
@@ -41,48 +41,48 @@
           <li
             v-for="scheduleItem in eventDay.scheduleItems"
             :key="scheduleItem.id"
-            class="event-block-schedule__item event-block-schedule-wide__item"
+            class="section-block-schedule__item section-block-schedule-wide__item"
           >
-            <div class="event-block-schedule-wide__time-wrapper">
+            <div class="section-block-schedule-wide__time-wrapper">
               <span
                 v-if="scheduleItem.isNow"
-                class="event-block-schedule__now-notice"
+                class="section-block-schedule__now-notice"
               >
                 {{ nowLabel }}
               </span>
-              <span class="event-block-schedule-wide__time">
+              <span class="section-block-schedule-wide__time">
                 {{ scheduleItem.startTime }} - {{ scheduleItem.endTime }}
               </span>
             </div>
             <div
-              class="event-block-schedule-wide__body"
+              class="section-block-schedule-wide__body"
               :class="{
-                'event-block-schedule__body--active': scheduleItem.isNow,
+                'section-block-schedule__body--active': scheduleItem.isNow,
               }"
             >
-              <div class="event-block-schedule-wide__meta">
+              <div class="section-block-schedule-wide__meta">
                 <img
-                  class="event-block-schedule-wide__speaker"
+                  class="section-block-schedule-wide__speaker"
                   v-if="scheduleItem.speaker && scheduleItem.speaker.image"
                   :src="`${scheduleItem.speaker.image.url}?auto=format,compress&mask=ellipse&w=60&h=60`"
                   alt=""
                 >
-                <div class="event-block-schedule__copy event-block-schedule-wide__copy">
-                  <span class="event-block-schedule-wide__copy-title">{{ scheduleItem.title }}</span>
-                  <span class="event-block-schedule__description-label">
+                <div class="section-block-schedule__copy section-block-schedule-wide__copy">
+                  <span class="section-block-schedule-wide__copy-title">{{ scheduleItem.title }}</span>
+                  <span class="section-block-schedule__description-label">
                     {{ topicLabel }}
                   </span>
-                  <span class="event-block-schedule__topic">{{ scheduleItem.topic }}</span>
+                  <span class="section-block-schedule__topic">{{ scheduleItem.topic }}</span>
                 </div>
               </div>
-              <div class="event-block-schedule-wide__description">
-                <span class="event-block-schedule__description-label">
+              <div class="section-block-schedule-wide__description">
+                <span class="section-block-schedule__description-label">
                   {{ descriptionLabel }}
                 </span>
 
                 {{ scheduleItem.description }}
 
-                <span class="event-block-schedule__description-label">
+                <span class="section-block-schedule__description-label">
                   {{ speakersLabel }}
                 </span>
 
@@ -90,7 +90,7 @@
                   <li
                     v-for="speaker in scheduleItem.speakers"
                     :key="speaker.id"
-                    class="event-block-schedule__description-speaker"
+                    class="section-block-schedule__description-speaker"
                   >
                     {{ speaker.name }}
                   </li>
@@ -98,20 +98,20 @@
               </div>
               <div
                 v-if="scheduleItem.watchUrl && scheduleItem.watchLabel"
-                class="event-block-schedule-wide__url-wrapper"
+                class="section-block-schedule-wide__url-wrapper"
               >
                 <a
-                  class="event-block-schedule__url event-block-schedule-wide__url"
+                  class="section-block-schedule__url section-block-schedule-wide__url"
                   :href="scheduleItem.watchUrl"
                   target="_blank"
                   rel="noopener"
                 >
                   <img
-                    class="event-block-schedule-wide__url-icon"
+                    class="section-block-schedule-wide__url-icon"
                     src="~/assets/play-icon-dark.svg"
                     alt=""
                   >
-                  <span class="event-block-schedule-wide__url-label">
+                  <span class="section-block-schedule-wide__url-label">
                     {{ scheduleItem.watchLabel }}
                   </span>
                 </a>
@@ -122,9 +122,9 @@
       </section>
     </div>
 
-    <div class="event-block-schedule">
+    <div class="section-block-schedule">
       <select
-        class="event-block-schedule__tablist"
+        class="section-block-schedule__tablist"
         @change="(event) => selectedEventDayId = event.target.value"
       >
         <option
@@ -144,7 +144,7 @@
         </option>
       </select>
 
-      <p class="event-block-schedule__timezone">
+      <p class="section-block-schedule__timezone">
         {{ displayTimezone }}
       </p>
 
@@ -157,61 +157,61 @@
       >
         <ul
           :key="`content-${eventDay.id}`"
-          class="event-block-schedule__itemlist"
+          class="section-block-schedule__itemlist"
         >
           <li
             v-for="scheduleItem in eventDay.scheduleItems"
             :key="scheduleItem.id"
           >
-            <details class="event-block-schedule__item">
-              <summary class="event-block-schedule__summary">
+            <details class="section-block-schedule__item">
+              <summary class="section-block-schedule__summary">
                 <span
                   v-if="scheduleItem.isNow"
-                  class="event-block-schedule__now-notice"
+                  class="section-block-schedule__now-notice"
                 >
                   {{ nowLabel }}
                 </span>
-                <span class="event-block-schedule__time">
+                <span class="section-block-schedule__time">
                   {{ scheduleItem.startTime }} - {{ scheduleItem.endTime }}
                 </span>
                 <span
-                  class="event-block-schedule__meta"
+                  class="section-block-schedule__meta"
                   :class="{
-                    'event-block-schedule__body--active': scheduleItem.isNow,
+                    'section-block-schedule__body--active': scheduleItem.isNow,
                   }"
                 >
                   <a
                     v-if="scheduleItem.watchUrl && scheduleItem.watchLabel"
-                    class="event-block-schedule__url"
+                    class="section-block-schedule__url"
                     :href="scheduleItem.watchUrl"
                     target="_blank"
                     rel="noopener"
                   >
                     <img
-                      class="event-block-schedule__url-icon"
+                      class="section-block-schedule__url-icon"
                       src="~/assets/play-icon-light.svg"
                       :alt="scheduleItem.watchLabel"
                     >
                   </a>
                   <span
-                    class="event-block-schedule__body"
+                    class="section-block-schedule__body"
                     :class="{
-                      'event-block-schedule__body--active': scheduleItem.isNow,
+                      'section-block-schedule__body--active': scheduleItem.isNow,
                     }"
                   >
-                    <span class="event-block-schedule__copy">
-                      <span class="event-block-schedule__copy-title">{{ scheduleItem.title }}</span>
+                    <span class="section-block-schedule__copy">
+                      <span class="section-block-schedule__copy-title">{{ scheduleItem.title }}</span>
                       <span>{{ scheduleItem.topic }}</span>
                     </span>
                     <img
-                      class="event-block-schedule__icon-closed"
+                      class="section-block-schedule__icon-closed"
                       src="~/assets/plus-icon.svg"
                       width="16"
                       height="16"
                       alt=""
                     >
                     <img
-                      class="event-block-schedule__icon-open"
+                      class="section-block-schedule__icon-open"
                       src="~/assets/min-icon.svg"
                       width="16"
                       height="2"
@@ -221,18 +221,18 @@
                 </span>
               </summary>
               <div
-                class="event-block-schedule__description"
+                class="section-block-schedule__description"
                 :class="{
-                  'event-block-schedule__body--active': scheduleItem.isNow,
+                  'section-block-schedule__body--active': scheduleItem.isNow,
                 }"
               >
-                <span class="event-block-schedule__description-label">
+                <span class="section-block-schedule__description-label">
                   {{ descriptionLabel }}
                 </span>
 
                 {{ scheduleItem.description }}
 
-                <span class="event-block-schedule__description-label">
+                <span class="section-block-schedule__description-label">
                   {{ speakersLabel }}
                 </span>
 
@@ -240,7 +240,7 @@
                   <li
                     v-for="speaker in scheduleItem.speakers"
                     :key="speaker.id"
-                    class="event-block-schedule__description-speaker"
+                    class="section-block-schedule__description-speaker"
                   >
                     {{ speaker.name }}
                   </li>
@@ -317,20 +317,20 @@
   /*
     show/hide the wide and default variants
   */
-  .event-block-schedule {
+  .section-block-schedule {
     display: block;
   }
 
-  .event-block-schedule-wide {
+  .section-block-schedule-wide {
     display: none;
   }
 
   @media (--md-viewport) {
-    .event-block-schedule {
+    .section-block-schedule {
       display: none;
     }
 
-    .event-block-schedule-wide {
+    .section-block-schedule-wide {
       display: block;
     }
   }
@@ -338,12 +338,12 @@
   /*
     wide variant specific
   */
-  .event-block-schedule-wide__item {
+  .section-block-schedule-wide__item {
     display: flex;
     align-items: center;
   }
 
-  .event-block-schedule-wide__tablist {
+  .section-block-schedule-wide__tablist {
     display: flex;
     flex-wrap: wrap;
     background-color: var(--blue-tertiary);
@@ -351,7 +351,7 @@
     margin-bottom: 1rem;
   }
 
-  .event-block-schedule-wide__tablink {
+  .section-block-schedule-wide__tablink {
     padding-bottom: 0.2rem;
     margin-top: 1.2rem;
     margin-right: 1.2rem;
@@ -363,16 +363,16 @@
     text-decoration: none;
   }
 
-  .event-block-schedule-wide__tablink[aria-selected] {
+  .section-block-schedule-wide__tablink[aria-selected] {
     border-bottom: 2px solid var(--blue-primary);
   }
 
-  .event-block-schedule-wide__tablink:hover,
-  .event-block-schedule-wide__tablink:focus {
+  .section-block-schedule-wide__tablink:hover,
+  .section-block-schedule-wide__tablink:focus {
     color: var(--blue-primary);
   }
 
-  .event-block-schedule-wide__body {
+  .section-block-schedule-wide__body {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -383,7 +383,7 @@
     min-height: 8.4rem;
   }
 
-  .event-block-schedule-wide__meta {
+  .section-block-schedule-wide__meta {
     display: flex;
     align-items: flex-start;
     margin-right: 4rem;
@@ -391,43 +391,43 @@
     max-width: 14rem;
   }
 
-  .event-block-schedule-wide__copy {
+  .section-block-schedule-wide__copy {
     font-weight: 500;
   }
 
-  .event-block-schedule-wide__copy-title {
+  .section-block-schedule-wide__copy-title {
     font-style: normal;
     font-weight: 500;
     font-size: 1.4rem;
     margin-bottom: 0.6rem;
   }
 
-  .event-block-schedule-wide__description {
+  .section-block-schedule-wide__description {
     max-width: 30rem;
     margin-right: 1rem;
   }
 
-  .event-block-schedule-wide__time-wrapper {
+  .section-block-schedule-wide__time-wrapper {
     max-width: 10rem;
     width: 100%;
     margin-right: 2rem;
   }
 
-  .event-block-schedule-wide__time {
+  .section-block-schedule-wide__time {
     font-size: 1.2rem;
     align-self: center;
   }
 
-  .event-block-schedule-wide__url-wrapper {
+  .section-block-schedule-wide__url-wrapper {
     align-self: center;
     min-width: 10rem;
   }
 
-  .event-block-schedule-wide__url {
+  .section-block-schedule-wide__url {
     box-shadow: 0px 6px 13px rgba(182, 187, 189, 0.5);
   }
 
-  .event-block-schedule-wide__url-icon {
+  .section-block-schedule-wide__url-icon {
     flex-shrink: 0;
     margin-right: 0.6rem;
     padding: 0.6rem;
@@ -436,14 +436,14 @@
     box-shadow: 0px 6px 16px rgba(84, 66, 56, 0.45);
   }
 
-  .event-block-schedule-wide__url-label {
+  .section-block-schedule-wide__url-label {
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .event-block-schedule-wide__speaker {
+  .section-block-schedule-wide__speaker {
     border-radius: 100%;
     border: 4px solid var(--white);
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
@@ -453,7 +453,7 @@
   /*
     default variant specific
   */
-  .event-block-schedule__tablist {
+  .section-block-schedule__tablist {
     position: relative;
     appearance: none;
     width: 100%;
@@ -471,11 +471,11 @@
     background-position: right 1rem center;
   }
 
-  .event-block-schedule__timezone {
+  .section-block-schedule__timezone {
     margin-bottom: 1rem;
   }
 
-  .event-block-schedule__itemlist {
+  .section-block-schedule__itemlist {
     list-style: none;
     width: 100%;
     border-left-style: solid;
@@ -484,12 +484,12 @@
     padding-left: 1rem;
   }
 
-  .event-block-schedule__item[open] .event-block-schedule__body {
+  .section-block-schedule__item[open] .section-block-schedule__body {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
   }
 
-  .event-block-schedule__body {
+  .section-block-schedule__body {
     width: 100%;
     display: flex;
     align-items: center;
@@ -502,44 +502,44 @@
     border-radius: 4px;
   }
 
-  .event-block-schedule__summary {
+  .section-block-schedule__summary {
     display: flex;
     flex-direction: column;
     outline: none;
   }
 
-  .event-block-schedule__summary::-webkit-details-marker {
+  .section-block-schedule__summary::-webkit-details-marker {
     display: none;
   }
 
-  .event-block-schedule__icon-open {
+  .section-block-schedule__icon-open {
     display: none;
   }
 
-  .event-block-schedule__item[open] .event-block-schedule__icon-closed {
+  .section-block-schedule__item[open] .section-block-schedule__icon-closed {
     display: none;
   }
 
-  .event-block-schedule__item[open] .event-block-schedule__icon-open {
+  .section-block-schedule__item[open] .section-block-schedule__icon-open {
     display: block;
   }
 
-  .event-block-schedule__time {
+  .section-block-schedule__time {
     font-weight: 500;
     margin-bottom: 0.2rem;
   }
 
-  .event-block-schedule__meta {
+  .section-block-schedule__meta {
     width: 100%;
     display: flex;
     flex-direction: row;
   }
 
-  .event-block-schedule__copy-title {
+  .section-block-schedule__copy-title {
     font-weight: bold;
   }
 
-  .event-block-schedule__description {
+  .section-block-schedule__description {
     padding: 1rem;
     background-color: var(--black-secondary);
     border-bottom-right-radius: 4px;
@@ -549,11 +549,11 @@
   /*
     shared styling for both variants
   */
-  .event-block-schedule__item {
+  .section-block-schedule__item {
     margin-bottom: 1.2rem;
   }
 
-  .event-block-schedule__description-label {
+  .section-block-schedule__description-label {
     display: block;
     font-weight: bold;
     font-size: 0.8rem;
@@ -561,27 +561,27 @@
     text-transform: uppercase;
   }
 
-  .event-block-schedule__description-label:not(:first-of-type) {
+  .section-block-schedule__description-label:not(:first-of-type) {
     margin-top: 1rem;
   }
 
-  .event-block-schedule__description-speaker:not(:last-child):after {
+  .section-block-schedule__description-speaker:not(:last-child):after {
     content: '-';
     margin-left: .25rem;
     display: inline-block;
   }
 
-  .event-block-schedule__body--active {
+  .section-block-schedule__body--active {
     background-color: var(--white);
     color: var(--blue-primary);
   }
 
-  .event-block-schedule__copy {
+  .section-block-schedule__copy {
     display: flex;
     flex-direction: column;
   }
 
-  .event-block-schedule__url {
+  .section-block-schedule__url {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -592,12 +592,12 @@
     background: var(--white);
   }
 
-  .event-block-schedule__url:hover,
-  .event-block-schedule__url:focus {
+  .section-block-schedule__url:hover,
+  .section-block-schedule__url:focus {
     color: var(--blue-primary);
   }
 
-  .event-block-schedule__url-icon {
+  .section-block-schedule__url-icon {
     padding: 0.6rem;
     border-radius: 50%;
     background-color: var(--blue-primary);
@@ -605,12 +605,12 @@
   }
 
   @media (--md-viewport) {
-    .event-block-schedule__url-icon {
+    .section-block-schedule__url-icon {
       margin-right: 0.6rem;
     }
   }
 
-  .event-block-schedule__now-notice {
+  .section-block-schedule__now-notice {
     display: block;
     color: var(--orange);
     font-weight: bold;

@@ -9,7 +9,10 @@
         Highlight
       </p>
 
-      <section class="event-preview__highlight">
+      <section
+        v-if="highlightedEvent"
+        class="event-preview__highlight"
+      >
         <img
           class="event-preview__highlight-image"
           :src="`${highlightedEvent.imageUrl}?auto=compress,format&w=1080&h=400&fit=crop`"

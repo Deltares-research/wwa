@@ -343,13 +343,13 @@ function generateStaticPages (dato, root, i18n) {
  */
 function generateEventPages (dato, root, i18n) {
   const highlightedEvent = dato.app.highlightedEvent;
-  const highlightedEventData = {
+  const highlightedEventData = dato.app.highlightedEvent ? {
     slug: highlightedEvent.slug,
     name: highlightedEvent.name,
     displayDate: highlightedEvent.displayDate,
     summary: highlightedEvent.summary,
     imageUrl: highlightedEvent.image.url(),
-  };
+  } : null;
 
   const externalEvents = dato.externalEvents
     .filter(filterPublished)

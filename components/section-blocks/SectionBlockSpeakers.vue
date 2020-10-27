@@ -1,19 +1,19 @@
 <template>
-  <div class="event-block-speakers">
+  <div class="section-block-speakers">
     <img
       v-if="showWaveMarker"
       src="~/assets/event-title-wave.svg"
       width="111"
       height="35"
       alt=""
-      class="animator__slide-up event-block-speakers__icon"
+      class="animator__slide-up section-block-speakers__icon"
     >
 
     <h3
-      class="animator__slide-up event-block-speakers__title"
+      class="animator__slide-up section-block-speakers__title"
       :class="{
-        'event-block-speakers__title--orange': titleColor === 'orange',
-        'event-block-speakers__title--blue': titleColor === 'blue',
+        'section-block-speakers__title--orange': titleColor === 'orange',
+        'section-block-speakers__title--blue': titleColor === 'blue',
       }"
       animator-stagger
     >
@@ -21,7 +21,7 @@
     </h3>
 
     <p
-      class="animator__slide-up event-block-speakers__subtitle"
+      class="animator__slide-up section-block-speakers__subtitle"
       animator-stagger
     >
       {{ subtitle }}
@@ -29,38 +29,38 @@
 
     <swiper
       :options="swiperOptions"
-      class="animator__slide-up event-block-speakers__carousel"
+      class="animator__slide-up section-block-speakers__carousel"
       animator-stagger
     >
       <swiper-slide
         v-for="speaker in speakers"
         :key="speaker.id"
-        class="event-block-speakers__speaker"
+        class="section-block-speakers__speaker"
       >
-        <div class="event-block-speakers__speaker-wrapper">
-          <div class="event-block-speakers__speaker-heading">
+        <div class="section-block-speakers__speaker-wrapper">
+          <div class="section-block-speakers__speaker-heading">
             <img
-              :src="`${speaker.image.url}?auto=compress,format&w=95&h=95&fit=crop&crop=entropy`"
+              :src="`${speaker.imageUrl}?auto=compress,format&w=95&h=95&fit=crop&crop=entropy`"
               alt=""
-              class="event-block-speakers__speaker-image"
+              class="section-block-speakers__speaker-image"
             >
 
-            <div class="event-block-speakers__speaker-meta">
-              <h4 class="event-block-speakers__speaker-name">
+            <div class="section-block-speakers__speaker-meta">
+              <h4 class="section-block-speakers__speaker-name">
                 {{ speaker.name }}
               </h4>
 
-              <p class="event-block-speakers__speaker-organization">
+              <p class="section-block-speakers__speaker-organization">
                 {{ speaker.organization }}
               </p>
             </div>
           </div>
 
-          <h5 class="event-block-speakers__speaker-label">
+          <h5 class="section-block-speakers__speaker-label">
             {{ speaker.subjectLabel }}
           </h5>
 
-          <p class="event-block-speakers__speaker-subject">
+          <p class="section-block-speakers__speaker-subject">
             {{ speaker.subject }}
           </p>
         </div>
@@ -139,43 +139,43 @@
 
 <style scoped>
   @media (--md-viewport) {
-    .event-block-speakers {
+    .section-block-speakers {
       margin: 0 -.5rem;
     }
   }
 
-  .event-block-speakers__icon {
+  .section-block-speakers__icon {
     margin-bottom: .25rem;
   }
 
   @media (--md-viewport) {
-    .event-block-speakers__icon {
+    .section-block-speakers__icon {
       margin-bottom: 1rem;
     }
   }
 
-  .event-block-speakers__title {
+  .section-block-speakers__title {
     margin-bottom: .5rem;
     font-size: 2rem;
     font-weight: 900;
   }
 
   @media (--md-viewport) {
-    .event-block-speakers__title {
+    .section-block-speakers__title {
       margin-left: .5rem;
     }
   }
 
-  .event-block-speakers__title--orange {
+  .section-block-speakers__title--orange {
     color: var(--orange);
   }
 
-  .event-block-speakers__title--blue {
+  .section-block-speakers__title--blue {
     color: var(--blue-tertiary);
   }
 
   @media (--md-viewport) {
-    .event-block-speakers__title {
+    .section-block-speakers__title {
       margin-bottom: 2rem;
       max-width: 66%;
       font-size: 5rem;
@@ -183,57 +183,57 @@
     }
   }
 
-  .event-block-speakers__subtitle {
+  .section-block-speakers__subtitle {
     margin-bottom: .25rem;
     font-size: .75rem;
     text-transform: uppercase;
   }
 
   @media (--md-viewport) {
-    .event-block-speakers__subtitle {
+    .section-block-speakers__subtitle {
       margin-left: .5rem;
     }
   }
 
   @media (--md-viewport) {
-    .event-block-speakers div.swiper-container-horizontal > div.swiper-scrollbar {
+    .section-block-speakers div.swiper-container-horizontal > div.swiper-scrollbar {
       left: .5rem;
       width: calc(100% - 1rem);
       bottom: 4rem;
     }
 
-    .event-block-speakers div.swiper-button-prev,
-    .event-block-speakers div.swiper-button-next {
+    .section-block-speakers div.swiper-button-prev,
+    .section-block-speakers div.swiper-button-next {
       bottom: 1rem;
     }
 
-    .event-block-speakers div.swiper-button-prev {
+    .section-block-speakers div.swiper-button-prev {
       left: .5rem;
     }
 
-    .event-block-speakers div.swiper-button-next {
+    .section-block-speakers div.swiper-button-next {
       left: calc(32px + 1rem);
     }
   }
 
   @media (--md-viewport) {
-    .event-block-speakers__carousel {
+    .section-block-speakers__carousel {
       height: 550px;
     }
   }
 
-  .event-block-speakers__speaker {
+  .section-block-speakers__speaker {
     display: flex;
     height: auto;
   }
 
   @media (--md-viewport) {
-    .event-block-speakers__speaker {
+    .section-block-speakers__speaker {
       height: 240px;
     }
   }
 
-  .event-block-speakers__speaker-wrapper {
+  .section-block-speakers__speaker-wrapper {
     margin-right: 1rem;
     padding: 1rem;
     width: 100%;
@@ -241,28 +241,28 @@
     border-radius: 5px;
   }
 
-  .event-block-speakers__speaker:last-child .event-block-speakers__speaker-wrapper{
+  .section-block-speakers__speaker:last-child .section-block-speakers__speaker-wrapper{
     margin-right: 0;
   }
 
   @media (--md-viewport) {
-    .event-block-speakers__speaker-wrapper {
+    .section-block-speakers__speaker-wrapper {
       margin-left: .5rem;
       margin-right: .5rem;
       margin-bottom: 1rem;
     }
 
-    .event-block-speakers__speaker:last-child .event-block-speakers__speaker-wrapper{
+    .section-block-speakers__speaker:last-child .section-block-speakers__speaker-wrapper{
       margin-right: .5rem;
     }
   }
 
-  .event-block-speakers__speaker-heading {
+  .section-block-speakers__speaker-heading {
     display: flex;
     margin-bottom: 1rem;
   }
 
-  .event-block-speakers__speaker-image {
+  .section-block-speakers__speaker-image {
     margin-right: 1rem;
     width: 52px;
     height: 52px;
@@ -272,37 +272,37 @@
   }
 
   @media (--md-viewport) {
-    .event-block-speakers__speaker-image {
+    .section-block-speakers__speaker-image {
       margin-right: 1.5rem;
       width: 85px;
       height: 85px;
     }
   }
 
-  .event-block-speakers__speaker-meta {
+  .section-block-speakers__speaker-meta {
     margin-top: .5rem;
   }
 
-  .event-block-speakers__speaker-organization {
+  .section-block-speakers__speaker-organization {
     line-height: 1.2;
     opacity: .6;
   }
 
-  .event-block-speakers__speaker-label {
+  .section-block-speakers__speaker-label {
     font-size: .75rem;
     text-transform: uppercase;
     opacity: .7;
   }
 
-  .event-block-speakers__speaker-subject {
+  .section-block-speakers__speaker-subject {
     font-weight: 500;
     line-height: 1.2;
   }
 
   @media (--md-viewport) {
-    .event-block-speakers__speaker-name,
-    .event-block-speakers__speaker-organization,
-    .event-block-speakers__speaker-subject {
+    .section-block-speakers__speaker-name,
+    .section-block-speakers__speaker-organization,
+    .section-block-speakers__speaker-subject {
       display: -webkit-box;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -310,15 +310,15 @@
       -webkit-box-orient: vertical;
     }
 
-    .event-block-speakers__speaker-name {
+    .section-block-speakers__speaker-name {
       font-size: 1.5rem;
     }
 
-    .event-block-speakers__speaker-organization {
+    .section-block-speakers__speaker-organization {
       font-weight: 500;
     }
 
-    .event-block-speakers__speaker-subject {
+    .section-block-speakers__speaker-subject {
       font-size: 1.5rem;
     }
   }

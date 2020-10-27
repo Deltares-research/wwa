@@ -8,6 +8,7 @@
       :video="page.video"
       :mapbox-style="page.mapboxStyle"
       :links="page.links"
+      :files="page.files"
       :partner="page.partner"
       :influences="page.influences"
       :goals="page.goals"

@@ -48,27 +48,42 @@
       </li>
     </ul>
 
-    <div
-      class="page-body-title__goals"
+    <ul
       v-if="goals && goals.length"
+      class="page-body-title__goals list--inline"
     >
-      <ul class="list--inline">
-        <li
-          v-for="link in goals"
-          :key="link.slug"
+      <li
+        v-for="link in goals"
+        :key="link.slug"
+      >
+        <nuxt-link
+          :to="link.path"
         >
-          <nuxt-link
-            :to="link.path"
+          <img
+            :src="`${link.icon.imgixHost}${link.icon.value.path}?auto=compress,format&w=100`"
+            :alt="link.title"
+            class="page-body-title__goal-icon"
           >
-            <img
-              :src="`${link.icon.imgixHost}${link.icon.value.path}?auto=compress,format&w=100`"
-              :alt="link.title"
-              class="page-body-title__goal-icon"
-            >
-          </nuxt-link>
-        </li>
-      </ul>
-    </div>
+        </nuxt-link>
+      </li>
+    </ul>
+
+    <ul
+      v-if="files && files.length"
+      class="page-body-title__files list--inline"
+    >
+      <li
+        v-for="file in files"
+        :key="file.url"
+      >
+        <a
+          :href="file.url"
+          class="filter-tag"
+        >
+          {{ file.label }}
+        </a>
+      </li>
+    </ul>
   </section>
 </template>
 
@@ -84,6 +99,7 @@ export default {
     influences: Array,
     goals: Array,
     methodologies: Array,
+    files: Array,
     storyteller: Object,
     partner: Object,
     theme: Object,
@@ -135,5 +151,10 @@ export default {
 
   .page-body-title__goal-icon {
     width: 50px;
+  }
+
+  .page-body-title__files {
+    margin-top: -.75rem;
+    margin-bottom: 1.25rem;
   }
 </style>

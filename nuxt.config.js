@@ -88,6 +88,7 @@ export default {
     exclude: [
       /^\/events\/.+/,
       /^\/narratives\/undefined/,
+      /^\/curated\/undefined/,
     ],
     routes() {
       return fetchingAllInternalEvents

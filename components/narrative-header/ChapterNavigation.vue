@@ -194,7 +194,7 @@
     }
 
     .chapter-navigation__body--event-chapter.chapter-navigation__body--fixed {
-      max-width: calc(var(--event-column-width) - 2rem);
+      max-width: calc(var(--wwa-column-width) - 2rem);
     }
   }
 

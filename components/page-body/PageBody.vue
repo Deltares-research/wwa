@@ -7,6 +7,7 @@
         :goals="goals"
         :methodologies="methodologies"
         :storyteller="storyteller"
+        :files="files"
         :theme="theme"
       />
       <div
@@ -154,6 +155,7 @@ export default {
     video: Object,
     mapboxStyle: String,
     influences: Array,
+    files: Array,
     goals: Array,
     methodologies: Array,
     keywords: Array,

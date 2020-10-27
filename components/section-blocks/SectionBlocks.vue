@@ -19,57 +19,57 @@
       <div class="layout-section__content">
         <template v-for="(block, blockIndex) in section.blocks">
           <animator
-            v-if="block._modelApiKey === 'text_block'"
+            v-if="block && block._modelApiKey === 'text_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
-            <event-block-text v-bind="block" />
+            <section-block-text v-bind="block" />
           </animator>
           <animator
-            v-if="block._modelApiKey === 'media_block'"
+            v-if="block && block._modelApiKey === 'media_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
-            <event-block-text-media v-bind="block" />
+            <section-block-text-media v-bind="block" />
           </animator>
           <animator
-            v-if="block._modelApiKey === 'related_stories_block'"
+            v-if="block && block._modelApiKey === 'related_stories_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
-            <event-block-related-stories v-bind="block" />
+            <section-block-related-stories v-bind="block" />
           </animator>
           <animator
-            v-if="block._modelApiKey === 'chapters_block'"
+            v-if="block && block._modelApiKey === 'chapters_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
-            <event-block-chapters-carousel
+            <section-block-chapters-carousel
               v-if="block.chapters.length > 3"
               :title="block.title"
               :items="block.chapters"
             />
-            <event-block-chapters-list
+            <section-block-chapters-list
               v-else
               v-bind="block"
             />
           </animator>
           <animator
-            v-if="block._modelApiKey === 'speakers_block'"
+            v-if="block && block._modelApiKey === 'speakers_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
-            <event-block-speakers
+            <section-block-speakers
               :show-wave-marker="block.showWaveMarker"
               :image="block.image"
               :title="block.title"
@@ -79,24 +79,24 @@
             />
           </animator>
           <animator
-            v-if="block._modelApiKey === 'colofon_block'"
+            v-if="block && block._modelApiKey === 'colofon_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
-            <event-block-colofon v-bind="block" />
+            <section-block-colofon v-bind="block" />
           </animator>
           <div
-            v-if="block._modelApiKey === 'schedule_block'"
+            v-if="block && block._modelApiKey === 'schedule_block'"
             :key="block.id"
-            :id="block.slug"
+            :id="block.id"
             class="layout-section__container layout-section__container--padded"
           >
-            <h3 class="event-block__title">
+            <h3 class="section-block__title">
               {{ block.scheduleLabel }}
             </h3>
-            <event-block-schedule
+            <section-block-schedule
               :event-days="block.eventDays"
               :timezone="block.timezone"
               :timezone-comment="block.timezoneComment"
@@ -106,6 +106,15 @@
               :speakers-label="block.speakersLabel"
             />
           </div>
+          <animator
+            v-if="block && block._modelApiKey === 'news_block'"
+            :key="block.id"
+            :id="block.id"
+            :is-intersection-disabled="index === 0 && blockIndex === 0"
+            class="layout-section__container layout-section__container--padded"
+          >
+            <section-block-news v-bind="block" />
+          </animator>
         </template>
       </div>
     </section>
@@ -113,26 +122,28 @@
 </template>
 
 <script>
-import EventBlockChaptersCarousel from '~/components/event-block/EventBlockChaptersCarousel';
-import EventBlockChaptersList from '~/components/event-block/EventBlockChaptersList';
-import EventBlockColofon from '~/components/event-block/EventBlockColofon';
-import EventBlockSchedule from '~/components/event-block/EventBlockSchedule';
-import EventBlockText from '~/components/event-block/EventBlockText';
-import EventBlockTextMedia from '~/components/event-block/EventBlockTextMedia';
-import EventBlockRelatedStories from '~/components/event-block/EventBlockRelatedStories';
-import EventBlockSpeakers from '~/components/event-block/EventBlockSpeakers';
+import SectionBlockChaptersCarousel from '~/components/section-blocks/SectionBlockChaptersCarousel';
+import SectionBlockChaptersList from '~/components/section-blocks/SectionBlockChaptersList';
+import SectionBlockColofon from '~/components/section-blocks/SectionBlockColofon';
+import SectionBlockNews from '@/components/section-blocks/SectionBlockNews';
+import SectionBlockSchedule from '~/components/section-blocks/SectionBlockSchedule';
+import SectionBlockText from '~/components/section-blocks/SectionBlockText';
+import SectionBlockTextMedia from '~/components/section-blocks/SectionBlockTextMedia';
+import SectionBlockRelatedStories from '~/components/section-blocks/SectionBlockRelatedStories';
+import SectionBlockSpeakers from '~/components/section-blocks/SectionBlockSpeakers';
 import Animator from '~/components/animator/Animator';
 
 export default {
   components: {
-    EventBlockChaptersCarousel,
-    EventBlockChaptersList,
-    EventBlockColofon,
-    EventBlockSchedule,
-    EventBlockText,
-    EventBlockTextMedia,
-    EventBlockRelatedStories,
-    EventBlockSpeakers,
+    SectionBlockChaptersCarousel,
+    SectionBlockChaptersList,
+    SectionBlockColofon,
+    SectionBlockNews,
+    SectionBlockSchedule,
+    SectionBlockText,
+    SectionBlockTextMedia,
+    SectionBlockRelatedStories,
+    SectionBlockSpeakers,
     Animator,
   },
   props: {

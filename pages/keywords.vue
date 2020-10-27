@@ -6,7 +6,7 @@
       </div>
     </div>
 
-    <div class="layout-section">
+    <div class="layout-section layout-section--background-black">
       <div class="layout-section__container">
         <ul class="keywords__list list--inline">
           <li
@@ -44,7 +44,7 @@
         </ul>
       </div>
     </div>
-    <div class="layout-section">
+    <div class="layout-section layout-section--background-black">
       <div class="layout-section__container">
         <chapter-list
           :chapters="filteredChapters"

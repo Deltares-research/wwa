@@ -19,7 +19,7 @@
       <div class="layout-section__content">
         <template v-for="(block, blockIndex) in section.blocks">
           <animator
-            v-if="block._modelApiKey === 'text_block'"
+            v-if="block && block._modelApiKey === 'text_block'"
             :key="block.id"
             :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
@@ -28,7 +28,7 @@
             <section-block-text v-bind="block" />
           </animator>
           <animator
-            v-if="block._modelApiKey === 'media_block'"
+            v-if="block && block._modelApiKey === 'media_block'"
             :key="block.id"
             :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
@@ -37,7 +37,7 @@
             <section-block-text-media v-bind="block" />
           </animator>
           <animator
-            v-if="block._modelApiKey === 'related_stories_block'"
+            v-if="block && block._modelApiKey === 'related_stories_block'"
             :key="block.id"
             :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
@@ -46,7 +46,7 @@
             <section-block-related-stories v-bind="block" />
           </animator>
           <animator
-            v-if="block._modelApiKey === 'chapters_block'"
+            v-if="block && block._modelApiKey === 'chapters_block'"
             :key="block.id"
             :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
@@ -63,7 +63,7 @@
             />
           </animator>
           <animator
-            v-if="block._modelApiKey === 'speakers_block'"
+            v-if="block && block._modelApiKey === 'speakers_block'"
             :key="block.id"
             :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
@@ -79,7 +79,7 @@
             />
           </animator>
           <animator
-            v-if="block._modelApiKey === 'colofon_block'"
+            v-if="block && block._modelApiKey === 'colofon_block'"
             :key="block.id"
             :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
@@ -88,7 +88,7 @@
             <section-block-colofon v-bind="block" />
           </animator>
           <div
-            v-if="block._modelApiKey === 'schedule_block'"
+            v-if="block && block._modelApiKey === 'schedule_block'"
             :key="block.id"
             :id="block.id"
             class="layout-section__container layout-section__container--padded"
@@ -107,7 +107,7 @@
             />
           </div>
           <animator
-            v-if="block._modelApiKey === 'news_block'"
+            v-if="block && block._modelApiKey === 'news_block'"
             :key="block.id"
             :id="block.id"
             :is-intersection-disabled="index === 0 && blockIndex === 0"

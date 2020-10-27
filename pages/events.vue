@@ -5,7 +5,11 @@
         Events
       </h1>
 
-      <p class="events-highlight-title">
+
+      <p
+        v-if="highlightedEvent"
+        class="events-highlight-title"
+      >
         Highlight
       </p>
 

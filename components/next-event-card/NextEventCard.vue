@@ -69,6 +69,7 @@ export default {
 .next-event-card__icon {
   float: left;
   width: 20%;
+  height: auto;
 }
 
 .next-event-card__title,

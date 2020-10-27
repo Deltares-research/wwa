@@ -221,7 +221,7 @@ function generateMarkers (dato, root, i18n) {
 function generateAppData (dato, root, i18n) {
   const description = dato.app.description;
 
-  const highlightedEvent = dato.app.highlightedEvent ? {
+  const highlightedEvent = dato.app.highlightedEvent && dato.app.highlightedEvent.isPublished ? {
     name: dato.app.highlightedEvent.name,
     slug: dato.app.highlightedEvent.slug,
     startDate: dato.app.highlightedEvent.startDate,
@@ -338,15 +338,6 @@ function generateStaticPages (dato, root, i18n) {
  * @param {i18n} i18n
  */
 function generateEventPages (dato, root, i18n) {
-  const highlightedEvent = dato.app.highlightedEvent;
-  const highlightedEventData = dato.app.highlightedEvent ? {
-    slug: highlightedEvent.slug,
-    name: highlightedEvent.name,
-    displayDate: highlightedEvent.displayDate,
-    summary: highlightedEvent.summary,
-    imageUrl: highlightedEvent.image.url(),
-  } : null;
-
   const externalEvents = dato.externalEvents
     .filter(filterPublished)
     .map(event => {
@@ -373,7 +364,9 @@ function generateEventPages (dato, root, i18n) {
     });
 
   const internalEvents = dato.internalEvents
-    .filter(filterPublished)
+    .filter(externalEvent => {
+      return externalEvent.isPublished === true;
+    })
     .map(event => {
       return {
         id: event.id,

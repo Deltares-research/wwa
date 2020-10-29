@@ -384,11 +384,10 @@
   }
 
   .section-block-schedule-wide__meta {
+    flex: 0 0 30%;
     display: flex;
     align-items: flex-start;
     margin-right: 4rem;
-    width: 100%;
-    max-width: 14rem;
   }
 
   .section-block-schedule-wide__copy {

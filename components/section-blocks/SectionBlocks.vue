@@ -21,7 +21,7 @@
           <animator
             v-if="block && block._modelApiKey === 'text_block'"
             :key="block.id"
-            :id="block.id"
+            :id="block.slug"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
@@ -30,7 +30,7 @@
           <animator
             v-if="block && block._modelApiKey === 'media_block'"
             :key="block.id"
-            :id="block.id"
+            :id="block.slug"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
@@ -39,7 +39,7 @@
           <animator
             v-if="block && block._modelApiKey === 'related_stories_block'"
             :key="block.id"
-            :id="block.id"
+            :id="block.slug"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
@@ -48,7 +48,7 @@
           <animator
             v-if="block && block._modelApiKey === 'chapters_block'"
             :key="block.id"
-            :id="block.id"
+            :id="block.slug"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
@@ -65,7 +65,7 @@
           <animator
             v-if="block && block._modelApiKey === 'speakers_block'"
             :key="block.id"
-            :id="block.id"
+            :id="block.slug"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
@@ -81,7 +81,7 @@
           <animator
             v-if="block && block._modelApiKey === 'colofon_block'"
             :key="block.id"
-            :id="block.id"
+            :id="block.slug"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
@@ -90,7 +90,7 @@
           <div
             v-if="block && block._modelApiKey === 'schedule_block'"
             :key="block.id"
-            :id="block.id"
+            :id="block.slug"
             class="layout-section__container layout-section__container--padded"
           >
             <h3 class="section-block__title">
@@ -109,7 +109,7 @@
           <animator
             v-if="block && block._modelApiKey === 'news_block'"
             :key="block.id"
-            :id="block.id"
+            :id="block.slug"
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >

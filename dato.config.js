@@ -226,6 +226,7 @@ function generateAppData (dato, root, i18n) {
     slug: dato.app.highlightedEvent.slug,
     startDate: dato.app.highlightedEvent.startDate,
     endDate: dato.app.highlightedEvent.endDate,
+    imageUrl: `${dato.app.highlightedEvent.image.imgixHost}${dato.app.highlightedEvent.image.value.path}`,
     bannerIcon: dato.app.highlightedEvent.bannerIconSmall,
     displayDate: dato.app.highlightedEvent.displayDate,
   } : null;

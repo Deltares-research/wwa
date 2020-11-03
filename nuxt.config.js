@@ -110,14 +110,16 @@ export default {
     },
   },
   head: {
-    title: 'World Water Atlas',
     htmlAttrs: {
       lang: 'en',
     },
+    titleTemplate: '%s - World Water Atlas',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'World Water Atlas' },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
     ],
     link: [
       { rel: 'apple-touch-icon', sizes: '57x57', href: '/apple-icon-57x57.png' },

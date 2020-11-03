@@ -240,6 +240,11 @@ function generateAppData (dato, root, i18n) {
         return {
           title: filterItem.title,
           slug: filterItem.slug,
+          seo: {
+            title: filterItem.seo.value.title,
+            description: filterItem.seo.value.description,
+            image: filterItem.seo.value.image.path,
+          },
           description: renderMarkedContent(filterItem.body),
           feature: filterItem.feature ? {
             title: filterItem.feature.title,

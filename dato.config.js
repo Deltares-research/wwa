@@ -243,7 +243,7 @@ function generateAppData (dato, root, i18n) {
           seo: {
             title: filterItem.seo.value.title,
             description: filterItem.seo.value.description,
-            image: filterItem.seo.value.image.path,
+            image: filterItem.seo.value.image ? filterItem.seo.value.image.path : null,
           },
           description: renderMarkedContent(filterItem.body),
           feature: filterItem.feature ? {
@@ -320,10 +320,15 @@ function generateStaticPages (dato, root, i18n) {
   const staticPages = dato.staticPages
     .filter(filterPublished)
     .map(page => {
-      const { body, images, slug, title, video } = page;
+      const { body, images, seo, slug, title, video } = page;
       return {
         body: renderMarkedContent(body),
         images,
+        seo: {
+          title: seo.value.title,
+          description: seo.value.description,
+          image: seo.value.image ? seo.value.image.path : null,
+        },
         slug,
         title,
         video,

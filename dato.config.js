@@ -349,6 +349,12 @@ function generateStaticPages (dato, root, i18n) {
  * @param {i18n} i18n
  */
 function generateEventPages (dato, root, i18n) {
+  const seo = {
+    title: dato.event.seo.value.title,
+    description: dato.event.seo.value.description,
+    image: dato.event.seo.value.image ? dato.event.seo.value.image.path : null,
+  };
+
   const externalEvents = dato.externalEvents
     .filter(filterPublished)
     .map(event => {
@@ -401,6 +407,7 @@ function generateEventPages (dato, root, i18n) {
     });
 
   const eventPageIndex = {
+    seo,
     allExternalEvents: externalEvents,
     allInternalEvents: internalEvents,
   };
@@ -414,7 +421,13 @@ function generateEventPages (dato, root, i18n) {
       const internalEventPages = dato.internalEvents
         .filter(filterPublished)
         .map(page => {
-          const { slug, name, eventWebsite, visuallyHideName, displayDate, image, bannerIcon, bannerTagline } = page;
+          const { slug, seo, name, eventWebsite, visuallyHideName, displayDate, image, bannerIcon, bannerTagline } = page;
+
+          const seoContent = seo ? {
+            title: seo.value.title,
+            description: seo.value.description,
+            image: seo.value.image ? seo.value.image.path : null,
+          } : null;
 
           const sections = page.sections.map(section => {
             const { backgroundColor, showBottomWave, showTopWave } = section;
@@ -582,6 +595,7 @@ function generateEventPages (dato, root, i18n) {
 
           return {
             slug,
+            seo: seoContent,
             name,
             eventWebsite,
             visuallyHideName,

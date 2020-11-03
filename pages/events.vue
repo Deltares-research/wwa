@@ -51,6 +51,7 @@
 </template>
 
 <script>
+  import seoHead from '~/lib/seo-head';
   import { mapState } from 'vuex';
   import EventOverviewList from '~/components/event-overview-list/EventOverviewList';
 
@@ -65,6 +66,9 @@
     async asyncData({ params }) {
       const data = await import(`~/static/data/events/index.json`);
       return data.default;
+    },
+    head() {
+      return seoHead(this.seo, this.$route.path);
     },
     components: { EventOverviewList },
     computed: {

@@ -642,6 +642,11 @@ function generateEventChapter(chapter, event, root, i18n) {
       const page = {
         title: chapter.title,
         cover: chapter.cover.url(),
+        seo: {
+          title: chapter.seo.value.title,
+          description: chapter.seo.value.description,
+          image: chapter.seo.value.image ? chapter.seo.value.image.path : null,
+        },
         pages: chapter.pages.map(page => {
           const { slug, title, storyteller, body, video, videoChina, mapboxStyle, creditsTitle, creditsBody } = page;
 
@@ -769,6 +774,11 @@ function getChapters (dato, bookRef) {
     .filter(filterPublished)
     .map(chapter => {
       const { title, slug, chapterType, createdAt, updatedAt, cover } = chapter;
+      const seo = {
+        title: chapter.seo.value.title,
+        description: chapter.seo.value.description,
+        image: chapter.seo.value.image ? chapter.seo.value.image.path : null,
+      };
       const parentBook = bookRef || getParent(dato, chapter);
       if (!parentBook) {
         console.info(`Skipped chapter ${title}, no parent book found`);
@@ -815,6 +825,7 @@ function getChapters (dato, bookRef) {
           .map(({ pages, parent, ...chapter }) => chapter);
 
       return {
+        seo,
         book,
         influences,
         goals,

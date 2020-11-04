@@ -100,6 +100,7 @@
 </template>
 
 <script>
+  import seoHead from '~/lib/seo-head';
   import SectionBlockText from '~/components/section-blocks/SectionBlockText';
   import eventHeader from '~/components/event-header/EventHeader';
   import NarrativeHeaderEvent from '~/components/narrative-header/NarrativeHeaderEvent';
@@ -123,6 +124,9 @@
     async asyncData({ params }) {
       const data = await import(`~/static/data/events/${params.language}/chapters/${params.chapter}.json`);
       return { chapter: data.default };
+    },
+    head() {
+      return seoHead(this.chapter.seo, this.$route.path);
     },
     methods: {
       smoothScroll (slug) {

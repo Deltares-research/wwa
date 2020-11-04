@@ -246,6 +246,11 @@ function generateAppData (dato, root, i18n) {
     return {
       title: filter.title,
       slug: filter.slug,
+      seo: {
+        title: filter.seo.value.title,
+        description: filter.seo.value.description,
+        image: filter.seo.value.image ? filter.seo.value.image.path : null,
+      },
       description: renderMarkedContent(filter.body),
       filterItems: filter.filterItems.map(filterItem => {
         return {

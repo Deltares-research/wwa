@@ -401,7 +401,7 @@ function generateEventPages (dato, root, i18n) {
 
   i18n.availableLocales.forEach(locale => {
     i18n.withLocale(locale, () => {
-      const internalEventPages = dato.internalEvents
+      dato.internalEvents
         .filter(filterPublished)
         .map(page => {
           const { slug, name, eventWebsite, visuallyHideName, displayDate, image, bannerIcon, bannerTagline } = page;
@@ -572,6 +572,19 @@ function generateEventPages (dato, root, i18n) {
               };
             });
 
+            const allLocales = [];
+            i18n.availableLocales.forEach(locale => {
+              i18n.withLocale(locale, () => {
+                dato.internalEvents
+                  .filter(filterPublished)
+                  .map(page => {
+                    if(page.slug === slug && page.name) {
+                      allLocales.push(locale);
+                    }
+                  });
+              });
+            });
+
             const content = {
               slug,
               name,
@@ -581,7 +594,7 @@ function generateEventPages (dato, root, i18n) {
               image,
               bannerIcon,
               bannerTagline,
-              allLocales: i18n.availableLocales,
+              allLocales,
               sections,
             };
 

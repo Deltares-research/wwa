@@ -14,7 +14,10 @@
         class="event-header__name-link"
       />
     </h1>
-    <nav class="language-switch">
+    <nav
+      v-if="allLocales.length > 1"
+      class="language-switch"
+    >
       <ul class="language-switch__list">
         <li
           v-for="locale in allLocales"

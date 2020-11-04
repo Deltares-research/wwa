@@ -9,7 +9,7 @@
         <img
           :src="src"
           v-show="isLoaded"
-          :alt="alt"
+          :alt="alt ? alt : ''"
           width="100%"
           @load="onLoad"
         >

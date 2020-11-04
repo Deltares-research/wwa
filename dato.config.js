@@ -987,7 +987,14 @@ function generateNewsPages (dato, root, i18n) {
   for (const page of newsPages) {
     root.createDataFile(`static/data/news/${page.slug}.json`, 'json', page);
   }
-  const staticPageIndex = newsPages.slice(0).reverse().map(page => {
+
+  const seo = {
+    title: dato.news.seo.value.title,
+    description: dato.news.seo.value.description,
+    image: dato.news.seo.value.image ? dato.news.seo.value.image.path : null,
+  };
+
+  const allNewsArticles = newsPages.slice(0).reverse().map(page => {
     return {
       slug: page.slug,
       title: page.title,
@@ -995,7 +1002,13 @@ function generateNewsPages (dato, root, i18n) {
       heroImage: `${page.heroImage.imgixHost}${page.heroImage.value.path}`,
     };
   });
-  root.createDataFile('static/data/news/index.json', 'json', staticPageIndex);
+
+  const newsPage = {
+    seo,
+    allNewsArticles,
+  };
+
+  root.createDataFile('static/data/news/index.json', 'json', newsPage);
 }
 
 function generateContentPage (chapters, page) {
@@ -1108,6 +1121,11 @@ function generateContentPage (chapters, page) {
 
   return {
     slug,
+    seo: page.seo ? {
+      title: page.seo.value.title,
+      description: page.seo.value.description,
+      image: page.seo.value.image ? page.seo.value.image.path : null,
+    } : null,
     title,
     iconUrl: icon ? `${icon.imgixHost}${icon.value.path}` : null,
     date: date ? date : null,

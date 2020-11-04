@@ -1,5 +1,8 @@
 <template>
-  <div class="globe-container">
+  <div
+    class="globe-container"
+    aria-hidden="true"
+  >
     <div class="globe" />
   </div>
 </template>

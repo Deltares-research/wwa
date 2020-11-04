@@ -57,17 +57,19 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex';
+  import seoHead from '~/lib/seo-head';
+  import { mapState } from 'vuex';
   import ChapterList from '~/components/chapter-list/ChapterList';
   import FilterTag from '~/components/filter-tag/FilterTag';
 
   export default {
     layout: 'globe',
     async asyncData () {
-      const keywords = await import('~/static/data/keywords/index.json');
-      return {
-        keywords: keywords.default,
-      };
+      const data = await import('~/static/data/keywords/index.json');
+      return data.default;
+    },
+    head() {
+      return seoHead(this.seo, this.$route.path);
     },
     data () {
       return {

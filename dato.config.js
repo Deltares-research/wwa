@@ -170,7 +170,18 @@ function generateKeywords (dato, root, i18n) {
     })
     .flat(), 'slug');
 
-  root.createDataFile(`static/data/keywords/index.json`, 'json', keywords);
+  const seo = {
+    title: dato.keywordOverview.seo.value.title,
+    description: dato.keywordOverview.seo.value.description,
+    image: dato.keywordOverview.seo.value.image ? dato.keywordOverview.seo.value.image.path : null,
+  };
+
+  const keywordsPage = {
+    seo,
+    keywords,
+  };
+
+  root.createDataFile(`static/data/keywords/index.json`, 'json', keywordsPage);
 }
 
 function generateMarkers (dato, root, i18n) {

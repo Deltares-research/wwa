@@ -406,187 +406,188 @@ function generateEventPages (dato, root, i18n) {
         .map(page => {
           const { slug, name, eventWebsite, visuallyHideName, displayDate, image, bannerIcon, bannerTagline } = page;
 
-          const sections = page.sections.map(section => {
-            const { backgroundColor, showBottomWave, showTopWave } = section;
+          // If name is empty, there is no content for an event in this language, so skip generating a json file
+          if(name) {
+            const sections = page.sections.map(section => {
+              const { backgroundColor, showBottomWave, showTopWave } = section;
 
-            const sectionBlocks = section.blocks.map(block => {
-              if(block.itemType.apiKey === 'chapters_block') {
-                return {
-                  _modelApiKey: block.itemType.apiKey,
-                  id: block.id,
-                  title: block.title,
-                  slug: block.slug,
-                  chapters: block.chapters.map(chapter => {
-                    generateEventChapter(chapter, page, root, i18n);
+              const sectionBlocks = section.blocks.map(block => {
+                if(block.itemType.apiKey === 'chapters_block') {
+                  return {
+                    _modelApiKey: block.itemType.apiKey,
+                    id: block.id,
+                    title: block.title,
+                    slug: block.slug,
+                    chapters: block.chapters.map(chapter => {
+                      generateEventChapter(chapter, page, root, i18n);
+                      return {
+                        title: chapter.title,
+                        slug: chapter.slug,
+                        coverUrl: chapter.cover.url(),
+                      };
+                    }),
+                  };
+                }
+                if(block.itemType.apiKey === 'colofon_block') {
+                  return {
+                    _modelApiKey: block.itemType.apiKey,
+                    id: block.id,
+                    title: block.title,
+                    slug: block.slug,
+                    titleColor: block.titleColor,
+                    showWaveMarker: block.showWaveMarker,
+                    body: renderMarkedContent(block.body),
+                    logos: block.logos.map(logo => {
+                      return {
+                        id: logo.id,
+                        url: logo.url(),
+                        alt: logo.alt,
+                      };
+                    }),
+                  };
+                }
+                if(block.itemType.apiKey === 'text_block') {
+                  return {
+                    _modelApiKey: block.itemType.apiKey,
+                    id: block.id,
+                    title: block.title,
+                    slug: block.slug,
+                    titleColor: block.titleColor,
+                    showWaveMarker: block.showWaveMarker,
+                    body: renderMarkedContent(block.body),
+                    callToActionLabel: block.callToActionLabel,
+                    callToActionUrl: block.callToActionUrl,
+                  };
+                }
+                if(block.itemType.apiKey === 'media_block') {
+                  return {
+                    _modelApiKey: block.itemType.apiKey,
+                    id: block.id,
+                    title: block.title,
+                    slug: block.slug,
+                    titleColor: block.titleColor,
+                    showWaveMarker: block.showWaveMarker,
+                    body: renderMarkedContent(block.body),
+                    internalButtonLabel: block.internalButtonLabel,
+                    internalButtonSlug: block.internalButtonSlug,
+                    callToActionLabel: block.callToActionLabel,
+                    callToActionUrl: block.callToActionUrl,
+                    mirrorLayout: block.mirrorLayout,
+                    image: {
+                      alt: block.image.alt,
+                      url: block.image.url(),
+                    },
+                  };
+                }
+                if(block.itemType.apiKey === 'related_stories_block') {
+                  const linkedChapters = block.linkedChapters.map(linkedChapter => {
+                    const chapter = chapters.find(chapter => chapter.slug === linkedChapter.slug);
+                    const bookSlug = chapter.book.slug;
+
                     return {
                       title: chapter.title,
-                      slug: chapter.slug,
-                      coverUrl: chapter.cover.url(),
+                      chapterSlug: chapter.slug,
+                      bookSlug,
+                      coverUrl: `${chapter.cover.imgixHost}${chapter.cover.value.path}`,
                     };
-                  }),
-                };
-              }
-              if(block.itemType.apiKey === 'colofon_block') {
-                return {
-                  _modelApiKey: block.itemType.apiKey,
-                  id: block.id,
-                  title: block.title,
-                  slug: block.slug,
-                  titleColor: block.titleColor,
-                  showWaveMarker: block.showWaveMarker,
-                  body: renderMarkedContent(block.body),
-                  logos: block.logos.map(logo => {
-                    return {
-                      id: logo.id,
-                      url: logo.url(),
-                      alt: logo.alt,
-                    };
-                  }),
-                };
-              }
-              if(block.itemType.apiKey === 'text_block') {
-                return {
-                  _modelApiKey: block.itemType.apiKey,
-                  id: block.id,
-                  title: block.title,
-                  slug: block.slug,
-                  titleColor: block.titleColor,
-                  showWaveMarker: block.showWaveMarker,
-                  body: renderMarkedContent(block.body),
-                  callToActionLabel: block.callToActionLabel,
-                  callToActionUrl: block.callToActionUrl,
-                };
-              }
-              if(block.itemType.apiKey === 'media_block') {
-                return {
-                  _modelApiKey: block.itemType.apiKey,
-                  id: block.id,
-                  title: block.title,
-                  slug: block.slug,
-                  titleColor: block.titleColor,
-                  showWaveMarker: block.showWaveMarker,
-                  body: renderMarkedContent(block.body),
-                  internalButtonLabel: block.internalButtonLabel,
-                  internalButtonSlug: block.internalButtonSlug,
-                  callToActionLabel: block.callToActionLabel,
-                  callToActionUrl: block.callToActionUrl,
-                  mirrorLayout: block.mirrorLayout,
-                  image: {
-                    alt: block.image.alt,
-                    url: block.image.url(),
-                  },
-                };
-              }
-              if(block.itemType.apiKey === 'related_stories_block') {
-                const linkedChapters = block.linkedChapters.map(linkedChapter => {
-                  const chapter = chapters.find(chapter => chapter.slug === linkedChapter.slug);
-                  const bookSlug = chapter.book.slug;
+                  });
 
                   return {
-                    title: chapter.title,
-                    chapterSlug: chapter.slug,
-                    bookSlug,
-                    coverUrl: `${chapter.cover.imgixHost}${chapter.cover.value.path}`,
+                    _modelApiKey: block.itemType.apiKey,
+                    id: block.id,
+                    title: block.title,
+                    slug: block.slug,
+                    subtitle: block.subtitle,
+                    titleColor: block.titleColor,
+                    showWaveMarker: block.showWaveMarker,
+                    linkedChapters: linkedChapters,
                   };
-                });
+                }
+                if(block.itemType.apiKey === 'speakers_block') {
+                  return {
+                    _modelApiKey: block.itemType.apiKey,
+                    id: block.id,
+                    showWaveMarker: block.showWaveMarker,
+                    subtitle: block.subtitle,
+                    title: block.title,
+                    slug: block.slug,
+                    titleColor: block.titleColor,
+                    speakers: block.speakers.map(speaker => {
+                      return {
+                        id: speaker.id,
+                        name: speaker.name,
+                        organization: speaker.organization,
+                        subject: speaker.subject,
+                        subjectLabel: speaker.subjectLabel,
+                        imageUrl: speaker.image.url(),
+                      };
+                    }),
+                  };
+                }
+                if(block.itemType.apiKey === 'schedule_block') {
+                  return {
+                    _modelApiKey: block.itemType.apiKey,
+                    id: block.id,
+                    slug: block.slug,
+                    timezone: block.timezone,
+                    timezoneComment: block.timezoneComment,
+                    topicLabel: block.topicLabel,
+                    scheduleLabel: block.scheduleLabel,
+                    nowLabel: block.nowLabel,
+                    descriptionLabel: block.descriptionLabel,
+                    speakersLabel: block.speakersLabel,
+                    eventDays: block.eventDays.map(eventDay => {
+                      return {
+                        id: eventDay.id,
+                        date: eventDay.date,
+                        scheduleItems: eventDay.scheduleItems.map(scheduleItem => {
+                          return {
+                            id: scheduleItem.id,
+                            title: scheduleItem.title,
+                            topic: scheduleItem.topic,
+                            startTime: scheduleItem.startTime,
+                            endTime: scheduleItem.endTime,
+                            description: scheduleItem.description,
+                            watchLabel: scheduleItem.watchLabel,
+                            watchUrl: scheduleItem.watchUrl,
+                            speakers: scheduleItem.speakers.map(speaker => {
+                              return {
+                                id: speaker.id,
+                                name: speaker.name,
+                              };
+                            }),
+                          };
+                        }),
+                      };
+                    }),
+                  };
+                }
+              });
 
-                return {
-                  _modelApiKey: block.itemType.apiKey,
-                  id: block.id,
-                  title: block.title,
-                  slug: block.slug,
-                  subtitle: block.subtitle,
-                  titleColor: block.titleColor,
-                  showWaveMarker: block.showWaveMarker,
-                  linkedChapters: linkedChapters,
-                };
-              }
-              if(block.itemType.apiKey === 'speakers_block') {
-                return {
-                  _modelApiKey: block.itemType.apiKey,
-                  id: block.id,
-                  showWaveMarker: block.showWaveMarker,
-                  subtitle: block.subtitle,
-                  title: block.title,
-                  slug: block.slug,
-                  titleColor: block.titleColor,
-                  speakers: block.speakers.map(speaker => {
-                    return {
-                      id: speaker.id,
-                      name: speaker.name,
-                      organization: speaker.organization,
-                      subject: speaker.subject,
-                      subjectLabel: speaker.subjectLabel,
-                      imageUrl: speaker.image.url(),
-                    };
-                  }),
-                };
-              }
-              if(block.itemType.apiKey === 'schedule_block') {
-                return {
-                  _modelApiKey: block.itemType.apiKey,
-                  id: block.id,
-                  slug: block.slug,
-                  timezone: block.timezone,
-                  timezoneComment: block.timezoneComment,
-                  topicLabel: block.topicLabel,
-                  scheduleLabel: block.scheduleLabel,
-                  nowLabel: block.nowLabel,
-                  descriptionLabel: block.descriptionLabel,
-                  speakersLabel: block.speakersLabel,
-                  eventDays: block.eventDays.map(eventDay => {
-                    return {
-                      id: eventDay.id,
-                      date: eventDay.date,
-                      scheduleItems: eventDay.scheduleItems.map(scheduleItem => {
-                        return {
-                          id: scheduleItem.id,
-                          title: scheduleItem.title,
-                          topic: scheduleItem.topic,
-                          startTime: scheduleItem.startTime,
-                          endTime: scheduleItem.endTime,
-                          description: scheduleItem.description,
-                          watchLabel: scheduleItem.watchLabel,
-                          watchUrl: scheduleItem.watchUrl,
-                          speakers: scheduleItem.speakers.map(speaker => {
-                            return {
-                              id: speaker.id,
-                              name: speaker.name,
-                            };
-                          }),
-                        };
-                      }),
-                    };
-                  }),
-                };
-              }
+              return {
+                backgroundColor,
+                showBottomWave,
+                showTopWave,
+                blocks: sectionBlocks,
+              };
             });
 
-            return {
-              backgroundColor,
-              showBottomWave,
-              showTopWave,
-              blocks: sectionBlocks,
+            const content = {
+              slug,
+              name,
+              eventWebsite,
+              visuallyHideName,
+              displayDate,
+              image,
+              bannerIcon,
+              bannerTagline,
+              allLocales: i18n.availableLocales,
+              sections,
             };
-          });
 
-          return {
-            slug,
-            name,
-            eventWebsite,
-            visuallyHideName,
-            displayDate,
-            image,
-            bannerIcon,
-            bannerTagline,
-            allLocales: i18n.availableLocales,
-            sections,
-          };
+            root.createDataFile(`static/data/events/${locale}/${page.slug}.json`, 'json', content);
+          }
         });
-
-      for (const page of internalEventPages) {
-        root.createDataFile(`static/data/events/${locale}/${page.slug}.json`, 'json', page);
-      }
     });
   });
 }

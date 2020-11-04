@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import seoHead from '~/lib/seo-head';
 import { mapState } from 'vuex';
 import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter';
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader';
@@ -42,15 +43,19 @@ export default {
     store.commit('enableGlobePositionRight');
   },
   async asyncData (context) {
-    const { pages, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params);
-    const chapter = { path, slug, title, previousChapter, nextChapter, cover, related };
+    const { pages, seo, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params);
+    const chapter = { seo, path, slug, title, previousChapter, nextChapter, cover, related };
     return {
+      seo,
       chapter,
       pages,
       path,
       slug,
       title,
     };
+  },
+  head() {
+    return seoHead(this.seo, this.$route.path);
   },
   data () {
     return {

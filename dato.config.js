@@ -170,7 +170,18 @@ function generateKeywords (dato, root, i18n) {
     })
     .flat(), 'slug');
 
-  root.createDataFile(`static/data/keywords/index.json`, 'json', keywords);
+  const seo = {
+    title: dato.keywordOverview.seo.value.title,
+    description: dato.keywordOverview.seo.value.description,
+    image: dato.keywordOverview.seo.value.image ? dato.keywordOverview.seo.value.image.path : null,
+  };
+
+  const keywordsPage = {
+    seo,
+    keywords,
+  };
+
+  root.createDataFile(`static/data/keywords/index.json`, 'json', keywordsPage);
 }
 
 function generateMarkers (dato, root, i18n) {
@@ -235,11 +246,21 @@ function generateAppData (dato, root, i18n) {
     return {
       title: filter.title,
       slug: filter.slug,
+      seo: {
+        title: filter.seo.value.title,
+        description: filter.seo.value.description,
+        image: filter.seo.value.image ? filter.seo.value.image.path : null,
+      },
       description: renderMarkedContent(filter.body),
       filterItems: filter.filterItems.map(filterItem => {
         return {
           title: filterItem.title,
           slug: filterItem.slug,
+          seo: {
+            title: filterItem.seo.value.title,
+            description: filterItem.seo.value.description,
+            image: filterItem.seo.value.image ? filterItem.seo.value.image.path : null,
+          },
           description: renderMarkedContent(filterItem.body),
           feature: filterItem.feature ? {
             title: filterItem.feature.title,
@@ -315,10 +336,15 @@ function generateStaticPages (dato, root, i18n) {
   const staticPages = dato.staticPages
     .filter(filterPublished)
     .map(page => {
-      const { body, images, slug, title, video } = page;
+      const { body, images, seo, slug, title, video } = page;
       return {
         body: renderMarkedContent(body),
         images,
+        seo: {
+          title: seo.value.title,
+          description: seo.value.description,
+          image: seo.value.image ? seo.value.image.path : null,
+        },
         slug,
         title,
         video,
@@ -339,6 +365,12 @@ function generateStaticPages (dato, root, i18n) {
  * @param {i18n} i18n
  */
 function generateEventPages (dato, root, i18n) {
+  const seo = {
+    title: dato.event.seo.value.title,
+    description: dato.event.seo.value.description,
+    image: dato.event.seo.value.image ? dato.event.seo.value.image.path : null,
+  };
+
   const externalEvents = dato.externalEvents
     .filter(filterPublished)
     .map(event => {
@@ -391,6 +423,7 @@ function generateEventPages (dato, root, i18n) {
     });
 
   const eventPageIndex = {
+    seo,
     allExternalEvents: externalEvents,
     allInternalEvents: internalEvents,
   };
@@ -404,7 +437,13 @@ function generateEventPages (dato, root, i18n) {
       dato.internalEvents
         .filter(filterPublished)
         .map(page => {
-          const { slug, name, eventWebsite, visuallyHideName, displayDate, image, bannerIcon, bannerTagline } = page;
+          const { slug, seo, name, eventWebsite, visuallyHideName, displayDate, image, bannerIcon, bannerTagline } = page;
+
+          const seoContent = seo ? {
+            title: seo.value.title,
+            description: seo.value.description,
+            image: seo.value.image ? seo.value.image.path : null,
+          } : null;
 
           // If name is empty, there is no content for an event in this language, so skip generating a json file
           if(name) {
@@ -587,6 +626,7 @@ function generateEventPages (dato, root, i18n) {
 
             const content = {
               slug,
+              seo: seoContent,
               name,
               eventWebsite,
               visuallyHideName,
@@ -621,6 +661,11 @@ function generateEventChapter(chapter, event, root, i18n) {
       const page = {
         title: chapter.title,
         cover: chapter.cover.url(),
+        seo: {
+          title: chapter.seo.value.title,
+          description: chapter.seo.value.description,
+          image: chapter.seo.value.image ? chapter.seo.value.image.path : null,
+        },
         pages: chapter.pages.map(page => {
           const { slug, title, storyteller, body, video, videoChina, mapboxStyle, creditsTitle, creditsBody } = page;
 
@@ -748,6 +793,11 @@ function getChapters (dato, bookRef) {
     .filter(filterPublished)
     .map(chapter => {
       const { title, slug, chapterType, createdAt, updatedAt, cover } = chapter;
+      const seo = {
+        title: chapter.seo.value.title,
+        description: chapter.seo.value.description,
+        image: chapter.seo.value.image ? chapter.seo.value.image.path : null,
+      };
       const parentBook = bookRef || getParent(dato, chapter);
       if (!parentBook) {
         console.info(`Skipped chapter ${title}, no parent book found`);
@@ -794,6 +844,7 @@ function getChapters (dato, bookRef) {
           .map(({ pages, parent, ...chapter }) => chapter);
 
       return {
+        seo,
         book,
         influences,
         goals,
@@ -951,14 +1002,27 @@ function generateFeaturePages (dato, root, i18n) {
   for (const page of featurePages) {
     root.createDataFile(`static/data/features/${page.slug}.json`, 'json', page);
   }
-  const staticPageIndex = featurePages.map(page => {
+
+  const seo = {
+    title: dato.featureOverview.seo.value.title,
+    description: dato.featureOverview.seo.value.description,
+    image: dato.featureOverview.seo.value.image ? dato.featureOverview.seo.value.image.path : null,
+  };
+
+  const allFeaturePages = featurePages.map(page => {
     return {
       path: `/${page.slug}`,
       title: page.title,
       iconUrl: page.iconUrl,
     };
   });
-  root.createDataFile('static/data/features/index.json', 'json', staticPageIndex);
+
+  const featurePage = {
+    seo,
+    allFeaturePages,
+  };
+
+  root.createDataFile('static/data/features/index.json', 'json', featurePage);
 }
 
 /**
@@ -977,7 +1041,14 @@ function generateNewsPages (dato, root, i18n) {
   for (const page of newsPages) {
     root.createDataFile(`static/data/news/${page.slug}.json`, 'json', page);
   }
-  const staticPageIndex = newsPages.slice(0).reverse().map(page => {
+
+  const seo = {
+    title: dato.news.seo.value.title,
+    description: dato.news.seo.value.description,
+    image: dato.news.seo.value.image ? dato.news.seo.value.image.path : null,
+  };
+
+  const allNewsArticles = newsPages.slice(0).reverse().map(page => {
     return {
       slug: page.slug,
       title: page.title,
@@ -985,7 +1056,13 @@ function generateNewsPages (dato, root, i18n) {
       heroImage: `${page.heroImage.imgixHost}${page.heroImage.value.path}`,
     };
   });
-  root.createDataFile('static/data/news/index.json', 'json', staticPageIndex);
+
+  const newsPage = {
+    seo,
+    allNewsArticles,
+  };
+
+  root.createDataFile('static/data/news/index.json', 'json', newsPage);
 }
 
 function generateContentPage (chapters, page) {
@@ -1098,6 +1175,11 @@ function generateContentPage (chapters, page) {
 
   return {
     slug,
+    seo: page.seo ? {
+      title: page.seo.value.title,
+      description: page.seo.value.description,
+      image: page.seo.value.image ? page.seo.value.image.path : null,
+    } : null,
     title,
     iconUrl: icon ? `${icon.imgixHost}${icon.value.path}` : null,
     date: date ? date : null,

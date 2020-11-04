@@ -7,7 +7,7 @@
 
       <ul class="features__content">
         <li
-          v-for="feature in allFeatures"
+          v-for="feature in allFeaturePages"
           :key="feature.slug"
           class="features__content-item"
         >
@@ -27,11 +27,16 @@
 </template>
 
 <script>
+  import seoHead from '~/lib/seo-head';
+
   export default {
     layout: 'static-page-dark',
     async asyncData({ params }) {
       const data = await import(`~/static/data/features/index.json`);
-      return { allFeatures: data.default };
+      return data.default;
+    },
+    head() {
+      return seoHead(this.seo, this.$route.path);
     },
   };
 </script>

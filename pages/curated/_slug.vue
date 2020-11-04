@@ -13,6 +13,7 @@
 </template>
 
 <script>
+  import seoHead from '~/lib/seo-head';
   import PageHeader from '~/components/page-header/PageHeader';
   import SectionBlocks from '~/components/section-blocks/SectionBlocks';
 
@@ -25,6 +26,9 @@
     async asyncData({ params }) {
       const data = await import(`~/static/data/features/${params.slug}.json`);
       return data.default;
+    },
+    head() {
+      return seoHead(this.seo, this.$route.path);
     },
   };
 </script>

@@ -961,14 +961,27 @@ function generateFeaturePages (dato, root, i18n) {
   for (const page of featurePages) {
     root.createDataFile(`static/data/features/${page.slug}.json`, 'json', page);
   }
-  const staticPageIndex = featurePages.map(page => {
+
+  const seo = {
+    title: dato.featureOverview.seo.value.title,
+    description: dato.featureOverview.seo.value.description,
+    image: dato.featureOverview.seo.value.image ? dato.featureOverview.seo.value.image.path : null,
+  };
+
+  const allFeaturePages = featurePages.map(page => {
     return {
       path: `/${page.slug}`,
       title: page.title,
       iconUrl: page.iconUrl,
     };
   });
-  root.createDataFile('static/data/features/index.json', 'json', staticPageIndex);
+
+  const featurePage = {
+    seo,
+    allFeaturePages,
+  };
+
+  root.createDataFile('static/data/features/index.json', 'json', featurePage);
 }
 
 /**

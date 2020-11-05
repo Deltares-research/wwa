@@ -46,25 +46,16 @@
           :icon="link.icon"
         />
       </li>
-    </ul>
-
-    <ul
-      v-if="goals && goals.length"
-      class="page-body-title__goals list--inline"
-    >
       <li
         v-for="link in goals"
         :key="link.slug"
+        class="page-body-title__tag"
       >
-        <nuxt-link
-          :to="link.path"
-        >
-          <img
-            :src="`${link.icon.imgixHost}${link.icon.value.path}?auto=compress,format&w=100`"
-            :alt="link.title"
-            class="page-body-title__goal-icon"
-          >
-        </nuxt-link>
+        <filter-tag
+          :title="link.title"
+          :url="link.path"
+          :icon="link.icon"
+        />
       </li>
     </ul>
 
@@ -132,21 +123,17 @@ export default {
   .page-body-title__tags {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: .5rem;
-  }
-
-  .page-body-title__tag {
-    margin-bottom: .5rem;
-  }
-
-  .page-body-title__goals {
     margin-bottom: .75rem;
   }
 
   @media (--md-viewport) {
-    .page-body-title__goals {
+    .page-body-title__tags {
       margin-bottom: 1.5rem;
     }
+  }
+
+  .page-body-title__tag {
+    margin-bottom: .5rem;
   }
 
   .page-body-title__goal-icon {

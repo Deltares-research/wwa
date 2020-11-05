@@ -265,6 +265,7 @@
     position: relative;
     justify-content: space-between;
     display: flex;
+    margin-bottom: .5rem;
     padding: 1rem var(--gradient-size);
     overflow: auto;
     scrollbar-width: none;
@@ -278,15 +279,18 @@
   li.globe-navigation__tab {
     flex-shrink: 0;
     margin-right: 2rem;
+  }
+
+  li.globe-navigation__tab:last-child {
+    padding-right: 1rem;
+  }
+
+  li.globe-navigation__tab a {
     padding-bottom: .25rem;
     border-bottom: 2px solid transparent;
   }
 
-  li.globe-navigation__tab:last-child {
-    padding-right: var(--gradient-size);
-  }
-
-  li.globe-navigation__tab--selected {
+  li.globe-navigation__tab--selected a {
     border-bottom: 2px solid var(--blue-tertiary);
   }
 

@@ -181,6 +181,10 @@ export default {
   }
 }
 
+.chapter__page {
+  z-index: 1;
+}
+
 [data-scrolled-to-top-trigger] {
   display: block;
   position: absolute;

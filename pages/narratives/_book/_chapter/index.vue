@@ -153,20 +153,26 @@ export default {
 <style>
 .chapter-column {
   margin-top: calc(-1 * var(--globe-spacing-default));
-  padding-top: 60px;
+  padding-top: var(--navigation-height);
   z-index: 0;
   width: 100vw;
   background-color: var(--black-primary);
   overflow: hidden;
 }
 
-.chapter-column--tall {
-  margin-top: calc(-1 * var(--globe-spacing-tall) - 0.8vh);
+@media (min-height: 350px) {
+  .chapter-column {
+    padding-top: var(--navigation-height--medium)
+  }
 }
 
-@media (--sm-viewport) {
+.chapter-column--tall {
+  margin-top: calc(-1 * var(--globe-spacing-tall));
+}
+
+@media (--sm-viewport) and (min-height: 350px) {
   .chapter-column {
-    padding-top: 90px;
+    padding-top: var(--navigation-height--big);
     margin-top: calc(-1 * var(--globe-spacing-default--desktop));
   }
 

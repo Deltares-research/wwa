@@ -212,7 +212,7 @@
     }
 
     .section-block-speakers div.swiper-button-next {
-      left: calc(32px + 1rem);
+      left: 130px;
     }
   }
 

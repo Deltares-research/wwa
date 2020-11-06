@@ -1,42 +1,59 @@
 <template>
   <div>
     <div class="section-block-schedule-wide">
-      <div
-        class="section-block-schedule-wide__tablist"
+      <ul
         role="tablist"
+        class="section-block-schedule-wide__tablist list--inline"
       >
-        <a
-          v-for="eventDay in parsedEventDays"
+        <li
+          v-for="(eventDay, index) in parsedEventDays"
           :key="`tab-wide-${eventDay.id}`"
-          class="section-block-schedule-wide__tablink"
-          role="tab"
-          href="#"
-          :id="`tab-wide-${eventDay.id}`"
-          :aria-controls="`section-wide-${eventDay.id}`"
-          :aria-selected="eventDay.id === activeEventDayId"
-          @click.prevent="selectedEventDayId = eventDay.id"
+          role="presentation"
         >
-          <time :datetime="eventDay.date">
-            {{
-              new Date(eventDay.parsedDate).toLocaleDateString(
-                language,
-                { weekday: 'short', month: 'long', day: 'numeric' }
-              )
-            }}
-          </time>
-        </a>
-      </div>
+          <a
+            :id="`tab-wide-${eventDay.id}`"
+            :href="`#article${index}`"
+            role="tab"
+            :aria-selected="currentTab === index"
+            :tabindex="currentTab != index ? '-1' : '0'"
+            @click.prevent="selectTab(index)"
+            @keydown="handleKey"
+            ref="scheduleTab"
+            class="section-block-schedule-wide__tablink"
+            :class="{ 'section-block-schedule-wide__tablink--selected': currentTab === index }"
+          >
+            <time :datetime="eventDay.date">
+              {{
+                new Date(eventDay.parsedDate).toLocaleDateString(
+                  language,
+                  { weekday: 'short', month: 'long', day: 'numeric' }
+                )
+              }}
+            </time>
+          </a>
+        </li>
+      </ul>
 
       <p>{{ displayTimezone }}</p>
 
       <section
-        v-for="eventDay in parsedEventDays"
+        v-for="(eventDay, index) in parsedEventDays"
         :key="`section-wide-${eventDay.id}`"
+        ref="scheduleContent"
         role="tabpanel"
-        :id="`section-wide-${eventDay.id}`"
+        tabindex="-1"
         :aria-labelledby="`tab-wide-${eventDay.id}`"
-        :hidden="eventDay.id !== activeEventDayId"
+        :hidden="currentTab != index"
+        :id="`article${index}`"
       >
+        <h4 class="sr-only">
+          {{
+            new Date(eventDay.parsedDate).toLocaleDateString(
+              language,
+              { weekday: 'short', month: 'long', day: 'numeric' }
+            )
+          }}
+        </h4>
         <ul :key="`content-${eventDay.id}`">
           <li
             v-for="scheduleItem in eventDay.scheduleItems"
@@ -125,15 +142,15 @@
     <div class="section-block-schedule">
       <select
         class="section-block-schedule__tablist"
-        @change="(event) => selectedEventDayId = event.target.value"
+        @change="(event) => currentTab = event.target.value"
       >
         <option
-          v-for="eventDay in parsedEventDays"
+          v-for="(eventDay, index) in parsedEventDays"
           :key="eventDay.id"
-          :value="eventDay.id"
+          :value="index"
           :id="`tab-${eventDay.id}`"
           :aria-controls="`section-${eventDay.id}`"
-          :selected="eventDay.id === activeEventDayId"
+          :selected="currentTab === index"
         >
           {{
             new Date(eventDay.parsedDate).toLocaleDateString(
@@ -149,11 +166,11 @@
       </p>
 
       <section
-        v-for="eventDay in parsedEventDays"
+        v-for="(eventDay, index) in parsedEventDays"
         :key="`section-${eventDay.id}`"
         :id="`section-${eventDay.id}`"
         :aria-labelledby="`tab-${eventDay.id}`"
-        :hidden="eventDay.id !== activeEventDayId"
+        :hidden="currentTab != index"
       >
         <ul
           :key="`content-${eventDay.id}`"
@@ -269,7 +286,7 @@
       return {
         currentDate: new Date(),
         interval: null,
-        selectedEventDayId: '',
+        currentTab: 0,
         displayTimezone: `${this.timezoneComment} UTC ${this.timezone.substr(0,3)}`,
         language: this.$route.params.language || 'en',
       };
@@ -295,11 +312,27 @@
           currentDate.toDateString() === new Date(eventDay.date).toDateString(),
         );
       },
-      activeEventDayId({ eventDays, eventDayToday, selectedEventDayId }) {
-        if (selectedEventDayId)
-          return selectedEventDayId;
+    },
+    methods: {
+      selectTab (index) {
+        this.currentTab = index;
+      },
+      handleKey (event) {
+        const tabs = this.$refs.scheduleTab;
 
-        return eventDayToday ? eventDayToday.id : eventDays[0].id;
+        if(event.which === 37) {
+          if(this.currentTab > 0 ) {
+            this.currentTab = this.currentTab - 1;
+            tabs[this.currentTab].focus();
+          }
+        } else if (event.which === 39) {
+          if(this.currentTab < this.parsedEventDays.length - 1) {
+            this.currentTab = this.currentTab + 1;
+            tabs[this.currentTab].focus();
+          }
+        } else if (event.which === 40) {
+          this.$refs.scheduleContent[this.currentTab].focus();
+        }
       },
     },
     mounted() {
@@ -352,6 +385,7 @@
   }
 
   .section-block-schedule-wide__tablink {
+    display: block;
     padding-bottom: 0.2rem;
     margin-top: 1.2rem;
     margin-right: 1.2rem;
@@ -363,7 +397,7 @@
     text-decoration: none;
   }
 
-  .section-block-schedule-wide__tablink[aria-selected] {
+  .section-block-schedule-wide__tablink--selected {
     border-bottom: 2px solid var(--blue-primary);
   }
 

@@ -47,6 +47,30 @@ div.swiper-button-next {
     border-radius: 50%;
   }
 
+  div.swiper-button-prev {
+    left: 0;
+  }
+
+  div.swiper-button-next {
+    left: 120px;
+  }
+
+  div.swiper-button-prev:before,
+  div.swiper-button-next:before {
+    display: block;
+    position: absolute;
+    left: 40px;
+    color: var(--white);
+  }
+
+  div.swiper-button-prev:before {
+    content: 'previous';
+  }
+
+  div.swiper-button-next:before {
+    content: 'next';
+  }
+
   div.swiper-button-prev:after,
   div.swiper-button-next:after {
     content: '';
@@ -54,14 +78,6 @@ div.swiper-button-next {
     height: 50%;
     background-repeat: no-repeat;
     background-position: center;
-  }
-
-  div.swiper-button-prev {
-    left: 0;
-  }
-
-  div.swiper-button-next {
-    left: calc(32px + .5rem);
   }
 
   div.swiper-button-prev:after {

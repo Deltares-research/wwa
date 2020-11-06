@@ -35,7 +35,7 @@
       >
         <img
           :src="`${logo.url}?h=100&auto=compress,format`"
-          :alt="logo.alt"
+          :alt="logo.alt ? logo.alt : ''"
           class="section-block-colofon__logo"
           loading="lazy"
         >

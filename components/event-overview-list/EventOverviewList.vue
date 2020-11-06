@@ -35,6 +35,7 @@
       tabindex="-1"
       :aria-labelledby="`tab${index}`"
       :hidden="currentTab != index"
+      :id="`article${index}`"
     >
       <h1 class="sr-only">
         {{ tabLabels[index] }}
@@ -107,8 +108,8 @@
       return {
         currentTab: 0,
         tabLabels: [
-          'Past events',
           'Future events',
+          'Past events',
         ],
         today: '',
       };
@@ -131,7 +132,6 @@
             tabs[this.currentTab].focus();
           }
         } else if (event.which === 40) {
-          console.log('down');
           this.$refs.eventContent[this.currentTab].focus();
         }
       },

@@ -180,8 +180,8 @@
             v-for="scheduleItem in eventDay.scheduleItems"
             :key="scheduleItem.id"
           >
-            <details class="section-block-schedule__item">
-              <summary class="section-block-schedule__summary">
+            <div class="section-block-schedule__item">
+              <div class="section-block-schedule__summary">
                 <span
                   v-if="scheduleItem.isNow"
                   class="section-block-schedule__now-notice"
@@ -220,24 +220,34 @@
                       <span class="section-block-schedule__copy-title">{{ scheduleItem.title }}</span>
                       <span>{{ scheduleItem.topic }}</span>
                     </span>
-                    <img
-                      class="section-block-schedule__icon-closed"
-                      src="~/assets/plus-icon.svg"
-                      width="16"
-                      height="16"
-                      alt=""
+
+                    <button
+                      @click="toggleEventDay(`${eventDay.id}-${scheduleItem.id}`)"
+                      :aria-expanded="openTabs.includes(`${eventDay.id}-${scheduleItem.id}`) ? 'true' : 'false'"
+                      class="section-block-schedule__button"
+                      :class="{
+                        'section-block-schedule__button--open': !openTabs.includes(`${eventDay.id}-${scheduleItem.id}`),
+                        'section-block-schedule__button--closed': openTabs.includes(`${eventDay.id}-${scheduleItem.id}`)
+                      }"
                     >
-                    <img
-                      class="section-block-schedule__icon-open"
-                      src="~/assets/min-icon.svg"
-                      width="16"
-                      height="2"
-                      alt=""
-                    >
+                      <span
+                        v-if="openTabs.includes(`${eventDay.id}-${scheduleItem.id}`)"
+                        class="sr-only"
+                      >
+                        close event item
+                      </span>
+                      <span
+                        v-if="!openTabs.includes(`${eventDay.id}-${scheduleItem.id}`)"
+                        class="sr-only"
+                      >
+                        open event item
+                      </span>
+                    </button>
                   </span>
                 </span>
-              </summary>
+              </div>
               <div
+                :hidden="!openTabs.includes(`${eventDay.id}-${scheduleItem.id}`)"
                 class="section-block-schedule__description"
                 :class="{
                   'section-block-schedule__body--active': scheduleItem.isNow,
@@ -263,7 +273,7 @@
                   </li>
                 </ul>
               </div>
-            </details>
+            </div>
           </li>
         </ul>
       </section>
@@ -287,6 +297,7 @@
         currentDate: new Date(),
         interval: null,
         currentTab: 0,
+        openTabs: [],
         displayTimezone: `${this.timezoneComment} UTC ${this.timezone.substr(0,3)}`,
         language: this.$route.params.language || 'en',
       };
@@ -332,6 +343,14 @@
           }
         } else if (event.which === 40) {
           this.$refs.scheduleContent[this.currentTab].focus();
+        }
+      },
+      toggleEventDay (id) {
+        if(this.openTabs.indexOf(id) !== -1) {
+          const index = this.openTabs.indexOf(id);
+          this.openTabs.splice(index, 1);
+        } else {
+          this.openTabs.push(id);
         }
       },
     },
@@ -538,23 +557,6 @@
   .section-block-schedule__summary {
     display: flex;
     flex-direction: column;
-    outline: none;
-  }
-
-  .section-block-schedule__summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .section-block-schedule__icon-open {
-    display: none;
-  }
-
-  .section-block-schedule__item[open] .section-block-schedule__icon-closed {
-    display: none;
-  }
-
-  .section-block-schedule__item[open] .section-block-schedule__icon-open {
-    display: block;
   }
 
   .section-block-schedule__time {
@@ -570,6 +572,25 @@
 
   .section-block-schedule__copy-title {
     font-weight: bold;
+  }
+
+  .section-block-schedule__button {
+    appearance: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .section-block-schedule__button--open {
+    background-image: url('~assets/plus-icon.svg');
+  }
+
+  .section-block-schedule__button--closed {
+    background-image: url('~assets/min-icon.svg');
   }
 
   .section-block-schedule__description {

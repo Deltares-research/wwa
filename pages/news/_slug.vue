@@ -6,7 +6,10 @@
       :hero-image-url="`${heroImage.imgixHost}${heroImage.value.path}`"
     />
 
-    <section-blocks :sections="sections" />
+    <section-blocks
+      :sections="sections"
+      :show-heading-level-top="true"
+    />
   </article>
 </template>
 

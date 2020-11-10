@@ -1,26 +1,27 @@
-<template functional>
+<template>
   <div>
     <img
-      v-if="props.showWaveMarker"
+      v-if="showWaveMarker"
       src="~/assets/event-title-wave.svg"
       width="111"
       height="35"
       alt=""
       class="animator__slide-up section-block-colofon__icon"
     >
-    <h3
+    <component
+      :is="showHeadingLevelTop ? 'h2' : 'h3'"
       class="animator__slide-up section-block-colofon__title"
       :class="{
-        'section-block-colofon__title--orange': props.titleColor === 'orange',
-        'section-block-colofon__title--blue': props.titleColor === 'blue',
+        'section-block-colofon__title--orange': titleColor === 'orange',
+        'section-block-colofon__title--blue': titleColor === 'blue',
       }"
       animator-stagger
     >
-      {{ props.title }}
-    </h3>
+      {{ title }}
+    </component>
     <div
       class="animator__slide-up section-block-colofon__copy"
-      v-html="props.body"
+      v-html="body"
       animator-stagger
     />
 
@@ -29,7 +30,7 @@
       animator-stagger
     >
       <li
-        v-for="logo in props.logos"
+        v-for="logo in logos"
         :key="logo.id"
         class="section-block-colofon__logo-item"
       >
@@ -52,6 +53,7 @@
       titleColor: String,
       body: String,
       logos: Array,
+      showHeadingLevelTop: Boolean,
     },
   };
 </script>

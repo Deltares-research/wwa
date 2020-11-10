@@ -153,7 +153,7 @@ export default {
 <style>
 .chapter-column {
   margin-top: calc(-1 * var(--globe-spacing-default));
-  padding-top: 60px;
+  padding-top: var(--main-menu-height);
   z-index: 0;
   width: 100vw;
   background-color: var(--black-primary);
@@ -161,12 +161,12 @@ export default {
 }
 
 .chapter-column--tall {
-  margin-top: calc(-1 * var(--globe-spacing-tall) - 0.8vh);
+  margin-top: calc(-1 * var(--globe-spacing-tall));
 }
 
-@media (--sm-viewport) {
+@media (--sm-viewport) and (min-height: 400px) {
   .chapter-column {
-    padding-top: 90px;
+    padding-top: var(--main-menu-height--tall);
     margin-top: calc(-1 * var(--globe-spacing-default--desktop));
   }
 

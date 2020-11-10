@@ -14,9 +14,6 @@
   --globe-spacing-tall: 90vh;
   --globe-spacing-tall--desktop: 85vh;
   --wwa-column-width: 70rem;
-  --navigation-height: 43px;
-  --navigation-height--medium: 60px;
-  --navigation-height--big: 90px;
 }
 
 @custom-media --sm-viewport (min-width: 37.5rem);

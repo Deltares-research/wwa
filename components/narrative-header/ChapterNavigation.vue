@@ -86,7 +86,6 @@
       handleScroll () {
         const navigationTop = this.$el.getBoundingClientRect().top;
         this.isFixed = navigationTop < this.menuHeight;
-        console.log('navigationTop', navigationTop);
       },
       toggleNavigation () {
         this.showNavigation = !this.showNavigation;
@@ -106,21 +105,12 @@
         window.addEventListener('scroll', this.throttleFunction, 1000);
       } else {
         this.handleScroll();
-        this.menuHeight = 43;
         window.addEventListener('scroll', this.throttleFunction, 1000);
 
-        const mediaQuery = window.matchMedia('(min-height: 350px)');
-        mediaQuery.matches ? this.menuHeight = 60 : null;
+        const mediaQuery = window.matchMedia('(min-width: 37.5rem)');
+        mediaQuery.matches ? this.menuHeight = 90 : this.menuHeight = 52;
         mediaQuery.addListener(event => {
-          console.log('(min-height: 350px)');
-          event.matches ? this.menuHeight = 60 : null;
-        });
-
-        const mediaQueryM = window.matchMedia('(min-width: 37.5rem) and (min-height: 350px)');
-        mediaQueryM.matches ? this.menuHeight = 90 : null;
-        mediaQueryM.addListener(event => {
-          console.log('(min-width: 37.5rem) and (min-height: 350px)');
-          event.matches ? this.menuHeight = 90 : null;
+          event.matches ? this.menuHeight = 90 : this.menuHeight = 52;
         });
       }
     },
@@ -132,19 +122,12 @@
 
 <style>
   :root {
-    --chapter-navigation-height: 44px;
-    --chapter-navigation-height--big: 66px;
+    --navigation-height: 66px;
   }
 
   .chapter-navigation {
     position: relative;
-    height: var(--chapter-navigation-height);
-  }
-
-  @media (min-height: 350px) {
-    .chapter-navigation {
-      height: var(--chapter-navigation-height--big);
-    }
+    height: var(--navigation-height);
   }
 
   .chapter-navigation__body {
@@ -153,13 +136,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 1rem;
-    height: var(--chapter-navigation-height);
-  }
-
-  @media (min-height: 350px) {
-    .chapter-navigation__body {
-      height: var(--chapter-navigation-height--big);
-    }
+    height: var(--navigation-height);
   }
 
   .chapter-navigation__body:after {
@@ -171,7 +148,6 @@
     width: 100%;
     height: 100%;
     background: var(--blue-primary);
-    background: blue;
     opacity: 0;
     transition: opacity .1s ease-out;
   }
@@ -186,20 +162,8 @@
 
   .chapter-navigation__body--fixed {
     position: fixed;
-    top: var(--navigation-height);
+    top: 57px;
     width: 100%;
-  }
-
-  @media (min-height: 350px) {
-    .chapter-navigation__body--fixed {
-      top: var(--navigation-height--medium)
-    }
-  }
-
-  @media (--sm-viewport) and (min-height: 350px) {
-    .chapter-navigation__body--fixed {
-      top: var(--navigation-height--big);
-    }
   }
 
   .chapter-navigation__body--event-chapter.chapter-navigation__body--fixed {
@@ -208,6 +172,10 @@
   }
 
   @media (--sm-viewport) {
+    .chapter-navigation__body--fixed {
+      top: 90px;
+    }
+
     .chapter-navigation__body--event-chapter.chapter-navigation__body--fixed {
       width: calc(100% - 2rem);
     }

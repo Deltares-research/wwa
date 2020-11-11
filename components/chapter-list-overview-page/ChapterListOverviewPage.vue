@@ -37,17 +37,24 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex';
+  import seoHead from '~/lib/seo-head';
+  import { mapState } from 'vuex';
   import ChapterList from '~/components/chapter-list/ChapterList';
 
   export default {
     layout: 'globe',
+    head() {
+      return seoHead(this.activeFilterItemSeo, this.$route.path);
+    },
     scrollToTop: false,
     components: { ChapterList },
     computed: {
       ...mapState(['filters', 'chapters', 'availableFilterItems']),
       activeFilterSlug () {
         return this.$route.path.split('/')[1] ? this.$route.path.split('/')[1] : this.filters[0].slug;
+      },
+      activeFilterItemSeo () {
+        return this.filters.find(filter => filter.slug === this.activeFilterSlug).seo;
       },
       chaptersGroupedByFilter() {
         const availableFilterItemSlugs =  this.availableFilterItems.map(filterItem => filterItem.slug);

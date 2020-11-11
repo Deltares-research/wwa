@@ -17,7 +17,7 @@
       <button
         v-else
         type="button"
-        class="button__back"
+        class="chapter-navigation__button button__back"
         @click="goBack"
       >
         Back
@@ -107,10 +107,12 @@
         this.handleScroll();
         window.addEventListener('scroll', this.throttleFunction, 1000);
 
-        const mediaQuery = window.matchMedia('(min-width: 37.5rem)');
-        mediaQuery.matches ? this.menuHeight = 90 : this.menuHeight = 52;
+        const mediaQuery = window.matchMedia('(min-width: 37.5rem) and (min-height: 400px)');
+
+        // See --main-menu-height and --main-menu-height--tall CSS variables for correct values
+        mediaQuery.matches ? this.menuHeight = 90 : this.menuHeight = 45;
         mediaQuery.addListener(event => {
-          event.matches ? this.menuHeight = 90 : this.menuHeight = 52;
+          event.matches ? this.menuHeight = 90 : this.menuHeight = 45;
         });
       }
     },
@@ -121,13 +123,9 @@
 </script>
 
 <style>
-  :root {
-    --navigation-height: 66px;
-  }
-
   .chapter-navigation {
     position: relative;
-    height: var(--navigation-height);
+    height: var(--chapter-navigation-height);
   }
 
   .chapter-navigation__body {
@@ -136,7 +134,14 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 1rem;
-    height: var(--navigation-height);
+    height: var(--chapter-navigation-height);
+  }
+
+  @media (--sm-viewport) and (--vertical-viewport) {
+    .chapter-navigation,
+    .chapter-navigation__body {
+      height: var(--chapter-navigation-height--tall);
+    }
   }
 
   .chapter-navigation__body:after {
@@ -162,7 +167,7 @@
 
   .chapter-navigation__body--fixed {
     position: fixed;
-    top: 57px;
+    top: var(--main-menu-height);
     width: 100%;
   }
 
@@ -171,9 +176,9 @@
     top: 0;
   }
 
-  @media (--sm-viewport) {
+  @media (--sm-viewport) and (--vertical-viewport) {
     .chapter-navigation__body--fixed {
-      top: 90px;
+      top: var(--main-menu-height--tall);
     }
 
     .chapter-navigation__body--event-chapter.chapter-navigation__body--fixed {
@@ -206,11 +211,25 @@
     display: none;
   }
 
+  .chapter-navigation__button {
+    padding-top: .45rem;
+    padding-bottom: .5rem;
+    font-size: .9rem;
+  }
+
+  @media (--sm-viewport) and (--vertical-viewport) {
+    .chapter-navigation__button {
+      padding-top: .5rem;
+      padding-bottom: .6rem;
+      font-size: 1rem;
+    }
+  }
+
   .chapter-navigation__select {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: .5rem .5rem .6rem .75rem;
+    padding: .25rem .5rem .26rem .75rem;
     max-width: 160px;
     appearance: none;
     background-color: var(--blue-primary);
@@ -218,10 +237,18 @@
     border: none;
     border-radius: 5px;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: .9rem;
     font-weight: 500;
     color: var(--white);
     cursor: pointer;
+  }
+
+  @media (--sm-viewport) and (--vertical-viewport) {
+    .chapter-navigation__select {
+      padding-top: .5rem;
+      padding-bottom: .6rem;
+      font-size: 1rem;
+    }
   }
 
   .chapter-navigation__body--fixed .chapter-navigation__select {

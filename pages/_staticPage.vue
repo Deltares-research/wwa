@@ -37,15 +37,19 @@
 </template>
 
 <script>
+import seoHead from '~/lib/seo-head';
 import loadData from '~/lib/load-data';
 import lazyImage from '~/components/lazy-media/LazyMedia';
 
 export default {
   layout: 'static-page-light',
   async asyncData (context) {
-    const { title, body, images, video } = await loadData(context, context.params);
+    const { title, seo, body, images, video } = await loadData(context, context.params);
 
-    return { title, body, images, video };
+    return { title, seo, body, images, video };
+  },
+  head() {
+    return seoHead(this.seo, this.$route.path);
   },
   components: {
     lazyImage,

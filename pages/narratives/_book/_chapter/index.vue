@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import seoHead from '~/lib/seo-head';
 import { mapState } from 'vuex';
 import NarrativeFooter from '~/components/narrative-footer/NarrativeFooter';
 import NarrativeHeader from '~/components/narrative-header/NarrativeHeader';
@@ -42,15 +43,19 @@ export default {
     store.commit('enableGlobePositionRight');
   },
   async asyncData (context) {
-    const { pages, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params);
-    const chapter = { path, slug, title, previousChapter, nextChapter, cover, related };
+    const { pages, seo, path, slug, title, previousChapter, nextChapter, cover, related } = await loadData(context, context.params);
+    const chapter = { seo, path, slug, title, previousChapter, nextChapter, cover, related };
     return {
+      seo,
       chapter,
       pages,
       path,
       slug,
       title,
     };
+  },
+  head() {
+    return seoHead(this.seo, this.$route.path);
   },
   data () {
     return {
@@ -148,7 +153,7 @@ export default {
 <style>
 .chapter-column {
   margin-top: calc(-1 * var(--globe-spacing-default));
-  padding-top: 60px;
+  padding-top: var(--main-menu-height);
   z-index: 0;
   width: 100vw;
   background-color: var(--black-primary);
@@ -156,12 +161,12 @@ export default {
 }
 
 .chapter-column--tall {
-  margin-top: calc(-1 * var(--globe-spacing-tall) - 0.8vh);
+  margin-top: calc(-1 * var(--globe-spacing-tall));
 }
 
-@media (--sm-viewport) {
+@media (--sm-viewport) and (--vertical-viewport) {
   .chapter-column {
-    padding-top: 90px;
+    padding-top: var(--main-menu-height--tall);
     margin-top: calc(-1 * var(--globe-spacing-default--desktop));
   }
 
@@ -174,6 +179,10 @@ export default {
   .chapter-column {
     width: 45rem;
   }
+}
+
+.chapter__page {
+  z-index: 1;
 }
 
 [data-scrolled-to-top-trigger] {

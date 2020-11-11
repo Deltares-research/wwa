@@ -29,7 +29,7 @@ export default {
 <style>
 .globe-header {
   position: fixed;
-  top: 4rem;
+  top: var(--main-menu-height);
   width: 100%;
   background: none;
 }
@@ -40,9 +40,9 @@ export default {
   max-width: 290px;
 }
 
-@media (--sm-viewport) {
+@media (--sm-viewport) and (--vertical-viewport) {
   .globe-header {
-    top: 5rem;
+    top: var(--main-menu-height--tall);
   }
 }
 

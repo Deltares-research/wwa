@@ -27,6 +27,7 @@
 </template>
 
 <script>
+  import seoHead from '~/lib/seo-head';
   import EventBanner from '~/components/event-banner/EventBanner';
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';
@@ -34,6 +35,9 @@
   import Animator from '~/components/animator/Animator';
 
   export default {
+    head() {
+      return seoHead(this.internalEvent.seo, this.$route.path);
+    },
     components: {
       SectionBlocks,
       EventBanner,

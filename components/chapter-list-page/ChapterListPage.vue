@@ -13,14 +13,24 @@
 </template>
 
 <script>
+  import seoHead from '~/lib/seo-head';
   import { mapState } from 'vuex';
   import ChapterList from '~/components/chapter-list/ChapterList';
 
   export default {
     layout: 'globe',
+    head() {
+      return seoHead(this.activeFilterItemSeo, this.$route.path);
+    },
     scrollToTop: false,
     computed: {
-      ...mapState(['chapters', 'markerTypes']),
+      ...mapState(['availableFilterItems', 'chapters', 'markerTypes']),
+      activeFilterItemSeo () {
+        return this.availableFilterItems.find(filter => filter.slug === this.activeFilterItemSlug).seo;
+      },
+      activeFilterItemSlug () {
+        return this.$route.params.slug;
+      },
       filteredChapters () {
         return this.chapters.filter(chapter => this.markerTypes.includes(chapter.slug));
       },

@@ -5,49 +5,42 @@
       class="event-overview-list__tabs list--inline"
     >
       <li
+        v-for="(label, index) in tabLabels"
+        :key="`tab-${index}`"
         role="presentation"
         class="event-overview-list__tabs-item"
       >
         <a
-          id="tab1"
-          href="#article1"
+          :id="`tab${index}`"
+          :href="`#article${index}`"
           role="tab"
-          :aria-selected="currentTabId === 'tab1'"
-          :tabindex="currentTabId === 'tab1' ? '-1' : '0'"
-          @click.prevent="selectTab('tab1')"
+          :aria-selected="currentTab === index"
+          :tabindex="currentTab != index ? '-1' : '0'"
+          @click.prevent="selectTab(index)"
+          @keydown="handleKey"
+          ref="eventTab"
           class="event-overview-list__tab"
-          :class="{ 'event-overview-list__tab--selected': currentTabId === 'tab1' }"
+          :class="{ 'event-overview-list__tab--selected': currentTab === index }"
         >
-          Future events
-        </a>
-      </li>
-      <li
-        role="presentation"
-        class="event-overview-list__tabs-item"
-      >
-        <a
-          id="tab2"
-          href="#article2"
-          role="tab"
-          :aria-selected="currentTabId === 'tab2'"
-          :tabindex="currentTabId === 'tab2' ? '-1' : '0'"
-          @click.prevent="selectTab('tab2')"
-          class="event-overview-list__tab"
-          :class="{ 'event-overview-list__tab--selected': currentTabId === 'tab2' }"
-        >
-          Past events
+          {{ label }}
         </a>
       </li>
     </ul>
 
     <article
-      :id="`tab${index + 1}`"
-      role="tabpanel"
-      :aria-labelledby="`tab${index + 1}`"
-      :hidden="currentTabId != `tab${index + 1}`"
       v-for="(events, index) in [futureEvents, pastEvents]"
-      :key="index"
+      :key="`event-${index}`"
+      ref="eventContent"
+      role="tabpanel"
+      tabindex="-1"
+      :aria-labelledby="`tab${index}`"
+      :hidden="currentTab != index"
+      :id="`article${index}`"
     >
+      <h1 class="sr-only">
+        {{ tabLabels[index] }}
+      </h1>
+
       <ol class="event-overview-list__list">
         <li
           v-for="event in events"
@@ -113,13 +106,34 @@
     components: { LazyMedia },
     data () {
       return {
-        currentTabId: 'tab1',
+        currentTab: 0,
+        tabLabels: [
+          'Future events',
+          'Past events',
+        ],
         today: '',
       };
     },
     methods: {
-      selectTab (tabId) {
-        this.currentTabId = tabId;
+      selectTab (index) {
+        this.currentTab = index;
+      },
+      handleKey (event) {
+        const tabs = this.$refs.eventTab;
+
+        if(event.which === 37) {
+          if(this.currentTab > 0 ) {
+            this.currentTab = this.currentTab - 1;
+            tabs[this.currentTab].focus();
+          }
+        } else if (event.which === 39) {
+          if(this.currentTab < this.tabLabels.length - 1) {
+            this.currentTab = this.currentTab + 1;
+            tabs[this.currentTab].focus();
+          }
+        } else if (event.which === 40) {
+          this.$refs.eventContent[this.currentTab].focus();
+        }
       },
     },
     computed: {

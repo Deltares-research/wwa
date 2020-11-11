@@ -42,7 +42,6 @@
 
 <style>
   .narrative-header {
-    z-index: 1;
     position: relative;
     height: 25rem;
   }
@@ -54,6 +53,7 @@
   }
 
   .narrative-header:before {
+    z-index: 1;
     content: '';
     position: absolute;
     display: block;
@@ -69,6 +69,7 @@
   }
 
   .narrative-header__title {
+    z-index: 1;
     position: absolute;
     top: 4rem;
     left: 1rem;
@@ -102,7 +103,6 @@
   }
 
   .narrative-header__cover {
-    z-index: -1;
     position: absolute;
     left: 0;
     top: 0;

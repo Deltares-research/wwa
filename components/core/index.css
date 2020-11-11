@@ -22,7 +22,7 @@
 }
 
 @custom-media --sm-viewport (min-width: 37.5rem);
-@custom-media --vertical-viewport (--vertical-viewport);
+@custom-media --vertical-viewport (min-width: 37.5rem) and (min-height: 400px);
 @custom-media --md-viewport (min-width: 48rem);
 @custom-media --lg-viewport (min-width: 64rem);
 @custom-media --column-viewport (min-width: 70rem);

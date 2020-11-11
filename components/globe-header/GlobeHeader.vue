@@ -40,7 +40,7 @@ export default {
   max-width: 290px;
 }
 
-@media (--sm-viewport) and (--vertical-viewport) {
+@media (--vertical-viewport) {
   .globe-header {
     top: var(--main-menu-height--tall);
   }

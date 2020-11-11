@@ -1,8 +1,10 @@
 <template>
   <div>
+    <skip-link target="main-content" />
+
     <main-menu variant="dark" />
 
-    <main>
+    <main id="main-content">
       <globe-header />
 
       <transition
@@ -40,6 +42,7 @@
 
 <script>
   import { mapState } from 'vuex';
+  import SkipLink from '~/components/skip-link/SkipLink';
   import MainMenu from '~/components/main-menu/MainMenu';
   import GlobeHeader from '~/components/globe-header/GlobeHeader';
   import GlobeNavigation from '~/components/globe-navigation/GlobeNavigation';
@@ -59,7 +62,7 @@
         component: import(/* webpackChunkName: "globe-component" */'~/components/globe-component/GlobeComponent.vue'),
       });
     },
-    components: { MainMenu, GlobeHeader, GlobeNavigation, AppFooter },
+    components: { SkipLink, MainMenu, GlobeHeader, GlobeNavigation, AppFooter },
     computed: {
       ...mapState(['globePositionRight', 'highlightedEvent']),
       isFilterPage () {

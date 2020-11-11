@@ -82,6 +82,31 @@
     </div>
 
     <div
+      v-if="videoTranscript"
+      class="page-body__video-transcript"
+    >
+      <button
+        :aria-expanded="showVideoTranscript ? 'true' : 'false'"
+        class="page-body__video-transcript__button"
+        :class="{ 'page-body__video-transcript__button--open' : showVideoTranscript }"
+        @click="toggleVideoTranscript"
+      >
+        <template v-if="showVideoTranscript">
+          Hide video transcript
+        </template>
+        <template v-else>
+          Show video transcript
+        </template>
+      </button>
+
+      <div
+        :hidden="!showVideoTranscript"
+        class="page-body__video-transcript__content"
+        v-html="videoTranscript"
+      />
+    </div>
+
+    <div
       v-if="mapboxStyle"
       class="page-body__map page-body__figure"
     >
@@ -153,6 +178,7 @@ export default {
     images: Array,
     title: String,
     video: Object,
+    videoTranscript: String,
     mapboxStyle: String,
     influences: Array,
     files: Array,
@@ -173,13 +199,21 @@ export default {
     ResponsiveImage,
     ResponsiveVideo,
   },
+  data() {
+    return {
+      showVideoTranscript: false,
+    };
+  },
   methods: {
-    scaleMaxToSize: function (imgObj, sizeLimit) {
+    scaleMaxToSize (imgObj, sizeLimit) {
       if (!imgObj.value.width) {
         return { h: Math.round(sizeLimit), w: Math.round(sizeLimit) };
       }
       const ratio = Math.min(sizeLimit / imgObj.value.width, sizeLimit / imgObj.value.height);
       return { h: Math.round(imgObj.value.height * ratio), w: Math.round(imgObj.value.width * ratio) };
+    },
+    toggleVideoTranscript () {
+      this.showVideoTranscript = !this.showVideoTranscript;
     },
   },
 };
@@ -228,6 +262,7 @@ export default {
 .page-body__images:not(:last-child),
 .page-body__graphs:not(:last-child),
 .page-body__video:not(:last-child),
+.page-body__video-transcript:not(:last-child),
 .page-body__map:not(:last-child),
 .page-body__figure:not(:last-child),
 .page-body__keywords:not(:last-child) {
@@ -238,11 +273,65 @@ export default {
   .page-body__images:not(:last-child),
   .page-body__graphs:not(:last-child),
   .page-body__video:not(:last-child),
+  .page-body__video-transcript:not(:last-child),
   .page-body__map:not(:last-child),
   .page-body__figure:not(:last-child),
   .page-body__keywords:not(:last-child) {
     margin-bottom: 2rem;
   }
+}
+
+.page-body__video-transcript {
+  margin-top: -1rem;
+}
+
+@media (--md-viewport) {
+  .page-body__video-transcript {
+    margin-top: -2rem;
+  }
+}
+
+.page-body__video-transcript__button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .5rem;
+  padding: .5rem;
+  margin-left: -.5rem;
+  appearance: none;
+  background: none;
+  border: none;
+  font-size: inherit;
+  color: var(--white);
+  cursor: pointer;
+}
+
+
+.page-body__video-transcript__button:after {
+  content: '';
+  display: block;
+  margin-left: .5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-image: url('~assets/arrow-down.svg');
+  background-size: 1rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: transform .3s ease
+}
+
+.page-body__video-transcript__button--open:after {
+  transform: rotate(180deg);
+}
+
+.page-body__video-transcript__content {
+  margin-bottom: .5rem;
+  padding: .8rem 1rem;
+  background: var(--blue-primary);
+}
+
+.page-body__video-transcript__content p:not(:last-child) {
+  margin-bottom: 1rem;
 }
 
 .page-body__figure {

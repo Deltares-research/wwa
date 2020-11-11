@@ -85,7 +85,7 @@
     top: 9rem;
   }
 
-  @media (--sm-viewport) {
+  @media (--sm-viewport) and (min-height: 400px) {
     .globe-component {
       top: 0rem;
     }
@@ -104,7 +104,7 @@
     margin-top: var(--globe-spacing-tall);
   }
 
-  @media (--sm-viewport) {
+  @media (--sm-viewport) and (min-height: 400px) {
     .globe-spacing {
       margin-top: var(--globe-spacing-default--desktop);
     }

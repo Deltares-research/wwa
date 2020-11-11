@@ -1,10 +1,16 @@
 <template>
-  <main class="layout-static-page">
-    <main-menu variant="dark" />
-    <nuxt />
-  </main>
+  <div>
+    <skip-link target="main-content" />
+
+    <main class="layout-static-page">
+      <main-menu variant="dark" />
+      <nuxt id="main-content" />
+    </main>
+  </div>
 </template>
+
 <script>
+import SkipLink from '~/components/skip-link/SkipLink';
 import MainMenu from '~/components/main-menu/MainMenu';
 
 export default {
@@ -13,6 +19,6 @@ export default {
     store.commit('setDescription', app.default.description);
     store.commit('setNavigationLinks', app.default.navigationLinks);
   },
-  components: { MainMenu },
+  components: { SkipLink, MainMenu },
 };
 </script>

@@ -107,7 +107,7 @@
         this.handleScroll();
         window.addEventListener('scroll', this.throttleFunction, 1000);
 
-        const mediaQuery = window.matchMedia('(min-width: 37.5rem)');
+        const mediaQuery = window.matchMedia('(min-width: 37.5rem) and (min-height: 400px');
 
         // See --main-menu-height and --main-menu-height--tall CSS variables for correct values
         mediaQuery.matches ? this.menuHeight = 90 : this.menuHeight = 45;

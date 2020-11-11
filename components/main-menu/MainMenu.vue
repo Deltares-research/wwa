@@ -61,16 +61,17 @@
     display: flex;
     justify-content: space-between;
     position: fixed;
+    padding: 0 1rem;
     left: 0;
     right: 0;
     top: 0;
     z-index: 3;
+    height: var(--main-menu-height);
   }
 
   .main-menu__section {
     display: flex;
     align-items: center;
-    padding: 0.6rem;
   }
 
   .main-menu__logo {
@@ -126,7 +127,11 @@
     color: var(--white);
   }
 
-  @media (--sm-viewport) {
+  @media (--sm-viewport) and (--vertical-viewport) {
+    .main-menu {
+      height: var(--main-menu-height--tall);
+    }
+
     .main-menu__logo {
       font-weight: 900;
       font-size: 1.4rem;
@@ -153,6 +158,13 @@
       padding-right: 0;
       padding-bottom: 0;
       align-self: center;
+      font-size: .9rem;
+    }
+  }
+
+  @media (--md-viewport) and (--vertical-viewport) {
+    .main-menu__description {
+      font-size: 1rem;
     }
   }
 </style>

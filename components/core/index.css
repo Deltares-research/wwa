@@ -14,9 +14,15 @@
   --globe-spacing-tall: 90vh;
   --globe-spacing-tall--desktop: 85vh;
   --wwa-column-width: 70rem;
+
+  --main-menu-height: 45px;
+  --main-menu-height--tall: 90px;
+  --chapter-navigation-height: 45px;
+  --chapter-navigation-height--tall: 66px;
 }
 
 @custom-media --sm-viewport (min-width: 37.5rem);
+@custom-media --vertical-viewport (--vertical-viewport);
 @custom-media --md-viewport (min-width: 48rem);
 @custom-media --lg-viewport (min-width: 64rem);
 @custom-media --column-viewport (min-width: 70rem);

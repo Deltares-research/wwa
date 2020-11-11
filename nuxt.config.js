@@ -144,6 +144,9 @@ export default {
   ],
   target: 'static',
   router: {
+    scrollBehavior (to, from, savedPosition) {
+      return { x: 0, y: 0 };
+    },
     extendRoutes (routes, resolve) {
       const ChapterListOverviewComponent = resolve(__dirname, 'components/chapter-list-overview-page/ChapterListOverviewPage.vue');
       const ChapterListComponent = resolve(__dirname, 'components/chapter-list-page/ChapterListPage.vue');

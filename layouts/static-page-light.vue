@@ -1,6 +1,11 @@
 <template>
   <div>
-    <skip-link target="main-content" />
+    <div
+      ref="skipLink"
+      tabindex="-1"
+    >
+      <skip-link target="main-content" />
+    </div>
 
     <main class="layout-static-page layout-static-page--light">
       <main-menu variant="light" />
@@ -20,5 +25,12 @@ export default {
     store.commit('setNavigationLinks', app.default.navigationLinks);
   },
   components: { SkipLink, MainMenu },
+  watch: {
+    $route: function() {
+      this.$nextTick(function() {
+        this.$refs.skipLink.focus();
+      });
+    },
+  },
 };
 </script>

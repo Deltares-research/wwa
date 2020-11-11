@@ -8,6 +8,7 @@
 
     <section-blocks
       :sections="sections"
+      :show-heading-level-top="true"
     />
   </div>
 </template>

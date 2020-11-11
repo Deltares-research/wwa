@@ -25,7 +25,10 @@
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
-            <section-block-text v-bind="block" />
+            <section-block-text
+              v-bind="block"
+              :show-heading-level-top="showHeadingLevelTop"
+            />
           </animator>
           <animator
             v-if="block && block._modelApiKey === 'media_block'"
@@ -34,7 +37,11 @@
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
-            <section-block-text-media v-bind="block" />
+            <section-block-text-media
+              :key="`test${block.id}`"
+              v-bind="block"
+              :show-heading-level-top="showHeadingLevelTop"
+            />
           </animator>
           <animator
             v-if="block && block._modelApiKey === 'related_stories_block'"
@@ -43,7 +50,10 @@
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
-            <section-block-related-stories v-bind="block" />
+            <section-block-related-stories
+              v-bind="block"
+              :show-heading-level-top="showHeadingLevelTop"
+            />
           </animator>
           <animator
             v-if="block && block._modelApiKey === 'chapters_block'"
@@ -76,6 +86,7 @@
               :subtitle="block.subtitle"
               :title-color="block.titleColor"
               :speakers="block.speakers"
+              :show-heading-level-top="showHeadingLevelTop"
             />
           </animator>
           <animator
@@ -85,7 +96,10 @@
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
-            <section-block-colofon v-bind="block" />
+            <section-block-colofon
+              v-bind="block"
+              :show-heading-level-top="showHeadingLevelTop"
+            />
           </animator>
           <div
             v-if="block && block._modelApiKey === 'schedule_block'"
@@ -113,7 +127,10 @@
             :is-intersection-disabled="index === 0 && blockIndex === 0"
             class="layout-section__container layout-section__container--padded"
           >
-            <section-block-news v-bind="block" />
+            <section-block-news
+              v-bind="block"
+              :show-heading-level-top="showHeadingLevelTop"
+            />
           </animator>
         </template>
       </div>
@@ -150,6 +167,10 @@ export default {
     sections: {
       type: Array,
       required: true,
+    },
+    showHeadingLevelTop: {
+      type: Boolean,
+      default: false,
     },
   },
 };

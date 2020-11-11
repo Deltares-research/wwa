@@ -8,7 +8,8 @@
       alt=""
       class="animator__slide-up section-block-text__icon"
     >
-    <h3
+    <component
+      :is="showHeadingLevelTop ? 'h2' : 'h3'"
       class="animator__slide-up section-block-text__title"
       :class="{
         'section-block-text__title--orange': titleColor === 'orange',
@@ -17,7 +18,7 @@
       animator-stagger
     >
       {{ title }}
-    </h3>
+    </component>
 
     <news-list
       class="animator__slide-up"
@@ -39,6 +40,7 @@
         type: Array,
         required: true,
       },
+      showHeadingLevelTop: Boolean,
     },
   };
 </script>

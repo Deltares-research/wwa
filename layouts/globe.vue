@@ -1,6 +1,11 @@
 <template>
   <div>
-    <skip-link target="main-content" />
+    <div
+      ref="skipLink"
+      tabindex="-1"
+    >
+      <skip-link target="main-content" />
+    </div>
 
     <main-menu variant="dark" />
 
@@ -70,6 +75,13 @@
       },
       isEventPage () {
         return this.$route.name === 'events';
+      },
+    },
+    watch: {
+      $route: function() {
+        this.$nextTick(function() {
+          this.$refs.skipLink.focus();
+        });
       },
     },
   };

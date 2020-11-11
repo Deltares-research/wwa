@@ -447,6 +447,19 @@ function generateEventPages (dato, root, i18n) {
               image: seo.value.image ? seo.value.image.path : null,
             } : null;
 
+            const allLocales = [];
+            i18n.availableLocales.forEach(locale => {
+              i18n.withLocale(locale, () => {
+                dato.internalEvents
+                  .filter(filterPublished)
+                  .map(page => {
+                    if(page.slug === slug && page.name) {
+                      allLocales.push(locale);
+                    }
+                  });
+              });
+            });
+
             const sections = page.sections.map(section => {
               const { backgroundColor, showBottomWave, showTopWave } = section;
 
@@ -458,7 +471,7 @@ function generateEventPages (dato, root, i18n) {
                     title: block.title,
                     slug: block.slug,
                     chapters: block.chapters.map(chapter => {
-                      generateEventChapter(chapter, page, root, i18n);
+                      generateEventChapter(allLocales, chapter, page, root, i18n);
                       return {
                         title: chapter.title,
                         slug: chapter.slug,
@@ -611,19 +624,6 @@ function generateEventPages (dato, root, i18n) {
               };
             });
 
-            const allLocales = [];
-            i18n.availableLocales.forEach(locale => {
-              i18n.withLocale(locale, () => {
-                dato.internalEvents
-                  .filter(filterPublished)
-                  .map(page => {
-                    if(page.slug === slug && page.name) {
-                      allLocales.push(locale);
-                    }
-                  });
-              });
-            });
-
             const content = {
               slug,
               seo: seoContent,
@@ -645,7 +645,7 @@ function generateEventPages (dato, root, i18n) {
   });
 }
 
-function generateEventChapter(chapter, event, root, i18n) {
+function generateEventChapter(allLocales, chapter, event, root, i18n) {
   i18n.availableLocales.forEach(locale => {
     i18n.withLocale(locale, () => {
       const { name, eventWebsite, backButtonLabel, chapterNavigationLabel, image } = event;
@@ -658,7 +658,7 @@ function generateEventChapter(chapter, event, root, i18n) {
           backButtonLabel,
           chapterNavigationLabel,
           image,
-          allLocales: i18n.availableLocales,
+          allLocales,
         };
 
         const page = {

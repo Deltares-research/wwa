@@ -5,7 +5,10 @@
         News
       </h1>
 
-      <news-list :news-articles="allNewsArticles" />
+      <news-list
+        :news-articles="allNewsArticles"
+        :show-heading-level-top="true"
+      />
     </div>
   </div>
 </template>

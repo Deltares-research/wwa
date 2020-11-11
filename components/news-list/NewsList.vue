@@ -23,7 +23,11 @@
           :to="`/news/${article.slug}`"
           class="news-list__item-title"
         >
-          <h2>{{ article.title }}</h2>
+          <component
+            :is="showHeadingLevelTop ? 'h2' : 'h3'"
+          >
+            {{ article.title }}
+          </component>
         </nuxt-link>
         <time
           class="news-list__item-date"
@@ -42,6 +46,10 @@ export default {
     newsArticles: {
       type: Array,
       required: true,
+    },
+    showHeadingLevelTop: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {

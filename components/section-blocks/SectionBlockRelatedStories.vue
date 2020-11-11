@@ -1,7 +1,7 @@
-<template functional>
+<template>
   <div>
     <img
-      v-if="props.showWaveMarker"
+      v-if="showWaveMarker"
       src="~/assets/event-title-wave.svg"
       width="111"
       height="35"
@@ -9,27 +9,29 @@
       class="animator__slide-up section-block-related-stories__icon"
     >
 
-    <h3
+    <component
+      :is="showHeadingLevelTop ? 'h2' : 'h3'"
       class="animator__slide-up section-block-related-stories__title"
       animator-stagger
     >
-      {{ props.title }}
-    </h3>
+      {{ title }}
+    </component>
 
     <h4
+      v-if="subtitle"
       class="animator__slide-up section-block-related-stories__subtitle"
       :class="{
-        'section-block-related-stories__subtitle--orange': props.titleColor === 'orange',
-        'section-block-related-stories__subtitle--blue': props.titleColor === 'blue',
+        'section-block-related-stories__subtitle--orange': titleColor === 'orange',
+        'section-block-related-stories__subtitle--blue': titleColor === 'blue',
       }"
       animator-stagger
     >
-      {{ props.subtitle }}
+      {{ subtitle }}
     </h4>
 
     <ul class="list--inline section-block-related-stories__list">
       <li
-        v-for="linkedChapter in props.linkedChapters"
+        v-for="linkedChapter in linkedChapters"
         :key="linkedChapter.id"
         class="animator__slide-up section-block-related-stories__list-item"
         animator-stagger
@@ -64,6 +66,7 @@
       subtitle: String,
       titleColor: String,
       linkedChapters: Array,
+      showHeadingLevelTop: Boolean,
     },
   };
 </script>
@@ -80,6 +83,7 @@
   }
 
   .section-block-related-stories__title {
+    margin-bottom: .25rem;
     font-size: 1rem;
   }
 

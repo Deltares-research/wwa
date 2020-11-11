@@ -1,74 +1,76 @@
-<template functional>
+<template>
   <div class="section-block-text-media">
     <img
-      v-if="props.showWaveMarker"
+      v-if="showWaveMarker"
       src="~/assets/event-title-wave.svg"
       width="111"
       height="35"
       alt=""
       class="animator__slide-up section-block-text-media__icon"
     >
-    <h3
+    <component
+      :is="showHeadingLevelTop ? 'h2' : 'h3'"
       class="animator__slide-up section-block-text-media__title"
       :class="{
-        'section-block-text-media__title--orange': props.titleColor === 'orange',
-        'section-block-text-media__title--blue': props.titleColor === 'blue',
+        'section-block-text-media__title--orange': titleColor === 'orange',
+        'section-block-text-media__title--blue': titleColor === 'blue',
       }"
       animator-stagger
     >
-      {{ props.title }}
-    </h3>
+      {{ title }}
+    </component>
     <a
-      v-if="props.internalButtonLabel"
-      :href="`#${props.internalButtonSlug}`"
+      v-if="internalButtonLabel"
+      :href="`#${internalButtonSlug}`"
       class="animator__slide-up section-block-text-media__button"
       animator-stagger
     >
-      {{ props.internalButtonLabel }}
+      {{ internalButtonLabel }}
     </a>
     <div
       class="animator__slide-up section-block-text-media__image-wrapper"
-      :class="{ 'section-block-text-media__image-wrapper--mirrored': props.mirrorLayout }"
+      :class="{ 'section-block-text-media__image-wrapper--mirrored': mirrorLayout }"
       animator-stagger
     >
       <picture
-        v-if="props.image"
+        v-if="image"
         class="animator__scale-container "
       >
         <source
-          :srcset="`${props.image.url}?auto=compress&w=550&h=660&fit=crop&crop=entropy`"
+          :srcset="`${image.url}?auto=compress&w=550&h=660&fit=crop&crop=entropy`"
           media="(min-width: 48rem)"
         >
         <source
-          :srcset="`${props.image.url}?auto=compress&w=600&h=270&fit=crop&crop=entropy`"
+          :srcset="`${image.url}?auto=compress&w=600&h=270&fit=crop&crop=entropy`"
           media="(max-width: 48rem)"
         >
         <img
           class="animator__scale-up animator__scale-image section-block-text-media__image"
-          :src="props.image.url"
-          :alt="props.image.alt"
+          :src="image.url"
+          :alt="image.alt"
         >
       </picture>
     </div>
     <div
       class="animator__slide-up section-block-text-media__copy"
-      v-html="props.body"
+      v-html="body"
       animator-stagger
     />
     <p
-      v-if="props.callToActionLabel && props.callToActionUrl"
+      v-if="callToActionLabel && callToActionUrl"
       class="animator__slide-up section-block-text-media__cta"
       animator-stagger
     >
       <a
-        :href="props.callToActionUrl"
+        :href="callToActionUrl"
         target="_blank"
       >
-        {{ props.callToActionLabel }}
+        {{ callToActionLabel }}
       </a>
     </p>
   </div>
 </template>
+
 
 <script>
   export default {
@@ -83,6 +85,11 @@
       callToActionLabel: String,
       callToActionUrl: String,
       mirrorLayout: Boolean,
+      showHeadingLevelTop:  {
+        type: Boolean,
+        default: true,
+        required: true,
+      },
     },
   };
 </script>

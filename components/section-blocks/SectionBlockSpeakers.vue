@@ -9,7 +9,8 @@
       class="animator__slide-up section-block-speakers__icon"
     >
 
-    <h3
+    <component
+      :is="showHeadingLevelTop ? 'h2' : 'h3'"
       class="animator__slide-up section-block-speakers__title"
       :class="{
         'section-block-speakers__title--orange': titleColor === 'orange',
@@ -18,7 +19,7 @@
       animator-stagger
     >
       {{ title }}
-    </h3>
+    </component>
 
     <p
       class="animator__slide-up section-block-speakers__subtitle"
@@ -99,6 +100,7 @@
       subtitle: String,
       titleColor: String,
       speakers: Array,
+      showHeadingLevelTop: Boolean,
     },
     data() {
       return {
@@ -212,7 +214,7 @@
     }
 
     .section-block-speakers div.swiper-button-next {
-      left: calc(32px + 1rem);
+      left: 130px;
     }
   }
 

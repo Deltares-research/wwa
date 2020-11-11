@@ -439,14 +439,27 @@ function generateEventPages (dato, root, i18n) {
         .map(page => {
           const { slug, seo, name, eventWebsite, visuallyHideName, displayDate, image, bannerIcon, bannerTagline } = page;
 
-          const seoContent = seo ? {
-            title: seo.value.title,
-            description: seo.value.description,
-            image: seo.value.image ? seo.value.image.path : null,
-          } : null;
-
           // If name is empty, there is no content for an event in this language, so skip generating a json file
           if(name) {
+            const seoContent = seo ? {
+              title: seo.value.title,
+              description: seo.value.description,
+              image: seo.value.image ? seo.value.image.path : null,
+            } : null;
+
+            const allLocales = [];
+            i18n.availableLocales.forEach(locale => {
+              i18n.withLocale(locale, () => {
+                dato.internalEvents
+                  .filter(filterPublished)
+                  .map(page => {
+                    if(page.slug === slug && page.name) {
+                      allLocales.push(locale);
+                    }
+                  });
+              });
+            });
+
             const sections = page.sections.map(section => {
               const { backgroundColor, showBottomWave, showTopWave } = section;
 
@@ -458,7 +471,7 @@ function generateEventPages (dato, root, i18n) {
                     title: block.title,
                     slug: block.slug,
                     chapters: block.chapters.map(chapter => {
-                      generateEventChapter(chapter, page, root, i18n);
+                      generateEventChapter(allLocales, chapter, page, root, i18n);
                       return {
                         title: chapter.title,
                         slug: chapter.slug,
@@ -611,19 +624,6 @@ function generateEventPages (dato, root, i18n) {
               };
             });
 
-            const allLocales = [];
-            i18n.availableLocales.forEach(locale => {
-              i18n.withLocale(locale, () => {
-                dato.internalEvents
-                  .filter(filterPublished)
-                  .map(page => {
-                    if(page.slug === slug && page.name) {
-                      allLocales.push(locale);
-                    }
-                  });
-              });
-            });
-
             const content = {
               slug,
               seo: seoContent,
@@ -645,83 +645,87 @@ function generateEventPages (dato, root, i18n) {
   });
 }
 
-function generateEventChapter(chapter, event, root, i18n) {
+function generateEventChapter(allLocales, chapter, event, root, i18n) {
   i18n.availableLocales.forEach(locale => {
     i18n.withLocale(locale, () => {
       const { name, eventWebsite, backButtonLabel, chapterNavigationLabel, image } = event;
-      const internalEvent = {
-        name,
-        eventWebsite,
-        backButtonLabel,
-        chapterNavigationLabel,
-        image,
-        allLocales: i18n.availableLocales,
-      };
 
-      const page = {
-        title: chapter.title,
-        cover: chapter.cover.url(),
-        seo: {
-          title: chapter.seo.value.title,
-          description: chapter.seo.value.description,
-          image: chapter.seo.value.image ? chapter.seo.value.image.path : null,
-        },
-        pages: chapter.pages.map(page => {
-          const { slug, title, storyteller, body, video, videoChina, mapboxStyle, creditsTitle, creditsBody } = page;
+      // If name is empty, there is no content for an event in this language, so skip generating a json file
+      if(name) {
+        const internalEvent = {
+          name,
+          eventWebsite,
+          backButtonLabel,
+          chapterNavigationLabel,
+          image,
+          allLocales,
+        };
 
-          let videoComputed = video ? {
-            url: page.video.url,
-            provider: page.video.provider,
-            providerUid: page.video.providerUid,
-            width: page.video.width,
-            height: page.video.height,
-          } : null;
+        const page = {
+          title: chapter.title,
+          cover: chapter.cover.url(),
+          seo: {
+            title: chapter.seo.value.title,
+            description: chapter.seo.value.description,
+            image: chapter.seo.value.image ? chapter.seo.value.image.path : null,
+          },
+          pages: chapter.pages.map(page => {
+            const { slug, title, storyteller, body, video, videoChina, mapboxStyle, creditsTitle, creditsBody } = page;
 
-          if (videoChina) {
-            const providerUid = /^https:\/\/v\.qq\.com\/x\/page\/([a-z0-9]+)\.html$/.exec(page.videoChina)[1];
-            videoComputed = {
-              provider: 'qq',
-              providerUid: providerUid,
+            let videoComputed = video ? {
+              url: page.video.url,
+              provider: page.video.provider,
+              providerUid: page.video.providerUid,
+              width: page.video.width,
+              height: page.video.height,
+            } : null;
+
+            if (videoChina) {
+              const providerUid = /^https:\/\/v\.qq\.com\/x\/page\/([a-z0-9]+)\.html$/.exec(page.videoChina)[1];
+              videoComputed = {
+                provider: 'qq',
+                providerUid: providerUid,
+              };
+            }
+
+            return {
+              slug,
+              title,
+              storyteller,
+              body: renderMarkedContent(body),
+              images: page.images.map(image => {
+                return {
+                  id: image.id,
+                  url: image.url(),
+                  width: image.width,
+                  height: image.height,
+                  title: image.title,
+                  alt: image.alt,
+                };
+              }),
+              video: videoComputed,
+              mapboxStyle,
+              files: page.files.map(file => {
+                return {
+                  url: `${file.file.imgixHost}${file.file.value.path}`,
+                  label: file.title,
+                };
+              }),
+              creditsTitle,
+              creditsBody: renderMarkedContent(creditsBody),
+              creditsLogos: page.creditsLogos.map(creditsLogo => {
+                return {
+                  url: creditsLogo.url(),
+                  alt: creditsLogo.alt,
+                };
+              }),
             };
-          }
+          }),
+          internalEvent,
+        };
 
-          return {
-            slug,
-            title,
-            storyteller,
-            body: renderMarkedContent(body),
-            images: page.images.map(image => {
-              return {
-                id: image.id,
-                url: image.url(),
-                width: image.width,
-                height: image.height,
-                title: image.title,
-                alt: image.alt,
-              };
-            }),
-            video: videoComputed,
-            mapboxStyle,
-            files: page.files.map(file => {
-              return {
-                url: `${file.file.imgixHost}${file.file.value.path}`,
-                label: file.title,
-              };
-            }),
-            creditsTitle,
-            creditsBody: renderMarkedContent(creditsBody),
-            creditsLogos: page.creditsLogos.map(creditsLogo => {
-              return {
-                url: creditsLogo.url(),
-                alt: creditsLogo.alt,
-              };
-            }),
-          };
-        }),
-        internalEvent,
-      };
-
-      root.createDataFile(`static/data/events/${locale}/chapters/${chapter.slug}.json`, 'json', page);
+        root.createDataFile(`static/data/events/${locale}/chapters/${chapter.slug}.json`, 'json', page);
+      }
     });
   });
 }

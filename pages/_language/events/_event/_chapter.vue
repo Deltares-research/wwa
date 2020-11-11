@@ -37,6 +37,7 @@
               :body="page.body"
               :show-small-title="true"
               :files="page.files"
+              :show-heading-level-top="true"
             />
           </div>
 

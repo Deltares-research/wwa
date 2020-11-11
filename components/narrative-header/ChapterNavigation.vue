@@ -107,7 +107,7 @@
         this.handleScroll();
         window.addEventListener('scroll', this.throttleFunction, 1000);
 
-        const mediaQuery = window.matchMedia('(min-width: 37.5rem) and (min-height: 400px');
+        const mediaQuery = window.matchMedia('(min-width: 37.5rem) and (min-height: 400px)');
 
         // See --main-menu-height and --main-menu-height--tall CSS variables for correct values
         mediaQuery.matches ? this.menuHeight = 90 : this.menuHeight = 45;
@@ -137,7 +137,7 @@
     height: var(--chapter-navigation-height);
   }
 
-  @media (--sm-viewport) and (min-height: 400px) {
+  @media (--sm-viewport) and (--vertical-viewport) {
     .chapter-navigation,
     .chapter-navigation__body {
       height: var(--chapter-navigation-height--tall);
@@ -176,7 +176,7 @@
     top: 0;
   }
 
-  @media (--sm-viewport) and (min-height: 400px) {
+  @media (--sm-viewport) and (--vertical-viewport) {
     .chapter-navigation__body--fixed {
       top: var(--main-menu-height--tall);
     }
@@ -217,7 +217,7 @@
     font-size: .9rem;
   }
 
-  @media (--sm-viewport) and (min-height: 400px) {
+  @media (--sm-viewport) and (--vertical-viewport) {
     .chapter-navigation__button {
       padding-top: .5rem;
       padding-bottom: .6rem;
@@ -243,7 +243,7 @@
     cursor: pointer;
   }
 
-  @media (--sm-viewport) and (min-height: 400px) {
+  @media (--sm-viewport) and (--vertical-viewport) {
     .chapter-navigation__select {
       padding-top: .5rem;
       padding-bottom: .6rem;

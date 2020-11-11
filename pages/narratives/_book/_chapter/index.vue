@@ -164,7 +164,7 @@ export default {
   margin-top: calc(-1 * var(--globe-spacing-tall));
 }
 
-@media (--sm-viewport) and (min-height: 400px) {
+@media (--sm-viewport) and (--vertical-viewport) {
   .chapter-column {
     padding-top: var(--main-menu-height--tall);
     margin-top: calc(-1 * var(--globe-spacing-default--desktop));

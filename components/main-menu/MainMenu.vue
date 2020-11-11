@@ -127,7 +127,7 @@
     color: var(--white);
   }
 
-  @media (--sm-viewport) and (min-height: 400px) {
+  @media (--sm-viewport) and (--vertical-viewport) {
     .main-menu {
       height: var(--main-menu-height--tall);
     }
@@ -162,7 +162,7 @@
     }
   }
 
-  @media (--md-viewport) and (min-height: 400px) {
+  @media (--md-viewport) and (--vertical-viewport) {
     .main-menu__description {
       font-size: 1rem;
     }

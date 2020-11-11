@@ -137,7 +137,7 @@
     height: var(--chapter-navigation-height);
   }
 
-  @media (--sm-viewport) and (--vertical-viewport) {
+  @media (--vertical-viewport) {
     .chapter-navigation,
     .chapter-navigation__body {
       height: var(--chapter-navigation-height--tall);
@@ -176,7 +176,7 @@
     top: 0;
   }
 
-  @media (--sm-viewport) and (--vertical-viewport) {
+  @media (--vertical-viewport) {
     .chapter-navigation__body--fixed {
       top: var(--main-menu-height--tall);
     }
@@ -217,7 +217,7 @@
     font-size: .9rem;
   }
 
-  @media (--sm-viewport) and (--vertical-viewport) {
+  @media (--vertical-viewport) {
     .chapter-navigation__button {
       padding-top: .5rem;
       padding-bottom: .6rem;
@@ -243,7 +243,7 @@
     cursor: pointer;
   }
 
-  @media (--sm-viewport) and (--vertical-viewport) {
+  @media (--vertical-viewport) {
     .chapter-navigation__select {
       padding-top: .5rem;
       padding-bottom: .6rem;

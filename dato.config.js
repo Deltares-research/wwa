@@ -1145,6 +1145,17 @@ function generateContentPage (chapters, page) {
               };
             }) : null,
           };
+        } else if(block.itemType === 'twitter_feed_block') {
+          return {
+            _modelApiKey: block.itemType,
+            id: block.id,
+            title: block.title,
+            slug: block.slug,
+            titleColor: block.titleColor,
+            showWaveMarker: block.showWaveMarker,
+            handle: block.handle,
+            numberOfTweets: block.numberOfTweets,
+          };
         } else if(block.itemType === 'related_stories_block') {
           const linkedChapters = block.linkedChapters.map(linkedChapter => {
             const chapter = chapters.find(chapter => chapter.slug === linkedChapter.slug);

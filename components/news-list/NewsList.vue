@@ -82,6 +82,10 @@ export default {
   .news-list__item:nth-child(even) {
     padding-left: 1.5rem;
   }
+
+  .news-list__item:nth-child(-n+2) {
+    margin-top: 0;
+  }
 }
 
 .news-list__item:last-child {

@@ -132,6 +132,18 @@
               :show-heading-level-top="showHeadingLevelTop"
             />
           </animator>
+          <animator
+            v-if="block._modelApiKey === 'twitter_feed_block'"
+            :key="block.id"
+            :id="block.id"
+            :is-intersection-disabled="index === 0 && blockIndex === 0"
+            class="layout-section__container layout-section__container--padded"
+          >
+            <section-block-twitter-feed
+              v-bind="block"
+              :show-heading-level-top="showHeadingLevelTop"
+            />
+          </animator>
         </template>
       </div>
     </section>
@@ -146,6 +158,7 @@ import SectionBlockNews from '@/components/section-blocks/SectionBlockNews';
 import SectionBlockSchedule from '~/components/section-blocks/SectionBlockSchedule';
 import SectionBlockText from '~/components/section-blocks/SectionBlockText';
 import SectionBlockTextMedia from '~/components/section-blocks/SectionBlockTextMedia';
+import SectionBlockTwitterFeed from '~/components/section-blocks/SectionBlockTwitterFeed';
 import SectionBlockRelatedStories from '~/components/section-blocks/SectionBlockRelatedStories';
 import SectionBlockSpeakers from '~/components/section-blocks/SectionBlockSpeakers';
 import Animator from '~/components/animator/Animator';
@@ -159,6 +172,7 @@ export default {
     SectionBlockSchedule,
     SectionBlockText,
     SectionBlockTextMedia,
+    SectionBlockTwitterFeed,
     SectionBlockRelatedStories,
     SectionBlockSpeakers,
     Animator,

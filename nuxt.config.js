@@ -141,6 +141,7 @@ export default {
     { src: '~/plugins/smoothscroll', mode: 'client' },
     { src: '~/plugins/ga.js', mode: 'client' },
     { src: '~/plugins/router-after-each.js', mode: 'client' },
+    { src: '~/plugins/navigation-a11y.js', mode: 'client' },
   ],
   target: 'static',
   router: {

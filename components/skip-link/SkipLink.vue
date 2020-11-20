@@ -1,10 +1,18 @@
 <template functional>
-  <a
-    :href="`#${props.target}`"
-    class="skip-link"
-  >
-    Skip to main content
-  </a>
+  <div>
+    <div
+      id="title-alert"
+      role="alert"
+      tabindex="-1"
+      class="sr-only"
+    />
+    <a
+      :href="`#${props.target}`"
+      class="skip-link"
+    >
+      Skip to main content
+    </a>
+  </div>
 </template>
 
 <script>

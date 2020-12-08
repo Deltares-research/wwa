@@ -6,6 +6,7 @@
       :graphs="page.graphs"
       :title="page.title"
       :video="page.video"
+      :video-transcript="page.videoTranscript"
       :mapbox-style="page.mapboxStyle"
       :links="page.links"
       :files="page.files"

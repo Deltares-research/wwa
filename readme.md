@@ -19,9 +19,9 @@ cp .env.example .env
 
 ### Running
 #### Development
-Fetch content from [DatoCMS](https://datocms.com) and start [Nuxt.js](https://nuxtjs.org/) to preview the website.
+Fetch content from [DatoCMS](https://datocms.com), start [Netlify Dev](https://www.netlify.com/products/dev/) and [Nuxt.js](https://nuxtjs.org/) to preview the website.
 ```sh
-npm run dev
+npm run start
 ```
 
 #### Production

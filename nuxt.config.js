@@ -141,9 +141,13 @@ export default {
     { src: '~/plugins/smoothscroll', mode: 'client' },
     { src: '~/plugins/ga.js', mode: 'client' },
     { src: '~/plugins/router-after-each.js', mode: 'client' },
+    { src: '~/plugins/navigation-a11y.js', mode: 'client' },
   ],
   target: 'static',
   router: {
+    scrollBehavior (to, from, savedPosition) {
+      return { x: 0, y: 0 };
+    },
     extendRoutes (routes, resolve) {
       const ChapterListOverviewComponent = resolve(__dirname, 'components/chapter-list-overview-page/ChapterListOverviewPage.vue');
       const ChapterListComponent = resolve(__dirname, 'components/chapter-list-page/ChapterListPage.vue');

@@ -310,6 +310,7 @@
 
   .event-overview-list__link {
     font-weight: bold;
+    word-break: break-all;
     text-decoration: none;
     color: var(--blue-tertiary);
   }

@@ -670,7 +670,7 @@ function generateEventChapter(allLocales, chapter, event, root, i18n) {
             image: chapter.seo.value.image ? chapter.seo.value.image.path : null,
           },
           pages: chapter.pages.map(page => {
-            const { slug, title, storyteller, body, video, videoChina, mapboxStyle, creditsTitle, creditsBody } = page;
+            const { slug, title, storyteller, body, video, videoChina, videoTranscript, mapboxStyle, creditsTitle, creditsBody } = page;
 
             let videoComputed = video ? {
               url: page.video.url,
@@ -704,6 +704,7 @@ function generateEventChapter(allLocales, chapter, event, root, i18n) {
                 };
               }),
               video: videoComputed,
+              videoTranscript: renderMarkedContent(videoTranscript),
               mapboxStyle,
               files: page.files.map(file => {
                 return {
@@ -892,7 +893,7 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, keywords, slug, title, mapboxStyle } = page;
+      const { body, files, graphs, images, keywords, slug, title, mapboxStyle, videoTranscript } = page;
       const influences = (page.influence) ? page.influence.map(tag => ({
         title: tag.title,
         slug: tag.slug,
@@ -985,6 +986,7 @@ function getPages (dato, chapterRef) {
         theme,
         title,
         video,
+        videoTranscript: renderMarkedContent(videoTranscript),
         mapboxStyle,
       };
     });
@@ -1142,6 +1144,17 @@ function generateContentPage (chapters, page) {
                 },
               };
             }) : null,
+          };
+        } else if(block.itemType === 'twitter_feed_block') {
+          return {
+            _modelApiKey: block.itemType,
+            id: block.id,
+            title: block.title,
+            slug: block.slug,
+            titleColor: block.titleColor,
+            showWaveMarker: block.showWaveMarker,
+            handle: block.handle,
+            numberOfTweets: block.numberOfTweets,
           };
         } else if(block.itemType === 'related_stories_block') {
           const linkedChapters = block.linkedChapters.map(linkedChapter => {

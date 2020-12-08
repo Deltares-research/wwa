@@ -26,6 +26,7 @@
               :to="`/${filter.slug}`"
               class="globe-navigation__tab-link"
               ref="tabLink"
+              :aria-current="filter.slug === activeFilterSlug ? 'page': false"
             >
               {{ filter.title }}
             </nuxt-link>
@@ -44,6 +45,7 @@
               :url="`/${activeFilterSlug}/${currentFilter.slug}`"
               :icon="currentFilter.icon"
               :is-selected="currentFilter.slug === activeFilterItemSlug"
+              :aria-current="currentFilter.slug === activeFilterItemSlug ? 'page': false"
             />
           </li>
         </ul>

@@ -1,6 +1,11 @@
 <template>
   <div class="event">
-    <header class="layout-section__container">
+    <skip-link target="main-content" />
+
+    <header
+      id="main-content"
+      class="layout-section__container"
+    >
       <animator
         :delay="0"
         :is-intersection-disabled="true"
@@ -28,6 +33,7 @@
 
 <script>
   import seoHead from '~/lib/seo-head';
+  import SkipLink from '~/components/skip-link/SkipLink';
   import EventBanner from '~/components/event-banner/EventBanner';
   import EventHeader from '~/components/event-header/EventHeader';
   import EventFooter from '~/components/event-footer/EventFooter';
@@ -39,6 +45,7 @@
       return seoHead(this.internalEvent.seo, this.$route.path);
     },
     components: {
+      SkipLink,
       SectionBlocks,
       EventBanner,
       EventHeader,

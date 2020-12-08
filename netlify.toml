@@ -1,6 +1,7 @@
 [build]
   command = "npm run lint -- --max-warnings 0 && npm run build && npm run generate"
   publish = "dist/"
+  functions = "functions"
   [build.environment]
     NODE_VERSION = "12"
     NODE_ENV = "development"
@@ -9,8 +10,17 @@
   [build.processing]
     skip_processing = true
 
+[dev]
+  framework = "#custom"
+  command = "npm run dev"
+  publish = "/"
+  port = 3001
+  targetPort = 3000
+  autoLaunch = false
+
 [context.production.environment]
   NODE_ENV = "production"
+  AWS_LAMBDA_JS_RUNTIME = "nodejs12.x"
 
 [[headers]]
   for = "/*"

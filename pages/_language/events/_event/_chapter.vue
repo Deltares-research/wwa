@@ -1,6 +1,11 @@
 <template>
   <div class="event">
-    <header class="layout-section__container event__header">
+    <skip-link target="main-content" />
+
+    <header
+      id="main-content"
+      class="layout-section__container event__header"
+    >
       <event-header
         :name="chapter.internalEvent.name"
         :slug="chapter.internalEvent.slug"
@@ -102,8 +107,9 @@
 
 <script>
   import seoHead from '~/lib/seo-head';
+  import SkipLink from '~/components/skip-link/SkipLink';
   import SectionBlockText from '~/components/section-blocks/SectionBlockText';
-  import eventHeader from '~/components/event-header/EventHeader';
+  import EventHeader from '~/components/event-header/EventHeader';
   import NarrativeHeaderEvent from '~/components/narrative-header/NarrativeHeaderEvent';
   import StoryMap from '~/components/story-map/StoryMap';
   import ResponsiveImage from '~/components/responsive-image/ResponsiveImage';
@@ -113,7 +119,8 @@
 
   export default {
     components: {
-      eventHeader,
+      SkipLink,
+      EventHeader,
       NarrativeHeaderEvent,
       StoryMap,
       ResponsiveImage,

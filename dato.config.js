@@ -489,11 +489,12 @@ function generateEventPages (dato, root, i18n) {
                     titleColor: block.titleColor,
                     showWaveMarker: block.showWaveMarker,
                     body: renderMarkedContent(block.body),
-                    logos: block.logos.map(logo => {
+                    partners: block.partners.map(partner => {
                       return {
-                        id: logo.id,
-                        url: logo.url(),
-                        alt: logo.alt,
+                        id: partner.id,
+                        title: partner.title,
+                        imageUrl: partner.logo.url(),
+                        url: partner.url,
                       };
                     }),
                   };
@@ -1116,13 +1117,14 @@ function generateContentPage (chapters, page) {
             titleColor: block.titleColor,
             showWaveMarker: block.showWaveMarker,
             body: renderMarkedContent(block.body),
-            logos: block.logos ? block.logos.map(logo => {
+            partners: block.partners.map(partner => {
               return {
-                id: logo.id,
-                url: logo.url,
-                alt: logo.alt,
+                id: partner.id,
+                title: partner.title,
+                imageUrl: partner.logo.url,
+                url: partner.url,
               };
-            }) : null,
+            }),
           };
         } else if(block.itemType === 'news_block') {
           return {

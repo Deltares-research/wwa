@@ -275,6 +275,10 @@ function generateAppData (dato, root, i18n) {
   const navigationLinks = {
     mainNavigation: [
       {
+        title: 'News',
+        slug: 'news',
+      },
+      {
         title: 'Events',
         slug: 'events',
       },

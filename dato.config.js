@@ -336,10 +336,19 @@ function generateStaticPages (dato, root, i18n) {
   const staticPages = dato.staticPages
     .filter(filterPublished)
     .map(page => {
-      const { body, images, seo, slug, title, video } = page;
+      const { body, images2, seo, slug, title, video } = page;
       return {
         body: renderMarkedContent(body),
-        images,
+        images: images2.map(image => {
+          return {
+            id: image.id,
+            url: image.image.url(),
+            width: image.image.width,
+            height: image.image.height,
+            title: image.title,
+            alt: image.alternativeText,
+          };
+        }),
         seo: {
           title: seo.value.title,
           description: seo.value.description,
@@ -894,7 +903,7 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images, keywords, slug, title, mapboxStyle, videoTranscript } = page;
+      const { body, files, graphs, images2, keywords, slug, title, mapboxStyle, videoTranscript } = page;
       const influences = (page.influence) ? page.influence.map(tag => ({
         title: tag.title,
         slug: tag.slug,
@@ -955,6 +964,16 @@ function getPages (dato, chapterRef) {
             providerUid,
         };
       }
+      const images = images2.map(image => {
+        return {
+          id: image.id,
+          url: image.image.url(),
+          width: image.image.width,
+          height: image.image.height,
+          title: image.title,
+          alt: image.alternativeText,
+        };
+      });
       const filesList = files.map(file => {
         return {
           url: `${file.file.imgixHost}${file.file.value.path}`,

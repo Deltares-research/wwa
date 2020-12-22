@@ -807,7 +807,7 @@ function getChapters (dato, bookRef) {
   return chapters
     .filter(filterPublished)
     .map(chapter => {
-      const { title, slug, chapterType, createdAt, updatedAt, cover } = chapter;
+      const { title, slug, createdAt, updatedAt, cover } = chapter;
       const seo = {
         title: chapter.seo.value.title,
         description: chapter.seo.value.description,
@@ -872,7 +872,6 @@ function getChapters (dato, bookRef) {
         slug,
         storyteller,
         title,
-        type: chapterType,
         theme,
         nextChapter,
         previousChapter,
@@ -944,7 +943,6 @@ function getPages (dato, chapterRef) {
         path: `${book.path}/${parentChapter.slug}`,
         slug: parentChapter.slug,
         title: parentChapter.title,
-        type: parentChapter.chapterType,
       };
       const path = `${chapter.path}#${slug}`;
       const links = (page.links) ? page.links.split('\n')

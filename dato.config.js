@@ -4,6 +4,7 @@ const uniq = require('lodash/uniq');
 const uniqBy = require('lodash/uniqBy');
 const flattendeep = require('lodash/flattenDeep');
 const slugify = require('slug');
+const fetch = require('isomorphic-unfetch');
 const { filter } = require('lodash');
 
 /**
@@ -38,21 +39,25 @@ const { filter } = require('lodash');
 
 const includeUnpublished = !!process.env.UNPUBLISHED;
 const contentBasePath = '/narratives';
+let allImagesMetaData = [];
 
 module.exports = (dato, root, i18n) => {
-  generateChapters(dato, root, i18n);
-  generateChapterOverview(dato, root, i18n);
-  generateByInfluence(dato, root, i18n);
-  generateByGoal(dato, root, i18n);
-  generateByMethodology(dato, root, i18n);
-  generateKeywords(dato, root, i18n);
-  generateAppData(dato, root, i18n);
-  generateStaticPages(dato, root, i18n);
-  generateThemes(dato, root, i18n);
-  generateMarkers(dato, root, i18n);
-  generateEventPages(dato, root, i18n);
-  generateFeaturePages(dato, root, i18n);
-  generateNewsPages(dato, root, i18n);
+  getAllImagesMetaData().then((data) => {
+    allImagesMetaData = data;
+    generateChapters(dato, root, i18n);
+    generateChapterOverview(dato, root, i18n);
+    generateByInfluence(dato, root, i18n);
+    generateByGoal(dato, root, i18n);
+    generateByMethodology(dato, root, i18n);
+    generateKeywords(dato, root, i18n);
+    generateAppData(dato, root, i18n);
+    generateStaticPages(dato, root, i18n);
+    generateThemes(dato, root, i18n);
+    generateMarkers(dato, root, i18n);
+    generateEventPages(dato, root, i18n);
+    generateFeaturePages(dato, root, i18n);
+    generateNewsPages(dato, root, i18n);
+  });
 };
 
 /**
@@ -336,18 +341,17 @@ function generateStaticPages (dato, root, i18n) {
   const staticPages = dato.staticPages
     .filter(filterPublished)
     .map(page => {
-      const { body, images2, seo, slug, title, video } = page;
+      const { body, images, seo, slug, title, video } = page;
       return {
         body: renderMarkedContent(body),
-        images: images2.map(image => {
-          return {
-            id: image.id,
-            url: image.image.url(),
-            width: image.image.width,
-            height: image.image.height,
-            title: image.title,
-            alt: image.alternativeText,
-          };
+        images: images.map(image => {
+          return image ? {
+            url: `${image.imgixHost}${image.value.path}`,
+            width: image.width,
+            height: image.height,
+            title: getImageMetaInfo(`${image.imgixHost}${image.value.path}`) ? getImageMetaInfo(`${image.imgixHost}${image.value.path}`).title : null,
+            alt: getImageMetaInfo(`${image.imgixHost}${image.value.path}`) ? getImageMetaInfo(`${image.imgixHost}${image.value.path}`).alt : null,
+          } : null;
         }),
         seo: {
           title: seo.value.title,
@@ -536,7 +540,7 @@ function generateEventPages (dato, root, i18n) {
                     callToActionUrl: block.callToActionUrl,
                     mirrorLayout: block.mirrorLayout,
                     image: {
-                      alt: block.image.alt,
+                      alt: getImageMetaInfo(block.image.url()) ? getImageMetaInfo(block.image.url()).alt : null,
                       url: block.image.url(),
                     },
                   };
@@ -710,7 +714,7 @@ function generateEventChapter(allLocales, chapter, event, root, i18n) {
                   width: image.width,
                   height: image.height,
                   title: image.title,
-                  alt: image.alt,
+                  alt: getImageMetaInfo(image.url()) ? getImageMetaInfo(image.url()).alt : null,
                 };
               }),
               video: videoComputed,
@@ -727,7 +731,7 @@ function generateEventChapter(allLocales, chapter, event, root, i18n) {
               creditsLogos: page.creditsLogos.map(creditsLogo => {
                 return {
                   url: creditsLogo.url(),
-                  alt: creditsLogo.alt,
+                  alt: getImageMetaInfo(creditsLogo.image.url()) ? getImageMetaInfo(creditsLogo.url()).alt : null,
                 };
               }),
             };
@@ -902,7 +906,7 @@ function getPages (dato, chapterRef) {
   return pages
     .filter(filterPublished)
     .map(page => {
-      const { body, files, graphs, images2, keywords, slug, title, mapboxStyle, videoTranscript } = page;
+      const { body, files, graphs, images, keywords, slug, title, mapboxStyle, videoTranscript } = page;
       const influences = (page.influence) ? page.influence.map(tag => ({
         title: tag.title,
         slug: tag.slug,
@@ -962,14 +966,13 @@ function getPages (dato, chapterRef) {
             providerUid,
         };
       }
-      const images = images2.map(image => {
+      const imagesMeta = images.map(image => {
         return {
-          id: image.id,
-          url: image.image.url(),
-          width: image.image.width,
-          height: image.image.height,
-          title: image.title,
-          alt: image.alternativeText,
+          url: image.url(),
+          width: image.width,
+          height: image.height,
+          title: getImageMetaInfo(image.url()) ? getImageMetaInfo(image.url()).title : null,
+          alt: getImageMetaInfo(image.url()) ? getImageMetaInfo(image.url()).alt : null,
         };
       });
       const filesList = files.map(file => {
@@ -984,7 +987,7 @@ function getPages (dato, chapterRef) {
         chapter,
         files: filesList,
         graphs,
-        images,
+        images: imagesMeta,
         keywords: (keywords) ? tagStringToLinkObjects(keywords, 'keywords') : [],
         links,
         location,
@@ -1121,7 +1124,7 @@ function generateContentPage (chapters, page) {
             callToActionUrl: block.callToActionUrl,
             mirrorLayout: block.mirrorLayout,
             image: {
-              alt: block.image.alt,
+              alt: getImageMetaInfo(block.image.url) ? getImageMetaInfo(block.image.url).alt : null,
               url: block.image.url,
             },
           };
@@ -1158,7 +1161,7 @@ function generateContentPage (chapters, page) {
                 title: newsArticle.title,
                 date: newsArticle.date,
                 image: {
-                  alt: newsArticle.heroImage.alt,
+                  alt: getImageMetaInfo(newsArticle.heroImage.url) ? getImageMetaInfo(newsArticle.heroImage.url).alt : null,
                   url: newsArticle.heroImage.url,
                 },
               };
@@ -1222,6 +1225,76 @@ function generateContentPage (chapters, page) {
     heroImage,
     sections: sectionsList,
   };
+}
+
+/**
+ * Get all images from Dato that have an alt-tag or title tag
+ *
+ * @returns {Array}
+*/
+async function getAllImagesMetaData () {
+  const query = `
+    query allPages($first: IntType, $skip: IntType) {
+      allUploads(filter: {type: {eq: image}}, first: $first, skip: $skip) {
+        url
+        alt
+        title
+      }
+      _allUploadsMeta(filter: {type: {eq: image}}) {
+        count
+      }
+    }
+  `;
+  const querySize = 100;
+  const variables = { first: querySize, skip: 0 };
+
+  let data = await runDatoQuery(query, variables);
+
+  const extraQueryRuns = data['_allUploadsMeta'].count ? Math.floor(data['_allUploadsMeta'].count / querySize) : 0;
+
+  for (let i = 1; i <= extraQueryRuns; i++) {
+    const variables = { first: querySize, skip: i * querySize };
+    const nextSet = await runDatoQuery(query, variables);
+    data['allUploads'] = data['allUploads'].concat(nextSet['allUploads']);
+  }
+
+  return data['allUploads']
+    .filter(upload => upload.title !== null && upload.alt !== null)
+    .reduce((uploads, upload) => (uploads[upload.url] = { alt: upload.alt, title: upload.title}, uploads), {});
+}
+
+/**
+ * Run a GraphQL query from Dato
+ *
+ * @param {String} query
+ * @param {Object} variables
+ * @returns {Object}
+*/
+function runDatoQuery (query, variables) {
+  return fetch('https://graphql.datocms.com/', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': process.env.DATO_API_TOKEN,
+    },
+    body: JSON.stringify({ query, variables }),
+  })
+    .then((response) => response.json())
+    .then((response) => {
+      if (response.errors) throw Error(JSON.stringify(response, null, 4));
+
+      return response.data;
+    });
+}
+
+/**
+ * Return alt and title info for image belonging to the given url (as 'id' does not exist)
+ *
+ * @param {String} url
+ * @returns {Object}
+*/
+function getImageMetaInfo (url) {
+  return allImagesMetaData[url];
 }
 
 /**

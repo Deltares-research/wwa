@@ -25,21 +25,21 @@
         v-for="image in images"
         :key="image.id"
         class="page-body__figure"
-        :class="(image.value.width / image.value.height < .8) ? 'page-body__figure--is-portrait' : null"
+        :class="(image.width / image.height < .8) ? 'page-body__figure--is-portrait' : null"
       >
         <responsive-image
           class="page-body__lazy-image"
-          :src="`${image.url || `${image.imgixHost}${image.value.path}`}?auto=compress,format&w=640&q=65`"
-          :src-width="image.width || image.value && image.value.width"
-          :src-height="image.height || image.value && image.value.height"
-          :alt="image.alt || image.value && image.value.alt"
+          :src="`${image.url}?auto=compress,format&w=640&q=65`"
+          :src-width="image.width"
+          :src-height="image.height"
+          :alt="image.alt"
           width="100%"
         />
         <figcaption
-          v-if="image && image.title || image && image.value && image.value.title"
+          v-if="image.title"
           class="page-body__asset-caption"
         >
-          {{ image.title || image.value && image.value.title }}
+          {{ image.title }}
         </figcaption>
       </figure>
     </div>
@@ -360,8 +360,8 @@ export default {
 
 .page-body__asset-caption {
   padding-top: .5rem;
-  background-color: var(--white);
   margin: 0 auto;
+  text-align: center;
 }
 
 @media (--sm-viewport) {

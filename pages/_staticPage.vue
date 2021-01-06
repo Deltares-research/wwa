@@ -24,13 +24,13 @@
         :key="image.id"
       >
         <lazy-image
-          :src-width="image.value.width"
-          :src-height="image.value.height"
-          :src="`${image.imgixHost}${image.value.path}?auto=compress,format&w=640&q=65`"
-          :alt="image.value.alt"
+          :src-width="image.width"
+          :src-height="image.height"
+          :src="`${image.url}?auto=compress,format&w=640&q=65`"
+          :alt="image.alt"
           width="100%"
         />
-        <figcaption>{{ image.value.title }}</figcaption>
+        <figcaption>{{ image.title }}</figcaption>
       </figure>
     </div>
   </article>

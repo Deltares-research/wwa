@@ -30,13 +30,26 @@
       animator-stagger
     >
       <li
-        v-for="logo in logos"
-        :key="logo.id"
+        v-for="partner in partners"
+        :key="partner.id"
         class="section-block-colofon__logo-item"
       >
+        <a
+          v-if="partner.url"
+          :href="partner.url"
+          target="_blank"
+        >
+          <img
+            :src="`${partner.imageUrl}?h=100&auto=compress,format`"
+            :alt="partner.title"
+            class="section-block-colofon__logo"
+            loading="lazy"
+          >
+        </a>
         <img
-          :src="`${logo.url}?h=100&auto=compress,format`"
-          :alt="logo.alt ? logo.alt : ''"
+          v-else
+          :src="`${partner.imageUrl}?h=100&auto=compress,format`"
+          :alt="partner.title"
           class="section-block-colofon__logo"
           loading="lazy"
         >
@@ -52,7 +65,7 @@
       title: String,
       titleColor: String,
       body: String,
-      logos: Array,
+      partners: Array,
       showHeadingLevelTop: Boolean,
     },
   };

@@ -8,6 +8,7 @@
     "start": "netlify dev",
     "dev": "npm-run-all build dev:app",
     "dev:app": "nuxt dev",
+    "prebuild": "node lib/get-all-images-meta-data.js",
     "build": "npm-run-all build:*",
     "build:data": "dato dump",
     "build:assets": "cpy ./components/**/assets/*.* ./static/assets",

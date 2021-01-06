@@ -18,7 +18,7 @@
             :title="relatedChapter.title"
             class="narrative-footer__related-link"
           >
-            <picture>
+            <picture v-if="relatedChapter.cover">
               <source
                 :srcset="`
                   ${relatedChapter.cover.imgixHost}${relatedChapter.cover.value.path}?auto=compress,format&w=340&h=200&fit=crop 340w,

@@ -5,6 +5,7 @@ const uniqBy = require('lodash/uniqBy');
 const flattendeep = require('lodash/flattenDeep');
 const slugify = require('slug');
 const { filter } = require('lodash');
+const imageMetaData = require('./static/data/image-meta-data.json');
 
 /**
  * @typedef Dato
@@ -39,7 +40,7 @@ const { filter } = require('lodash');
 const includeUnpublished = !!process.env.UNPUBLISHED;
 const contentBasePath = '/narratives';
 
-module.exports = (dato, root, i18n) => {
+module.exports = async (dato, root, i18n) => {
   generateChapters(dato, root, i18n);
   generateChapterOverview(dato, root, i18n);
   generateByInfluence(dato, root, i18n);
@@ -343,7 +344,15 @@ function generateStaticPages (dato, root, i18n) {
       const { body, images, seo, slug, title, video } = page;
       return {
         body: renderMarkedContent(body),
-        images,
+        images: images.map(image => {
+          return image ? {
+            url: `${image.imgixHost}${image.value.path}`,
+            width: image.width,
+            height: image.height,
+            title: getImageMetaInfo(`${image.imgixHost}${image.value.path}`) ? getImageMetaInfo(`${image.imgixHost}${image.value.path}`).title : null,
+            alt: getImageMetaInfo(`${image.imgixHost}${image.value.path}`) ? getImageMetaInfo(`${image.imgixHost}${image.value.path}`).alt : null,
+          } : null;
+        }),
         seo: {
           title: seo.value.title,
           description: seo.value.description,
@@ -493,11 +502,12 @@ function generateEventPages (dato, root, i18n) {
                     titleColor: block.titleColor,
                     showWaveMarker: block.showWaveMarker,
                     body: renderMarkedContent(block.body),
-                    logos: block.logos.map(logo => {
+                    partners: block.partners.map(partner => {
                       return {
-                        id: logo.id,
-                        url: logo.url(),
-                        alt: logo.alt,
+                        id: partner.id,
+                        title: partner.title,
+                        imageUrl: partner.logo.url(),
+                        url: partner.url,
                       };
                     }),
                   };
@@ -530,7 +540,7 @@ function generateEventPages (dato, root, i18n) {
                     callToActionUrl: block.callToActionUrl,
                     mirrorLayout: block.mirrorLayout,
                     image: {
-                      alt: block.image.alt,
+                      alt: getImageMetaInfo(block.image.url()) ? getImageMetaInfo(block.image.url()).alt : null,
                       url: block.image.url(),
                     },
                   };
@@ -704,7 +714,7 @@ function generateEventChapter(allLocales, chapter, event, root, i18n) {
                   width: image.width,
                   height: image.height,
                   title: image.title,
-                  alt: image.alt,
+                  alt: getImageMetaInfo(image.url()) ? getImageMetaInfo(image.url()).alt : null,
                 };
               }),
               video: videoComputed,
@@ -721,7 +731,7 @@ function generateEventChapter(allLocales, chapter, event, root, i18n) {
               creditsLogos: page.creditsLogos.map(creditsLogo => {
                 return {
                   url: creditsLogo.url(),
-                  alt: creditsLogo.alt,
+                  alt: getImageMetaInfo(creditsLogo.image.url()) ? getImageMetaInfo(creditsLogo.url()).alt : null,
                 };
               }),
             };
@@ -801,7 +811,7 @@ function getChapters (dato, bookRef) {
   return chapters
     .filter(filterPublished)
     .map(chapter => {
-      const { title, slug, chapterType, createdAt, updatedAt, cover } = chapter;
+      const { title, slug, createdAt, updatedAt, cover } = chapter;
       const seo = {
         title: chapter.seo.value.title,
         description: chapter.seo.value.description,
@@ -866,7 +876,6 @@ function getChapters (dato, bookRef) {
         slug,
         storyteller,
         title,
-        type: chapterType,
         theme,
         nextChapter,
         previousChapter,
@@ -938,7 +947,6 @@ function getPages (dato, chapterRef) {
         path: `${book.path}/${parentChapter.slug}`,
         slug: parentChapter.slug,
         title: parentChapter.title,
-        type: parentChapter.chapterType,
       };
       const path = `${chapter.path}#${slug}`;
       const links = (page.links) ? page.links.split('\n')
@@ -958,6 +966,15 @@ function getPages (dato, chapterRef) {
             providerUid,
         };
       }
+      const imagesMeta = images.map(image => {
+        return {
+          url: image.url(),
+          width: image.width,
+          height: image.height,
+          title: getImageMetaInfo(image.url()) ? getImageMetaInfo(image.url()).title : null,
+          alt: getImageMetaInfo(image.url()) ? getImageMetaInfo(image.url()).alt : null,
+        };
+      });
       const filesList = files.map(file => {
         return {
           url: `${file.file.imgixHost}${file.file.value.path}`,
@@ -970,7 +987,7 @@ function getPages (dato, chapterRef) {
         chapter,
         files: filesList,
         graphs,
-        images,
+        images: imagesMeta,
         keywords: (keywords) ? tagStringToLinkObjects(keywords, 'keywords') : [],
         links,
         location,
@@ -1107,7 +1124,7 @@ function generateContentPage (chapters, page) {
             callToActionUrl: block.callToActionUrl,
             mirrorLayout: block.mirrorLayout,
             image: {
-              alt: block.image.alt,
+              alt: getImageMetaInfo(block.image.url) ? getImageMetaInfo(block.image.url).alt : null,
               url: block.image.url,
             },
           };
@@ -1120,13 +1137,14 @@ function generateContentPage (chapters, page) {
             titleColor: block.titleColor,
             showWaveMarker: block.showWaveMarker,
             body: renderMarkedContent(block.body),
-            logos: block.logos ? block.logos.map(logo => {
+            partners: block.partners.map(partner => {
               return {
-                id: logo.id,
-                url: logo.url,
-                alt: logo.alt,
+                id: partner.id,
+                title: partner.title,
+                imageUrl: partner.logo.url,
+                url: partner.url,
               };
-            }) : null,
+            }),
           };
         } else if(block.itemType === 'news_block') {
           return {
@@ -1143,7 +1161,7 @@ function generateContentPage (chapters, page) {
                 title: newsArticle.title,
                 date: newsArticle.date,
                 image: {
-                  alt: newsArticle.heroImage.alt,
+                  alt: getImageMetaInfo(newsArticle.heroImage.url) ? getImageMetaInfo(newsArticle.heroImage.url).alt : null,
                   url: newsArticle.heroImage.url,
                 },
               };
@@ -1207,6 +1225,16 @@ function generateContentPage (chapters, page) {
     heroImage,
     sections: sectionsList,
   };
+}
+
+/**
+ * Return alt and title info for image belonging to the given url (as 'id' does not exist)
+ *
+ * @param {String} url
+ * @returns {Object}
+*/
+function getImageMetaInfo (url) {
+  return imageMetaData[url];
 }
 
 /**

@@ -4,8 +4,8 @@ const uniq = require('lodash/uniq');
 const uniqBy = require('lodash/uniqBy');
 const flattendeep = require('lodash/flattenDeep');
 const slugify = require('slug');
-const fetch = require('isomorphic-unfetch');
 const { filter } = require('lodash');
+const imageMetaData = require('./static/data/image-meta-data.json');
 
 /**
  * @typedef Dato
@@ -39,25 +39,21 @@ const { filter } = require('lodash');
 
 const includeUnpublished = !!process.env.UNPUBLISHED;
 const contentBasePath = '/narratives';
-let allImagesMetaData = [];
 
-module.exports = (dato, root, i18n) => {
-  getAllImagesMetaData().then((data) => {
-    allImagesMetaData = data;
-    generateChapters(dato, root, i18n);
-    generateChapterOverview(dato, root, i18n);
-    generateByInfluence(dato, root, i18n);
-    generateByGoal(dato, root, i18n);
-    generateByMethodology(dato, root, i18n);
-    generateKeywords(dato, root, i18n);
-    generateAppData(dato, root, i18n);
-    generateStaticPages(dato, root, i18n);
-    generateThemes(dato, root, i18n);
-    generateMarkers(dato, root, i18n);
-    generateEventPages(dato, root, i18n);
-    generateFeaturePages(dato, root, i18n);
-    generateNewsPages(dato, root, i18n);
-  });
+module.exports = async (dato, root, i18n) => {
+  generateChapters(dato, root, i18n);
+  generateChapterOverview(dato, root, i18n);
+  generateByInfluence(dato, root, i18n);
+  generateByGoal(dato, root, i18n);
+  generateByMethodology(dato, root, i18n);
+  generateKeywords(dato, root, i18n);
+  generateAppData(dato, root, i18n);
+  generateStaticPages(dato, root, i18n);
+  generateThemes(dato, root, i18n);
+  generateMarkers(dato, root, i18n);
+  generateEventPages(dato, root, i18n);
+  generateFeaturePages(dato, root, i18n);
+  generateNewsPages(dato, root, i18n);
 };
 
 /**
@@ -1232,73 +1228,13 @@ function generateContentPage (chapters, page) {
 }
 
 /**
- * Get all images from Dato that have an alt-tag or title tag
- *
- * @returns {Array}
-*/
-async function getAllImagesMetaData () {
-  const query = `
-    query allPages($first: IntType, $skip: IntType) {
-      allUploads(filter: {type: {eq: image}}, first: $first, skip: $skip) {
-        url
-        alt
-        title
-      }
-      _allUploadsMeta(filter: {type: {eq: image}}) {
-        count
-      }
-    }
-  `;
-  const querySize = 100;
-  const variables = { first: querySize, skip: 0 };
-
-  let data = await runDatoQuery(query, variables);
-
-  const extraQueryRuns = data['_allUploadsMeta'].count ? Math.floor(data['_allUploadsMeta'].count / querySize) : 0;
-
-  for (let i = 1; i <= extraQueryRuns; i++) {
-    const variables = { first: querySize, skip: i * querySize };
-    const nextSet = await runDatoQuery(query, variables);
-    data['allUploads'] = data['allUploads'].concat(nextSet['allUploads']);
-  }
-
-  return data['allUploads']
-    .filter(upload => upload.title !== null && upload.alt !== null)
-    .reduce((uploads, upload) => (uploads[upload.url] = { alt: upload.alt, title: upload.title}, uploads), {});
-}
-
-/**
- * Run a GraphQL query from Dato
- *
- * @param {String} query
- * @param {Object} variables
- * @returns {Object}
-*/
-function runDatoQuery (query, variables) {
-  return fetch('https://graphql.datocms.com/', {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': process.env.DATO_API_TOKEN,
-    },
-    body: JSON.stringify({ query, variables }),
-  })
-    .then((response) => response.json())
-    .then((response) => {
-      if (response.errors) throw Error(JSON.stringify(response, null, 4));
-
-      return response.data;
-    });
-}
-
-/**
  * Return alt and title info for image belonging to the given url (as 'id' does not exist)
  *
  * @param {String} url
  * @returns {Object}
 */
 function getImageMetaInfo (url) {
-  return allImagesMetaData[url];
+  return imageMetaData[url];
 }
 
 /**

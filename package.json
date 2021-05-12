@@ -38,7 +38,7 @@
     "marked": "^1.1.0",
     "nuxt": "^2.13.1",
     "smoothscroll-polyfill": "^0.4.4",
-    "swiper": "^5.4.5",
+    "swiper": "^6.5.1",
     "three": "^0.116.1",
     "three.meshline": "^1.2.0",
     "typeface-roboto": "0.0.75",

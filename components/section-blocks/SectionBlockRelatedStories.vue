@@ -26,8 +26,8 @@
       v-if="subtitle"
       class="animator__slide-up section-block-related-stories__subtitle"
       :class="{
-        'section-block-related-stories__subtitle--orange': titleColor === 'orange',
-        'section-block-related-stories__subtitle--blue': titleColor === 'blue',
+        'section-block-related-stories__subtitle--orange': subtitleColor === 'orange',
+        'section-block-related-stories__subtitle--blue': subtitleColor === 'blue',
       }"
       animator-stagger
     >
@@ -96,6 +96,14 @@
     .section-block-related-stories__title {
       font-size: 1.5rem;
     }
+  }
+
+  .section-block-related-stories__title--orange {
+    color: var(--orange);
+  }
+
+  .section-block-related-stories__title--blue {
+    color: var(--blue-tertiary);
   }
 
   .section-block-related-stories__subtitle {

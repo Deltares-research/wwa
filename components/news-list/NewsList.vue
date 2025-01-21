@@ -3,7 +3,7 @@
     class="news-list"
   >
     <li
-      v-for="article in newsArticles"
+      v-for="article in sortedArticles"
       :key="article.id"
       class="news-list__item"
     >
@@ -50,6 +50,11 @@ export default {
     showHeadingLevelTop: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    sortedArticles() {
+      return this.newsArticles.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
     },
   },
   methods: {

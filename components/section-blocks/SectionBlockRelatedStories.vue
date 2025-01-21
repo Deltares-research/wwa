@@ -12,6 +12,11 @@
     <component
       :is="showHeadingLevelTop ? 'h2' : 'h3'"
       class="animator__slide-up section-block-related-stories__title"
+      :class="{
+        'section-block-related-stories__title--orange': titleColor === 'orange',
+        'section-block-related-stories__title--blue': titleColor === 'blue',
+        'section-block-related-stories__title--small': showSmallTitle,
+      }"
       animator-stagger
     >
       {{ title }}
